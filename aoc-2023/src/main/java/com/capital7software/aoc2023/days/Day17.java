@@ -171,7 +171,7 @@ public class Day17 {
 
             @Override
             public int hashCode() {
-                return Objects.hash(tile, direction, steps);
+                return Objects.hash(tile, steps, direction);
             }
         }
 
@@ -244,9 +244,7 @@ public class Day17 {
                 visited.add(pathCost.path());
 
                 // Get our neighbors!
-                var neighbors = getNeighbors(pathCost);
-
-                for (var neighbor : neighbors) {
+                for (var neighbor : getNeighbors(pathCost)) {
                     // Track how much of a heat loss the path will increase by
                     var newCost = pathCost.cost() + neighbor.tile().heat();
 
@@ -271,13 +269,11 @@ public class Day17 {
             var neighbors = new ArrayList<Path>(Direction.values().length);
 
             if (pathCost.stepsInDirection() < minSteps) {
-                // We can only go straight!
                 var neighbor = takeStepForward(pathCost.path());
                 if (neighbor != null) {
                     neighbors.add(neighbor);
                 }
             } else if (pathCost.stepsInDirection() < maxSteps) {
-                // We can go straight, left, or right!
                 var neighbor = takeStepForward(pathCost.path());
                 if (neighbor != null) {
                     neighbors.add(neighbor);
@@ -291,7 +287,6 @@ public class Day17 {
                     neighbors.add(neighbor);
                 }
             } else {
-                // We must turn left or right!
                 var neighbor = takeStepRight(pathCost.path());
                 if (neighbor != null) {
                     neighbors.add(neighbor);

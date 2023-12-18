@@ -14,12 +14,14 @@ import java.util.stream.Stream;
 
 public class Day18 {
 
-    private record Point2D(long x, long y) {
+    private record Point2D(double x, double y) {
+        public static final double EPSILON = 0.00001;
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof Point2D point2D)) return false;
-            return x == point2D.x && y == point2D.y;
+            return Math.abs(x - point2D.x) <= EPSILON && Math.abs(y - point2D.y) <= EPSILON;
         }
 
         @Override
@@ -62,7 +64,7 @@ public class Day18 {
             return vertices.add(point);
         }
 
-        public long calculatePerimeter() {
+        public double calculatePerimeter() {
             var perimeter = 0L;
 
             for (int i = 0; i < vertices.size(); i++) {
@@ -80,7 +82,7 @@ public class Day18 {
         }
 
         public double calculateEdgeArea() {
-            return (double) calculatePerimeter() / 2 + 1;
+            return calculatePerimeter() / 2 + 1;
         }
 
         public double calculateInsideArea() {
@@ -139,6 +141,12 @@ public class Day18 {
         }
     }
 
+    public enum Orientation {
+        COLLINEAR,
+        CLOCKWISE,
+        COUNTERCLOCKWISE
+    }
+
     private record LineSegment(Point2D start, Point2D end) {
         @Override
         public boolean equals(Object o) {
@@ -154,8 +162,81 @@ public class Day18 {
         }
 
         public double length() {
-            return Math.sqrt(Math.pow((end.x() - start().x), 2) + Math.pow((end.y() - start.y), 2));
+            return LineSegment.length(start, end);
         }
+
+        public static double length(Point2D a, Point2D b) {
+            return Math.sqrt(Math.pow((b.x - a.x), 2) + Math.pow((b.y - a.y), 2));
+        }
+
+
+        /**
+         * When this LineSegment and other LineSegment are on the same line and overlap, the point that
+         * overlaps is returned based on the following criteria
+         * <p>
+         * If other's start is on this LineSegment, other's start is returned.
+         * Else if other's end is on this LineSegment, other's end is returned.
+         * Else if this LineSegment is totally inside other, then this start is returned.
+         * Else null is returned.
+         *
+         * @param other The non-null LineSegment to test
+         * @return The point of intersection or null if they don't intersect as defined above.
+         */
+        Point2D intersect(final LineSegment other) {
+            if (!isOnSameLine(other)) {
+                return null;
+            }
+
+            if (isPointOnSegment(other.start)) {
+                return other.start;
+            } else if (isPointOnSegment(other.end)) {
+                return other.end;
+            } else if (other.isPointOnSegment(start) && other.isPointOnSegment(end)) {
+                return start;
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * Assumes that other is collinear to this LineSegment and checks if other falls on this LineSegment
+         * @param other The other point to test
+         * @return If other is on this LineSegment then true; else false.
+         */
+        public boolean isPointOnSegment(Point2D other) {
+            var thisLength = length();
+            var startToOther = LineSegment.length(start, other);
+            var otherToEnd = LineSegment.length(other, end);
+
+            return Math.abs(thisLength - (startToOther + otherToEnd)) <= Point2D.EPSILON;
+        }
+
+        /**
+         * Returns true if the start and end point of the other LineSegment is collinear to this LineSegment.
+         * @param other The LineSegment to test against.
+         * @return If the other LineSegment is collinear to this LineSegment.
+         */
+        public boolean isOnSameLine(final LineSegment other) {
+            return orientation(other.start) == Orientation.COLLINEAR &&
+                    orientation(other.end) == Orientation.COLLINEAR;
+        }
+
+        /**
+         * Returns the Orientation of other as it relates to this LineSegment.
+         * @param other The point the orientation is calculated in relation to
+         * @return The Orientation
+         */
+        public Orientation orientation(Point2D other) {
+            double orientation = (end.y - start.y) * (other.x - end.x) -
+                    (end.x - start .x) * (other.y - end.y);
+
+            if (orientation <= Point2D.EPSILON) {
+                return Orientation.COLLINEAR;
+            }
+
+            return orientation > 0 ? Orientation.CLOCKWISE : Orientation.COUNTERCLOCKWISE;
+        }
+
     }
 
     private record VertexInfo(Direction direction, int length, String color) {
@@ -247,6 +328,7 @@ public class Day18 {
 
         part1(path);
         part2(path);
+        part3();
     }
 
     private static void part1(Path path) {
@@ -277,5 +359,53 @@ public class Day18 {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void part3() {
+        // Part 3
+        System.out.println("Part 3: Start!");
+        var line1 = new LineSegment(new Point2D(1, 1), new Point2D(1, 10));
+        var line2 = new LineSegment(new Point2D(1, -2), new Point2D(1, 12));
+        var line3 = new LineSegment(new Point2D(1, 2), new Point2D(1, 12));
+        var line4 = new LineSegment(new Point2D(1, -2), new Point2D(1, 8));
+        var line5 = new LineSegment(new Point2D(0, 2), new Point2D(5, 12));
+        var line6 = new LineSegment(new Point2D(0, 2), new Point2D(0, 12));
+
+        System.out.println("Line 1: " + line1);
+        System.out.println("Line 2: " + line2);
+        System.out.println("Line 3: " + line3);
+        System.out.println("Line 4: " + line4);
+        System.out.println("Line 5: " + line3);
+        System.out.println("Line 6: " + line4);
+
+        var start = Instant.now();
+        var intersectionPoint = line1.intersect(line3);
+        var end = Instant.now();
+        System.out.println("Test Condition 1: Line 1 and Line 3 intersect at point: " + intersectionPoint + " in " +
+                Duration.between(start, end).toNanos() + " ns");
+
+        start = Instant.now();
+        intersectionPoint = line1.intersect(line4);
+        end = Instant.now();
+        System.out.println("Test Condition 2: Line 1 and Line 4 intersect at point: " + intersectionPoint + " in " +
+                Duration.between(start, end).toNanos() + " ns");
+
+        start = Instant.now();
+        intersectionPoint = line1.intersect(line2);
+        end = Instant.now();
+        System.out.println("Test Condition 3: Line 1 and Line 2 intersect at point: " + intersectionPoint + " in " +
+                Duration.between(start, end).toNanos() + " ns");
+
+        start = Instant.now();
+        intersectionPoint = line1.intersect(line5);
+        end = Instant.now();
+        System.out.println("Test Condition 4: Line 1 and Line 5 intersect at point: " + intersectionPoint + " in " +
+                Duration.between(start, end).toNanos() + " ns");
+
+        start = Instant.now();
+        intersectionPoint = line1.intersect(line6);
+        end = Instant.now();
+        System.out.println("Test Condition 4: Line 1 and Line 6 intersect at point: " + intersectionPoint + " in " +
+                Duration.between(start, end).toNanos() + " ns");
     }
 }

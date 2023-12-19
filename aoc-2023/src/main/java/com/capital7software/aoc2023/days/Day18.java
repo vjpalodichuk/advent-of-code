@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 public class Day18 {
 
-    private record Point2D(double x, double y) {
+    public record Point2D(double x, double y) {
         public static final double EPSILON = 0.00000001;
     }
 
@@ -24,7 +24,7 @@ public class Day18 {
         COUNTERCLOCKWISE
     }
 
-    private record LineSegment(Point2D start, Point2D end) {
+    public record LineSegment(Point2D start, Point2D end) {
         public double length() {
             return LineSegment.length(start, end);
         }
@@ -129,7 +129,7 @@ public class Day18 {
 
     }
 
-    private static class Polygon2D {
+    public static class Polygon2D {
         private final List<Point2D> vertices;
         private final List<String> edgeColors;
 
@@ -204,7 +204,7 @@ public class Day18 {
         }
     }
 
-    private enum Direction {
+    public enum Direction {
         UP(new Point2D(0, -1)),
         DOWN(new Point2D(0, 1)),
         LEFT(new Point2D(-1, 0)),
@@ -237,7 +237,7 @@ public class Day18 {
         }
     }
 
-    private record VertexInfo(Direction direction, int length, String color) {
+    public record VertexInfo(Direction direction, int length, String color) {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -258,7 +258,7 @@ public class Day18 {
         }
     }
 
-    private record Lagoon(Polygon2D polygon) {
+    public record Lagoon(Polygon2D polygon) {
 
         public static Lagoon build(Point2D initialVertex, Stream<String> stream, boolean colorsAsInstructions) {
             var polygon = new Polygon2D();

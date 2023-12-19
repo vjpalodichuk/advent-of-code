@@ -12,22 +12,41 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 public class Day10 {
-    public static class Range
-    {
-        private int low;
-        private int high;
+    public record Range(int low, int high) {
 
-        public Range(int low, int high){
-            this.low = low;
-            this.high = high;
+        public int difference() {
+            return high - low;
         }
 
-        public boolean contains(int number){
+        public boolean contains(int number) {
             return (number >= low && number < high);
+        }
+
+        public int count() {
+            return difference() + 1;
         }
 
         public static Range of(int min, int high) {
             return new Range(min, high);
+        }
+
+        /**
+         * Splits this range in two distinct ranges based on the splitPoint.
+         * May produce an empty range if splitPoint is outside of this range.
+         *
+         * @param splitPoint The number to split the range on.
+         * @return A list with two new ranges.
+         */
+        public List<Range> split(int splitPoint) {
+            var result = new LinkedList<Range>();
+
+            result.add(Range.of(low, Math.min(splitPoint - 1, high)));
+            result.add(Range.of(Math.max(low, splitPoint), high));
+            return result;
+        }
+
+        public boolean isEmpty() {
+            return low > high;
         }
     }
 
@@ -158,10 +177,21 @@ public class Day10 {
             return null;
         }
 
-        public boolean connectsNorth() {return false;}
-        public boolean connectsEast() {return false;}
-        public boolean connectsSouth() {return false;}
-        public boolean connectsWest() {return false;}
+        public boolean connectsNorth() {
+            return false;
+        }
+
+        public boolean connectsEast() {
+            return false;
+        }
+
+        public boolean connectsSouth() {
+            return false;
+        }
+
+        public boolean connectsWest() {
+            return false;
+        }
     }
 
     private static class MazeTile implements Comparable<MazeTile> {
@@ -219,10 +249,6 @@ public class Day10 {
             return connectsWest() && other.connectsEast() && y == other.y && x == other.x + 1;
         }
 
-        public boolean isNeighbor(MazeTile other) {
-            return connectsNorthTo(other) || connectsEastTo(other) || connectsSouthTo(other) || connectsWestTo(other);
-        }
-
         public List<MazeTile> getNeighbors(List<List<MazeTile>> maze) {
             var neighbors = new ArrayList<MazeTile>();
 
@@ -241,6 +267,7 @@ public class Day10 {
 
             return neighbors;
         }
+
         @Override
         public String toString() {
             return "MazeTile{" +
@@ -341,19 +368,19 @@ public class Day10 {
         System.out.println("Part 2: Start!");
         System.out.println(("Calculating the number of tiles inside the polygon formed by the loop..."));
         final var polyStart = Instant.now();
-        final var tilesInLoop = calculateTilesInLoop(startPipeTile, distances, maze);
+        final var tilesInLoop = calculateTilesInLoop(distances, maze);
         final var polyStop = Instant.now();
         System.out.println("Tiles enclosed in the loop: " + tilesInLoop + " in " +
                 Duration.between(polyStart, polyStop).toMillis() + " ms");
     }
 
-    private static long calculateTilesInLoop(MazeTile startPipeTile, Map<MazeTile, Integer> mainLoop, ArrayList<List<MazeTile>> maze) {
+    private static long calculateTilesInLoop(Map<MazeTile, Integer> mainLoop, ArrayList<List<MazeTile>> maze) {
         final var directions = Set.of(Tile.VERTICAL, Tile.NORTH_EAST, Tile.NORTH_WEST);
         final var mainCount = new AtomicLong(0);
 
-        maze.stream().forEach(row -> {
+        maze.forEach(row -> {
             long count = row.stream()
-                    .filter(it -> !mainLoop.keySet().contains(it)) // Only need to check what isn't in the loop!.
+                    .filter(it -> !mainLoop.containsKey(it)) // Only need to check what isn't in the loop!.
                     .filter(tile -> {
                         // We use ray casting to determine if a point is inside or outside the polygon formed by
                         // the main loop. We start at the top and cast a ray in the WEST direction and then count
@@ -419,7 +446,7 @@ public class Day10 {
         var x = new AtomicInteger(0);
         var list = new ArrayList<MazeTile>();
         line.chars()
-                .mapToObj(it -> (char)it)
+                .mapToObj(it -> (char) it)
                 .map(Tile::fromLabel)
                 .forEach(it -> list.add(new MazeTile(it, x.getAndIncrement(), y)));
         return list;
@@ -429,7 +456,7 @@ public class Day10 {
      * We will use Dijkstra's shortest path algorithm to calculate the distances from the specified starting tile.
      *
      * @param start The tile to start from
-     * @param maze The maze of tiles
+     * @param maze  The maze of tiles
      * @return A map of the distances for the tiles in the path from the starting tile.
      */
     private static Map<MazeTile, Integer> calculateDistancesBFS(final MazeTile start, final List<List<MazeTile>> maze) {

@@ -30,21 +30,6 @@ public class Day10 {
             return new Range(min, high);
         }
 
-        /**
-         * Splits this range in two distinct ranges based on the splitPoint.
-         * May produce an empty range if splitPoint is outside of this range.
-         *
-         * @param splitPoint The number to split the range on.
-         * @return A list with two new ranges.
-         */
-        public List<Range> split(int splitPoint) {
-            var result = new LinkedList<Range>();
-
-            result.add(Range.of(low, Math.min(splitPoint - 1, high)));
-            result.add(Range.of(Math.max(low, splitPoint), high));
-            return result;
-        }
-
         public boolean isEmpty() {
             return low > high;
         }
@@ -355,14 +340,14 @@ public class Day10 {
                 distances.values().stream().mapToInt(it -> it).max().orElse(0) + " in " +
                 Duration.between(bfsStart, bfsStop).toMillis() + " ms");
 
-//        System.out.println(("Calculating distances using DFS..."));
-//        final var dfsDistances = new HashMap<MazeTile, Integer>();
-//        final var dfsStart = Instant.now();
-//        calculateDistancesDFS(startPipeTile, 0, dfsDistances, maze);
-//        final var dfsStop = Instant.now();
-//        System.out.println("Maximum distance: " +
-//                (distances.values().stream().mapToInt(it -> it).max().orElse(0) / 2) + " in " +
-//                Duration.between(bfsStart, bfsStop).toMillis() + " ms");
+        System.out.println(("Calculating distances using DFS..."));
+        final var dfsDistances = new HashMap<MazeTile, Integer>();
+        final var dfsStart = Instant.now();
+        calculateDistancesDFS(startPipeTile, 0, dfsDistances, maze);
+        final var dfsStop = Instant.now();
+        System.out.println("Maximum distance: " +
+                (distances.values().stream().mapToInt(it -> it).max().orElse(0) / 2) + " in " +
+                Duration.between(dfsStart, dfsStop).toMillis() + " ms");
 
         // Part 2
         System.out.println("Part 2: Start!");

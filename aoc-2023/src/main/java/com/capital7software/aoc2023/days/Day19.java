@@ -36,8 +36,8 @@ public class Day19 {
             this.parts = new ConcurrentLinkedDeque<>();
         }
 
-        boolean offer(Part part) {
-            return parts.offer(part);
+        void offer(Part part) {
+            parts.offer(part);
         }
 
         boolean hasWork() {
@@ -233,6 +233,10 @@ public class Day19 {
             return accepted.stream().mapToLong(Part::sum).sum();
         }
 
+        public long sumRejected() {
+            return rejected.stream().mapToLong(Part::sum).sum();
+        }
+
         public long calculateCombinations(String startingWorkflow) {
             var xRange = new Day10.Range(1, 4000);
             var mRange = new Day10.Range(1, 4000);
@@ -254,12 +258,30 @@ public class Day19 {
                     .sum();
         }
 
+        /**
+         * Splits this range in two distinct ranges based on the splitPoint.
+         * May produce an empty range if splitPoint is outside of this range.
+         * If existing range is 1 - 4000 and splitPoint is 2000 then this method will
+         * produce two new ranges: 1 - 1999, 2000 - 40000
+         *
+         * @param range The range to split
+         * @param splitPoint The number to split the range on.
+         * @return A list with two new ranges.
+         */
+        public List<Day10.Range> split(Day10.Range range, int splitPoint) {
+            var result = new LinkedList<Day10.Range>();
+
+            result.add(Day10.Range.of(range.low(), Math.min(splitPoint - 1, range.high())));
+            result.add(Day10.Range.of(Math.max(range.low(), splitPoint), range.high()));
+            return result;
+        }
+
         private LinkedList<Map<String, Day10.Range>> calculateCombinations(
                 Map<String, Day10.Range> ranges,
                 String idOrDestination
         ) {
-            // We search until we hit a node that ends at A
-            // We adjust the ranges as we go
+            // Search until we hit a node that ends at A
+            // Adjust the ranges as we go
             // If we hit A, we add that range to the list and return from that path
             // We continue until we have checked everything.
             var result = new LinkedList<Map<String, Day10.Range>>();
@@ -285,7 +307,7 @@ public class Day19 {
                     var currentRange = currentRanges.get(predicate.propertyCode);
 
                     // Need to split the range!
-                    List<Day10.Range> split = currentRange.split(predicate.predicateValue);
+                    List<Day10.Range> split = split(currentRange, predicate.predicateValue);
                     currentRanges.put(predicate.propertyCode, split.get(0)); // low
                     // Continue to recursively process the low half!
                     result.addAll(calculateCombinations(currentRanges, predicate.output));
@@ -296,7 +318,7 @@ public class Day19 {
                     var currentRanges = new HashMap<>(ranges);
                     var currentRange = currentRanges.get(predicate.propertyCode);
                     // Pretty much the same as above but we add one to the predicateValue to ensure a proper split!
-                    List<Day10.Range> split = currentRange.split(predicate.predicateValue + 1);
+                    List<Day10.Range> split = split(currentRange, predicate.predicateValue + 1);
                     currentRanges.put(predicate.propertyCode, split.get(1)); // high
                     // Continue to recursively process the high half!
                     result.addAll(calculateCombinations(currentRanges, predicate.output));
@@ -304,7 +326,7 @@ public class Day19 {
                     ranges = new HashMap<>(ranges);
                     ranges.put(predicate.propertyCode, split.get(0)); // low
                 } else {
-                    // Moving to a new workflow so store some data
+                    // Moving to a new workflow
                     result.addAll(calculateCombinations(ranges, predicate.output));
                 }
             }
@@ -343,7 +365,7 @@ public class Day19 {
         }
     }
 
-    private static final String inputFilename = "inputs/input_day_19-01.txt";
+    private static final String inputFilename = "inputs/input_day_19-02.txt";
 
     public static void main(String[] args) throws URISyntaxException {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -363,7 +385,9 @@ public class Day19 {
             var start = Instant.now();
             manager.run("in");
             var acceptedSum = manager.sumAccepted();
+            var rejectedSum = manager.sumRejected();
             var end = Instant.now();
+            System.out.println("Sum of rejected parts: " + rejectedSum);
             System.out.println("Sum of accepted parts: " + acceptedSum + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {

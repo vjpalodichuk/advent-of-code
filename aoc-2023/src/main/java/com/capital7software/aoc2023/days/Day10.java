@@ -346,7 +346,7 @@ public class Day10 {
         calculateDistancesDFS(startPipeTile, 0, dfsDistances, maze);
         final var dfsStop = Instant.now();
         System.out.println("Maximum distance: " +
-                (distances.values().stream().mapToInt(it -> it).max().orElse(0) / 2) + " in " +
+                (dfsDistances.values().stream().mapToInt(it -> it).max().orElse(0)) + " in " +
                 Duration.between(dfsStart, dfsStop).toMillis() + " ms");
 
         // Part 2
@@ -372,13 +372,16 @@ public class Day10 {
                         // how many points on the polygon it hits.
                         // Since we are casting from the top we only have to check VERTICAL, NORTH_EAST, and NORTH_WEST
                         // directions.
-                        // Using the Jordan Curve Theorem, an even number of crossings means the point is outside of
+                        // Using the Jordan Curve Theorem, an even number of crossings means the point is outside
                         // the polygon!
-                        var xRange = Range.of(0, tile.getX());
-                        return (mainLoop.keySet()
+                        var ray = Range.of(0, tile.getX());
+                        return (mainLoop.keySet() // Check the tile against the tiles in the main loop!
                                 .stream()
-                                .filter(it -> xRange.contains(it.getX()) && tile.getY() == it.getY())
-                                .filter(it -> directions.contains(maze.get(it.getY()).get(it.getX()).getTile()))
+                                // The tile we are checking and the loop tile must be on the same row
+                                // and the loop tile's column must be in range of the ray we are casting!
+                                .filter(loopTile -> tile.getY() == loopTile.getY() && ray.contains(loopTile.getX()))
+                                // The loop tile must be in the proper direction!
+                                .filter(loopTile -> directions.contains(maze.get(loopTile.getY()).get(loopTile.getX()).getTile()))
                                 .count() % 2) == 1;
                     })
                     .count();
@@ -479,10 +482,13 @@ public class Day10 {
         distances.put(tile, level);
 
         final var neighbors = tile.getNeighbors(maze);
+        final var distance = distances.get(tile);
 
         for (var neighbor : neighbors) {
-            if (!distances.containsKey(neighbor)) {
-                calculateDistancesDFS(neighbor, level + 1, distances, maze);
+            var distanceToNeighbor = distance;
+            distanceToNeighbor++;
+            if (distanceToNeighbor < distances.getOrDefault(neighbor, Integer.MAX_VALUE)) {
+                calculateDistancesDFS(neighbor, distanceToNeighbor, distances, maze);
             }
         }
     }

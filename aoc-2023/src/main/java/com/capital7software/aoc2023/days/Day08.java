@@ -1,4 +1,5 @@
 package com.capital7software.aoc2023.days;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -117,96 +118,96 @@ public class Day08 {
     private record Network(List<Direction> steps, Map<String, Node> nodeMap) {
 
         public static Network buildNetwork(Stream<String> stepsAndNodes) {
-                var steps = new ArrayList<Direction>();
-                var nodeMap = new HashMap<String, Node>();
-                var firstLine = new AtomicBoolean(true);
+            var steps = new ArrayList<Direction>();
+            var nodeMap = new HashMap<String, Node>();
+            var firstLine = new AtomicBoolean(true);
 
-                stepsAndNodes
-                        .forEach(line -> {
-                            if (firstLine.get()) {
-                                steps.addAll(loadSteps(line));
-                                firstLine.set(false);
-                            } else {
-                                if (line != null && !line.isBlank()) {
-                                    loadNode(line, nodeMap);
-                                }
+            stepsAndNodes
+                    .forEach(line -> {
+                        if (firstLine.get()) {
+                            steps.addAll(loadSteps(line));
+                            firstLine.set(false);
+                        } else {
+                            if (line != null && !line.isBlank()) {
+                                loadNode(line, nodeMap);
                             }
-                        });
-
-                return new Network(steps, nodeMap);
-            }
-
-            public static List<Direction> loadSteps(String allSteps) {
-                if (allSteps == null || allSteps.isBlank()) {
-                    throw new RuntimeException("allSteps is either null or blank! A valid string with only Ls and/or Rs is required!!");
-                }
-
-                return allSteps.chars()
-                        .mapToObj(it -> (char) it)
-                        .map(Direction::fromLabel)
-                        .toList();
-            }
-
-            public static void loadNode(String stringNode, Map<String, Node> nodeMap) {
-                // parse the line
-                var split = stringNode.split(NODE_NAME_SPLIT);
-
-                var nodeName = split[0].trim();
-                var childSplits = split[1].replace("(", "").replace(")", "").split(NODE_CHILDREN_SPLIT);
-
-                var leftChildName = childSplits[0].trim();
-                var rightChildName = childSplits[1].trim();
-
-
-                var leftNode = nodeMap.computeIfAbsent(leftChildName, Node::new);
-                var rightNode = nodeMap.computeIfAbsent(rightChildName, Node::new);
-                var currentNode = nodeMap.computeIfAbsent(nodeName, Node::new);
-
-                currentNode.setLeft(leftNode);
-                currentNode.setRight(rightNode);
-            }
-
-            /**
-             * Traverses the network of nodes and counts the number of steps to get to the end
-             *
-             * @return The number of steps to get to the end
-             */
-            public long traverse(Node startNode, Predicate<Node> atEndNode) {
-                long stepCount = 0;
-
-                System.out.println("Traversing the network of Nodes starting at " + startNode.getName() +
-                        " Node");
-
-                var currentNode = startNode;
-
-                do {
-                    for (var nextStep : steps) {
-                        if (currentNode == null || atEndNode.test(currentNode)) {
-                            break;
                         }
-                        currentNode = takeStep(nextStep, currentNode);
-                        stepCount++;
-                    }
-                } while (currentNode != null && !atEndNode.test(currentNode));
+                    });
 
-                if (currentNode != null) {
-                    System.out.println("Traversed the network of nodes starting at " + startNode.getName() + " and ended at " + currentNode.getName() + " in " + stepCount + " steps!");
-                } else {
-                    System.out.println("Something went wrong after taking "  + stepCount + " steps when starting at " + startNode.getName() + " as we didn't end at the correct node!");
-                }
-                return stepCount;
+            return new Network(steps, nodeMap);
+        }
+
+        public static List<Direction> loadSteps(String allSteps) {
+            if (allSteps == null || allSteps.isBlank()) {
+                throw new RuntimeException("allSteps is either null or blank! A valid string with only Ls and/or Rs is required!!");
             }
 
-            public Node takeStep(Direction nextStep, Node currentNode) {
-                if (nextStep == Direction.LEFT) {
-                    return currentNode.getLeft();
-                } else if (nextStep == Direction.RIGHT) {
-                    return currentNode.getRight();
-                } else {
-                    throw new RuntimeException("Unable to take the next step due to an unknown Direction: " + nextStep);
+            return allSteps.chars()
+                    .mapToObj(it -> (char) it)
+                    .map(Direction::fromLabel)
+                    .toList();
+        }
+
+        public static void loadNode(String stringNode, Map<String, Node> nodeMap) {
+            // parse the line
+            var split = stringNode.split(NODE_NAME_SPLIT);
+
+            var nodeName = split[0].trim();
+            var childSplits = split[1].replace("(", "").replace(")", "").split(NODE_CHILDREN_SPLIT);
+
+            var leftChildName = childSplits[0].trim();
+            var rightChildName = childSplits[1].trim();
+
+
+            var leftNode = nodeMap.computeIfAbsent(leftChildName, Node::new);
+            var rightNode = nodeMap.computeIfAbsent(rightChildName, Node::new);
+            var currentNode = nodeMap.computeIfAbsent(nodeName, Node::new);
+
+            currentNode.setLeft(leftNode);
+            currentNode.setRight(rightNode);
+        }
+
+        /**
+         * Traverses the network of nodes and counts the number of steps to get to the end
+         *
+         * @return The number of steps to get to the end
+         */
+        public long traverse(Node startNode, Predicate<Node> atEndNode) {
+            long stepCount = 0;
+
+            System.out.println("Traversing the network of Nodes starting at " + startNode.getName() +
+                    " Node");
+
+            var currentNode = startNode;
+
+            do {
+                for (var nextStep : steps) {
+                    if (currentNode == null || atEndNode.test(currentNode)) {
+                        break;
+                    }
+                    currentNode = takeStep(nextStep, currentNode);
+                    stepCount++;
                 }
+            } while (currentNode != null && !atEndNode.test(currentNode));
+
+            if (currentNode != null) {
+                System.out.println("Traversed the network of nodes starting at " + startNode.getName() + " and ended at " + currentNode.getName() + " in " + stepCount + " steps!");
+            } else {
+                System.out.println("Something went wrong after taking " + stepCount + " steps when starting at " + startNode.getName() + " as we didn't end at the correct node!");
+            }
+            return stepCount;
+        }
+
+        public Node takeStep(Direction nextStep, Node currentNode) {
+            if (nextStep == Direction.LEFT) {
+                return currentNode.getLeft();
+            } else if (nextStep == Direction.RIGHT) {
+                return currentNode.getRight();
+            } else {
+                throw new RuntimeException("Unable to take the next step due to an unknown Direction: " + nextStep);
             }
         }
+    }
 
     private static final String inputFilename = "inputs/input_day_08-01.txt";
     private static final String NODE_NAME_SPLIT = " = ";
@@ -246,11 +247,11 @@ public class Day08 {
 
     }
 
-    private static long leastCommonMultiple(long a, long b) {
+    public static long leastCommonMultiple(long a, long b) {
         return (a * b) / greatestCommonDenominator(a, b);
     }
 
-    private static long greatestCommonDenominator(long a, long b) {
+    public static long greatestCommonDenominator(long a, long b) {
         if (a == 0) {
             return b;
         }

@@ -120,7 +120,7 @@ public class Day18 {
             double orientation = (end.y - start.y) * (other.x - end.x) -
                     (end.x - start .x) * (other.y - end.y);
 
-            if (orientation >= 0 && orientation < Point2D.EPSILON) {
+            if (Math.abs(orientation) >= 0 && orientation < Point2D.EPSILON) {
                 return Orientation.COLLINEAR;
             }
 

@@ -357,7 +357,6 @@ public class Day16 {
             System.out.println("Part 1: Start!");
             var grid = Grid.parse(stream);
             var beam = Beam.create(grid);
-//            System.out.println(grid);
             IntStream.range(0, 5).forEach(it -> {
                 var start = Instant.now();
                 var sum = beam.energize();
@@ -366,13 +365,13 @@ public class Day16 {
                         Duration.between(start, end).toNanos() + " ns");
             });
 
-//            IntStream.range(0, 5).forEach(it -> {
-//                var start = Instant.now();
-//                var sum = beam.energizeRecursive();
-//                var end = Instant.now();
-//                System.out.println("Total number of recursive energized tiles: " + sum + " in " +
-//                        Duration.between(start, end).toNanos() + " ns");
-//            });
+            IntStream.range(0, 5).forEach(it -> {
+                var start = Instant.now();
+                var sum = beam.energizeRecursive();
+                var end = Instant.now();
+                System.out.println("Total number of recursive energized tiles: " + sum + " in " +
+                        Duration.between(start, end).toNanos() + " ns");
+            });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

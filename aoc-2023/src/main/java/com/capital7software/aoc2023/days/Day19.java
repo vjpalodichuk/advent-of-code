@@ -262,17 +262,20 @@ public class Day19 {
          * Splits this range in two distinct ranges based on the splitPoint.
          * May produce an empty range if splitPoint is outside of this range.
          * If existing range is 1 - 4000 and splitPoint is 2000 then this method will
-         * produce two new ranges: 1 - 1999, 2000 - 40000
+         * produce two new ranges: 1 - 1999, 2000 - 40000 if high is false. If high is true, then
+         * the ranges would be 1 - 2000, 2001 - 4000
          *
          * @param range The range to split
          * @param splitPoint The number to split the range on.
+         * @param high Pass true to split on the high end, else the low end.
          * @return A list with two new ranges.
          */
-        public List<Day10.Range> split(Day10.Range range, int splitPoint) {
+        public List<Day10.Range> split(Day10.Range range, int splitPoint, boolean high) {
             var result = new LinkedList<Day10.Range>();
+            var toSplit = high ? splitPoint + 1 : splitPoint;
 
-            result.add(Day10.Range.of(range.low(), Math.min(splitPoint - 1, range.high())));
-            result.add(Day10.Range.of(Math.max(range.low(), splitPoint), range.high()));
+            result.add(Day10.Range.of(range.low(), Math.min(toSplit - 1, range.high())));
+            result.add(Day10.Range.of(Math.max(range.low(), toSplit), range.high()));
             return result;
         }
 
@@ -307,7 +310,7 @@ public class Day19 {
                     var currentRange = currentRanges.get(predicate.propertyCode);
 
                     // Need to split the range!
-                    List<Day10.Range> split = split(currentRange, predicate.predicateValue);
+                    List<Day10.Range> split = split(currentRange, predicate.predicateValue, false);
                     currentRanges.put(predicate.propertyCode, split.get(0)); // low
                     // Continue to recursively process the low half!
                     result.addAll(calculateCombinations(currentRanges, predicate.output));
@@ -318,7 +321,7 @@ public class Day19 {
                     var currentRanges = new HashMap<>(ranges);
                     var currentRange = currentRanges.get(predicate.propertyCode);
                     // Pretty much the same as above but we add one to the predicateValue to ensure a proper split!
-                    List<Day10.Range> split = split(currentRange, predicate.predicateValue + 1);
+                    List<Day10.Range> split = split(currentRange, predicate.predicateValue, true);
                     currentRanges.put(predicate.propertyCode, split.get(1)); // high
                     // Continue to recursively process the high half!
                     result.addAll(calculateCombinations(currentRanges, predicate.output));
@@ -365,7 +368,7 @@ public class Day19 {
         }
     }
 
-    private static final String inputFilename = "inputs/input_day_19-02.txt";
+    private static final String inputFilename = "inputs/input_day_19-01.txt";
 
     public static void main(String[] args) throws URISyntaxException {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();

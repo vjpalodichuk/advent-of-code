@@ -539,10 +539,7 @@ public class Day20 {
                 // Now we need to check the state of our modules in our watch list
                 // If any of the watched modules have sent a HIGH pulse, then we take the
                 // current button count and add that to the count map if it isn't already there.
-                var newCounts = processWatchListAndUpdateCounts(watchList, moduleCounts, doneSources, pushCount);
-
-                // Check to see if our done conditions are met
-                if (newCounts) {
+                if (processWatchListAndUpdateCounts(watchList, moduleCounts, doneSources, pushCount)) {
                     processCompletedWatchListAndUpdateDoneSources(watchList, moduleCounts, doneSources);
                 }
 

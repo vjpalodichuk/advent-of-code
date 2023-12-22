@@ -418,6 +418,7 @@ public class Day22 {
 
         part1(path);
         part2(path);
+        part3(path);
     }
 
     private static void part1(Path path) {
@@ -446,6 +447,24 @@ public class Day22 {
             var chainReactionCount = board.chainReaction().values().stream().mapToLong(Set::size).sum();
             var end = Instant.now();
             System.out.println("Total number of bricks that will fall in a chain reaction: "
+                    + chainReactionCount + " in " + Duration.between(start, end).toNanos() + " ns");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void part3(Path path) {
+        try (var stream = Files.lines(path)) {
+            // Part 2
+            System.out.println("Part 3: Start!");
+            var start = Instant.now();
+            var board = BrickBoard.load(stream);
+            board.fallDownward();
+            var disintegratedCount = board.safeToDisintegrate().size();
+            var chainReactionCount = board.chainReaction().values().stream().mapToLong(Set::size).sum();
+            var end = Instant.now();
+            System.out.println("Total number of bricks that can be safely disintegrated: " + disintegratedCount);
+            System.out.println("And total number of bricks that will fall in a chain reaction: "
                     + chainReactionCount + " in " + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);

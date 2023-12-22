@@ -200,7 +200,7 @@ public class Day21 {
                 if (!virtual) {
                     throw new RuntimeException("Requested a long walk in a non-virtual Garden!!");
                 }
-                return takeLongWalk(startingPosition, steps, virtual);
+                return takeLongWalk(startingPosition, steps);
             }
 
             var reachedPlots = new HashSet<GardenTile>();
@@ -210,7 +210,7 @@ public class Day21 {
             return reachedPlots.size();
         }
 
-        private long takeLongWalk(Point2DInt startingPosition, long steps, boolean virtual) {
+        private long takeLongWalk(Point2DInt startingPosition, long steps) {
             var newStart = grid.virtualToReal(startingPosition);
 
             var startTile = grid.get(newStart);
@@ -221,7 +221,6 @@ public class Day21 {
 
             long cycles = steps / grid.columns();
             long remainder = steps % grid.columns();
-//            remainder = remainder == 0 ? grid.columns() : remainder;
 
             var previousStepsNeighbors = new HashSet<Point2DInt>();
             previousStepsNeighbors.add(startTile.point());
@@ -237,7 +236,7 @@ public class Day21 {
                     var newQueue = new HashSet<Point2DInt>();
                     alreadySeen.clear();
                     for (var point : previousStepsNeighbors) {
-                        for (var neighbor : getWalkableNeighbors(point, virtual)) {
+                        for (var neighbor : getWalkableNeighbors(point)) {
                             if (alreadySeen.contains(neighbor)) {
                                 continue;
                             }
@@ -327,12 +326,12 @@ public class Day21 {
             return neighbors;
         }
 
-        List<Point2DInt> getWalkableNeighbors(Point2DInt point, boolean virtual) {
+        List<Point2DInt> getWalkableNeighbors(Point2DInt point) {
             var neighbors = new LinkedList<Point2DInt>();
 
             for (var direction : Direction.values()) {
                 var newPoint = point.pointInDirection(direction);
-                var realPoint = virtual ? grid.virtualToReal(newPoint) : newPoint;
+                var realPoint = grid.virtualToReal(newPoint);
                 if (grid.isOnGrid(realPoint)) {
                     var neighbor = grid.get(realPoint);
                     if (neighbor.isWalkable()) {

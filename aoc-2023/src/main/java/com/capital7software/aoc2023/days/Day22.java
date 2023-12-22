@@ -369,8 +369,8 @@ public class Day22 {
 
         /**
          * Simulates a chain reaction and determines exactly which blocks will fall due to a supporting brick
-         * being disintegrated. The block that is disintegrated is not included.
-         * Performs a BFS search to calcuate the results
+         * being disintegrated. The block that is disintegrated is the map key and not included in the set for that
+         * key. Performs a BFS search to calculate the results.
          *
          * @return A map of sets of falling bricks where the key is the disintegrated brick and the set contains
          * the bricks that will fall due to that brick being destroyed.
@@ -456,15 +456,24 @@ public class Day22 {
     private static void part3(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 3: Start!");
+            System.out.println("Part 3 (1 & 2): Start!");
             var start = Instant.now();
             var board = BrickBoard.load(stream);
             board.fallDownward();
             var disintegratedCount = board.safeToDisintegrate().size();
-            var chainReactionCount = board.chainReaction().values().stream().mapToLong(Set::size).sum();
+            var chain = board.chainReaction();
             var end = Instant.now();
+            var idealBrickEntry = chain.entrySet()
+                    .stream()
+                    .max(Comparator.comparing(it -> it.getValue().size()))
+                    .orElse(null);
+            var idealBrick = idealBrickEntry != null ? idealBrickEntry.getKey() : null;
+            var chainCount = idealBrickEntry != null ? idealBrickEntry.getValue().size() : 0;
+            var chainReactionCount = chain.values().stream().mapToLong(Set::size).sum();
             System.out.println("Total number of bricks that can be safely disintegrated: " + disintegratedCount);
-            System.out.println("And total number of bricks that will fall in a chain reaction: "
+            System.out.println("Best brick to disintegrate to create a chain of " + chainCount + " falling bricks is: ");
+            System.out.println(idealBrick);
+            System.out.println("And total number of bricks that will fall in a chain reaction is: "
                     + chainReactionCount + " in " + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);

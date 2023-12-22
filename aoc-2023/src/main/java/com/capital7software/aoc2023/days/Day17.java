@@ -15,18 +15,6 @@ import java.util.stream.Stream;
 
 public class Day17 {
     private record Point(int column, int row) {
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Point point)) return false;
-            return column == point.column && row == point.row;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(column, row);
-        }
-
         public Point pointInDirection(Direction direction) {
             return new Point(column() + direction.columnOffset, row() + direction.rowOffset);
         }
@@ -85,21 +73,9 @@ public class Day17 {
         public Direction getRight() {
             return null;
         }
-
     }
 
     private record Tile(int heat, Point point) {
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Tile tile)) return false;
-            return heat == tile.heat && point.equals(tile.point);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(heat, point);
-        }
     }
 
     private record Grid(List<Tile> tiles, int columns, int rows) {

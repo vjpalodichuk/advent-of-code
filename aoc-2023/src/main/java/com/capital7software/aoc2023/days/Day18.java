@@ -205,10 +205,10 @@ public class Day18 {
     }
 
     public enum Direction {
-        UP(new Point2D(0, -1)),
-        DOWN(new Point2D(0, 1)),
-        LEFT(new Point2D(-1, 0)),
-        RIGHT(new Point2D(1, 0));
+        NORTH(new Point2D(0, -1)),
+        SOUTH(new Point2D(0, 1)),
+        WEST(new Point2D(-1, 0)),
+        EAST(new Point2D(1, 0));
 
         private final Point2D offset;
 
@@ -218,10 +218,10 @@ public class Day18 {
 
         public static Direction fromLabel(String label) {
             return switch (label) {
-                case "U", "3" -> UP;
-                case "D", "1" -> DOWN;
-                case "L", "2" -> LEFT;
-                case "R", "0" -> RIGHT;
+                case "U", "3" -> NORTH;
+                case "D", "1" -> SOUTH;
+                case "L", "2" -> WEST;
+                case "R", "0" -> EAST;
                 default -> throw new RuntimeException("Unknown direction: " + label);
             };
         }

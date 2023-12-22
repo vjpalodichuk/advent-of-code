@@ -166,7 +166,7 @@ public class Day22 {
         public static BrickBoard load(Stream<String> stream) {
             var count = new AtomicInteger(0);
 
-            var bricks = stream.map(line -> parseBrick(line, count.getAndIncrement())).toList();
+            var bricks = stream.map(line -> parseBrick(line, count.getAndIncrement())).sorted().toList();
 
             return new BrickBoard(bricks, new LinkedHashMap<>(), new LinkedHashMap<>(), new LinkedHashMap<>());
         }
@@ -201,10 +201,9 @@ public class Day22 {
             var longestXId = new AtomicInteger(-1);
             var longestYId = new AtomicInteger(-1);
             var longestZId = new AtomicInteger(-1);
-            var sorted = bricks.stream().sorted().toList();
             IntStream.range(0, bricks.size())
                     .forEach(id -> {
-                        var brick = sorted.get(id);
+                        var brick = bricks.get(id);
                         var cubeCount = brick.cubeCount();
                         var orientation = brick.orientation();
 

@@ -16,13 +16,56 @@ import java.util.stream.Stream;
 public class Day21 {
 
     public enum Direction {
-        NORTH(0, -1),
-        SOUTH(0, 1),
-        EAST(1, 0),
-        WEST(-1, 0);
+        NORTH(0, -1) {
+            @Override
+            public Direction opposite() {
+                return SOUTH;
+            }
+
+            @Override
+            public Set<Direction> getPerpendicular() {
+                return eastWest;
+            }
+        },
+        SOUTH(0, 1) {
+            @Override
+            public Direction opposite() {
+                return NORTH;
+            }
+
+            @Override
+            public Set<Direction> getPerpendicular() {
+                return eastWest;
+            }
+        },
+        EAST(1, 0) {
+            @Override
+            public Direction opposite() {
+                return WEST;
+            }
+
+            @Override
+            public Set<Direction> getPerpendicular() {
+                return northSouth;
+            }
+        },
+        WEST(-1, 0) {
+            @Override
+            public Direction opposite() {
+                return EAST;
+            }
+
+            @Override
+            public Set<Direction> getPerpendicular() {
+                return northSouth;
+            }
+        };
 
         private final int columnOffset;
         private final int rowOffset;
+
+        private static final Set<Direction> northSouth = Set.of(NORTH, SOUTH);
+        private static final Set<Direction> eastWest = Set.of(EAST, WEST);
 
         Direction(int columnOffset, int rowOffset) {
             this.columnOffset = columnOffset;
@@ -36,6 +79,10 @@ public class Day21 {
         public int getRowOffset() {
             return rowOffset;
         }
+
+        public Direction opposite() { return null; }
+
+        public Set<Direction> getPerpendicular() { return Collections.emptySet(); }
     }
 
     public interface Point {
@@ -87,10 +134,10 @@ public class Day21 {
         }
     }
 
-    private record GardenGrid(List<GardenTile> tiles, long rows,
-                              long columns) implements Grid<GardenTile, Point2DInt> {
+    public record GardenGrid<T extends Tile> (List<T> tiles, long rows,
+                              long columns) implements Grid<T, Point2DInt> {
         @Override
-        public GardenTile get(Point2DInt point) {
+        public T get(Point2DInt point) {
             return tiles.get((int) (point.x() + (columns * point.y())));
         }
 
@@ -107,17 +154,17 @@ public class Day21 {
 
     }
 
-    private record Garden(GardenGrid grid, Point2DInt initialPosition) {
-        private record RowResults(List<GardenTile> tiles, Point2DInt initialPosition) {
-        }
+    public record RowResults<T extends Tile>(List<T> tiles, Point2DInt initialPosition) {
+    }
 
+    private record Garden(GardenGrid<GardenTile> grid, Point2DInt initialPosition) {
         public static final Long LONG_WALK_THRESHOLD = 100L;
         public static Garden build(Stream<String> stream) {
             var columns = new AtomicInteger(0);
             var rows = new AtomicInteger(0);
             var first = new AtomicBoolean(true);
             var startPoint = new AtomicReference<Point2DInt>();
-            var rowResults = new LinkedList<RowResults>();
+            var rowResults = new LinkedList<RowResults<GardenTile>>();
 
             stream.forEach(line -> {
                 if (first.get()) {
@@ -135,10 +182,10 @@ public class Day21 {
             var tiles = new ArrayList<GardenTile>(rows.get() * columns.get() + columns.get());
             rowResults.stream().map(RowResults::tiles).forEach(tiles::addAll);
 
-            return new Garden(new GardenGrid(tiles, rows.get(), columns.get()), startPoint.get());
+            return new Garden(new GardenGrid<>(tiles, rows.get(), columns.get()), startPoint.get());
         }
 
-        private static RowResults parseLine(String line, int row) {
+        private static RowResults<GardenTile> parseLine(String line, int row) {
             if (line == null || line.isBlank()) {
                 return null;
             }
@@ -160,7 +207,7 @@ public class Day21 {
                 tiles.add(tile);
             }
 
-            return new RowResults(tiles, startPoint);
+            return new RowResults<>(tiles, startPoint);
         }
 
         long walk(long steps, boolean virtual) {

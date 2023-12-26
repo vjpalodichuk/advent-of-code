@@ -31,8 +31,8 @@ public class Day22 {
     public enum Orientation3D {
         HORIZONTAL_X,
         HORIZONTAL_Y,
-        VERTICAL_Z,
-        UNKNOWN
+        VERTICAL_Z, // Used as the Height
+        UNKNOWN // A single cube
     }
 
     public record LineSegment3D(Point3DInt start, Point3DInt end) {
@@ -56,6 +56,15 @@ public class Day22 {
             }
         }
 
+        /**
+         * Determines if this LineSegment is below the other LineSegment. This method does not consider the Z-axis when
+         * making the determination. This is due to the fact that we are only concerned for collisions along the X-axis
+         * and Y-axis.
+         *
+         * @param other The LineSegment to compare this segment with
+         * @return If this LineSegment is below the other LineSegment, along the X-axis and Y-axis only, true is
+         * returned; otherwise false is returned.
+         */
         public boolean isBelow(LineSegment3D other) {
             var otherX = new Day10.Range(other.start.x(), other.end.x() + 1);
             var otherY = new Day10.Range(other.start.y(), other.end.y() + 1);
@@ -150,18 +159,12 @@ public class Day22 {
         }
     }
 
-    private static class BrickBoard {
-        private final List<Brick> bricks;
-        private final HashMap<Integer, Set<Brick>> zBricks;
-        private final HashMap<Brick, Set<Brick>> supports;
-        private final HashMap<Brick, Set<Brick>> supportedBy;
-
-        public BrickBoard(List<Brick> bricks, HashMap<Integer, Set<Brick>> zBricks, HashMap<Brick, Set<Brick>> supports, HashMap<Brick, Set<Brick>> supportedBy) {
-            this.bricks = bricks;
-            this.zBricks = zBricks;
-            this.supports = supports;
-            this.supportedBy = supportedBy;
-        }
+    private record BrickBoard(
+            List<Brick> bricks,
+            HashMap<Integer, Set<Brick>> zBricks,
+            HashMap<Brick, Set<Brick>> supports,
+            HashMap<Brick, Set<Brick>> supportedBy
+    ) {
 
         public static BrickBoard load(Stream<String> stream) {
             var count = new AtomicInteger(0);
@@ -314,6 +317,7 @@ public class Day22 {
          * Otherwise, we can move down until we are on top of the intersecting brick(s).
          * We also add any intersecting bricks to our supportedBy map so that we can determine which
          * bricks can be disintegrated!
+         *
          * @param brick The brick we are trying to drop
          * @return A set of bricks that are directly below this brick.
          */

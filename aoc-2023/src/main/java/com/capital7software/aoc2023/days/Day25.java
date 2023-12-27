@@ -130,7 +130,10 @@ public class Day25 {
             List<String> keys;
             var nodeSizes = new HashMap<String, Long>();
 
+            // Eventually this will find a solution and break out of the loop.
             while (true) {
+                // Use Lists instead of sets here since we rename the edges
+                // And that can lead to duplicates and Java's sets go wonky if that happens!
                 edges = new ArrayList<>(savedEdges.stream().map(Pair::copy).toList());
                 var nodes = new HashMap<String, List<Pair<String>>>();
                 nodeSizes = new HashMap<>();
@@ -138,6 +141,8 @@ public class Day25 {
                 for (var edge : edges) {
                     var nodeA = edge.getFirst();
                     var nodeB = edge.getSecond();
+                    // Use Lists instead of sets here since we rename the edges
+                    // And that can lead to duplicates and Java's sets go wonky if that happens!
                     nodes.computeIfAbsent(nodeA, it -> new LinkedList<>()).add(edge);
                     nodes.computeIfAbsent(nodeB, it -> new LinkedList<>()).add(edge);
                 }
@@ -147,6 +152,8 @@ public class Day25 {
                 }
 
                 while (nodes.size() > 2) {
+                    // We select a random edge to ensure that we don't cut the graph in
+                    // a lopsided manner!!!
                     var random = new Random(Instant.now().toEpochMilli());
                     var index = random.nextInt(edges.size());
 
@@ -235,7 +242,7 @@ public class Day25 {
         var path = Paths.get(url.toURI());
 
         part1(path);
-        part2(path);
+        part2();
     }
 
     private static void part1(Path path) {
@@ -253,18 +260,9 @@ public class Day25 {
         }
     }
 
-    private static void part2(Path path) {
-        try (var stream = Files.lines(path)) {
-            // Part 2
-            System.out.println("Part 2: Start!");
-            var start = Instant.now();
-            var station = WeatherStation.build(stream);
-            var sum = station.edges().size();
-            var end = Instant.now();
-            System.out.println("The product of the two groups of components is: "
-                    + sum + " in " + Duration.between(start, end).toNanos() + " ns");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private static void part2() {
+        // Part 2
+        System.out.println("Part 2: Start!");
+        System.out.println("Merry Christmas! Push the BIG RED button to continue!");
     }
 }

@@ -384,12 +384,12 @@ public class Day23 {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof HikingTrail that)) return false;
-            return id == that.id;
+            return pathSet.equals(that.pathSet);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id);
+            return Objects.hash(pathSet);
         }
 
         @Override
@@ -820,7 +820,12 @@ public class Day23 {
 
             // Start at the beginning!
             segmentMap.get(nodeMap.get(start))
-                    .forEach(segment -> trails.addAll(buildAllTrails(segment, pathId, null, explored)));
+                    .forEach(segment ->
+                            trails.addAll(buildAllTrails(segment, pathId, null, explored)
+                                    .stream()
+                                    .distinct()
+                                    .toList())
+                    );
         }
 
         private Collection<? extends HikingTrail> buildAllTrails(

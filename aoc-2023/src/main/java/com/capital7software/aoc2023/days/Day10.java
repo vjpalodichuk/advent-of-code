@@ -12,21 +12,21 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 public class Day10 {
-    public record Range(int low, int high) {
+    public record Range(long low, long high) {
 
-        public int difference() {
+        public long difference() {
             return high - low;
         }
 
-        public boolean contains(int number) {
+        public boolean contains(long number) {
             return (number >= low && number < high);
         }
 
-        public int count() {
+        public long count() {
             return difference() + 1;
         }
 
-        public static Range of(int min, int high) {
+        public static Range of(long min, long high) {
             return new Range(min, high);
         }
 

@@ -9,22 +9,68 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Day22 {
-    public record Point3DInt(int x, int y, int z) implements Day21.Point {
-        public Point3DInt minus(Point3DInt other) {
-            int newX = Math.abs(x - other.x);
-            int newY = Math.abs(y - other.y);
-            int newZ = Math.abs(z - other.z);
+    public record Point3DDouble(double x, double y, double z) implements Day21.Point {
+        public Point3DDouble minus(Point3DDouble other) {
+            double newX = Math.abs(x - other.x);
+            double newY = Math.abs(y - other.y);
+            double newZ = Math.abs(z - other.z);
 
-            return new Point3DInt(newX, newY, newZ);
+            return new Point3DDouble(newX, newY, newZ);
         }
 
-        public Point3DInt plus(Point3DInt other) {
-            return new Point3DInt(x + other.x, y + other.y, z + other.z);
+        public Point3DDouble plus(Point3DDouble other) {
+            return new Point3DDouble(x + other.x, y + other.y, z + other.z);
+        }
+
+        /**
+         * Subtracts the other point from this point and returns the result as a new 3D point.
+         * THis method differs from minus as minus uses the absolute value of the difference
+         * while this method does not.
+         *
+         * @param other The point to subtract from this point.
+         * @return A new point
+         */
+        public Point3DDouble subtract(Point3DDouble other) {
+            return new Point3DDouble(x - other.x, y - other.y, z - other.z);
+        }
+
+        /**
+         * The cross-product between this point and the other point.
+         *
+         * @param other THe point to calculate the cross-product with.
+         * @return A new point that is the result of the cross-product.
+         */
+        public Point3DDouble cross(Point3DDouble other) {
+            return new Point3DDouble(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x);
+        }
+
+        /**
+         * Returns the dot-product between this point and the other point.
+         * A long is returned to avoid any overflow.
+         * @param other The point to calculate the dot-product with.
+         * @return A long that represents the dot-product.
+         */
+        public double dot(Point3DDouble other) {
+            return x * other.x + y * other.y + z * other.z;
+        }
+
+        public boolean isLinearIndependent(Point3DDouble other) {
+            var point = cross(other);
+
+            return point.x != 0 || point.y != 0 || point.z != 0;
+        }
+
+        public static Point3DDouble linearize(double va, Point3DDouble pa, double vb, Point3DDouble pb, double vc, Point3DDouble pc) {
+            var x = va * pa.x + vb * pb.x + vc * pc.x;
+            var y = va * pa.y + vb * pb.y + vc * pc.y;
+            var z = va * pa.z + vb * pb.z + vc * pc.z;
+            return new Point3DDouble(x, y, z);
         }
     }
 
@@ -35,8 +81,8 @@ public class Day22 {
         UNKNOWN // A single cube
     }
 
-    public record LineSegment3D(Point3DInt start, Point3DInt end) {
-        public int length() {
+    public record LineSegment3D(Point3DDouble start, Point3DDouble end) {
+        public double length() {
             var newPoint = start.minus(end);
 
             return newPoint.x() + newPoint.y() + newPoint.z();
@@ -66,14 +112,14 @@ public class Day22 {
          * returned; otherwise false is returned.
          */
         public boolean isBelow(LineSegment3D other) {
-            var otherX = new Day10.Range(other.start.x(), other.end.x() + 1);
-            var otherY = new Day10.Range(other.start.y(), other.end.y() + 1);
-            var xRange = new Day10.Range(start.x(), end.x() + 1);
-            var yRange = new Day10.Range(start.y(), end.y() + 1);
-            var xInOther = otherX.contains(start.x()) || otherX.contains(end.x());
-            var yInOther = otherY.contains(start.y()) || otherY.contains(end.y());
-            var otherInX = xRange.contains(other.start.x()) || xRange.contains(other.end.x());
-            var otherInY = yRange.contains(other.start.y()) || yRange.contains(other.end.y());
+            var otherX = new Day10.Range((long) other.start.x(), (long)other.end.x() + 1);
+            var otherY = new Day10.Range((long)other.start.y(), (long)other.end.y() + 1);
+            var xRange = new Day10.Range((long)start.x(), (long)end.x() + 1);
+            var yRange = new Day10.Range((long)start.y(), (long)end.y() + 1);
+            var xInOther = otherX.contains((long)start.x()) || otherX.contains((long)end.x());
+            var yInOther = otherY.contains((long)start.y()) || otherY.contains((long)end.y());
+            var otherInX = xRange.contains((long)other.start.x()) || xRange.contains((long)other.end.x());
+            var otherInY = yRange.contains((long)other.start.y()) || yRange.contains((long)other.end.y());
 
             return (xInOther || otherInX) && (yInOther || otherInY);
         }
@@ -88,27 +134,27 @@ public class Day22 {
             this.lineSegment = lineSegment;
         }
 
-        int cubeCount() {
-            return lineSegment.length() + 1;
+        long cubeCount() {
+            return (long)lineSegment.length() + 1;
         }
 
         Orientation3D orientation() {
             return lineSegment.orientation();
         }
 
-        Point3DInt start() {
+        Point3DDouble start() {
             return lineSegment.start();
         }
 
-        Point3DInt end() {
+        Point3DDouble end() {
             return lineSegment.end();
         }
 
         @Override
         public int compareTo(Brick o) {
-            return Integer.compare(
-                    Math.min(lineSegment.start().z(), lineSegment.end().z()),
-                    Math.min(o.lineSegment.start().z(), o.lineSegment.end().z()));
+            return Long.compare(
+                    Math.min((long)lineSegment.start().z(), (long)lineSegment.end().z()),
+                    Math.min((long)o.lineSegment.start().z(), (long)o.lineSegment.end().z()));
         }
 
         public int getId() {
@@ -120,13 +166,13 @@ public class Day22 {
          *
          * @param amount THe amount to move down the Z-Axis by.
          */
-        public void moveDown(int amount) {
-            var newStart = new Point3DInt(
+        public void moveDown(long amount) {
+            var newStart = new Point3DDouble(
                     lineSegment.start().x(),
                     lineSegment.start().y(),
                     lineSegment.start().z() - amount
             );
-            var newEnd = new Point3DInt(
+            var newEnd = new Point3DDouble(
                     lineSegment.end().x(),
                     lineSegment.end().y(),
                     lineSegment.end().z() - amount
@@ -161,7 +207,7 @@ public class Day22 {
 
     private record BrickBoard(
             List<Brick> bricks,
-            HashMap<Integer, Set<Brick>> zBricks,
+            HashMap<Long, Set<Brick>> zBricks,
             HashMap<Brick, Set<Brick>> supports,
             HashMap<Brick, Set<Brick>> supportedBy
     ) {
@@ -180,12 +226,12 @@ public class Day22 {
             var start = split[0].trim().split(",");
             var end = split[1].trim().split(",");
 
-            var startPoint = new Point3DInt(
+            var startPoint = new Point3DDouble(
                     Integer.parseInt(start[0]),
                     Integer.parseInt(start[1]),
                     Integer.parseInt(start[2])
             );
-            var endPoint = new Point3DInt(
+            var endPoint = new Point3DDouble(
                     Integer.parseInt(end[0]),
                     Integer.parseInt(end[1]),
                     Integer.parseInt(end[2])
@@ -198,12 +244,12 @@ public class Day22 {
         @Override
         public String toString() {
             var builder = new StringBuilder();
-            var longestX = new AtomicInteger(0);
-            var longestY = new AtomicInteger(0);
-            var longestZ = new AtomicInteger(0);
-            var longestXId = new AtomicInteger(-1);
-            var longestYId = new AtomicInteger(-1);
-            var longestZId = new AtomicInteger(-1);
+            var longestX = new AtomicLong(0);
+            var longestY = new AtomicLong(0);
+            var longestZ = new AtomicLong(0);
+            var longestXId = new AtomicLong(-1);
+            var longestYId = new AtomicLong(-1);
+            var longestZId = new AtomicLong(-1);
             IntStream.range(0, bricks.size())
                     .forEach(id -> {
                         var brick = bricks.get(id);
@@ -279,7 +325,7 @@ public class Day22 {
             for (var brick : sorted) {
                 // Check if we are already at ground level!
                 if (brick.lineSegment.start().z() == 1) {
-                    zBricks.computeIfAbsent(brick.lineSegment.end().z(), it -> new HashSet<>()).add(brick);
+                    zBricks.computeIfAbsent((long)brick.lineSegment.end().z(), it -> new HashSet<>()).add(brick);
                     continue;
                 }
                 // Okay, we are above ground level, so we have to check and see if we can drop this
@@ -291,17 +337,17 @@ public class Day22 {
                 }
 
                 // Now add this to the Z-Brick list!
-                zBricks.computeIfAbsent(brick.lineSegment.end().z(), it -> new HashSet<>()).add(brick);
+                zBricks.computeIfAbsent((long)brick.lineSegment.end().z(), it -> new HashSet<>()).add(brick);
             }
         }
 
-        private int calculateDropDistance(Brick brick, Set<Brick> dependents) {
-            var distanceToMove = brick.lineSegment.start().z() - 1;
+        private long calculateDropDistance(Brick brick, Set<Brick> dependents) {
+            var distanceToMove = (long)brick.lineSegment.start().z() - 1;
 
             if (!dependents.isEmpty()) {
                 distanceToMove -= dependents
                         .stream()
-                        .max(Comparator.comparingInt(a -> a.lineSegment.end().z()))
+                        .max(Comparator.comparingLong(a -> (long)a.lineSegment.end().z()))
                         .get()
                         .lineSegment
                         .end()
@@ -323,11 +369,11 @@ public class Day22 {
          */
         private Set<Brick> updateDependentsAndMaps(Brick brick) {
             var dependents = new HashSet<Brick>();
-            Integer maxKey = zBricks.keySet()
+            Long maxKey = zBricks.keySet()
                     .stream()
                     .max(Comparator.comparing(Function.identity()))
-                    .orElse(1);
-            for (int i = maxKey; i > 0; i--) {
+                    .orElse(1L);
+            for (long i = maxKey; i > 0; i--) {
                 var bricksBelow = zBricks.computeIfAbsent(i, it -> new HashSet<>());
 
                 for (var below : bricksBelow) {

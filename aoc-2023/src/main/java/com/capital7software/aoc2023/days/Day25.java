@@ -233,7 +233,7 @@ public class Day25 {
         }
     }
 
-    private static final String inputFilename = "inputs/input_day_25-02.txt";
+    private static final String inputFilename = "inputs/input_day_25-01.txt";
 
     public static void main(String[] args) throws URISyntaxException {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();

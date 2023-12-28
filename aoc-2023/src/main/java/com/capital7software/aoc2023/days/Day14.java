@@ -432,8 +432,6 @@ public class Day14 {
                 }
                 tiles.clear();
                 tiles.addAll(gridCache.get((int) calculatedIndex));
-//                gridCache.forEach(List::clear);
-//                gridCache.clear();
             }
 
             if (print) {

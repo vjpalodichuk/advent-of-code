@@ -106,8 +106,8 @@ public class Day13 {
         }
 
         /**
-         * Finds the perfect reflection within the pattern. The reflection can either along the vertical or horizontal
-         * axis and will contain the low and high points where the pattern reflects across.
+         * Finds the perfect reflection within the pattern. The reflection can either be along the vertical or
+         * horizontal axis and will contain the low and high points where the pattern reflects across.
          * If no reflection is found, then no reflection is returned.
          *
          * @param smudges The number of differences between two rows / columns in order to consider them a match.
@@ -158,9 +158,9 @@ public class Day13 {
         /**
          * Gets a row or column as a List that then can be easily compared
          *
-         * @param axis
-         * @param index
-         * @return
+         * @param axis The x or y axis
+         * @param index The axis index
+         * @return A list of Ground tiles that can be easily looped over.
          */
         private List<Ground> getRowOrColumn(Axis axis, int index) {
             if (axis == Axis.VERTICAL) {

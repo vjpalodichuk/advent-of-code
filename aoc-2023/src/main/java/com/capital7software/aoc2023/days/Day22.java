@@ -396,11 +396,11 @@ public class Day22 {
             safeToDelete.removeAll(supports.keySet());
 
             // Now add back any bricks that support other bricks but that are safe to delete!
-            supports.forEach((brick, supportSet) -> supportSet.forEach(it -> {
+            supports.forEach((brick, supportSet) -> {
                 if (safeToDisintegrate(supportSet)) {
                     safeToDelete.add(brick);
                 }
-            }));
+            });
             return safeToDelete;
         }
 

@@ -1,4 +1,5 @@
 package com.capital7software.aoc2023.days;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -8,45 +9,9 @@ import java.util.List;
 
 public class Day02 {
     private static class GameResult {
-        private static class Reveal {
-            private final int id;
-            private final int red;
-            private final int green;
-            private final int blue;
-
-            private Reveal(int id, int red, int green, int blue) {
-                this.id = id;
-                this.red = red;
-                this.green = green;
-                this.blue = blue;
-            }
-
-            public int getId() {
-                return id;
-            }
-
-            public int getRed() {
-                return red;
-            }
-
-            public int getGreen() {
-                return green;
-            }
-
-            public int getBlue() {
-                return blue;
-            }
-
-            @Override
-            public String toString() {
-                return "Reveal{" +
-                        "id=" + id +
-                        ", red=" + red +
-                        ", green=" + green +
-                        ", blue=" + blue +
-                        '}';
-            }
+        private record Reveal(int id, int red, int green, int blue) {
         }
+
         private final int id;
         private final List<Reveal> reveals;
 
@@ -72,7 +37,6 @@ public class Day02 {
         }
 
         /**
-         *
          * @return The product of the minimum number of cubes required to play this game.
          */
         public int power() {
@@ -82,11 +46,10 @@ public class Day02 {
 
             var minimum = findMinimumCubes();
 
-            return minimum.getRed() * minimum.getGreen() * minimum.getBlue();
+            return minimum.red() * minimum.green() * minimum.blue();
         }
 
         /**
-         *
          * @return The minimum number of each cube color required to play this game.
          */
         public Reveal findMinimumCubes() {
@@ -97,15 +60,14 @@ public class Day02 {
             int red = 0, green = 0, blue = 0;
 
             for (Reveal reveal : reveals) {
-                red = Integer.max(red, reveal.getRed());
-                green = Integer.max(green, reveal.getGreen());
-                blue = Integer.max(blue, reveal.getBlue());
+                red = Integer.max(red, reveal.red());
+                green = Integer.max(green, reveal.green());
+                blue = Integer.max(blue, reveal.blue());
             }
             return new Reveal(0, red, green, blue);
         }
 
         /**
-         *
          * @return True if the set of cubes contain only 12 red cubes, 13 green cubes, and 14 blue cubes
          */
         public boolean isPossible() {
@@ -113,7 +75,7 @@ public class Day02 {
                 throw new RuntimeException("At least one reveal is required to find the minimum cubes of this game");
             }
 
-            return reveals.stream().allMatch(it -> it.getRed() <= 12 && it.getGreen() <= 13 && it.getBlue() <= 14);
+            return reveals.stream().allMatch(it -> it.red() <= 12 && it.green() <= 13 && it.blue() <= 14);
         }
 
         @Override
@@ -124,6 +86,7 @@ public class Day02 {
                     '}';
         }
     }
+
     private static final String inputFilename = "inputs/input_day_02-01.txt";
     private static final String FIRST_SPLIT = ": ";
     private static final String GAME_SPLIT = "; ";
@@ -195,14 +158,14 @@ public class Day02 {
             var resultSplit = reveals[i].split(RESULT_SPLIT);
             int red = 0, green = 0, blue = 0;
 
-            for (int j = 0; j < resultSplit.length; j++) {
-                var valueSplit = resultSplit[j].split(VALUE_SPLIT);
+            for (String s : resultSplit) {
+                var valueSplit = s.split(VALUE_SPLIT);
 
                 if (valueSplit[1].equalsIgnoreCase("red")) {
                     red = Integer.parseInt(valueSplit[0]);
-                } else if (valueSplit[1].equalsIgnoreCase( "green")) {
+                } else if (valueSplit[1].equalsIgnoreCase("green")) {
                     green = Integer.parseInt(valueSplit[0]);
-                } else if (valueSplit[1].equalsIgnoreCase( "blue")) {
+                } else if (valueSplit[1].equalsIgnoreCase("blue")) {
                     blue = Integer.parseInt(valueSplit[0]);
                 } else {
                     throw new RuntimeException("Unrecognized value! " + valueSplit[1]);

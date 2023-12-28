@@ -169,7 +169,7 @@ public class Day03 {
     private static List<NumberEntry> findAllPartNumbers(List<String> schematic) {
         var partNumbers = new ArrayList<NumberEntry>();
 
-        // When we encounter a number in the current line and it is not adjacent to a non-period symbol, we then check
+        // When we encounter a number in the current line, and it is not adjacent to a non-period symbol, we then check
         // the previous line (if the current line is not the first line) for a non-period symbol that is diagonally or
         // vertically adjacent to the current number. If we still haven't found an adjacent non-period symbol we then
         // proceed to check the next line (if the current line is not the last line) for a symbol that is diagonally or

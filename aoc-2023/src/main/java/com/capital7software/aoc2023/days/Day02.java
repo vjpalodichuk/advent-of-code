@@ -24,10 +24,6 @@ public class Day02 {
             return id;
         }
 
-        public List<Reveal> getReveals() {
-            return reveals;
-        }
-
         public void addReveal(Reveal reveal) {
             reveals.add(reveal);
         }

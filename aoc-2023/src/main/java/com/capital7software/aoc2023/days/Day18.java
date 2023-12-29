@@ -403,7 +403,7 @@ public class Day18 {
         start = Instant.now();
         intersectionPoint = line1.intersect(line6);
         end = Instant.now();
-        System.out.println("Test Condition 4: Line 1 and Line 6 intersect at point: " + intersectionPoint + " in " +
+        System.out.println("Test Condition 5: Line 1 and Line 6 intersect at point: " + intersectionPoint + " in " +
                 Duration.between(start, end).toNanos() + " ns");
     }
 }

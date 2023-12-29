@@ -26,7 +26,7 @@ tasks.getByName<Test>("test") {
 tasks.withType<JavaExec>().configureEach {
     dependsOn(":assemble")
     jvmArgs = listOf("-Xss4m")
-    group = "aoc.2023"
+    group = "aoc-2023"
     description = "Advent of Code 2023 Puzzles"
     classpath = sourceSets["main"].runtimeClasspath
 }

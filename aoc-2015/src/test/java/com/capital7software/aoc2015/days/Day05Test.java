@@ -19,10 +19,10 @@ class Day05Test {
     @BeforeEach
     void setUp() {
         var instance = new Day05();
-        setup(instance.getDefaultInputFilename());
+        setupByFile(instance.getDefaultInputFilename());
     }
 
-    void setup(String filename) {
+    void setupByFile(String filename) {
         try {
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
             var url = classloader.getResource(filename);
@@ -54,8 +54,7 @@ class Day05Test {
 
     @Test
     void getNewNaughtyOrNice() {
-        Day05.setDefaultFilename("inputs/input_day_05-02.txt");
-        setUp();
+        setupByFile("inputs/input_day_05-02.txt");
         var instance = new Day05();
         var expected = List.of(true, true, false, false);
         var expectedCount = 2;

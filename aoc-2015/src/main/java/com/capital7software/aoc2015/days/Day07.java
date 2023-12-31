@@ -1,9 +1,12 @@
 package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
+import com.capital7software.aoc2015.lib.circuit.board.CircuitBoardInteger;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * --- Day 7: Some Assembly Required ---
@@ -50,6 +53,14 @@ import java.util.List;
  * y: 456
  * In little Bobby's kit's instructions booklet (provided as your puzzle input),
  * what signal is ultimately provided to wire a?
+ * <p>
+ *     Your puzzle answer was 3176.
+ * <p>
+ * --- Part Two ---
+ * Now, take the signal you got on wire a, override wire b to that signal, and reset the other wires
+ * (including wire a). What new signal is ultimately provided to wire a?
+ * <p>
+ *     Your puzzle answer was 14710.
  */
 public class Day07 implements AdventOfCodeSolution {
     @Override
@@ -59,12 +70,46 @@ public class Day07 implements AdventOfCodeSolution {
 
     @Override
     public void runPart1(List<String> input) {
-
         var start = Instant.now();
-        var total = 0;
+        var board = loadCircuitBoard("0", input);
+        var total = getWireValues(board).get("a");
         var end = Instant.now();
         System.out.printf(
-                "There are %d lights Lit!%n", total);
+                "%d is provided to wire a!%n", total);
         printTiming(start, end);
+    }
+
+    @Override
+    public void runPart2(List<String> input) {
+        var start = Instant.now();
+        var board = loadCircuitBoard("0", input);
+        var wires = getWireValues(board);
+        var oldB = override(board, "a", "b");
+        resetWires(board);
+        wires = getWireValues(board);
+        var total = wires.get("a");
+        var end = Instant.now();
+        System.out.printf(
+                "%d is the wire b's old value, %d is provided to wire a!%n", oldB, total);
+        printTiming(start, end);
+    }
+
+    public CircuitBoardInteger loadCircuitBoard(String id, List<String> input) {
+        return CircuitBoardInteger.parse(id, input);
+    }
+
+    public Map<String, Integer> getWireValues(CircuitBoardInteger board) {
+        var results = new HashMap<String, Integer>();
+        board.wires().forEach(wire -> results.put(wire.id(), wire.supply().signal()));
+
+        return results;
+    }
+
+    public Integer override(CircuitBoardInteger board, String wireA, String wireB) {
+        return board.override(wireA, wireB);
+    }
+
+    public void resetWires(CircuitBoardInteger board) {
+        board.resetWires();
     }
 }

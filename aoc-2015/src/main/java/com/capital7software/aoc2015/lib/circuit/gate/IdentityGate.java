@@ -3,9 +3,10 @@ package com.capital7software.aoc2015.lib.circuit.gate;
 import com.capital7software.aoc2015.lib.circuit.signal.Signal;
 import com.capital7software.aoc2015.lib.circuit.signal.SignalSupplier;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
-public record IdentityGate<T extends Comparable<T>> (
+public record IdentityGate<T extends Comparable<T>>(
         @NotNull String id,
         @NotNull SignalSupplier<T> supplier
 ) implements Gate<T> {

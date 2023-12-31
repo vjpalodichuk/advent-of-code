@@ -90,7 +90,7 @@ public class Day07 implements AdventOfCodeSolution {
         var total = wires.get("a");
         var end = Instant.now();
         System.out.printf(
-                "%d is the wire b's old value, %d is provided to wire a!%n", oldB, total);
+                "%d is wire b's old value, %d is provided to wire a!%n", oldB, total);
         printTiming(start, end);
     }
 
@@ -100,7 +100,7 @@ public class Day07 implements AdventOfCodeSolution {
 
     public Map<String, Integer> getWireValues(CircuitBoardInteger board) {
         var results = new HashMap<String, Integer>();
-        board.wires().forEach(wire -> results.put(wire.id(), wire.supply().signal()));
+        board.wires().values().forEach(wire -> results.put(wire.id(), wire.supply().signal()));
 
         return results;
     }

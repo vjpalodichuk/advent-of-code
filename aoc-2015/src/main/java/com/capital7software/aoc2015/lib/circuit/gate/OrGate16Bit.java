@@ -4,6 +4,7 @@ import com.capital7software.aoc2015.lib.circuit.signal.Signal;
 import com.capital7software.aoc2015.lib.circuit.signal.SignalInteger;
 import com.capital7software.aoc2015.lib.circuit.signal.SignalSupplier;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 public record OrGate16Bit(

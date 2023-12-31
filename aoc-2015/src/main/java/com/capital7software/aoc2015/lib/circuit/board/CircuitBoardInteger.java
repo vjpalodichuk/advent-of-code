@@ -80,8 +80,7 @@ public record CircuitBoardInteger(
         } else if (patterns.get("letters").matcher(input).matches()) {
             var suppliers = wireOrSupplier(new String[]{input}, 1, patterns.get("integers"), board.wireMap);
             return new IdentityGate<>(nextId, suppliers.get(0));
-        }
-        else if (patterns.get("and").matcher(input).matches()) {
+        } else if (patterns.get("and").matcher(input).matches()) {
             var split = input.split(splits.get("and"));
             var suppliers = wireOrSupplier(split, 2, patterns.get("integers"), board.wireMap);
             return new AndGate16Bit(nextId, suppliers.get(0), suppliers.get(1));
@@ -164,13 +163,8 @@ public record CircuitBoardInteger(
     }
 
     @Override
-    public Collection<Gate<Integer>> gates() {
-        return Collections.unmodifiableCollection(gateMap.values());
-    }
-
-    @Override
-    public Collection<Wire<Integer>> wires() {
-        return Collections.unmodifiableCollection(wireMap.values());
+    public Map<String, Wire<Integer>> wires() {
+        return Collections.unmodifiableMap(wireMap);
     }
 
     @Override
@@ -181,25 +175,5 @@ public record CircuitBoardInteger(
     @Override
     public Wire<Integer> add(@NotNull Wire<Integer> wire) {
         return wireMap.put(wire.id(), wire);
-    }
-
-    @Override
-    public Gate<Integer> removeGate(@NotNull String gateId) {
-        return gateMap.remove(gateId);
-    }
-
-    @Override
-    public Wire<Integer> removeWire(@NotNull String wireId) {
-        return wireMap.remove(wireId);
-    }
-
-    @Override
-    public Gate<Integer> gate(@NotNull String gateId) {
-        return gateMap.get(gateId);
-    }
-
-    @Override
-    public Wire<Integer> wire(@NotNull String wireId) {
-        return wireMap.get(wireId);
     }
 }

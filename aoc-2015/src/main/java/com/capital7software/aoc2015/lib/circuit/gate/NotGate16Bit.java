@@ -4,6 +4,7 @@ import com.capital7software.aoc2015.lib.circuit.signal.Signal;
 import com.capital7software.aoc2015.lib.circuit.signal.SignalInteger;
 import com.capital7software.aoc2015.lib.circuit.signal.SignalSupplier;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 public record NotGate16Bit(
@@ -15,7 +16,7 @@ public record NotGate16Bit(
         var signal = supplier.supply();
 
         if (signal != null) {
-            return new SignalInteger(0x0000FFFF & ~(int)signal.signal());
+            return new SignalInteger(0x0000FFFF & ~(int) signal.signal());
         }
         return null;
     }

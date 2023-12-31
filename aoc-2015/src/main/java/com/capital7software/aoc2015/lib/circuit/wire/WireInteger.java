@@ -1,31 +1,27 @@
 package com.capital7software.aoc2015.lib.circuit.wire;
 
 import com.capital7software.aoc2015.lib.circuit.signal.Signal;
-import com.capital7software.aoc2015.lib.circuit.signal.SignalConsumer;
 import com.capital7software.aoc2015.lib.circuit.signal.SignalSupplier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Objects;
 
 public class WireInteger implements Wire<Integer> {
     private final String id;
     private Signal<Integer> signal;
     private SignalSupplier<Integer> source;
-    private final Set<SignalConsumer<Integer>> destinations;
 
     public WireInteger(
             @NotNull String id,
-            @NotNull SignalSupplier<Integer> source,
-            @NotNull Set<SignalConsumer<Integer>> destinations
+            @NotNull SignalSupplier<Integer> source
     ) {
         this.id = id;
         this.source = source;
         this.signal = source.supply();
-        this.destinations = new HashSet<>(destinations);
     }
 
     public WireInteger(@NotNull String id) {
-        this(id, () -> null, new HashSet<>());
+        this(id, () -> null);
     }
 
     @Override
@@ -52,30 +48,9 @@ public class WireInteger implements Wire<Integer> {
     }
 
     @Override
-    public SignalSupplier<Integer> source() {
-        return source;
-    }
-
-    @Override
-    public Signal<Integer> updateFromSource() {
+    public void updateFromSource() {
         var updated = source.supply();
         consume(updated);
-        return updated;
-    }
-
-    @Override
-    public boolean add(@NotNull SignalConsumer<Integer> destination) {
-        return destinations.add(destination);
-    }
-
-    @Override
-    public boolean remove(@NotNull SignalConsumer<Integer> destination) {
-        return destinations.remove(destination);
-    }
-
-    @Override
-    public Collection<SignalConsumer<Integer>> destinations() {
-        return Collections.unmodifiableCollection(destinations);
     }
 
     @Override
@@ -84,7 +59,6 @@ public class WireInteger implements Wire<Integer> {
                 "id='" + id + '\'' +
                 ", signal=" + signal +
                 ", source=" + source +
-                ", destinations=" + destinations.size() +
                 '}';
     }
 

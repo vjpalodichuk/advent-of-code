@@ -7,6 +7,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Performs a bitwise RIGHT SHIFT operation on the value of the Signal supplied by its input.
+ * Only supports operating on 16bit Integer values.
+ *
+ * @param id The ID of this Gate.
+ * @param supplier The SignalSupplier for this Gate.
+ * @param amount The amount of the shift.
+ */
 public record RightShift16Bit(
         @NotNull String id,
         @NotNull SignalSupplier<Integer> supplier,

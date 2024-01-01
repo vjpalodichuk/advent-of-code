@@ -6,11 +6,32 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * A Wire that carries a Signal that corries an Integer value.
+ * <p>
+ * Two wires with the same ID are considered to be equal.
+ */
 public class WireInteger implements Wire<Integer> {
+    /**
+     * The ID of this Wire
+     */
     private final String id;
+    /**
+     * The current Signal on this Wire.
+     */
     private Signal<Integer> signal;
+    /**
+     * THe source where this Wire receives its Signal.
+     */
     private SignalSupplier<Integer> source;
 
+    /**
+     * Instantiates a new Wire with the specified ID and source. The Signal for the new Wire
+     * will be retrieved from the specified source.
+     *
+     * @param id The ID of this new Wire.
+     * @param source The source of this new Wire.
+     */
     public WireInteger(
             @NotNull String id,
             @NotNull SignalSupplier<Integer> source
@@ -20,6 +41,12 @@ public class WireInteger implements Wire<Integer> {
         this.signal = source.supply();
     }
 
+
+    /**
+     * Instantiates a new Wire with the specified ID and no source and no Signal.
+     *
+     * @param id The ID of this new Wire.
+     */
     public WireInteger(@NotNull String id) {
         this(id, () -> null);
     }

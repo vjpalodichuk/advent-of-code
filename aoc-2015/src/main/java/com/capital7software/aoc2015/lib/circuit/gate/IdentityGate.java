@@ -6,6 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * A special Gate that directly passes along the Signal without performing any operations on it.
+ *
+ * @param id The ID of this Gate.
+ * @param supplier The supplier of the Signal that will pass through this Gate.
+ */
 public record IdentityGate<T extends Comparable<T>>(
         @NotNull String id,
         @NotNull SignalSupplier<T> supplier

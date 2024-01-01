@@ -7,6 +7,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Performs a bitwise NOT / COMPLIMENT operation on the value of the Signal supplied by its input.
+ * Only supports operating on 16bit Integer values.
+ *
+ * @param id The ID of this Gate.
+ * @param supplier The SignalSupplier for this Gate.
+ */
 public record NotGate16Bit(
         @NotNull String id,
         @NotNull SignalSupplier<Integer> supplier

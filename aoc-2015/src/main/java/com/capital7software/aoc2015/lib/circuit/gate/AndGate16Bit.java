@@ -7,6 +7,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Performs a bitwise AND operation on the values of the Signals supplied by both of its inputs.
+ * Only supports operating on 16bit Integer values.
+ *
+ * @param id The ID of this Gate.
+ * @param first The first SignalSupplier.
+ * @param second The second SignalSupplier.
+ */
 public record AndGate16Bit(
         @NotNull String id,
         @NotNull SignalSupplier<Integer> first,

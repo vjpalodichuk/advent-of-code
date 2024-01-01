@@ -1,11 +1,10 @@
 package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
+import com.capital7software.aoc2015.lib.geometry.Present;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
-import java.util.PriorityQueue;
 
 /**
  * --- Day 2: I Was Told There Would Be No Math ---
@@ -47,54 +46,6 @@ import java.util.PriorityQueue;
  *     Your puzzle answer was 3842356.
  */
 public class Day02 implements AdventOfCodeSolution {
-    public record Present(long length, long width, long height) {
-        public long calculatePaper() {
-            var side1 = length * width;
-            var side2 = width * height;
-            var side3 = height * length;
-
-            var minSide = Math.min(side1, Math.min(side2, side3));
-
-            return 2 * side1 + 2 * side2 + 2 * side3 + minSide;
-        }
-
-        public long calculateRibbon() {
-            var queue = new PriorityQueue<Long>();
-            queue.offer(length);
-            queue.offer(width);
-            queue.offer(height);
-            var area = length * width * height;
-            var min1 = queue.poll();
-            var min2 = queue.poll();
-
-            assert min1 != null;
-            assert min2 != null;
-
-            return 2 * min1 + 2 * min2 + area;
-        }
-
-        public static List<Present> parse(List<String> lines) {
-            return lines
-                    .stream()
-                    .map(Present::parse)
-                    .filter(Objects::nonNull)
-                    .toList();
-        }
-
-        public static Present parse(String line) {
-            if (line == null || line.isBlank()) {
-                return null;
-            }
-
-            var split = line.split("x");
-            var length = Long.parseLong(split[0].trim());
-            var width = Long.parseLong(split[1].trim());
-            var height = Long.parseLong(split[2].trim());
-
-            return new Present(length, width, height);
-        }
-    }
-
     private static final String defaultFilename = "inputs/input_day_02-01.txt";
 
     @Override
@@ -131,14 +82,14 @@ public class Day02 implements AdventOfCodeSolution {
     public long howMuchTotalWrappingPaper(List<Present> presents) {
         return presents
                 .stream()
-                .mapToLong(Present::calculatePaper)
+                .mapToLong(Present::calculateNeededPaper)
                 .sum();
     }
 
     public long howMuchTotalRibbon(List<Present> presents) {
         return presents
                 .stream()
-                .mapToLong(Present::calculateRibbon)
+                .mapToLong(Present::calculateNeededRibbon)
                 .sum();
     }
 }

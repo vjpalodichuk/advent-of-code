@@ -1,5 +1,8 @@
-package com.capital7software.aoc2015.lib;
+package com.capital7software.aoc2015.lib.geometry;
 
+/**
+ * An enum to assist with calculating new points in 2D space.
+ */
 public enum Direction {
     NORTH(0, -1),
     NORTH_EAST(1, -1),
@@ -16,10 +19,18 @@ public enum Direction {
         this.delta = new Point2D<>(dx, dy);
     }
 
+    /**
+     *
+     * @return The change in the X-Axis for this Direction.
+     */
     public int dx() {
         return delta.x();
     }
 
+    /**
+     *
+     * @return The change in the Y-Axis for this Direction.
+     */
     public int dy() {
         return delta.y();
     }

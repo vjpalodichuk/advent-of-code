@@ -1,5 +1,7 @@
 package com.capital7software.aoc2015.lib.circuit.signal;
 
+import java.util.Optional;
+
 /**
  * The Signal is carried by Wires and Gates and CircuitBoards put those two together to carry the Signal
  * across the board.
@@ -7,8 +9,7 @@ package com.capital7software.aoc2015.lib.circuit.signal;
  */
 public interface Signal<T extends Comparable<T>> {
     /**
-     *
      * @return The typesafe value that is carried by this Signal.
      */
-    T signal();
+    Optional<T> signal();
 }

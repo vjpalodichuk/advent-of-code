@@ -1,6 +1,7 @@
 package com.capital7software.aoc2015.lib.circuit.board;
 
 import com.capital7software.aoc2015.lib.circuit.gate.*;
+import com.capital7software.aoc2015.lib.circuit.signal.Signal;
 import com.capital7software.aoc2015.lib.circuit.signal.SignalInteger;
 import com.capital7software.aoc2015.lib.circuit.signal.SignalSupplier;
 import com.capital7software.aoc2015.lib.circuit.wire.Wire;
@@ -164,7 +165,7 @@ public record CircuitBoardInteger(
 
         if (patterns.get("integers").matcher(specification).matches()) {
             var signal = new SignalInteger(Integer.parseInt(specification));
-            return new IdentityGate<>(nextId, () -> signal);
+            return new IdentityGate<>(nextId, () -> Optional.of(signal));
         } else if (patterns.get("letters").matcher(specification).matches()) {
             var suppliers = wireOrSupplier(new String[]{specification}, 1, patterns.get("integers"), board.wireMap);
             return new IdentityGate<>(nextId, suppliers.get(0));
@@ -183,11 +184,17 @@ public record CircuitBoardInteger(
         } else if (patterns.get("lshift").matcher(specification).matches()) {
             var split = specification.split(splits.get("lshift"));
             var suppliers = wireOrSupplier(split, 2, patterns.get("integers"), board.wireMap);
-            return new LeftShift16Bit(nextId, suppliers.get(0), suppliers.get(1).supply().signal());
+            Optional<Signal<Integer>> supply = suppliers.get(1).supply();
+            if (supply.isPresent() && supply.get().signal().isPresent()) {
+                return new LeftShift16Bit(nextId, suppliers.get(0), supply.get().signal().get());
+            }
         } else if (patterns.get("rshift").matcher(specification).matches()) {
             var split = specification.split(splits.get("rshift"));
             var suppliers = wireOrSupplier(split, 2, patterns.get("integers"), board.wireMap);
-            return new RightShift16Bit(nextId, suppliers.get(0), suppliers.get(1).supply().signal());
+            Optional<Signal<Integer>> supply = suppliers.get(1).supply();
+            if (supply.isPresent() && supply.get().signal().isPresent()) {
+                return new RightShift16Bit(nextId, suppliers.get(0), supply.get().signal().get());
+            }
         }
 
         return null;
@@ -223,7 +230,7 @@ public record CircuitBoardInteger(
 
             if (numberOnlyPattern.matcher(trimmed).matches()) {
                 var signal = new SignalInteger(Integer.parseInt(trimmed));
-                suppliers.add(new IdentityGate<>(trimmed, () -> signal));
+                suppliers.add(new IdentityGate<>(trimmed, () -> Optional.of(signal)));
             } else {
                 suppliers.add(wireMap.computeIfAbsent(trimmed, WireInteger::new));
             }

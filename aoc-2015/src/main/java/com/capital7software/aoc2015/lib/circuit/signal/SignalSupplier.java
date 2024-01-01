@@ -1,5 +1,7 @@
 package com.capital7software.aoc2015.lib.circuit.signal;
 
+import java.util.Optional;
+
 /**
  * Capable of supplying a Signal to one or more consumers of Signals.
  *
@@ -11,5 +13,5 @@ public interface SignalSupplier<T extends Comparable<T>> {
      *
      * @return The Signal that is supplied by this SignalSupplier.
      */
-    Signal<T> supply();
+    Optional<Signal<T>> supply();
 }

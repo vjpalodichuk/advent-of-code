@@ -5,6 +5,7 @@ import com.capital7software.aoc2015.lib.circuit.signal.SignalSupplier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A special Gate that directly passes along the Signal without performing any operations on it.
@@ -17,7 +18,7 @@ public record IdentityGate<T extends Comparable<T>>(
         @NotNull SignalSupplier<T> supplier
 ) implements Gate<T> {
     @Override
-    public Signal<T> supply() {
+    public Optional<Signal<T>> supply() {
         return supplier.supply();
     }
 

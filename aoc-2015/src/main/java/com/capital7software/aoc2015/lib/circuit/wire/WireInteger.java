@@ -5,6 +5,7 @@ import com.capital7software.aoc2015.lib.circuit.signal.SignalSupplier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A Wire that carries a Signal that corries an Integer value.
@@ -38,7 +39,9 @@ public class WireInteger implements Wire<Integer> {
     ) {
         this.id = id;
         this.source = source;
-        this.signal = source.supply();
+        if (source.supply().isPresent()) {
+            this.signal = source.supply().get();
+        }
     }
 
 
@@ -48,7 +51,7 @@ public class WireInteger implements Wire<Integer> {
      * @param id The ID of this new Wire.
      */
     public WireInteger(@NotNull String id) {
-        this(id, () -> null);
+        this(id, Optional::empty);
     }
 
     @Override
@@ -62,11 +65,11 @@ public class WireInteger implements Wire<Integer> {
     }
 
     @Override
-    public Signal<Integer> supply() {
+    public Optional<Signal<Integer>> supply() {
         if (signal == null) {
             updateFromSource(); // Attempt to get a non-null signal!
         }
-        return signal;
+        return Optional.ofNullable(signal);
     }
 
     @Override
@@ -77,7 +80,7 @@ public class WireInteger implements Wire<Integer> {
     @Override
     public void updateFromSource() {
         var updated = source.supply();
-        consume(updated);
+        updated.ifPresent(this::consume);
     }
 
     @Override

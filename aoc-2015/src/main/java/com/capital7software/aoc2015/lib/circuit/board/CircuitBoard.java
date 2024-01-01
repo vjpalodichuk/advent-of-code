@@ -2,11 +2,11 @@ package com.capital7software.aoc2015.lib.circuit.board;
 
 import com.capital7software.aoc2015.lib.circuit.gate.Gate;
 import com.capital7software.aoc2015.lib.circuit.gate.IdentityGate;
-import com.capital7software.aoc2015.lib.circuit.signal.Signal;
 import com.capital7software.aoc2015.lib.circuit.wire.Wire;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * CircuitBoards contain Wires and Gates to carry Signals of the specified type. Configuration is board
@@ -57,16 +57,15 @@ public interface CircuitBoard<T extends Comparable<T>> {
      * @param wireBId The wire that will receive the signal currently in wire a.
      * @return The value of the signal that was stored in wire b.
      */
-    default T override(String wireAId, String wireBId) {
+    default Optional<T> override(String wireAId, String wireBId) {
         var wires = wires();
         Wire<T> wireA = wires.get(wireAId);
         Wire<T> wireB = wires.get(wireBId);
 
         if (wireA != null && wireB != null) {
-            Signal<T> signalA = wireA.supply();
-            Signal<T> signalB = wireB.supply();
-
-            T oldBVal = signalB != null ? signalB.signal() : null;
+            var signalA = wireA.supply();
+            var signalB = wireB.supply();
+            Optional<T> oldBVal = signalB.isPresent() ? signalB.get().signal() : Optional.empty();
             IdentityGate<T> newSupplier = new IdentityGate<>(wireAId + wireBId + wireAId + wireBId, () -> signalA);
             wireB.source(newSupplier);
             add(newSupplier);
@@ -74,6 +73,6 @@ public interface CircuitBoard<T extends Comparable<T>> {
             return oldBVal;
         }
 
-        return null;
+        return Optional.empty();
     }
 }

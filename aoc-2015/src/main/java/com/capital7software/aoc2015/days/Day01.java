@@ -1,6 +1,7 @@
 package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
+import com.capital7software.aoc2015.lib.string.ApartmentBuilding;
 
 import java.time.Instant;
 import java.util.List;
@@ -33,7 +34,7 @@ import java.util.List;
  * ))) and )())()) both result in floor -3.
  * Part 1: To what floor do the instructions take Santa?
  * <p>
- *     Your puzzle answer was 280.
+ * Your puzzle answer was 280.
  * <p>
  * --- Part Two ---
  * Now, given the same instructions, find the position of the first character that causes him to enter
@@ -46,7 +47,7 @@ import java.util.List;
  * ()()) causes him to enter the basement at character position 5.
  * What is the position of the character that causes Santa to first enter the basement?
  * <p>
- *     Your puzzle answer was 1797.
+ * Your puzzle answer was 1797.
  */
 public class Day01 implements AdventOfCodeSolution {
 
@@ -78,46 +79,12 @@ public class Day01 implements AdventOfCodeSolution {
     }
 
     public long getFloor(List<String> input) {
-        var openCount = 0L;
-        var closedCount = 0L;
-
-        for (var line : input) {
-            if (line != null && !line.isBlank()) {
-                for (var c : line.toCharArray()) {
-                    if (c == '(') {
-                        openCount++;
-                    } else if (c == ')') {
-                        closedCount++;
-                    }
-                }
-            }
-        }
-
-        return openCount - closedCount;
+        var building = new ApartmentBuilding(input);
+        return building.finalFloor();
     }
 
     public long getFirstBasementFloorPosition(List<String> input) {
-        var openCount = 0L;
-        var closedCount = 0L;
-
-        for (var line : input) {
-            if (line != null && !line.isBlank()) {
-                var chars = line.toCharArray();
-                for (int i = 0; i < chars.length; i++) {
-                    char c = chars[i];
-
-                    if (c == '(') {
-                        openCount++;
-                    } else if (c == ')') {
-                        closedCount++;
-                    }
-                    if (closedCount > openCount) {
-                        return i + 1;
-                    }
-                }
-            }
-        }
-
-        return -1L;
+        var building = new ApartmentBuilding(input);
+        return building.firstBasementFloorPosition();
     }
 }

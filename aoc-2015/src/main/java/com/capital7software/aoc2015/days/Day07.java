@@ -2,11 +2,13 @@ package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
 import com.capital7software.aoc2015.lib.circuit.board.CircuitBoardInteger;
+import com.capital7software.aoc2015.lib.circuit.signal.Signal;
 
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * --- Day 7: Some Assembly Required ---
@@ -90,7 +92,7 @@ public class Day07 implements AdventOfCodeSolution {
         var total = wires.get("a");
         var end = Instant.now();
         System.out.printf(
-                "%d is wire b's old value, %d is provided to wire a!%n", oldB, total);
+                "%d is wire b's old value, %d is provided to wire a!%n", oldB.orElse(null), total);
         printTiming(start, end);
     }
 
@@ -100,12 +102,12 @@ public class Day07 implements AdventOfCodeSolution {
 
     public Map<String, Integer> getWireValues(CircuitBoardInteger board) {
         var results = new HashMap<String, Integer>();
-        board.wires().values().forEach(wire -> results.put(wire.id(), wire.supply().signal()));
+        board.wires().values().forEach(wire -> wire.supply().flatMap(Signal::signal).ifPresent(signal -> results.put(wire.id(), signal)));
 
         return results;
     }
 
-    public Integer override(CircuitBoardInteger board, String wireA, String wireB) {
+    public Optional<Integer> override(CircuitBoardInteger board, String wireA, String wireB) {
         return board.override(wireA, wireB);
     }
 

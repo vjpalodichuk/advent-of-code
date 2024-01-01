@@ -39,7 +39,7 @@ class Day06Test {
     void getLitLights() {
         var instance = new Day06();
         var expectedCount = 998_996;
-        var lights = instance.loadLights(instance.loadInstructions(lines), 1_000, 1_000);
+        var lights = instance.loadLights(lines, 1_000, 1_000);
         lights.applyInstructions();
         var actualCount = instance.getOnLightCount(lights);
 
@@ -50,7 +50,7 @@ class Day06Test {
     void getTotalBrightnessOfLights() {
         var instance = new Day06();
         var expectedCount = 1_001_996;
-        var lights = instance.loadLights(instance.loadInstructions(lines), 1_000, 1_000);
+        var lights = instance.loadLights(lines, 1_000, 1_000);
         lights.applyNewInterpretationOfInstructions();
         var actualCount = instance.getTotalBrightness(lights);
 

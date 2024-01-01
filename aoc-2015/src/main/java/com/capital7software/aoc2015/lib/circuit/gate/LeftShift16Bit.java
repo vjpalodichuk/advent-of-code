@@ -6,20 +6,30 @@ import com.capital7software.aoc2015.lib.circuit.signal.SignalSupplier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.Optional;
 
+/**
+ * Performs a bitwise LEFT SHIFT operation on the value of the Signal supplied by its input.
+ * Only supports operating on 16bit Integer values.
+ *
+ * @param id The ID of this Gate.
+ * @param supplier The SignalSupplier for this Gate.
+ * @param amount The amount of the shift.
+ */
 public record LeftShift16Bit(
         @NotNull String id,
         @NotNull SignalSupplier<Integer> supplier,
         int amount
 ) implements Gate<Integer> {
     @Override
-    public Signal<Integer> supply() {
+    public Optional<Signal<Integer>> supply() {
         var signal = supplier.supply();
 
-        if (signal != null) {
-            return new SignalInteger(0x0000FFFF & (signal.signal() << amount));
+        if (signal.isPresent()) {
+            var actual = signal.get().signal();
+            return actual.map(integer -> new SignalInteger(0x0000FFFF & (integer << amount)));
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

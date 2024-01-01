@@ -5,23 +5,53 @@ import com.capital7software.aoc2015.lib.circuit.signal.SignalSupplier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.Optional;
 
+/**
+ * A Wire that carries a Signal that corries an Integer value.
+ * <p>
+ * Two wires with the same ID are considered to be equal.
+ */
 public class WireInteger implements Wire<Integer> {
+    /**
+     * The ID of this Wire
+     */
     private final String id;
+    /**
+     * The current Signal on this Wire.
+     */
     private Signal<Integer> signal;
+    /**
+     * THe source where this Wire receives its Signal.
+     */
     private SignalSupplier<Integer> source;
 
+    /**
+     * Instantiates a new Wire with the specified ID and source. The Signal for the new Wire
+     * will be retrieved from the specified source.
+     *
+     * @param id The ID of this new Wire.
+     * @param source The source of this new Wire.
+     */
     public WireInteger(
             @NotNull String id,
             @NotNull SignalSupplier<Integer> source
     ) {
         this.id = id;
         this.source = source;
-        this.signal = source.supply();
+        if (source.supply().isPresent()) {
+            this.signal = source.supply().get();
+        }
     }
 
+
+    /**
+     * Instantiates a new Wire with the specified ID and no source and no Signal.
+     *
+     * @param id The ID of this new Wire.
+     */
     public WireInteger(@NotNull String id) {
-        this(id, () -> null);
+        this(id, Optional::empty);
     }
 
     @Override
@@ -35,11 +65,11 @@ public class WireInteger implements Wire<Integer> {
     }
 
     @Override
-    public Signal<Integer> supply() {
+    public Optional<Signal<Integer>> supply() {
         if (signal == null) {
             updateFromSource(); // Attempt to get a non-null signal!
         }
-        return signal;
+        return Optional.ofNullable(signal);
     }
 
     @Override
@@ -50,7 +80,7 @@ public class WireInteger implements Wire<Integer> {
     @Override
     public void updateFromSource() {
         var updated = source.supply();
-        consume(updated);
+        updated.ifPresent(this::consume);
     }
 
     @Override

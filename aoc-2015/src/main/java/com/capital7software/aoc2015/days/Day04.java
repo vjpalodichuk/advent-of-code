@@ -1,10 +1,8 @@
 package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import org.jetbrains.annotations.NotNull;
+import com.capital7software.aoc2015.lib.crypt.MD5Fun;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.List;
 
@@ -26,51 +24,13 @@ import java.util.List;
  * zeroes is 1048970; that is, the MD5 hash of pqrstuv1048970 looks like 000006136ef....
  * Your puzzle input is yzbqklnj.
  * <p>
- *     Your puzzle answer was 282749.
+ * Your puzzle answer was 282749.
  * --- Part Two ---
  * Now find one that starts with six zeroes.
  * <p>
- *     Your puzzle answer was 9962624.
+ * Your puzzle answer was 9962624.
  */
 public class Day04 implements AdventOfCodeSolution {
-    public record MD5WithLeadingZeros(String secret, int leadingZeros) {
-        public long lowestPositiveNumber() {
-            var startsWith = "0".repeat(leadingZeros);
-            long count = 0;
-            try {
-                var md = MessageDigest.getInstance("MD5");
-                var done = false;
-                while (!done) {
-                    var target = secret + count;
-                    md.update(target.getBytes());
-
-                    String hash = hashToString(md);
-
-                    if (hash.startsWith(startsWith)) {
-                        done = true;
-                    } else {
-                        count++;
-                    }
-                }
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            }
-
-            return count;
-        }
-
-        @NotNull
-        private static String hashToString(MessageDigest md) {
-            var buffer = md.digest();
-            var sb = new StringBuilder();
-
-            for (byte b : buffer) {
-                sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
-            }
-
-            return sb.toString();
-        }
-    }
     private static final String defaultFilename = "inputs/input_day_04-01.txt";
 
     @Override
@@ -109,8 +69,6 @@ public class Day04 implements AdventOfCodeSolution {
     }
 
     public long lowestPositiveNumber(String secret, int leadingZeros) {
-        var hashing = new MD5WithLeadingZeros(secret, leadingZeros);
-
-        return hashing.lowestPositiveNumber();
+        return MD5Fun.lowestPositiveNumberWithLeadingZeros(secret, leadingZeros);
     }
 }

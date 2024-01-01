@@ -1,6 +1,7 @@
 package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
+import com.capital7software.aoc2015.lib.string.NaughtyOrNice;
 
 import java.time.Instant;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  * --- Day 5: Doesn't He Have Intern-Elves For This? ---
  * Santa needs help figuring out which strings in his text file are naughty or nice.
  * <p>
- * A nice string is one with all of the following properties:
+ * A nice string is one with all the following properties:
  * <p>
  * It contains at least three vowels (aeiou only), like aei, xazegov, or aeiouaeiouaeiou.
  * It contains at least one letter that appears twice in a row, like xx, abcdde (dd), or aabbccdd (aa, bb, cc, or dd).
@@ -30,7 +31,7 @@ import java.util.List;
  * Realizing the error of his ways, Santa has switched to a better model of determining whether a string
  * is naughty or nice. None of the old rules apply, as they are all clearly ridiculous.
  * <p>
- * Now, a nice string is one with all of the following properties:
+ * Now, a nice string is one with all the following properties:
  * <p>
  * It contains a pair of any two letters that appears at least twice in the string without overlapping,
  * like xyxy (xy) or aabcdefgaa (aa), but not like aaa (aa, but it overlaps).
@@ -46,100 +47,14 @@ import java.util.List;
  * ieodomkazucvgmuy is naughty because it has a repeating letter with one between (odo),
  * but no pair that appears twice.
  * How many strings are nice under these new rules?
+ * <p>
+ *     Your puzzle answer was 55.
+ * <p>
  */
 public class Day05 implements AdventOfCodeSolution {
-    public record NaughtyOrNice(String letters) {
-        public boolean isNice() {
-            var vowelCount = 0;
-            var doubleLetterCount = 0;
-            var restrictedCount = 0;
-            var lastChar = letters.charAt(0);
-
-            if (isVowel(lastChar)) {
-                vowelCount++;
-            }
-
-            for (int i = 1; i < letters.length(); i++) {
-                var thisChar = letters.charAt(i);
-
-                if (isVowel(thisChar)) {
-                    vowelCount++;
-                }
-
-                if (isDoubleLetter(lastChar, thisChar)) {
-                    doubleLetterCount++;
-                }
-
-                if (isRestricted(lastChar, thisChar)) {
-                    restrictedCount++;
-                }
-
-                if (restrictedCount != 0) {
-                    break; // Can't be nice if it contains a restricted character sequence!!
-                }
-                lastChar = thisChar;
-            }
-
-            return restrictedCount == 0 && vowelCount >= 3 && doubleLetterCount >= 1;
-        }
-
-        public boolean isNewNice() {
-            var twoLetterCount = 0;
-            var repeatLetterCount = 0;
-            var lastChar = letters.charAt(0);
-
-            for (int i = 1; i < letters.length() - 1; i++) {
-                var thisChar = letters.charAt(i);
-                var thisString = letters.substring(i - 1, i + 1);
-
-                if (twoLetterCount == 0) {
-                    var twoLetterIndex = letters.lastIndexOf(thisString);
-
-                    if (twoLetterIndex > i) {
-                        twoLetterCount++;
-                    }
-                }
-
-                if (repeatLetterCount == 0) {
-                    var nextChar = letters.charAt(i + 1);
-
-                    if (lastChar == nextChar) {
-                        repeatLetterCount++;
-                    }
-                }
-
-                if (repeatLetterCount > 0 && twoLetterCount > 0) {
-                    break;
-                }
-
-                lastChar = thisChar;
-            }
-
-            return repeatLetterCount > 0 && twoLetterCount > 0;
-        }
-
-        public boolean isRestricted(char c, char o) {
-            return (c == 'a' && o == 'b') || (c == 'c' && o == 'd') || (c == 'p' && o == 'q') || (c == 'x' && o == 'y');
-        }
-
-        public boolean isDoubleLetter(char c, char o) {
-            return c == o;
-        }
-
-        public boolean isVowel(char c) {
-            return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
-        }
-    }
-
-    private static String defaultFilename = "inputs/input_day_05-01.txt";
-
-    public static void setDefaultFilename(String defaultFilename) {
-        Day05.defaultFilename = defaultFilename;
-    }
-
     @Override
     public String getDefaultInputFilename() {
-        return defaultFilename;
+        return "inputs/input_day_05-01.txt";
     }
 
     @Override
@@ -148,7 +63,7 @@ public class Day05 implements AdventOfCodeSolution {
         var start = Instant.now();
         var total = 0;
         for (var line : input) {
-            if (new NaughtyOrNice(line).isNice()) {
+            if (isNice(line)) {
                 total++;
             }
         }
@@ -164,7 +79,7 @@ public class Day05 implements AdventOfCodeSolution {
         var start = Instant.now();
         var total = 0;
         for (var line : input) {
-            if (new NaughtyOrNice(line).isNewNice()) {
+            if (isNewNice(line)) {
                 total++;
             }
         }
@@ -175,11 +90,11 @@ public class Day05 implements AdventOfCodeSolution {
     }
 
     public boolean isNice(String line) {
-        return new NaughtyOrNice(line).isNice();
+        return NaughtyOrNice.isNice(line);
     }
 
     public boolean isNewNice(String line) {
-        return new NaughtyOrNice(line).isNewNice();
+        return NaughtyOrNice.isNewNice(line);
     }
 
 }

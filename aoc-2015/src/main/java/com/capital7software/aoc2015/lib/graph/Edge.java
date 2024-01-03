@@ -17,7 +17,7 @@ import java.util.Optional;
  * <p>
  * The weight of an Edge is optional and may be null.
  * <p>
- * Two Edges are considered equal if they have the same source and target nodes with the same label.
+ * Two Edges are considered equal if they have the same source and target Nodes.
  *
  * @param <T> The type of the value that the Nodes contain.
  * @param <E> The type of the weight for this Edge.
@@ -128,7 +128,7 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> {
 
 
     /**
-     * Two Edges are equal if they have the same source and target Nodes and the same label.
+     * Two Edges are equal if they have the same source and target Nodes.
      *
      * @param o The other Edge to compare against.
      * @return True if the two Edges are considered to be equal.
@@ -138,13 +138,12 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> {
         if (this == o) return true;
         if (!(o instanceof Edge<?, ?> edge)) return false;
         return getSource().equals(edge.getSource()) &&
-                getTarget().equals(edge.getTarget()) &&
-                getLabel().equals(edge.getLabel());
+                getTarget().equals(edge.getTarget());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getSource(), getTarget(), getLabel());
+        return Objects.hash(getSource(), getTarget());
     }
 
     @Override

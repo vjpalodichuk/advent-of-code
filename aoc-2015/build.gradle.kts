@@ -24,6 +24,10 @@ tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.add("-Xlint:unchecked")
+}
+
 tasks.withType<JavaExec>().configureEach {
     dependsOn(":assemble")
     jvmArgs = listOf("-Xss4m")

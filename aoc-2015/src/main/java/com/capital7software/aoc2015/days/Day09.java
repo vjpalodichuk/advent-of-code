@@ -1,6 +1,8 @@
 package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
+import com.capital7software.aoc2015.lib.graph.parser.Day09Parser;
+import com.capital7software.aoc2015.lib.graph.path.MinimumSpanningTreeKruskal;
 
 import java.time.Instant;
 import java.util.List;
@@ -45,6 +47,20 @@ public class Day09 implements AdventOfCodeSolution {
     }
 
     public long distanceOfShortestRoute(List<String> routes) {
-        return 0L;
+        var graph = new Day09Parser().parse(routes, "day09");
+        var mstBuilder = new MinimumSpanningTreeKruskal<String, Integer>();
+
+        if (graph.isEmpty()) {
+            throw new RuntimeException("A valid Graph is required! " + graph);
+        }
+
+        var spanningTree = mstBuilder.spanningTree(graph.get());
+
+        return spanningTree
+                .getEdges()
+                .stream()
+                .filter(it -> it.getWeight().isPresent())
+                .mapToInt(it -> it.getWeight().get())
+                .sum();
     }
 }

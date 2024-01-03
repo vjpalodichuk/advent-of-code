@@ -36,7 +36,7 @@ class Day09Test {
     }
 
     @Test
-    void codeCountOfStrings() {
+    void distanceOfShortestRouteTest() {
         var instance = new Day09();
         var expected = 605;
         var actual = instance.distanceOfShortestRoute(lines);

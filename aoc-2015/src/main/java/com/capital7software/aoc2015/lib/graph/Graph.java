@@ -3,6 +3,7 @@ package com.capital7software.aoc2015.lib.graph;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A Graph that uses adjacency lists to represent the Nodes and Edges in this Graph.
@@ -181,11 +182,41 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
+     * @return The Set of IDs for the Nodes in this Graph.
+     */
+    @NotNull
+    public Collection<String> getNodeIds() {
+        return Set.copyOf(nodes.keySet());
+    }
+
+    /**
      * Removes all Edges from all Nodes and all Nodes from this Graph.
      */
     public void clear() {
         removeEdges();
         nodes.clear();
+    }
+
+    /**
+     * Adds a new Edge to this Graph from source to target with the specified label and weight.
+     * Both source and target must already exist as Nodes in this Graph or else the add will fail.
+     * <p>
+     * Also note that if you want to make this Edge non-directed then please be sure to add an
+     * Edge going from target to source.
+     *
+     * @param source The source Node for the Edge.
+     * @param target The target Node for the Edge.
+     * @param label  The label to use for the new Edge.
+     * @param weight The weight to use for the new Edge.
+     * @return True if the Edge was created and added to this Graph; otherwise false.
+     */
+    public boolean add(@NotNull Node<T, E> source, @NotNull Node<T, E> target, @NotNull String label, @NotNull E weight) {
+        if (!nodes.containsKey(Objects.requireNonNull(source).getId()) ||
+                !nodes.containsKey(Objects.requireNonNull(target).getId())) {
+            return false;
+        }
+
+        return source.add(target, Objects.requireNonNull(label), Objects.requireNonNull(weight));
     }
 
     /**
@@ -227,6 +258,28 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
         }
 
         return source.add(target);
+    }
+
+    /**
+     * Adds a new Edge to this Graph from source to target with the specified label and weight.
+     * Both source and target must already exist as Nodes in this Graph or else the add will fail.
+     * <p>
+     * Also note that if you want to make this Edge non-directed then please be sure to add an
+     * Edge going from target to source.
+     *
+     * @param sourceId The ID of the source Node for the Edge.
+     * @param targetId The ID of the target Node for the Edge.
+     * @param label    The label to use for the new Edge.
+     * @param weight   The weight to use for the new Edge.
+     * @return True if the Edge was created and added to this Graph; otherwise false.
+     */
+    public boolean add(@NotNull String sourceId, @NotNull String targetId, @NotNull String label, @NotNull E weight) {
+        if (!nodes.containsKey(Objects.requireNonNull(sourceId)) ||
+                !nodes.containsKey(Objects.requireNonNull(targetId))) {
+            return false;
+        }
+
+        return nodes.get(sourceId).add(nodes.get(targetId), Objects.requireNonNull(label), Objects.requireNonNull(weight));
     }
 
     /**
@@ -300,35 +353,41 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
             return Optional.empty();
         }
 
-        return nodes.get(edge.getSource().getId()).remove(edge.getTarget(), edge.getLabel());
+        return nodes.get(edge.getSource().getId()).remove(edge.getTarget());
     }
 
     /**
-     * Removes all Edges going from source to target. The removed Edges are returned in a List.
+     * Removes the Edge going from source to target Node.
      *
      * @param source The source Node that contains the Edge.
      * @param target The target Node of the Edges we are removing.
-     * @return The removed Edges in a List.
+     * @return The removed Edge.
      */
-    @NotNull
-    public List<Edge<T, E>> remove(@NotNull Node<T, E> source, @NotNull Node<T, E> target) {
+    public @NotNull Optional<Edge<T, E>> remove(@NotNull Node<T, E> source, @NotNull Node<T, E> target) {
         return remove(Objects.requireNonNull(source).getId(), Objects.requireNonNull(target).getId());
     }
 
     /**
-     * Removes all Edges going from source to target. The removed Edges are returned in a List.
+     * Removes the Edge going from source to target Node.
      *
      * @param source The source Node ID that contains the Edge.
      * @param target The target Node ID of the Edges we are removing.
-     * @return The removed Edges in a List.
+     * @return The removed Edge.
      */
-    @NotNull
-    public List<Edge<T, E>> remove(@NotNull String source, @NotNull String target) {
+    public @NotNull Optional<Edge<T, E>> remove(@NotNull String source, @NotNull String target) {
         if (!nodes.containsKey(Objects.requireNonNull(source)) && !nodes.containsKey(Objects.requireNonNull(target))) {
-            return Collections.emptyList();
+            return Optional.empty();
         }
 
         return nodes.get(source).remove(nodes.get(target));
+    }
+
+    /**
+     * @return An unmodifiable Set of all Edges in this Graph.
+     */
+    @NotNull
+    public Set<Edge<T, E>> getEdges() {
+        return nodes.values().stream().flatMap(it -> it.getEdgeSet().stream()).collect(Collectors.toSet());
     }
 
     /**
@@ -374,7 +433,7 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
         nodes.values()
                 .forEach((node) -> {
                     if (node.getEdges().containsKey(target.getId())) {
-                        answer.addAll(node.getEdges().get(target.getId()));
+                        answer.add(node.getEdges().get(target.getId()));
                     }
                 });
 

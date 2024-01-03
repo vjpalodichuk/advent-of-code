@@ -3,7 +3,6 @@ package com.capital7software.aoc2015.lib.graph;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * A Node in a Graph has an ID, name, value, and a set of Edges that connect it to other Nodes in the Graph.
@@ -20,7 +19,7 @@ public class Node<T extends Comparable<T>, E extends Comparable<E>> {
     private final String id;
     private String name;
     private T value;
-    private final Map<String, Set<Edge<T, E>>> edges;
+    private final Map<String, Edge<T, E>> edges;
 
     /**
      * Instantiates a new Node with the specified ID, name, value, and set of Edges.
@@ -28,9 +27,9 @@ public class Node<T extends Comparable<T>, E extends Comparable<E>> {
      * @param id    The identifier of this Node.
      * @param name  The name of this Node.
      * @param value The value contained by this Node.
-     * @param edges The set to store the edges coming from this Node.
+     * @param edges The Map to store the set of edges coming from this Node.
      */
-    public Node(@NotNull String id, @NotNull String name, T value, @NotNull Map<String, Set<Edge<T, E>>> edges) {
+    public Node(@NotNull String id, @NotNull String name, T value, @NotNull Map<String, Edge<T, E>> edges) {
         this.id = Objects.requireNonNull(id);
         this.name = Objects.requireNonNull(name);
         this.value = value;
@@ -102,26 +101,23 @@ public class Node<T extends Comparable<T>, E extends Comparable<E>> {
      * @return An unmodifiable copy of the Edges in this Node.
      */
     @NotNull
-    public Map<String, Set<Edge<T, E>>> getEdges() {
+    public Map<String, Edge<T, E>> getEdges() {
         return Collections.unmodifiableMap(edges);
     }
 
     /**
-     * @return An unmodifiable set of all Edges in this Node.
+     * @return A copy of the set of all Edges in this Node.
      */
     @NotNull
     public Set<Edge<T, E>> getEdgeSet() {
-        return edges.values()
-                .stream()
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
+        return new HashSet<>(edges.values());
     }
-
 
     /**
      * Adds a new Edge from this Node to target Node with the specified label and weight, which may be null.
      * <p>
-     * In order to add more than one Edge to the same Target, the Edges must have unique labels.
+     * A Node can only have one edge to a target. If an Edge already exists for the specified target, the add
+     * is aborted and false is returned.
      *
      * @param target The non-null target Node for the new Edge.
      * @param label  The required label of the new Edge.
@@ -129,44 +125,50 @@ public class Node<T extends Comparable<T>, E extends Comparable<E>> {
      * @return True if a new Edge was added.
      */
     public boolean add(@NotNull Node<T, E> target, @NotNull String label, E weight) {
-        return edges.computeIfAbsent(target.getId(), it -> new HashSet<>()).add(new Edge<>(
+        return edges.putIfAbsent(target.getId(), new Edge<>(
                 this,
                 Objects.requireNonNull(target),
                 Objects.requireNonNull(label),
                 weight)
-        );
+        ) == null;
     }
 
     /**
      * Adds a new Edge from this Node to target Node with the specified label and no weight.
+     * <p>
+     * A Node can only have one edge to a target. If an Edge already exists for the specified target, the add
+     * is aborted and false is returned.
      *
      * @param target The non-null target Node for the new Edge.
      * @param label  The required label of the new Edge.
      * @return True if a new Edge was added.
      */
     public boolean add(@NotNull Node<T, E> target, @NotNull String label) {
-        return edges.computeIfAbsent(target.getId(), it -> new HashSet<>()).add(new Edge<>(
+        return edges.putIfAbsent(target.getId(), new Edge<>(
                 this, Objects.requireNonNull(target), Objects.requireNonNull(label), null)
-        );
+        ) == null;
     }
 
     /**
      * Adds a new Edge from this Node to target Node with a label in the form of source.id-target.id-randomNumber.
+     * <p>
+     * A Node can only have one edge to a target. If an Edge already exists for the specified target, the add
+     * is aborted and false is returned.
      *
      * @param target The non-null target Node for the new Edge.
      * @return True if a new Edge was added.
      */
     public boolean add(@NotNull Node<T, E> target) {
-        return edges.computeIfAbsent(target.getId(), it -> new HashSet<>()).add(new Edge<>(
+        return edges.putIfAbsent(target.getId(), new Edge<>(
                 this, Objects.requireNonNull(target))
-        );
+        ) == null;
     }
 
     /**
      * @return The number of Edges coming from this Node by target.
      */
     public int size() {
-        return edges.values().stream().mapToInt(Set::size).sum();
+        return edges.values().size();
     }
 
     /**
@@ -177,53 +179,15 @@ public class Node<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
-     * Removes the Edge(s) from this Node to the target Node if any exist.
-     * The removed Edge(s) are returned in a List.
+     * Removes the Edge from this Node to the target Node if any exist.
+     * The removed Edge is returned.
      *
      * @param target The target Node of the Edge that this Node connects to.
-     * @return A list of all the removed Edges.
+     * @return The removed Edge.
      */
     @NotNull
-    public List<Edge<T, E>> remove(@NotNull Node<T, E> target) {
-        var set = edges.getOrDefault(Objects.requireNonNull(target).getId(), Collections.emptySet());
-
-        var result = List.copyOf(set);
-
-        result.forEach(set::remove);
-        cleanUpTarget(target.getId());
-
-        return result;
-
-    }
-
-    private void cleanUpTarget(String targetId) {
-        if (edges.getOrDefault(Objects.requireNonNull(targetId), Collections.emptySet()).isEmpty()) {
-            edges.remove(targetId);
-        }
-    }
-
-    /**
-     * Removes the Edge from this Node to the target Node with the specified label if one exists.
-     * The removed Edge is returned in an Optional.
-     *
-     * @param target The target Node of the Edge that this Node connects to.
-     * @param label  The label of the Edge to remove for the target.
-     * @return An Optional of the removed Edge.
-     */
-    @NotNull
-    public Optional<Edge<T, E>> remove(@NotNull Node<T, E> target, String label) {
-        var set = edges.getOrDefault(Objects.requireNonNull(target).getId(), Collections.emptySet());
-        Objects.requireNonNull(label);
-
-        var result = set
-                .stream()
-                .filter(edge -> edge.hasTarget(target) && edge.hasLabel(label))
-                .findFirst();
-
-        result.ifPresent(set::remove);
-        cleanUpTarget(target.getId());
-
-        return result;
+    public Optional<Edge<T, E>> remove(@NotNull Node<T, E> target) {
+        return Optional.ofNullable(edges.remove(Objects.requireNonNull(target).getId()));
     }
 
     /**

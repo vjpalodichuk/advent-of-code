@@ -71,7 +71,15 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
      * @return The map of Nodes in this Graph.
      */
     @NotNull
-    public Map<String, Node<T, E>> getNodes() {
+    public List<Node<T, E>> getNodes() {
+        return new ArrayList<>(nodes.values());
+    }
+
+    /**
+     * @return The map of Nodes in this Graph.
+     */
+    @NotNull
+    public Map<String, Node<T, E>> getNodeMap() {
         return Collections.unmodifiableMap(nodes);
     }
 
@@ -322,6 +330,15 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
         return nodes.get(sourceId).add(nodes.get(targetId));
     }
 
+    public void addAsNew(@NotNull Edge<T, E> edge) {
+        add(edge.getSource().getId());
+        add(edge.getTarget().getId());
+        edge.getWeight().ifPresentOrElse(
+                weight -> add(edge.getSource().getId(), edge.getTarget().getId(), edge.getLabel(), weight),
+                () -> add(edge.getSource().getId(), edge.getTarget().getId(), edge.getLabel())
+        );
+    }
+
     /**
      * @return The number of Edges in all Nodes in this Graph.
      */
@@ -456,5 +473,14 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
         }
 
         return getEdgesTo(nodes.get(targetId));
+    }
+
+    /**
+     *
+     * @param nodeId The nodeId to check for existence.
+     * @return True if a Node with the specified nodeId is in this Graph.
+     */
+    public boolean contains(@NotNull String nodeId) {
+        return nodes.containsKey(nodeId);
     }
 }

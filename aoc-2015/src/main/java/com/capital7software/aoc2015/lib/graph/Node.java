@@ -217,4 +217,29 @@ public class Node<T extends Comparable<T>, E extends Comparable<E>> {
                 ", edges=" + edges.size() +
                 '}';
     }
+
+    /**
+     * The value of the Edge that has the least weight or an empty Optional if there is no such Edge.
+     *
+     * @return The value of the Edge that has the least weight or an empty Optional if there is no such Edge.
+     */
+    public Optional<E> getLeastWeightedEdgeValue() {
+        return edges
+                .values()
+                .stream()
+                .map(Edge::getWeight)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .min(Comparator.naturalOrder());
+    }
+
+    /**
+     * Returns the Edge for the specified Node targetId or an empty Optional if there is no such Edge.
+     *
+     * @param targetId The Node to get the Edge to.
+     * @return The Edge for the specified Node targetId.
+     */
+    public Optional<Edge<T, E>> getEdge(@NotNull String targetId) {
+        return Optional.ofNullable(edges.get(targetId));
+    }
 }

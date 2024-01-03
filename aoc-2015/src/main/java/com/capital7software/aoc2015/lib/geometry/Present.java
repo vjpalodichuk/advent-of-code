@@ -1,10 +1,10 @@
 package com.capital7software.aoc2015.lib.geometry;
 
+import com.capital7software.aoc2015.lib.collection.PriorityQueue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.PriorityQueue;
 
 /**
  * Every present is a box (a perfect right rectangular prism), which makes calculating the required

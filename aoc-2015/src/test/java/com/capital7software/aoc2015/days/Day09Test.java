@@ -36,10 +36,26 @@ class Day09Test {
     }
 
     @Test
-    void distanceOfShortestRouteTest() {
+    void distanceOfShortestRouteVisitingEachNodeOnceTest() {
         var instance = new Day09();
         var expected = 605;
-        var actual = instance.distanceOfShortestRoute(lines);
+        var actual = instance.distanceOfShortestRouteVisitingEachNodeOnce(lines);
         assertEquals(expected, actual, "Shortest distance is not what was expected: " + expected);
+    }
+
+    @Test
+    void mstKruskal() {
+        var instance = new Day09();
+        var expected = 605;
+        var actual = instance.mstKruskal(lines);
+        assertEquals(expected, actual, "Kruskal MST is not what was expected: " + expected);
+    }
+
+    @Test
+    void mstPrim() {
+        var instance = new Day09();
+        var expected = 605;
+        var actual = instance.mstPrim(lines);
+        assertEquals(expected, actual, "Prim MST is not what was expected: " + expected);
     }
 }

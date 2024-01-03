@@ -3,6 +3,7 @@ package com.capital7software.aoc2015.days;
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
 import com.capital7software.aoc2015.lib.graph.parser.Day09Parser;
 import com.capital7software.aoc2015.lib.graph.path.MinimumSpanningTreeKruskal;
+import com.capital7software.aoc2015.lib.graph.path.MinimumSpanningTreePrim;
 
 import java.time.Instant;
 import java.util.List;
@@ -40,15 +41,60 @@ public class Day09 implements AdventOfCodeSolution {
     @Override
     public void runPart1(List<String> input) {
         var start = Instant.now();
-        var shortestDistance = distanceOfShortestRoute(input);
+        var shortestDistance = mstKruskal(input);
         var end = Instant.now();
         System.out.printf("The distance of the shortest route is: %d%n", shortestDistance);
         printTiming(start, end);
     }
 
-    public long distanceOfShortestRoute(List<String> routes) {
+    @Override
+    public void runPart2(List<String> input) {
+        var start = Instant.now();
+        var shortestDistance = mstPrim(input);
+        var end = Instant.now();
+        System.out.printf("The distance of the shortest route is: %d%n", shortestDistance);
+        printTiming(start, end);
+    }
+
+    public long distanceOfShortestRouteVisitingEachNodeOnce(List<String> routes) {
         var graph = new Day09Parser().parse(routes, "day09");
         var mstBuilder = new MinimumSpanningTreeKruskal<String, Integer>();
+
+        if (graph.isEmpty()) {
+            throw new RuntimeException("A valid Graph is required! " + graph);
+        }
+
+        var spanningTree = mstBuilder.spanningTree(graph.get());
+
+        return spanningTree
+                .getEdges()
+                .stream()
+                .filter(it -> it.getWeight().isPresent())
+                .mapToInt(it -> it.getWeight().get())
+                .sum();
+    }
+
+    public long mstKruskal(List<String> routes) {
+        var graph = new Day09Parser().parse(routes, "day09");
+        var mstBuilder = new MinimumSpanningTreeKruskal<String, Integer>();
+
+        if (graph.isEmpty()) {
+            throw new RuntimeException("A valid Graph is required! " + graph);
+        }
+
+        var spanningTree = mstBuilder.spanningTree(graph.get());
+
+        return spanningTree
+                .getEdges()
+                .stream()
+                .filter(it -> it.getWeight().isPresent())
+                .mapToInt(it -> it.getWeight().get())
+                .sum();
+    }
+
+    public long mstPrim(List<String> routes) {
+        var graph = new Day09Parser().parse(routes, "day09");
+        var mstBuilder = new MinimumSpanningTreePrim<String, Integer>(0, Integer.MAX_VALUE);
 
         if (graph.isEmpty()) {
             throw new RuntimeException("A valid Graph is required! " + graph);

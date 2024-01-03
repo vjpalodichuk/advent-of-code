@@ -98,12 +98,4 @@ public interface Heap<T> extends Cloneable {
      * @param element The element that needs to be adjusted.
      */
     void adjustTopUp(@NotNull T element);
-
-    /**
-     * If the elements contained within this Heap have changed since being added to this Heap, this method can be
-     * called to fix the top element in this Heap from the top down.
-     *
-     * @param element The element that needs to be adjusted.
-     */
-    void adjustTopDown(@NotNull T element);
 }

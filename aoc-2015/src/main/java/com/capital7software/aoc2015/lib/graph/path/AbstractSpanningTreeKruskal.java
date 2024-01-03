@@ -67,12 +67,7 @@ abstract public class AbstractSpanningTreeKruskal<T extends Comparable<T>, E ext
             if (detector.detect(edge.getSource().getId(), edge.getTarget().getId())) {
                 continue;
             }
-            spanningTree.add(edge.getSource().getId());
-            spanningTree.add(edge.getTarget().getId());
-            edge.getWeight().ifPresentOrElse(
-                    weight -> spanningTree.add(edge.getSource().getId(), edge.getTarget().getId(), edge.getLabel(), weight),
-                    () -> spanningTree.add(edge.getSource().getId(), edge.getTarget().getId(), edge.getLabel())
-            );
+            spanningTree.addAsNew(edge);
             edgeCount++;
             if (edgeCount == nodeIds.size() - 1) {
                 break; // We are all done!!

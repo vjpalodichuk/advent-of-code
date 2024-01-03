@@ -18,11 +18,13 @@ import java.util.Optional;
  * The weight of an Edge is optional and may be null.
  * <p>
  * Two Edges are considered equal if they have the same source and target Nodes.
+ * <p>
+ * If the Edge contains a weight value then Comparable.compareTo can be used.
  *
  * @param <T> The type of the value that the Nodes contain.
  * @param <E> The type of the weight for this Edge.
  */
-public class Edge<T extends Comparable<T>, E extends Comparable<E>> {
+public class Edge<T extends Comparable<T>, E extends Comparable<E>> implements Comparable<Edge<T, E>> {
     private final Node<T, E> source;
     private final Node<T, E> target;
     private final String label;
@@ -154,5 +156,18 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> {
                 ", label=" + label +
                 ", weight=" + weight +
                 '}';
+    }
+
+    @Override
+    public int compareTo(@NotNull Edge<T, E> o) {
+        if (weight == null && o.weight == null) {
+            return 0;
+        } else if (weight != null && o.weight != null) {
+            return weight.compareTo(o.weight);
+        } else if (weight != null) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

@@ -1,7 +1,16 @@
 package com.capital7software.aoc2015.lib.graph.path;
 
+import com.capital7software.aoc2015.lib.collection.PriorityQueue;
+import com.capital7software.aoc2015.lib.graph.Edge;
 import com.capital7software.aoc2015.lib.graph.Graph;
+import com.capital7software.aoc2015.lib.graph.Node;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An implementation of Prim's MST algorithm.
@@ -69,8 +78,134 @@ import org.jetbrains.annotations.NotNull;
  * @param <E> The type of the weight held by Edges in the graph.
  */
 public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparable<E>> extends AbstractSpanningTreeKruskal<T, E> {
+    private static class PrimNode<T extends Comparable<T>, E extends Comparable<E>> implements Comparable<PrimNode<T, E>> {
+        private final Node<T, E> node;
+        private Node<T, E> previous;
+        private E key;
+
+        public PrimNode(Node<T, E> node) {
+            this.node = node;
+        }
+
+        public Node<T, E> getNode() {
+            return node;
+        }
+
+        public Node<T, E> getPrevious() {
+            return previous;
+        }
+
+        public void setPrevious(Node<T, E> previous) {
+            this.previous = previous;
+        }
+
+        public E getKey() {
+            return key;
+        }
+
+        public void setKey(E key) {
+            this.key = key;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof PrimNode<?, ?> primNode)) return false;
+            return getNode().getId().equals(primNode.getNode().getId());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getNode());
+        }
+
+        @Override
+        public String toString() {
+            return "PrimNode{" +
+                    "node=" + node +
+                    ", previous=" + previous +
+                    ", key=" + key +
+                    '}';
+        }
+
+        @Override
+        public int compareTo(@NotNull MinimumSpanningTreePrim.PrimNode<T, E> o) {
+            return key.compareTo(o.getKey());
+        }
+    }
+
+    private final E minValue;
+    private final E maxValue;
+
+    public MinimumSpanningTreePrim(E minValue, E maxValue) {
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+    }
+
     @Override
     public @NotNull Graph<T, E> spanningTree(@NotNull Graph<T, E> graph) {
-        return new Graph<>("TODO");
+        var nodes = graph.getNodes();
+        var nodeMap = new HashMap<String, PrimNode<T, E>>(nodes.size());
+        var nodeQueue = new PriorityQueue<PrimNode<T, E>>(nodes.size());
+        var edges = new ArrayList<Edge<T, E>>();
+        var spanningTree = new Graph<T, E>("prim-spanning-tree-" + graph.getName());
+        var visited = new HashSet<String>(nodes.size());
+        var first = new AtomicBoolean(true);
+
+        for (var node : nodes) {
+            node.getLeastWeightedEdgeValue().ifPresent(weight -> {
+                var n = new PrimNode<>(node);
+                if (first.get()) {
+                    n.setKey(minValue);
+                    first.set(false);
+                } else {
+                    n.setKey(maxValue);
+                }
+                nodeMap.put(node.getId(), n);
+                nodeQueue.offer(n);
+            });
+        }
+
+        while (!nodeQueue.isEmpty()) {
+            var node = Objects.requireNonNull(nodeQueue.poll());
+
+            if (visited.contains(node.getNode().getId())) {
+                continue;
+            }
+
+            visited.add(node.getNode().getId());
+
+            if (node.getPrevious() != null) {
+                var edge = node.getPrevious().getEdge(node.getNode().getId());
+
+                edge.ifPresent(edges::add);
+
+                if (edges.size() == nodes.size() - 1) {
+                    break; // We are done!
+                }
+            }
+
+            for (var edge : node.getNode().getEdgeSet()) {
+                var weight = edge.getWeight();
+                if (weight.isEmpty()) {
+                    continue;
+                }
+
+                if (!visited.contains(edge.getTarget().getId())) {
+                    var node2 = nodeMap.get(edge.getTarget().getId());
+                    var realWeight = weight.get();
+
+                    if (realWeight.compareTo(node2.getKey()) < 0) {
+                      node2.setPrevious(edge.getSource());
+                      node2.setKey(realWeight);
+                      nodeQueue.adjustTopUp(node2);
+                  }
+                }
+            }
+        }
+
+        edges.forEach(spanningTree::addAsNew);
+
+        return spanningTree;
     }
 }

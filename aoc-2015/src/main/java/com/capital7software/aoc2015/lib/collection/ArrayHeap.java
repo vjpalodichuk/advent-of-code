@@ -574,11 +574,6 @@ public abstract class ArrayHeap<T> implements Heap<T> {
         }
     }
 
-    @Override
-    public void adjustTopDown(@NotNull T element) {
-        siftDown(ROOT_INDEX, element);
-    }
-
     /**
      * Swaps the elements of this ArrayHeap for indexes i and j.
      *

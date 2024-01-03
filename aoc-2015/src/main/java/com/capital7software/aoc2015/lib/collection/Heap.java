@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param <T> The type of the value of an element of this Heap.
  */
-public interface Heap<T extends Comparable<T>> extends Cloneable {
+public interface Heap<T> extends Cloneable {
     /**
      * Adds the specified item to this ArrayHeap.
      * The Heap property is maintained after the new item has been added.

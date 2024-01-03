@@ -34,7 +34,7 @@ import java.util.Comparator;
  * <A HREF="mailto:vincent@capital7software.com"> (e-mail me) </A>
  * @version 01/02/2024
  */
-public abstract class ArrayHeap<T extends Comparable<T>> implements Heap<T> {
+public abstract class ArrayHeap<T> implements Heap<T> {
     protected static final int DEFAULT_INITIAL_SIZE = 32;
     protected static final int ROOT_INDEX = 0;
     protected Object[] items;
@@ -231,7 +231,7 @@ public abstract class ArrayHeap<T extends Comparable<T>> implements Heap<T> {
      * @param <T> The type of the elements in the items array.
      */
     @SuppressWarnings("unchecked")
-    protected static <T extends Comparable<T>> void siftDownComparator(
+    protected static <T> void siftDownComparator(
             int fillIndex,
             @NotNull T element,
             @NotNull Object[] items,
@@ -270,7 +270,7 @@ public abstract class ArrayHeap<T extends Comparable<T>> implements Heap<T> {
      * @param <T> The type of the elements in the items array.
      */
     @SuppressWarnings("unchecked")
-    protected static <T extends Comparable<T>> void siftDownComparable(
+    protected static <T> void siftDownComparable(
             int fillIndex,
             T element,
             @NotNull Object[] items,
@@ -278,6 +278,7 @@ public abstract class ArrayHeap<T extends Comparable<T>> implements Heap<T> {
     ) {
         // We need to ensure that we maintain the heap
         int half = size >>> 1; // divide by 2.
+        var key = (Comparable<? super T>) element;
 
         while (fillIndex < half) {
             var child = getLeftChildIndex(fillIndex);
@@ -288,13 +289,13 @@ public abstract class ArrayHeap<T extends Comparable<T>> implements Heap<T> {
                     ((Comparable<? super T>) c).compareTo((T) r) > 0) {
                 c = items[child = right];
             }
-            if (element.compareTo((T) c) <= 0) {
+            if (key.compareTo((T) c) <= 0) {
                 break; // We are done!
             }
             items[fillIndex] = c;
             fillIndex = child;
         }
-        items[fillIndex] = element;
+        items[fillIndex] = key;
     }
 
     /**
@@ -323,7 +324,7 @@ public abstract class ArrayHeap<T extends Comparable<T>> implements Heap<T> {
      * @param <T> The type of the elements in the items array.
      */
     @SuppressWarnings("unchecked")
-    protected static <T extends Comparable<T>> void siftUpComparator(
+    protected static <T> void siftUpComparator(
             int fillIndex,
             @NotNull T element,
             @NotNull Object[] items,
@@ -352,22 +353,23 @@ public abstract class ArrayHeap<T extends Comparable<T>> implements Heap<T> {
      * @param <T> The type of the elements in the items array.
      */
     @SuppressWarnings("unchecked")
-    protected static <T extends Comparable<T>> void siftUpComparable(
+    protected static <T> void siftUpComparable(
             int fillIndex,
             @NotNull T element,
             @NotNull Object[] items
     ) {
+        var key = (Comparable<? super T>) element;
         // We need to ensure that we maintain the heap
         while (fillIndex > 0) {
             var parentIndex = getParentIndex(fillIndex);
             var e = items[parentIndex];
-            if (element.compareTo((T) e) >= 0) {
+            if (key.compareTo((T) e) >= 0) {
                 break; // Nothing to move!
             }
             items[fillIndex] = e;
             fillIndex = parentIndex;
         }
-        items[fillIndex] = element;
+        items[fillIndex] = key;
     }
 
     /**

@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class PriorityQueue<T extends Comparable<T>> extends MinHeap<T> implements Queue<T> {
+public class PriorityQueue<T> extends MinHeap<T> implements Queue<T> {
     public PriorityQueue(int initialCapacity, Comparator<? super T> comparator) {
         super(initialCapacity, comparator);
     }

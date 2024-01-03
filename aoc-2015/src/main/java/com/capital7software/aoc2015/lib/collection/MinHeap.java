@@ -12,7 +12,7 @@ import java.util.Comparator;
  *
  * @param <T> The type of the value of an element of this Heap.
  */
-public class MinHeap<T extends Comparable<T>> extends ArrayHeap<T> {
+public class MinHeap<T> extends ArrayHeap<T> {
     public MinHeap(int initialCapacity, Comparator<? super T> comparator) {
         super(initialCapacity, comparator);
     }

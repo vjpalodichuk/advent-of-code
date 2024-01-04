@@ -1,6 +1,7 @@
 package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
+import com.capital7software.aoc2015.lib.string.JSONFun;
 
 import java.time.Instant;
 import java.util.List;
@@ -24,7 +25,20 @@ import java.util.List;
  * <p>
  * What is the sum of all numbers in the document?
  * <p>
- * Your puzzle answer was .
+ * Your puzzle answer was 156366.
+ * <p>
+ * --- Part Two ---
+ * Uh oh - the Accounting-Elves have realized that they double-counted everything red.
+ * <p>
+ * Ignore any object (and all of its children) which has any property with the
+ * value "red". Do this only for objects ({...}), not arrays ([...]).
+ * <p>
+ * [1,2,3] still has a sum of 6.
+ * [1,{"c":"red","b":2},3] now has a sum of 4, because the middle object is ignored.
+ * {"d":"red","e":[1,2,3,4],"f":5} now has a sum of 0, because the entire structure is ignored.
+ * [1,"red",5] has a sum of 6, because "red" in an array has no effect.
+ * <p>
+ * Your puzzle answer was 96852.
  * <p>
  */
 public class Day12 implements AdventOfCodeSolution {
@@ -44,7 +58,22 @@ public class Day12 implements AdventOfCodeSolution {
         }
     }
 
+    @Override
+    public void runPart2(List<String> input) {
+        for (var line : input) {
+            var start = Instant.now();
+            var sum = sumNumbersInStringSkippingRedObjects(line);
+            var end = Instant.now();
+            System.out.printf("The sum of all numbers in the JSON string skipping red objects is: %d%n", sum);
+            printTiming(start, end);
+        }
+    }
+
     public long sumNumbersInString(String line) {
-        return 0;
+        return JSONFun.SumOfAllNumbers(line);
+    }
+
+    public long sumNumbersInStringSkippingRedObjects(String line) {
+        return JSONFun.SumOfAllNumbersSkippingObjectsWithRedPropertyValues(line);
     }
 }

@@ -12,12 +12,15 @@ import java.util.function.Function;
  * The valid function is called when a valid path is found so that the
  * result can be processed. Depending on the implementation, it may be called
  * at most once for each path found or only once when the find operation completes.
- * To stop the algorithm from continuing to run the find operation, FALSE may be returned.
+ * To stop the algorithm from continuing to run the find operation, FINISHED may be returned.
  * <p>
  * The invalid function is optional and is called when a path is exhausted and there is no valid path.
  * Depending on the implementation, it may be called at most once for each path attempt that fails
  * or only once when the find operation completes. To stop the algorithm from continuing to run the
- * find operation, FALSE may be returned.
+ * find operation, FINISHED may be returned.
+ * <p>
+ * NEXT_START may be returned from either the valid or invalid handler to move to the next starting vertex
+ * if there is one.
  *
  * @param <P> The type of the path result.
  * @param <T> The type of the value held by Nodes in the graph.
@@ -35,6 +38,9 @@ public interface PathFinder<P, T extends Comparable<T>, E extends Comparable<E>>
      * The Properties control the operation of the PathFinder. The Properties are PathFinder implementation
      * specific. Not all PathFinder algorithms require a Properties instance. Please consult the documentation
      * for the PathFinder you wish to use on how to properly pass the properties it needs to perform its function.
+     * <p>
+     * NEXT_START may be returned from either the valid or invalid handler to move to the next starting vertex
+     * if there is one. FINISHED should be returned if no more paths are needed; otherwise CONTINUE should be returned.
      *
      * @param graph      The Graph to be searched
      * @param properties Implementation dependent properties to be passed as input.
@@ -44,7 +50,7 @@ public interface PathFinder<P, T extends Comparable<T>, E extends Comparable<E>>
     void find(
             @NotNull Graph<T, E> graph,
             @NotNull Properties properties,
-            @NotNull Function<P, Boolean> valid,
-            Function<P, Boolean> invalid
+            @NotNull Function<P, PathFinderStatus> valid,
+            Function<P, PathFinderStatus> invalid
     );
 }

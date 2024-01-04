@@ -4,9 +4,14 @@ import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
 import com.capital7software.aoc2015.lib.graph.network.MinimumSpanningTreeKruskal;
 import com.capital7software.aoc2015.lib.graph.network.MinimumSpanningTreePrim;
 import com.capital7software.aoc2015.lib.graph.parser.Day09Parser;
+import com.capital7software.aoc2015.lib.graph.path.HamiltonianPathFinder;
+import com.capital7software.aoc2015.lib.graph.path.PathFinderResult;
+import com.capital7software.aoc2015.lib.graph.path.PathFinderStatus;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * --- Day 9: All in a Single Night ---
@@ -31,6 +36,18 @@ import java.util.List;
  * Belfast -> London -> Dublin = 982
  * The shortest of these is London -> Dublin -> Belfast = 605, and so the answer is 605 in this example.
  * <p>
+ * What is the distance of the shortest route?
+ * <p>
+ * Your puzzle answer was 117.
+ * <p>
+ * --- Part Two ---
+ * The next year, just to show off, Santa decides to take the route with the longest distance instead.
+ * <p>
+ * He can still start and end at any two (different) locations he wants, and he still must visit each location exactly once.
+ * <p>
+ * For example, given the distances above, the longest route would be 982 via (for example) Dublin -> London -> Belfast.
+ * <p>
+ * What is the distance of the longest route?
  */
 public class Day09 implements AdventOfCodeSolution {
     @Override
@@ -41,7 +58,7 @@ public class Day09 implements AdventOfCodeSolution {
     @Override
     public void runPart1(List<String> input) {
         var start = Instant.now();
-        var shortestDistance = mstKruskal(input);
+        var shortestDistance = distanceOfShortestRouteVisitingEachNodeOnce(input);
         var end = Instant.now();
         System.out.printf("The distance of the shortest route is: %d%n", shortestDistance);
         printTiming(start, end);
@@ -50,27 +67,54 @@ public class Day09 implements AdventOfCodeSolution {
     @Override
     public void runPart2(List<String> input) {
         var start = Instant.now();
-        var shortestDistance = mstPrim(input);
+        var longestDistance = distanceOfLongestRouteVisitingEachNodeOnce(input);
         var end = Instant.now();
-        System.out.printf("The distance of the shortest route is: %d%n", shortestDistance);
+        System.out.printf("The distance of the longest route is: %d%n", longestDistance);
         printTiming(start, end);
     }
 
     public long distanceOfShortestRouteVisitingEachNodeOnce(List<String> routes) {
         var graph = new Day09Parser().parse(routes, "day09");
-        var mstBuilder = new MinimumSpanningTreeKruskal<String, Integer>();
+        var pathFinder = new HamiltonianPathFinder<String, Integer>();
 
         if (graph.isEmpty()) {
             throw new RuntimeException("A valid Graph is required! " + graph);
         }
 
-        var mst = mstBuilder.build(graph.get());
+        var results = new ArrayList<PathFinderResult<String, Integer>>(41000);
 
-        return mst
+        pathFinder.find(graph.get(), new Properties(), result -> {
+            results.add(result);
+            return PathFinderStatus.CONTINUE;
+        }, null);
+
+        return results
                 .stream()
-                .filter(it -> it.getWeight().isPresent())
-                .mapToInt(it -> it.getWeight().get())
-                .sum();
+                .mapToInt(it -> it.edges().stream().filter(edge -> edge.getWeight().isPresent()).mapToInt(edge -> edge.getWeight().get()).sum())
+                .min()
+                .orElse(0);
+    }
+
+    public long distanceOfLongestRouteVisitingEachNodeOnce(List<String> routes) {
+        var graph = new Day09Parser().parse(routes, "day09");
+        var pathFinder = new HamiltonianPathFinder<String, Integer>();
+
+        if (graph.isEmpty()) {
+            throw new RuntimeException("A valid Graph is required! " + graph);
+        }
+
+        var results = new ArrayList<PathFinderResult<String, Integer>>(41000);
+
+        pathFinder.find(graph.get(), new Properties(), result -> {
+            results.add(result);
+            return PathFinderStatus.CONTINUE;
+        }, null);
+
+        return results
+                .stream()
+                .mapToInt(it -> it.edges().stream().filter(edge -> edge.getWeight().isPresent()).mapToInt(edge -> edge.getWeight().get()).sum())
+                .max()
+                .orElse(0);
     }
 
     public long mstKruskal(List<String> routes) {

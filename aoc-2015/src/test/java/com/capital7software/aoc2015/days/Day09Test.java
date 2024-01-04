@@ -44,6 +44,14 @@ class Day09Test {
     }
 
     @Test
+    void distanceOfLongestRouteVisitingEachNodeOnceTest() {
+        var instance = new Day09();
+        var expected = 982;
+        var actual = instance.distanceOfLongestRouteVisitingEachNodeOnce(lines);
+        assertEquals(expected, actual, "Longest distance is not what was expected: " + expected);
+    }
+
+    @Test
     void mstKruskal() {
         var instance = new Day09();
         var expected = 605;

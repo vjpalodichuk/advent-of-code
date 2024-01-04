@@ -11,7 +11,7 @@ import java.util.Optional;
  * <p>
  * See the parser specified documentation for details on how to properly use it.
  *
- * @param <T> The type of the value of a Node in the Graph this parser creates.
+ * @param <T> The type of the value of a Vertex in the Graph this parser creates.
  * @param <E> The type of the weight of the Edges in the Graph this parser creates.
  */
 

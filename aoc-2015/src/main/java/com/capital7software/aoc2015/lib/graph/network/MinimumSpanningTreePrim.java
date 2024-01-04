@@ -1,15 +1,12 @@
-package com.capital7software.aoc2015.lib.graph.path;
+package com.capital7software.aoc2015.lib.graph.network;
 
 import com.capital7software.aoc2015.lib.collection.PriorityQueue;
 import com.capital7software.aoc2015.lib.graph.Edge;
 import com.capital7software.aoc2015.lib.graph.Graph;
-import com.capital7software.aoc2015.lib.graph.Node;
+import com.capital7software.aoc2015.lib.graph.Vertex;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -74,28 +71,28 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *             </li>
  *         </ol>
  *     </code>
- * @param <T> The type of the value held by Nodes in the graph.
+ * @param <T> The type of the value held by Vertices in the graph.
  * @param <E> The type of the weight held by Edges in the graph.
  */
 public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparable<E>> extends AbstractSpanningTreeKruskal<T, E> {
-    private static class PrimNode<T extends Comparable<T>, E extends Comparable<E>> implements Comparable<PrimNode<T, E>> {
-        private final Node<T, E> node;
-        private Node<T, E> previous;
+    private static class PrimVertex<T extends Comparable<T>, E extends Comparable<E>> implements Comparable<PrimVertex<T, E>> {
+        private final Vertex<T, E> vertex;
+        private Vertex<T, E> previous;
         private E key;
 
-        public PrimNode(Node<T, E> node) {
-            this.node = node;
+        public PrimVertex(Vertex<T, E> vertex) {
+            this.vertex = vertex;
         }
 
-        public Node<T, E> getNode() {
-            return node;
+        public Vertex<T, E> getVertex() {
+            return vertex;
         }
 
-        public Node<T, E> getPrevious() {
+        public Vertex<T, E> getPrevious() {
             return previous;
         }
 
-        public void setPrevious(Node<T, E> previous) {
+        public void setPrevious(Vertex<T, E> previous) {
             this.previous = previous;
         }
 
@@ -110,26 +107,26 @@ public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparab
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof PrimNode<?, ?> primNode)) return false;
-            return getNode().getId().equals(primNode.getNode().getId());
+            if (!(o instanceof PrimVertex<?, ?> primVertex)) return false;
+            return getVertex().getId().equals(primVertex.getVertex().getId());
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getNode());
+            return Objects.hash(getVertex());
         }
 
         @Override
         public String toString() {
-            return "PrimNode{" +
-                    "node=" + node +
+            return "PrimVertex{" +
+                    "vertex=" + vertex +
                     ", previous=" + previous +
                     ", key=" + key +
                     '}';
         }
 
         @Override
-        public int compareTo(@NotNull MinimumSpanningTreePrim.PrimNode<T, E> o) {
+        public int compareTo(@NotNull MinimumSpanningTreePrim.PrimVertex<T, E> o) {
             return key.compareTo(o.getKey());
         }
     }
@@ -137,75 +134,83 @@ public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparab
     private final E minValue;
     private final E maxValue;
 
+    /**
+     * Instantiates this instance where minValue is the lowest assignable value to a Vertex and maxValue is the
+     * largest value to assign to a Vertex.
+     * <p>
+     * When build is called, all Vertices in the Graph are assigned the maxValue except for one that is picked as
+     * random and is assigned the minValue. The Vertex assigned the minValue will be selected first and all other
+     * Vertices will have their value updated as the algorithm progresses.
+     * <p>
+     *
+     * @param minValue The lowest initial value to assign to the starting Vertex.
+     * @param maxValue The highest initial value to assign to all other Vertices.
+     */
     public MinimumSpanningTreePrim(E minValue, E maxValue) {
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
 
     @Override
-    public @NotNull Graph<T, E> spanningTree(@NotNull Graph<T, E> graph) {
-        var nodes = graph.getNodes();
-        var nodeMap = new HashMap<String, PrimNode<T, E>>(nodes.size());
-        var nodeQueue = new PriorityQueue<PrimNode<T, E>>(nodes.size());
+    public @NotNull Collection<Edge<T, E>> build(@NotNull Graph<T, E> graph) {
+        var vertices = graph.getVertices();
+        var vertexMap = new HashMap<String, PrimVertex<T, E>>(vertices.size());
+        var vertexQueue = new PriorityQueue<PrimVertex<T, E>>(vertices.size());
         var edges = new ArrayList<Edge<T, E>>();
-        var spanningTree = new Graph<T, E>("prim-spanning-tree-" + graph.getName());
-        var visited = new HashSet<String>(nodes.size());
+        var visited = new HashSet<String>(vertices.size());
         var first = new AtomicBoolean(true);
 
-        for (var node : nodes) {
-            node.getLeastWeightedEdgeValue().ifPresent(weight -> {
-                var n = new PrimNode<>(node);
+        for (var vertex : vertices) {
+            vertex.getLeastWeightedEdgeValue().ifPresent(weight -> {
+                var n = new PrimVertex<>(vertex);
                 if (first.get()) {
                     n.setKey(minValue);
                     first.set(false);
                 } else {
                     n.setKey(maxValue);
                 }
-                nodeMap.put(node.getId(), n);
-                nodeQueue.offer(n);
+                vertexMap.put(vertex.getId(), n);
+                vertexQueue.offer(n);
             });
         }
 
-        while (!nodeQueue.isEmpty()) {
-            var node = Objects.requireNonNull(nodeQueue.poll());
+        while (!vertexQueue.isEmpty()) {
+            var vertex = Objects.requireNonNull(vertexQueue.poll());
 
-            if (visited.contains(node.getNode().getId())) {
+            if (visited.contains(vertex.getVertex().getId())) {
                 continue;
             }
 
-            visited.add(node.getNode().getId());
+            visited.add(vertex.getVertex().getId());
 
-            if (node.getPrevious() != null) {
-                var edge = node.getPrevious().getEdge(node.getNode().getId());
+            if (vertex.getPrevious() != null) {
+                var edge = vertex.getPrevious().getEdge(vertex.getVertex().getId());
 
                 edge.ifPresent(edges::add);
 
-                if (edges.size() == nodes.size() - 1) {
+                if (edges.size() == vertices.size() - 1) {
                     break; // We are done!
                 }
             }
 
-            for (var edge : node.getNode().getEdgeSet()) {
+            for (var edge : vertex.getVertex().getEdgeSet()) {
                 var weight = edge.getWeight();
                 if (weight.isEmpty()) {
                     continue;
                 }
 
                 if (!visited.contains(edge.getTarget().getId())) {
-                    var node2 = nodeMap.get(edge.getTarget().getId());
+                    var vertex2 = vertexMap.get(edge.getTarget().getId());
                     var realWeight = weight.get();
 
-                    if (realWeight.compareTo(node2.getKey()) < 0) {
-                      node2.setPrevious(edge.getSource());
-                      node2.setKey(realWeight);
-                      nodeQueue.adjustTopUp(node2);
+                    if (realWeight.compareTo(vertex2.getKey()) < 0) {
+                      vertex2.setPrevious(edge.getSource());
+                      vertex2.setKey(realWeight);
+                      vertexQueue.adjustTopUp(vertex2);
                   }
                 }
             }
         }
-
-        edges.forEach(spanningTree::addAsNew);
-
-        return spanningTree;
+        return edges;
     }
 }

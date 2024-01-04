@@ -7,12 +7,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface CycleDetector {
     /**
-     * Returns true if a cycle would be formed by adding an Edge from the source Node to the target Node.
+     * Returns true if a cycle would be formed by adding an Edge from the source Vertex to the target Vertex.
      * How this is done is implementation specific.
      *
-     * @param source The ID of the source Node.
-     * @param target The ID of the target Node.
-     * @return True if a cycle would be formed by adding an Edge from the source Node to the target Node.
+     * @param source The ID of the source Vertex.
+     * @param target The ID of the target Vertex.
+     * @return True if a cycle would be formed by adding an Edge from the source Vertex to the target Vertex.
      */
     boolean detect(@NotNull String source, @NotNull String target);
 }

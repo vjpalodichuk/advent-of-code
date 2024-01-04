@@ -1,7 +1,10 @@
-package com.capital7software.aoc2015.lib.graph.path;
+package com.capital7software.aoc2015.lib.graph.network;
 
+import com.capital7software.aoc2015.lib.graph.Edge;
 import com.capital7software.aoc2015.lib.graph.Graph;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 /**
  * See <a href="https://www.baeldung.com/java-spanning-trees-kruskal">...</a> for a detailed
@@ -12,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class MaximumSpanningTreeKruskal<T extends Comparable<T>, E extends Comparable<E>> extends AbstractSpanningTreeKruskal<T, E> {
     @Override
-    public @NotNull Graph<T, E> spanningTree(@NotNull Graph<T, E> graph) {
+    public @NotNull Collection<Edge<T, E>> build(@NotNull Graph<T, E> graph) {
         return buildSpanningTree(graph, true);
     }
 }

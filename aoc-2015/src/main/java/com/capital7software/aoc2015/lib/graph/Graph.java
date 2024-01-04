@@ -6,52 +6,52 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * A Graph that uses adjacency lists to represent the Nodes and Edges in this Graph.
+ * A Graph that uses adjacency lists to represent the Vertices and Edges in this Graph.
  * <p>
  * By convention, this Graph is considered to be directional. To make it non-directional, for every
- * Edge that is added, add another edge by reversing the source and target Nodes. This will ensure that
- * for every Edge from Node A to Node B there is also an Edge that goes from Node B to Node A.
+ * Edge that is added, add another edge by reversing the source and target Vertices. This will ensure that
+ * for every Edge from Vertex A to Vertex B there is also an Edge that goes from Vertex B to Vertex A.
  * <p>
- * When building a Graph, all the Nodes should be added to this Graph and then all the Edges should be
- * added to connect the Nodes.
+ * When building a Graph, all the Vertices should be added to this Graph and then all the Edges should be
+ * added to connect the Vertices.
  * <p>
- * Attempting to add an Edge to a Node that doesn't yet exist in the Graph will cause the add to fail.
+ * Attempting to add an Edge to a Vertex that doesn't yet exist in the Graph will cause the add to fail.
  * <p>
- * Nodes can easily be added with just their ID and nothing else.
+ * Vertices can easily be added with just their ID and nothing else.
  * <p>
  * Operations for searching the Graph are handled by other Algorithm classes.
  * <p>
  * This Graph simply contains methods that allow other Graph Algorithms to operate on this Graph.
  *
- * @param <T> The type of the value held by Nodes in this Graph.
- * @param <E> The type of the weight for Edges connected to and from Nodes in this Graph.
+ * @param <T> The type of the value held by Vertices in this Graph.
+ * @param <E> The type of the weight for Edges connected to and from Vertices in this Graph.
  */
 public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     private static final String DEFAULT_NAME = "graph";
 
     private final String name;
-    private final Map<String, Node<T, E>> nodes;
+    private final Map<String, Vertex<T, E>> vertices;
 
     /**
-     * Instantiates a new Graph with the specified name and map of Nodes.
+     * Instantiates a new Graph with the specified name and map of Vertices.
      *
      * @param name  The required name of this Graph.
-     * @param nodes The required map to hold the Nodes of this Graph.
+     * @param vertices The required map to hold the Vertices of this Graph.
      */
-    public Graph(@NotNull String name, @NotNull Map<String, Node<T, E>> nodes) {
+    public Graph(@NotNull String name, @NotNull Map<String, Vertex<T, E>> vertices) {
         this.name = Objects.requireNonNull(name);
-        this.nodes = new HashMap<>(Objects.requireNonNull(nodes));
+        this.vertices = new HashMap<>(Objects.requireNonNull(vertices));
     }
 
     /**
-     * Instantiates a new Graph with a default name of graph and no Nodes.
+     * Instantiates a new Graph with a default name of graph and no Vertices.
      */
     public Graph() {
         this(DEFAULT_NAME, new HashMap<>());
     }
 
     /**
-     * Instantiates a new Graph with the specified name and an empty map of Nodes.
+     * Instantiates a new Graph with the specified name and an empty map of Vertices.
      *
      * @param name The name to use for this Graph.
      */
@@ -68,19 +68,19 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
-     * @return The map of Nodes in this Graph.
+     * @return A modifiable list of Vertices in this Graph.
      */
     @NotNull
-    public List<Node<T, E>> getNodes() {
-        return new ArrayList<>(nodes.values());
+    public List<Vertex<T, E>> getVertices() {
+        return new ArrayList<>(vertices.values());
     }
 
     /**
-     * @return The map of Nodes in this Graph.
+     * @return The map of Vertices in this Graph.
      */
     @NotNull
-    public Map<String, Node<T, E>> getNodeMap() {
-        return Collections.unmodifiableMap(nodes);
+    public Map<String, Vertex<T, E>> getVertexMap() {
+        return Collections.unmodifiableMap(vertices);
     }
 
     /**
@@ -105,122 +105,122 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     public String toString() {
         return "Graph{" +
                 "name='" + name + '\'' +
-                ", nodes=" + nodes +
+                ", vertexs=" + vertices +
                 '}';
     }
 
     /**
-     * Adds a new Node to this Graph with the specified nodeId.
+     * Adds a new Vertex to this Graph with the specified vertexId.
      *
-     * @param nodeId The nodeId of the new Node that is being added.
-     * @return True if the Node was successfully added; false if a
-     * Node with that ID already exists in this Graph.
+     * @param vertexId The vertexId of the new Vertex that is being added.
+     * @return True if the Vertex was successfully added; false if a
+     * Vertex with that ID already exists in this Graph.
      */
-    public boolean add(@NotNull String nodeId) {
-        if (nodes.containsKey(Objects.requireNonNull(nodeId))) {
+    public boolean add(@NotNull String vertexId) {
+        if (vertices.containsKey(Objects.requireNonNull(vertexId))) {
             return false;
         }
 
-        return add(new Node<>(nodeId));
+        return add(new Vertex<>(vertexId));
     }
 
     /**
-     * Adds an existing Node to this Graph.
+     * Adds an existing Vertex to this Graph.
      *
-     * @param node The existing Node to add to this Graph.
-     * @return True if the Node was successfully added; false if a
-     * Node with the same ID already exists in this Graph.
+     * @param vertex The existing Vertex to add to this Graph.
+     * @return True if the Vertex was successfully added; false if a
+     * Vertex with the same ID already exists in this Graph.
      */
-    public boolean add(@NotNull Node<T, E> node) {
-        Objects.requireNonNull(node);
+    public boolean add(@NotNull Vertex<T, E> vertex) {
+        Objects.requireNonNull(vertex);
 
-        return nodes.putIfAbsent(node.getId(), node) == null;
+        return vertices.putIfAbsent(vertex.getId(), vertex) == null;
     }
 
 
     /**
-     * Removes all edges from and to the specified node and removes it from this graph.
-     * Returns a reference to the node that was removed. If the specified node is not
+     * Removes all edges from and to the specified vertex and removes it from this graph.
+     * Returns a reference to the vertex that was removed. If the specified vertex is not
      * in this graph, an empty Optional is returned.
      *
-     * @param nodeId The identifier for the node to remove.
-     * @return Returns an Optional with a reference to the node that was removed with no edges.
-     * If the specified node is not in this graph, the Optional will be empty.
+     * @param vertexId The identifier for the vertex to remove.
+     * @return Returns an Optional with a reference to the vertex that was removed with no edges.
+     * If the specified vertex is not in this graph, the Optional will be empty.
      */
     @NotNull
-    public Optional<Node<T, E>> remove(@NotNull String nodeId) {
-        if (!nodes.containsKey(Objects.requireNonNull(nodeId))) {
+    public Optional<Vertex<T, E>> remove(@NotNull String vertexId) {
+        if (!vertices.containsKey(Objects.requireNonNull(vertexId))) {
             return Optional.empty();
         }
 
-        Node<T, E> node = nodes.get(nodeId);
-        getEdgesTo(node).forEach(this::remove);
-        node.clear();
-        return Optional.ofNullable(nodes.remove(nodeId));
+        Vertex<T, E> vertex = vertices.get(vertexId);
+        getEdgesTo(vertex).forEach(this::remove);
+        vertex.clear();
+        return Optional.ofNullable(vertices.remove(vertexId));
     }
 
     /**
-     * Removes all edges from and to the specified node and removes it from this graph.
-     * Returns a reference to the node that was removed. If the specified node is not
+     * Removes all edges from and to the specified vertex and removes it from this graph.
+     * Returns a reference to the vertex that was removed. If the specified vertex is not
      * in this graph, an empty Optional is returned.
      *
-     * @param node The instance of the Node to remove from this Graph.
-     * @return Returns an Optional with a reference to the node that was removed with no edges.
-     * If the specified node is not in this graph, the Optional will be empty.
+     * @param vertex The instance of the Vertex to remove from this Graph.
+     * @return Returns an Optional with a reference to the vertex that was removed with no edges.
+     * If the specified vertex is not in this graph, the Optional will be empty.
      */
     @NotNull
-    public Optional<Node<T, E>> remove(@NotNull Node<T, E> node) {
-        return remove(Objects.requireNonNull(node).getId());
+    public Optional<Vertex<T, E>> remove(@NotNull Vertex<T, E> vertex) {
+        return remove(Objects.requireNonNull(vertex).getId());
     }
 
     /**
-     * @return The number of Nodes in this Graph.
+     * @return The number of Vertices in this Graph.
      */
     public int size() {
-        return nodes.size();
+        return vertices.size();
     }
 
     /**
-     * @param nodeId The ID of the Node to retrieve from this Graph.
-     * @return An Optional with a reference to the specified Node ID.
+     * @param vertexId The ID of the Vertex to retrieve from this Graph.
+     * @return An Optional with a reference to the specified Vertex ID.
      */
     @NotNull
-    public Optional<Node<T, E>> getNode(@NotNull String nodeId) {
-        return Optional.ofNullable(nodes.get(Objects.requireNonNull(nodeId)));
+    public Optional<Vertex<T, E>> getVertex(@NotNull String vertexId) {
+        return Optional.ofNullable(vertices.get(Objects.requireNonNull(vertexId)));
     }
 
     /**
-     * @return The Set of IDs for the Nodes in this Graph.
+     * @return The Set of IDs for the Vertices in this Graph.
      */
     @NotNull
-    public Collection<String> getNodeIds() {
-        return Set.copyOf(nodes.keySet());
+    public Collection<String> getVertexIds() {
+        return Set.copyOf(vertices.keySet());
     }
 
     /**
-     * Removes all Edges from all Nodes and all Nodes from this Graph.
+     * Removes all Edges from all Vertices and all Vertices from this Graph.
      */
     public void clear() {
         removeEdges();
-        nodes.clear();
+        vertices.clear();
     }
 
     /**
      * Adds a new Edge to this Graph from source to target with the specified label and weight.
-     * Both source and target must already exist as Nodes in this Graph or else the add will fail.
+     * Both source and target must already exist as Vertices in this Graph or else the add will fail.
      * <p>
      * Also note that if you want to make this Edge non-directed then please be sure to add an
      * Edge going from target to source.
      *
-     * @param source The source Node for the Edge.
-     * @param target The target Node for the Edge.
+     * @param source The source Vertex for the Edge.
+     * @param target The target Vertex for the Edge.
      * @param label  The label to use for the new Edge.
      * @param weight The weight to use for the new Edge.
      * @return True if the Edge was created and added to this Graph; otherwise false.
      */
-    public boolean add(@NotNull Node<T, E> source, @NotNull Node<T, E> target, @NotNull String label, @NotNull E weight) {
-        if (!nodes.containsKey(Objects.requireNonNull(source).getId()) ||
-                !nodes.containsKey(Objects.requireNonNull(target).getId())) {
+    public boolean add(@NotNull Vertex<T, E> source, @NotNull Vertex<T, E> target, @NotNull String label, @NotNull E weight) {
+        if (!vertices.containsKey(Objects.requireNonNull(source).getId()) ||
+                !vertices.containsKey(Objects.requireNonNull(target).getId())) {
             return false;
         }
 
@@ -229,19 +229,19 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
 
     /**
      * Adds a new Edge to this Graph from source to target with the specified label and no weight.
-     * Both source and target must already exist as Nodes in this Graph or else the add will fail.
+     * Both source and target must already exist as Vertices in this Graph or else the add will fail.
      * <p>
      * Also note that if you want to make this Edge non-directed then please be sure to add an
      * Edge going from target to source.
      *
-     * @param source The source Node for the Edge.
-     * @param target The target Node for the Edge.
+     * @param source The source Vertex for the Edge.
+     * @param target The target Vertex for the Edge.
      * @param label  The label to use for the new Edge.
      * @return True if the Edge was created and added to this Graph; otherwise false.
      */
-    public boolean add(@NotNull Node<T, E> source, @NotNull Node<T, E> target, @NotNull String label) {
-        if (!nodes.containsKey(Objects.requireNonNull(source).getId()) ||
-                !nodes.containsKey(Objects.requireNonNull(target).getId())) {
+    public boolean add(@NotNull Vertex<T, E> source, @NotNull Vertex<T, E> target, @NotNull String label) {
+        if (!vertices.containsKey(Objects.requireNonNull(source).getId()) ||
+                !vertices.containsKey(Objects.requireNonNull(target).getId())) {
             return false;
         }
 
@@ -250,18 +250,18 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
 
     /**
      * Adds a new Edge to this Graph from source to target with a default label and no weight.
-     * Both source and target must already exist as Nodes in this Graph or else the add will fail.
+     * Both source and target must already exist as Vertices in this Graph or else the add will fail.
      * <p>
      * Also note that if you want to make this Edge non-directed then please be sure to add an
      * Edge going from target to source.
      *
-     * @param source The source Node for the Edge.
-     * @param target The target Node for the Edge.
+     * @param source The source Vertex for the Edge.
+     * @param target The target Vertex for the Edge.
      * @return True if the Edge was created and added to this Graph; otherwise false.
      */
-    public boolean add(@NotNull Node<T, E> source, @NotNull Node<T, E> target) {
-        if (!nodes.containsKey(Objects.requireNonNull(source).getId()) ||
-                !nodes.containsKey(Objects.requireNonNull(target).getId())) {
+    public boolean add(@NotNull Vertex<T, E> source, @NotNull Vertex<T, E> target) {
+        if (!vertices.containsKey(Objects.requireNonNull(source).getId()) ||
+                !vertices.containsKey(Objects.requireNonNull(target).getId())) {
             return false;
         }
 
@@ -270,64 +270,64 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
 
     /**
      * Adds a new Edge to this Graph from source to target with the specified label and weight.
-     * Both source and target must already exist as Nodes in this Graph or else the add will fail.
+     * Both source and target must already exist as Vertices in this Graph or else the add will fail.
      * <p>
      * Also note that if you want to make this Edge non-directed then please be sure to add an
      * Edge going from target to source.
      *
-     * @param sourceId The ID of the source Node for the Edge.
-     * @param targetId The ID of the target Node for the Edge.
+     * @param sourceId The ID of the source Vertex for the Edge.
+     * @param targetId The ID of the target Vertex for the Edge.
      * @param label    The label to use for the new Edge.
      * @param weight   The weight to use for the new Edge.
      * @return True if the Edge was created and added to this Graph; otherwise false.
      */
     public boolean add(@NotNull String sourceId, @NotNull String targetId, @NotNull String label, @NotNull E weight) {
-        if (!nodes.containsKey(Objects.requireNonNull(sourceId)) ||
-                !nodes.containsKey(Objects.requireNonNull(targetId))) {
+        if (!vertices.containsKey(Objects.requireNonNull(sourceId)) ||
+                !vertices.containsKey(Objects.requireNonNull(targetId))) {
             return false;
         }
 
-        return nodes.get(sourceId).add(nodes.get(targetId), Objects.requireNonNull(label), Objects.requireNonNull(weight));
+        return vertices.get(sourceId).add(vertices.get(targetId), Objects.requireNonNull(label), Objects.requireNonNull(weight));
     }
 
     /**
      * Adds a new Edge to this Graph from source to target with the specified label and no weight.
-     * Both source and target must already exist as Nodes in this Graph or else the add will fail.
+     * Both source and target must already exist as Vertices in this Graph or else the add will fail.
      * <p>
      * Also note that if you want to make this Edge non-directed then please be sure to add an
      * Edge going from target to source.
      *
-     * @param sourceId The ID of the source Node for the Edge.
-     * @param targetId The ID of the target Node for the Edge.
+     * @param sourceId The ID of the source Vertex for the Edge.
+     * @param targetId The ID of the target Vertex for the Edge.
      * @param label    The label to use for the new Edge.
      * @return True if the Edge was created and added to this Graph; otherwise false.
      */
     public boolean add(@NotNull String sourceId, @NotNull String targetId, @NotNull String label) {
-        if (!nodes.containsKey(Objects.requireNonNull(sourceId)) ||
-                !nodes.containsKey(Objects.requireNonNull(targetId))) {
+        if (!vertices.containsKey(Objects.requireNonNull(sourceId)) ||
+                !vertices.containsKey(Objects.requireNonNull(targetId))) {
             return false;
         }
 
-        return nodes.get(sourceId).add(nodes.get(targetId), Objects.requireNonNull(label));
+        return vertices.get(sourceId).add(vertices.get(targetId), Objects.requireNonNull(label));
     }
 
     /**
      * Adds a new Edge to this Graph from source to target with a default label and no weight.
-     * Both source and target must already exist as Nodes in this Graph or else the add will fail.
+     * Both source and target must already exist as Vertices in this Graph or else the add will fail.
      * <p>
      * Also note that if you want to make this Edge non-directed then please be sure to add an
      * Edge going from target to source.
      *
-     * @param sourceId The ID of the source Node for the Edge.
-     * @param targetId The ID of the target Node for the Edge.
+     * @param sourceId The ID of the source Vertex for the Edge.
+     * @param targetId The ID of the target Vertex for the Edge.
      * @return True if the Edge was created and added to this Graph; otherwise false.
      */
     public boolean add(@NotNull String sourceId, @NotNull String targetId) {
-        if (!nodes.containsKey(Objects.requireNonNull(sourceId)) || !nodes.containsKey(Objects.requireNonNull(targetId))) {
+        if (!vertices.containsKey(Objects.requireNonNull(sourceId)) || !vertices.containsKey(Objects.requireNonNull(targetId))) {
             return false;
         }
 
-        return nodes.get(sourceId).add(nodes.get(targetId));
+        return vertices.get(sourceId).add(vertices.get(targetId));
     }
 
     public void addAsNew(@NotNull Edge<T, E> edge) {
@@ -340,21 +340,21 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
-     * @return The number of Edges in all Nodes in this Graph.
+     * @return The number of Edges in all Vertices in this Graph.
      */
     public int edgeCount() {
-        return nodes.values().stream().mapToInt(Node::size).sum();
+        return vertices.values().stream().mapToInt(Vertex::size).sum();
     }
 
     /**
-     * Removes all Edges from all Nodes in this Graph.
+     * Removes all Edges from all Vertices in this Graph.
      */
     public void removeEdges() {
-        nodes.values().forEach(Node::clear);
+        vertices.values().forEach(Vertex::clear);
     }
 
     /**
-     * Removes the specified edge from the source Node contained within the Edge.
+     * Removes the specified edge from the source Vertex contained within the Edge.
      * If the Edge was found and successfully removed, the reference to it will
      * be in the returned Optional.
      *
@@ -365,38 +365,38 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     public Optional<Edge<T, E>> remove(@NotNull Edge<T, E> edge) {
         Objects.requireNonNull(edge);
 
-        if (!nodes.containsKey(Objects.requireNonNull(edge.getSource()).getId()) &&
-                !nodes.containsKey(Objects.requireNonNull(edge.getTarget()).getId())) {
+        if (!vertices.containsKey(Objects.requireNonNull(edge.getSource()).getId()) &&
+                !vertices.containsKey(Objects.requireNonNull(edge.getTarget()).getId())) {
             return Optional.empty();
         }
 
-        return nodes.get(edge.getSource().getId()).remove(edge.getTarget());
+        return vertices.get(edge.getSource().getId()).remove(edge.getTarget());
     }
 
     /**
-     * Removes the Edge going from source to target Node.
+     * Removes the Edge going from source to target Vertex.
      *
-     * @param source The source Node that contains the Edge.
-     * @param target The target Node of the Edges we are removing.
+     * @param source The source Vertex that contains the Edge.
+     * @param target The target Vertex of the Edges we are removing.
      * @return The removed Edge.
      */
-    public @NotNull Optional<Edge<T, E>> remove(@NotNull Node<T, E> source, @NotNull Node<T, E> target) {
+    public @NotNull Optional<Edge<T, E>> remove(@NotNull Vertex<T, E> source, @NotNull Vertex<T, E> target) {
         return remove(Objects.requireNonNull(source).getId(), Objects.requireNonNull(target).getId());
     }
 
     /**
-     * Removes the Edge going from source to target Node.
+     * Removes the Edge going from source to target Vertex.
      *
-     * @param source The source Node ID that contains the Edge.
-     * @param target The target Node ID of the Edges we are removing.
+     * @param source The source Vertex ID that contains the Edge.
+     * @param target The target Vertex ID of the Edges we are removing.
      * @return The removed Edge.
      */
     public @NotNull Optional<Edge<T, E>> remove(@NotNull String source, @NotNull String target) {
-        if (!nodes.containsKey(Objects.requireNonNull(source)) && !nodes.containsKey(Objects.requireNonNull(target))) {
+        if (!vertices.containsKey(Objects.requireNonNull(source)) && !vertices.containsKey(Objects.requireNonNull(target))) {
             return Optional.empty();
         }
 
-        return nodes.get(source).remove(nodes.get(target));
+        return vertices.get(source).remove(vertices.get(target));
     }
 
     /**
@@ -404,53 +404,53 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
      */
     @NotNull
     public Set<Edge<T, E>> getEdges() {
-        return nodes.values().stream().flatMap(it -> it.getEdgeSet().stream()).collect(Collectors.toSet());
+        return vertices.values().stream().flatMap(it -> it.getEdgeSet().stream()).collect(Collectors.toSet());
     }
 
     /**
-     * Returns a Set of all Edges coming from the specified Node.
+     * Returns a Set of all Edges coming from the specified Vertex.
      *
-     * @param node The Node to retrieve the Edges from.
-     * @return A Set of all Edges coming from the specified Node.
+     * @param vertex The Vertex to retrieve the Edges from.
+     * @return A Set of all Edges coming from the specified Vertex.
      */
     @NotNull
-    public Set<Edge<T, E>> getEdges(@NotNull Node<T, E> node) {
-        return Objects.requireNonNull(node).getEdgeSet();
+    public Set<Edge<T, E>> getEdges(@NotNull Vertex<T, E> vertex) {
+        return Objects.requireNonNull(vertex).getEdgeSet();
     }
 
     /**
-     * Returns a Set of all Edges coming from the specified Node ID.
+     * Returns a Set of all Edges coming from the specified Vertex ID.
      *
-     * @param nodeId The Node ID to retrieve the Edges from.
-     * @return A Set of all Edges coming from the specified Node ID.
+     * @param vertexId The Vertex ID to retrieve the Edges from.
+     * @return A Set of all Edges coming from the specified Vertex ID.
      */
     @NotNull
-    public Set<Edge<T, E>> getEdges(@NotNull String nodeId) {
-        Objects.requireNonNull(nodeId);
+    public Set<Edge<T, E>> getEdges(@NotNull String vertexId) {
+        Objects.requireNonNull(vertexId);
 
-        if (!nodes.containsKey(Objects.requireNonNull(nodeId))) {
+        if (!vertices.containsKey(Objects.requireNonNull(vertexId))) {
             return Collections.emptySet();
         }
 
-        return getEdges(nodes.get(nodeId));
+        return getEdges(vertices.get(vertexId));
     }
 
     /**
-     * Returns a List of Edges that connect to the specified Node; which includes
+     * Returns a List of Edges that connect to the specified Vertex; which includes
      * any self edges.
      *
-     * @param target The Node that the edges need to connect to.
+     * @param target The Vertex that the edges need to connect to.
      * @return The Set of Edges containing the requested target.
      */
     @NotNull
-    public Set<Edge<T, E>> getEdgesTo(@NotNull Node<T, E> target) {
+    public Set<Edge<T, E>> getEdgesTo(@NotNull Vertex<T, E> target) {
         Objects.requireNonNull(target);
         var answer = new HashSet<Edge<T, E>>();
 
-        nodes.values()
-                .forEach((node) -> {
-                    if (node.getEdges().containsKey(target.getId())) {
-                        answer.add(node.getEdges().get(target.getId()));
+        vertices.values()
+                .forEach((vertex) -> {
+                    if (vertex.getEdges().containsKey(target.getId())) {
+                        answer.add(vertex.getEdges().get(target.getId()));
                     }
                 });
 
@@ -458,29 +458,29 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
-     * Returns a List of Edges that connect to the specified Node; which includes
+     * Returns a List of Edges that connect to the specified Vertex; which includes
      * any self edges.
      *
-     * @param targetId The Node ID that the edges need to connect to.
+     * @param targetId The Vertex ID that the edges need to connect to.
      * @return The Set of Edges containing the requested target.
      */
     @NotNull
     public Set<Edge<T, E>> getEdgesTo(@NotNull String targetId) {
         Objects.requireNonNull(targetId);
 
-        if (!nodes.containsKey(Objects.requireNonNull(targetId))) {
+        if (!vertices.containsKey(Objects.requireNonNull(targetId))) {
             return Collections.emptySet();
         }
 
-        return getEdgesTo(nodes.get(targetId));
+        return getEdgesTo(vertices.get(targetId));
     }
 
     /**
      *
-     * @param nodeId The nodeId to check for existence.
-     * @return True if a Node with the specified nodeId is in this Graph.
+     * @param vertexId The vertexId to check for existence.
+     * @return True if a Vertex with the specified vertexId is in this Graph.
      */
-    public boolean contains(@NotNull String nodeId) {
-        return nodes.containsKey(nodeId);
+    public boolean contains(@NotNull String vertexId) {
+        return vertices.containsKey(vertexId);
     }
 }

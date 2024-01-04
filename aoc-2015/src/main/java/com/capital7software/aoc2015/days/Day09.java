@@ -1,9 +1,9 @@
 package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
+import com.capital7software.aoc2015.lib.graph.network.MinimumSpanningTreeKruskal;
+import com.capital7software.aoc2015.lib.graph.network.MinimumSpanningTreePrim;
 import com.capital7software.aoc2015.lib.graph.parser.Day09Parser;
-import com.capital7software.aoc2015.lib.graph.path.MinimumSpanningTreeKruskal;
-import com.capital7software.aoc2015.lib.graph.path.MinimumSpanningTreePrim;
 
 import java.time.Instant;
 import java.util.List;
@@ -64,10 +64,9 @@ public class Day09 implements AdventOfCodeSolution {
             throw new RuntimeException("A valid Graph is required! " + graph);
         }
 
-        var spanningTree = mstBuilder.spanningTree(graph.get());
+        var mst = mstBuilder.build(graph.get());
 
-        return spanningTree
-                .getEdges()
+        return mst
                 .stream()
                 .filter(it -> it.getWeight().isPresent())
                 .mapToInt(it -> it.getWeight().get())
@@ -82,10 +81,9 @@ public class Day09 implements AdventOfCodeSolution {
             throw new RuntimeException("A valid Graph is required! " + graph);
         }
 
-        var spanningTree = mstBuilder.spanningTree(graph.get());
+        var mst = mstBuilder.build(graph.get());
 
-        return spanningTree
-                .getEdges()
+        return mst
                 .stream()
                 .filter(it -> it.getWeight().isPresent())
                 .mapToInt(it -> it.getWeight().get())
@@ -100,10 +98,9 @@ public class Day09 implements AdventOfCodeSolution {
             throw new RuntimeException("A valid Graph is required! " + graph);
         }
 
-        var spanningTree = mstBuilder.spanningTree(graph.get());
+        var mst = mstBuilder.build(graph.get());
 
-        return spanningTree
-                .getEdges()
+        return mst
                 .stream()
                 .filter(it -> it.getWeight().isPresent())
                 .mapToInt(it -> it.getWeight().get())

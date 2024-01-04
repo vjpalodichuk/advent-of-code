@@ -10,14 +10,14 @@ import java.util.Objects;
  * One example of its use is in detecting cycles of a Graph as in Kruskal's algorithm for building
  * a Minimum Spanning Tree of a Graph.
  * <p>
- * The parent is the ID of the Node that is the parent of this DisjointSet. Typically, this is initially
- * the ID of the Node itself.
+ * The parent is the ID of the Vertex that is the parent of this DisjointSet. Typically, this is initially
+ * the ID of the Vertex itself.
  * <p>
  * The rank is used to speed up the process of merging two DisjointSets as it represents the depth of the tree
  * and membership in a set.
  * <p>
- * Each Node in the Graph should have an associated instance of DisjointSet! Typically, a Map is used to
- * associate a Node with its DisjointSet instance.
+ * Each Vertex in the Graph should have an associated instance of DisjointSet! Typically, a Map is used to
+ * associate a Vertex with its DisjointSet instance.
  * <p>
  * Inspired by the DisjointSetInfo class used in Kruskal's MST algorithm found at:
  * <a href="https://github.com/eugenp/tutorials/tree/master/algorithms-modules/algorithms-miscellaneous-6">...</a>

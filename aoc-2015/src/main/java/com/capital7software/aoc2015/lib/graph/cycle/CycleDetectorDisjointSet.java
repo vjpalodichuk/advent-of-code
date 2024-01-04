@@ -60,9 +60,9 @@ public class CycleDetectorDisjointSet implements CycleDetector {
      * The running time using both Path Compression and Union Rank is
      * O(α(V)), where α(V) is the inverse Ackermann function of the total number of nodes.
      *
-     * @param source The ID of the source Node.
-     * @param target The ID of the target Node.
-     * @return True if a cycle would be formed by adding an Edge from the source Node to the target Node.
+     * @param source The ID of the source Vertex.
+     * @param target The ID of the target Vertex.
+     * @return True if a cycle would be formed by adding an Edge from the source Vertex to the target Vertex.
      */
     @Override
     public boolean detect(@NotNull String source, @NotNull String target) {
@@ -84,7 +84,7 @@ public class CycleDetectorDisjointSet implements CycleDetector {
      * for the parent root node and once found, update teh DisjointSet's parent with the new
      * parent root node.
      *
-     * @param nodeId The nodeId of the Node we are searching for the root parent of.
+     * @param nodeId The nodeId of the Vertex we are searching for the root parent of.
      * @return The root parent node for the specified nodeId.
      */
     @NotNull
@@ -120,10 +120,11 @@ public class CycleDetectorDisjointSet implements CycleDetector {
     /**
      * Sets the parent of the source nodeId to be the targetId's parent.
      *
-     * @param source THe nodeId of the source Node.
-     * @param target The nodeId of the target Node.
+     * @param source THe nodeId of the source Vertex.
+     * @param target The nodeId of the target Vertex.
      */
     @Deprecated
+    @SuppressWarnings("unused")
     private void union(@NotNull String source, @NotNull String target) {
         var disjointSet = nodeIds.get(source);
         disjointSet.setParent(target);
@@ -137,8 +138,8 @@ public class CycleDetectorDisjointSet implements CycleDetector {
      * After merging if the ranks of the two sets prior to the merge were equal,
      * then the rank of the merged set is increased by 1.
      *
-     * @param source The nodeId of the source Node.
-     * @param target The nodeId of the target Node.
+     * @param source The nodeId of the source Vertex.
+     * @param target The nodeId of the target Vertex.
      */
     private void unionRank(@NotNull String source, @NotNull String target) {
         var sourceSet = nodeIds.get(source);

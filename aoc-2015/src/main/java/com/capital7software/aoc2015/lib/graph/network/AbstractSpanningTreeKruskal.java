@@ -1,4 +1,4 @@
-package com.capital7software.aoc2015.lib.graph.path;
+package com.capital7software.aoc2015.lib.graph.network;
 
 
 import com.capital7software.aoc2015.lib.graph.Edge;
@@ -39,7 +39,7 @@ abstract public class AbstractSpanningTreeKruskal<T extends Comparable<T>, E ext
      * @return THe SpanningTree of the specified graph.
      */
     @NotNull
-    protected Graph<T, E> buildSpanningTree(@NotNull Graph<T, E> graph, boolean maximum) {
+    protected Collection<Edge<T, E>> buildSpanningTree(@NotNull Graph<T, E> graph, boolean maximum) {
         var edges = Objects.requireNonNull(graph).getEdges();
         List<Edge<T, E>> edgeList;
 
@@ -55,13 +55,14 @@ abstract public class AbstractSpanningTreeKruskal<T extends Comparable<T>, E ext
                     .toList();
         }
 
-        var nodeIds = graph.getNodeIds();
-        var detector = new CycleDetectorDisjointSet(nodeIds);
+        var vertexIds = graph.getVertexIds();
+        var detector = new CycleDetectorDisjointSet(vertexIds);
 
         // We are done when the number of edges in the spanning tree is one less than the number of Nodes!
         int edgeCount = 0;
 
         var spanningTree = new Graph<T, E>("kruskal-spanning-tree-" + graph.getName());
+        final var result = new ArrayList<Edge<T, E>>(vertexIds.size());
 
         for (var edge : edgeList) {
             if (detector.detect(edge.getSource().getId(), edge.getTarget().getId())) {
@@ -69,10 +70,11 @@ abstract public class AbstractSpanningTreeKruskal<T extends Comparable<T>, E ext
             }
             spanningTree.addAsNew(edge);
             edgeCount++;
-            if (edgeCount == nodeIds.size() - 1) {
+            result.add(edge);
+            if (edgeCount == vertexIds.size() - 1) {
                 break; // We are all done!!
             }
         }
-        return spanningTree;
+        return result;
     }
 }

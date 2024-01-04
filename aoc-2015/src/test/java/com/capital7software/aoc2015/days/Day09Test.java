@@ -44,6 +44,14 @@ class Day09Test {
     }
 
     @Test
+    void distanceOfShortestCycleVisitingEachNodeOnceTest() {
+        var instance = new Day09();
+        var expected = 605;
+        var actual = instance.distanceOfShortestCycleVisitingEachNodeOnce(lines);
+        assertEquals(expected, actual, "Shortest cycle distance is not what was expected: " + expected);
+    }
+
+    @Test
     void distanceOfLongestRouteVisitingEachNodeOnceTest() {
         var instance = new Day09();
         var expected = 982;

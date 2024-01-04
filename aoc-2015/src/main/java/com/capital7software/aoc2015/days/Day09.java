@@ -117,6 +117,32 @@ public class Day09 implements AdventOfCodeSolution {
                 .orElse(0);
     }
 
+    public long distanceOfShortestCycleVisitingEachNodeOnce(List<String> routes) {
+        var graph = new Day09Parser().parse(routes, "day09");
+        var pathFinder = new HamiltonianPathFinder<String, Integer>();
+
+        if (graph.isEmpty()) {
+            throw new RuntimeException("A valid Graph is required! " + graph);
+        }
+
+        var results = new ArrayList<PathFinderResult<String, Integer>>(41000);
+
+        var props = new Properties();
+        props.put(HamiltonianPathFinder.Props.DETECT_CYCLES, Boolean.TRUE);
+        props.put(HamiltonianPathFinder.Props.STARTING_VERTICES, List.of(graph.get().getVertices().get(0)));
+
+        pathFinder.find(graph.get(), props, result -> {
+            results.add(result);
+            return PathFinderStatus.CONTINUE;
+        }, null);
+
+        return results
+                .stream()
+                .mapToInt(it -> it.edges().stream().filter(edge -> edge.getWeight().isPresent()).mapToInt(edge -> edge.getWeight().get()).sum())
+                .min()
+                .orElse(0);
+    }
+
     public long mstKruskal(List<String> routes) {
         var graph = new Day09Parser().parse(routes, "day09");
         var mstBuilder = new MinimumSpanningTreeKruskal<String, Integer>();

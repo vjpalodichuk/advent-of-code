@@ -38,7 +38,7 @@ import java.util.Properties;
  * <p>
  * What is the distance of the shortest route?
  * <p>
- * Your puzzle answer was 117.
+ *     Your puzzle answer was 117.
  * <p>
  * --- Part Two ---
  * The next year, just to show off, Santa decides to take the route with the longest distance instead.
@@ -48,6 +48,9 @@ import java.util.Properties;
  * For example, given the distances above, the longest route would be 982 via (for example) Dublin -> London -> Belfast.
  * <p>
  * What is the distance of the longest route?
+ * <p>
+ *     Your puzzle answer was 909
+ * </p>
  */
 public class Day09 implements AdventOfCodeSolution {
     @Override

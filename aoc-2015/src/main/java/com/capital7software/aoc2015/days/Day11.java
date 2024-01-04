@@ -23,12 +23,20 @@ import java.util.List;
  * Unfortunately for Santa, a new Security-Elf recently started, and he
  * has imposed some additional password requirements:
  * <p>
- * Passwords must include one increasing straight of at least three letters,
- * like abc, bcd, cde, and so on, up to xyz. They cannot skip letters; abd doesn't count.
- * Passwords may not contain the letters i, o, or l, as these letters can
- * be mistaken for other characters and are therefore confusing.
- * Passwords must contain at least two different, non-overlapping pairs
- * of letters, like aa, bb, or zz.
+ *     <ul>
+ *         <li>
+ *             Passwords must include one increasing straight of at least three letters,
+ *             like abc, bcd, cde, and so on, up to xyz. They cannot skip letters; abd doesn't count.
+ *         </li>
+ *         <li>
+ *             Passwords may not contain the letters i, o, or l, as these letters can
+ *             be mistaken for other characters and are therefore confusing.
+ *         </li>
+ *         <li>
+ *             Passwords must contain at least two different, non-overlapping pairs
+ *             of letters, like aa, bb, or zz.
+ *         </li>
+ *     </ul>
  * <p>
  * For example:
  * <p>

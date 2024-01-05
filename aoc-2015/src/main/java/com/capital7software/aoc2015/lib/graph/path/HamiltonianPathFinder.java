@@ -5,8 +5,11 @@ import com.capital7software.aoc2015.lib.graph.Graph;
 import com.capital7software.aoc2015.lib.graph.Vertex;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 /**
@@ -16,12 +19,18 @@ import java.util.function.Function;
  * <p>
  * This implementation is capable of finding both Hamiltonian Paths and Hamiltonian Cycles.
  * <p>
- * This class has two Properties that can be set: Props.DETECT_CYCLES and Props.STARTING_VERTICES.
+ * This class has three Properties that can be set: Props.DETECT_CYCLES, Props.STARTING_VERTICES,
+ * and Props.SUM_PATH.
+ * <p>
  * <p>
  * DETECT_CYCLES: Set to Boolean.TRUE if Hamiltonian Cycles instead of Paths should be built.
  * <p>
  * STARTING_VERTICES: Accepts a List of Vertices to build paths for. Please note that the
  * specified vertices must exist in the Graph specified in the find call.
+ * <p>
+ * SUM_PATH: Sums the edge weights and stores the cost for valid paths only. If DETECT_CYCLES
+ * is set to TRUE, then the Edge weight from the last Vertex to the first Vertex is added
+ * to the sum of the cost as well.
  *
  * @param <T> The type of the value held by Nodes in the graph.
  * @param <E> The type of the weight held by Edges in the graph.
@@ -30,7 +39,8 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
         implements PathFinder<PathFinderResult<T, E>, T, E> {
     public enum Props {
         DETECT_CYCLES,
-        STARTING_VERTICES
+        STARTING_VERTICES,
+        SUM_PATH
     }
 
     @Override
@@ -51,6 +61,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
 
         // Does a cycle need to be created?
         var cycleRequired = isCycleRequired(properties);
+        var sumRequired = isSumRequired(properties);
         var pathId = new AtomicInteger(0);
         var size = vertexMap.values().size();
 
@@ -68,6 +79,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
                     size,
                     pathId,
                     cycleRequired,
+                    sumRequired,
                     pathSoFar,
                     edgesSoFar,
                     idsSoFar,
@@ -96,10 +108,15 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
         }
         if (properties.contains(Props.STARTING_VERTICES)) {
             if ((properties.get(Props.STARTING_VERTICES)) instanceof List<?> list) {
-                return !list.isEmpty() && list.get(0) instanceof Vertex<?, ?>;
+                if (list.isEmpty() || !(list.get(0) instanceof Vertex<?, ?>)) {
+                    return false;
+                }
             } else {
                 return false;
             }
+        }
+        if (properties.contains(Props.SUM_PATH)) {
+            return properties.get(Props.SUM_PATH) instanceof Boolean;
         }
 
         return true;
@@ -118,7 +135,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
      * This implementation will check for the Props.DETECT_CYCLES property and use it if present;
      * otherwise this method returns false.
      *
-     * @param properties The properties to validate.
+     * @param properties The properties to use for this invocation.
      * @return True if cycles should be detected; otherwise false.
      */
     protected boolean isCycleRequired(Properties properties) {
@@ -136,7 +153,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
      * the caller specify the Vertices to build paths for via a Properties instance.
      *
      * @param vertexMap  The Map that contains all the vertices in the Graph.
-     * @param properties The Properties for this invocation.
+     * @param properties The properties to use for this invocation.
      * @return The List of starting Vertices.
      */
     @SuppressWarnings("unchecked")
@@ -156,12 +173,37 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
         return new ArrayList<>(vertexMap.values());
     }
 
+    /**
+     * If this method returns True then for valid paths, the weight of the Edges will be added to the
+     * result the callback receives. If a cycle is also required, then the weight of the Edge from
+     * the last vertex to the first vertex will be included in the sum.
+     * <p>
+     * Implementations that require a sum for a valid path should override this method and have it
+     * return true.
+     * <p>
+     * Properties are provided should the implementation elect to allow the caller to specify if a cycle should
+     * be required.
+     * <p>
+     * This implementation will check for the Props.SUM_PATH property and use it if present;
+     * otherwise this method returns false.
+     *
+     * @param properties The properties to use for this invocation.
+     * @return True if a sum should be done for a valid path; otherwise false.
+     */
+    protected boolean isSumRequired(Properties properties) {
+        if (properties.get(Props.SUM_PATH) instanceof Boolean sumPath) {
+            return sumPath;
+        }
+        return false;
+    }
+
     @NotNull
     private PathFinderStatus findPath(
             List<Vertex<T, E>> vertices,
             int requiredCount,
             AtomicInteger pathId,
             boolean cycleRequired,
+            boolean sumRequired,
             List<Vertex<T, E>> path,
             List<Edge<T, E>> edges,
             Set<String> visitedIds,
@@ -171,15 +213,18 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
         if (path.size() == requiredCount) {
             if (cycleRequired) {
                 // Validate we can get from the last vertex back to the starting vertex!
-                if (path.get(0).getEdge(path.get(path.size() - 1).getId()).isPresent()) {
-                    return validCallback.apply(buildPathResult(path, edges, pathId.getAndIncrement()));
+                var lastVertex = path.get(path.size() - 1);
+                var firstVertex = path.get(0);
+                var edge = lastVertex.getEdge(firstVertex.getId());
+                if (edge.isPresent()) {
+                    return validCallback.apply(buildPathResult(path, edges, pathId.getAndIncrement(), true, sumRequired));
                 } else if (invalidCallback != null) {
                     return invalidCallback.apply(buildPathResult(path, edges, pathId.getAndIncrement()));
                 } else {
                     return PathFinderStatus.CONTINUE;
                 }
             } else {
-                return validCallback.apply(buildPathResult(path, edges, pathId.getAndIncrement()));
+                return validCallback.apply(buildPathResult(path, edges, pathId.getAndIncrement(), false, sumRequired));
             }
         }
 
@@ -199,6 +244,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
                          requiredCount,
                          pathId,
                          cycleRequired,
+                         sumRequired,
                          path,
                          edges,
                          visitedIds,
@@ -234,9 +280,125 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
             @NotNull List<Edge<T, E>> edges,
             int pathId
     ) {
+        return buildPathResult(path, edges, pathId, false, false);
+    }
+
+    @NotNull
+    private PathFinderResult<T, E> buildPathResult(
+            @NotNull List<Vertex<T, E>> path,
+            @NotNull List<Edge<T, E>> edges,
+            int pathId,
+            boolean cycleRequired,
+            boolean sumRequired
+    ) {
         var start = path.get(0);
         var end = path.size() > 1 ? path.get(path.size() - 1) : path.get(0);
+        E sum = null;
 
-        return new PathFinderResult<>(pathId, start, end, new ArrayList<>(edges));
+        if (sumRequired) {
+            sum = calculateSumOfEdges(path, edges, cycleRequired);
+        }
+
+        if (sum == null) {
+            return new PathFinderResult<>(pathId, start, end, new ArrayList<>(path), new ArrayList<>(edges));
+        } else {
+            return new PathFinderResult<>(pathId, start, end, new ArrayList<>(path), new ArrayList<>(edges), sum);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private E calculateSumOfEdges(List<Vertex<T, E>> path, List<Edge<T, E>> edges, boolean cycleRequired) {
+        var size = path.size();
+        var weights = new ArrayList<E>(size);
+
+        weights.addAll(edges.stream().map(Edge::getWeight).filter(Optional::isPresent).map(Optional::get).toList());
+
+        if (cycleRequired) {
+            var lastVertex = path.get(size - 1);
+            var firstVertex = path.get(0);
+            var edge = lastVertex.getEdge(firstVertex.getId());
+
+            if (edge.isEmpty()) {
+                throw new RuntimeException(
+                        "Cycle required passed but no edge from last vertex back to first vertex in path!"
+                );
+            } else {
+                edge.get().getWeight().ifPresent(weights::add);
+            }
+        }
+
+        E eTotal = null;
+
+        if (!weights.isEmpty()) {
+            for (var eWeight : weights) {
+                if (eWeight instanceof Integer weight) {
+                    if (eTotal == null) {
+                        eTotal = (E) weight;
+                    } else {
+                        if (eTotal instanceof Integer total) {
+                            eTotal = (E) ((Integer) (total + weight));
+                        }
+                    }
+                } else if (eWeight instanceof Long weight) {
+                    if (eTotal == null) {
+                        eTotal = (E) weight;
+                    } else {
+                        if (eTotal instanceof Long total) {
+                            eTotal = (E) ((Long) (total + weight));
+                        }
+                    }
+                } else if (eWeight instanceof Double weight) {
+                    if (eTotal == null) {
+                        eTotal = (E) weight;
+                    } else {
+                        if (eTotal instanceof Double total) {
+                            eTotal = (E) ((Double) (total + weight));
+                        }
+                    }
+                } else if (eWeight instanceof Float weight) {
+                    if (eTotal == null) {
+                        eTotal = (E) weight;
+                    } else {
+                        if (eTotal instanceof Float total) {
+                            eTotal = (E) ((Float) (total + weight));
+                        }
+                    }
+                } else if (eWeight instanceof AtomicInteger weight) {
+                    if (eTotal == null) {
+                        eTotal = (E) weight;
+                    } else {
+                        if (eTotal instanceof AtomicInteger total) {
+                            total.set(total.get() + weight.get());
+                        }
+                    }
+                } else if (eWeight instanceof AtomicLong weight) {
+                    if (eTotal == null) {
+                        eTotal = (E) weight;
+                    } else {
+                        if (eTotal instanceof AtomicLong total) {
+                            total.set(total.get() + weight.get());
+                        }
+                    }
+                } else if (eWeight instanceof BigInteger weight) {
+                    if (eTotal == null) {
+                        eTotal = (E) weight;
+                    } else {
+                        if (eTotal instanceof BigInteger total) {
+                            eTotal = (E) total.add(weight);
+                        }
+                    }
+                } else if (eWeight instanceof BigDecimal weight) {
+                    if (eTotal == null) {
+                        eTotal = (E) weight;
+                    } else {
+                        if (eTotal instanceof BigDecimal total) {
+                            eTotal = (E) total.add(weight);
+                        }
+                    }
+                }
+            }
+        }
+
+        return eTotal;
     }
 }

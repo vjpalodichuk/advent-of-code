@@ -20,13 +20,25 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  * For example:
  * <p>
- * hijklmmn meets the first requirement (because it contains the straight hij)
- * but fails the second requirement (because it contains i and l).
- * abbceffg meets the third requirement (because it repeats bb and ff) but fails the first requirement.
- * abbcegjk fails the third requirement, because it only has one double letter (bb).
- * The next password after abcdefgh is abcdffaa.
- * The next password after ghijklmn is ghjaabcc, because you eventually skip
- * all the passwords that start with ghi..., since i is not allowed.
+ * <ul>
+ *     <li>
+ *         hijklmmn meets the first requirement (because it contains the straight hij)
+ *         but fails the second requirement (because it contains i and l).
+ *     </li>
+ *     <li>
+ *         abbceffg meets the third requirement (because it repeats bb and ff) but fails the first requirement.
+ *     </li>
+ *     <li>
+ *         abbcegjk fails the third requirement, because it only has one double letter (bb).
+ *     </li>
+ *     <li>
+ *         The next password after abcdefgh is abcdffaa.
+ *     </li>
+ *     <li>
+ *         The next password after ghijklmn is ghjaabcc, because you eventually skip
+ *         all the passwords that start with ghi..., since i is not allowed.
+ *     </li>
+ * </ul>
  */
 public class PasswordPolicy {
     /**

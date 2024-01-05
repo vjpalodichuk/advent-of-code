@@ -85,6 +85,10 @@ public class Day13Parser implements GraphParser<String, Integer> {
     }
 
     private void parseLine(String line, HashMap<String, Map<String, Long>> map) {
+        if (line == null || line.isBlank()) {
+            return;
+        }
+
         var split1 = line.split(" would ");
         var pMap = map.computeIfAbsent(split1[0].trim(), it -> new HashMap<>());
         var split2 = split1[1].split(" happiness units by sitting next to ");

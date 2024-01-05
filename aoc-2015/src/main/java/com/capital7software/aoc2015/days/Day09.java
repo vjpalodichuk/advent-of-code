@@ -132,6 +132,7 @@ public class Day09 implements AdventOfCodeSolution {
 
         var props = new Properties();
         props.put(HamiltonianPathFinder.Props.DETECT_CYCLES, Boolean.TRUE);
+        props.put(HamiltonianPathFinder.Props.SUM_PATH, Boolean.TRUE);
         props.put(HamiltonianPathFinder.Props.STARTING_VERTICES, List.of(graph.get().getVertices().get(0)));
 
         pathFinder.find(graph.get(), props, result -> {

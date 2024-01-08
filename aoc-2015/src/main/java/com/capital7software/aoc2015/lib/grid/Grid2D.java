@@ -1,8 +1,13 @@
 package com.capital7software.aoc2015.lib.grid;
 
+import com.capital7software.aoc2015.lib.geometry.Direction;
 import com.capital7software.aoc2015.lib.geometry.Point2D;
+import com.capital7software.aoc2015.lib.util.Pair;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -232,5 +237,73 @@ public record Grid2D<T>(int columns, int rows, T[] items) {
      */
     public boolean isOnGrid(Point2D<Integer> point) {
         return isOnGrid(point.x(), point.y());
+    }
+
+    /**
+     * Returns an independent copy of this Grid2D.
+     *
+     * @return An independent copy of this Grid2D.
+     */
+    public @NotNull Grid2D<T> copy() {
+        return new Grid2D<>(columns, rows, Arrays.copyOf(items, items.length));
+    }
+
+    /**
+     * Returns a new Point2D in the direction from the specified point.
+     * <p>
+     * @param x The x point to calculate the new point from.
+     * @param y The y point to calculate the new point from.
+     * @param direction The direction of the new point from the specified point.
+     * @return A new Point2D that is in the direction from the specified point.
+     */
+    public Point2D<Integer> pointInDirection(int x, int y, Direction direction) {
+        return new Point2D<>(x + direction.dx(), y + direction.dy());
+    }
+
+    /**
+     * Returns a new Point2D in the direction from the specified point.
+     * <p>
+     * @param point The point to calculate the new point from.
+     * @param direction The direction of the new point from the specified point.
+     * @return A new Point2D that is in the direction from the specified point.
+     */
+    public Point2D<Integer> pointInDirection(Point2D<Integer> point, Direction direction) {
+        return pointInDirection(point.x(), point.y(), direction);
+    }
+
+    /**
+     * Returns all valid neighbors for the specified point and their current values in this Grid2D. Each
+     * point may have upto eight neighbors.
+     *
+     * @param x The x point to calculate the neighbors from.
+     * @param y The y point to calculate the neighbors from.
+     * @return A list of Pairs where the first property is the point of the neighbor on this Grid2D and the
+     * second property is the value at that point in this Grid2D.
+     */
+    public @NotNull List<Pair<Point2D<Integer>, T>> getAllNeighbors(int x, int y) {
+        List<Pair<Point2D<Integer>, T>> answer = new ArrayList<>(Direction.values().length);
+
+        for (var direction : Direction.values()) {
+            var newPoint = pointInDirection(x, y, direction);
+
+            if (isOnGrid(newPoint)) {
+                var value = get(newPoint);
+                answer.add(new Pair<>(newPoint, value));
+            }
+        }
+
+        return answer;
+    }
+
+    /**
+     * Returns all valid neighbors for the specified point and their current values in this Grid2D. Each
+     * point may have upto eight neighbors.
+     *
+     * @param point The point to get the neighbors of.
+     * @return A list of Pairs where the first property is the point of the neighbor on this Grid2D and the
+     * second property is the value at that point in this Grid2D.
+     */
+    public @NotNull List<Pair<Point2D<Integer>, T>> getAllNeighbors(Point2D<Integer> point) {
+        return getAllNeighbors(point.x(), point.y());
     }
 }

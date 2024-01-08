@@ -93,7 +93,7 @@ public class Day06 implements AdventOfCodeSolution {
     }
 
     public ChristmasLights loadLights(List<String> rawInstructions, int columns, int rows) {
-        return ChristmasLights.build(columns, rows, rawInstructions);
+        return ChristmasLights.buildFromLightingInstructions(columns, rows, rawInstructions);
     }
 
     public long getOnLightCount(ChristmasLights lights) {

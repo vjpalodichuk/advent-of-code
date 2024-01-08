@@ -3,8 +3,7 @@ package com.capital7software.aoc2015.lib.graph.constaint;
 import com.capital7software.aoc2015.lib.util.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -121,7 +120,7 @@ public class SimpleSolver<T extends Number & Comparable<T> > implements Solver<T
     }
 
     private void assignUnknownValues() {
-        var values = valueDomain.getRandomValues(unknowns.size());
+        final List<T> values = valueDomain.getRandomValues(unknowns.size());
 
         var count = new AtomicInteger(0);
 

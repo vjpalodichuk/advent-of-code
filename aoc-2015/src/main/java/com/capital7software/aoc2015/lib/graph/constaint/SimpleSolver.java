@@ -9,6 +9,16 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
+/**
+ * The SimpleSolver is a simple and straightforward implementation of the Solver interface.<br>
+ * This Solver uses Random values generated from the ValueDomain and with each iteration a
+ * new set of Random values is assigned. A more complex implementation would try to improve the score
+ * of the current assignment prior to getting all new Random values. That is left as an exercise for later!
+ * <br><br><b>Because this Solver always gets a new set of Random values for the Unknowns a high number of
+ * iterations should be specified to ensure that the actual minimum or maximum value is found.</b><br>
+ *
+ * @param <T> The type of the value used and produced by this Solver instance.
+ */
 public class SimpleSolver<T extends Number & Comparable<T> > implements Solver<T>{
     private final Map<String, T> unknowns;
     private ValueDomain<T> valueDomain;
@@ -50,12 +60,12 @@ public class SimpleSolver<T extends Number & Comparable<T> > implements Solver<T
     }
 
     @Override
-    public @NotNull Pair<T, Map<String, T>> max(long maxIterations) {
+    public @NotNull Pair<T, Map<String, T>> max(long maxIterations) throws IllegalStateException {
         return calculate(maxIterations, true);
     }
 
     @Override
-    public @NotNull Pair<T, Map<String, T>> min(long maxIterations) {
+    public @NotNull Pair<T, Map<String, T>> min(long maxIterations) throws IllegalStateException {
         return calculate(maxIterations, false);
     }
 

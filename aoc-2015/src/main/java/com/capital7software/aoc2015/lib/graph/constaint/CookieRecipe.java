@@ -8,10 +8,56 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * You set out on the task of perfecting your milk-dunking cookie recipe.
+ * All you have to do is find the right balance of ingredients.
+ * <p>
+ * Your recipe leaves room for exactly 100 teaspoons of ingredients.
+ * You make a list of the remaining ingredients you could use to finish the recipe
+ * and their properties per teaspoon:<br><br>
+ * <p>
+ * capacity (how well it helps the cookie absorb milk)<br>
+ * durability (how well it keeps the cookie intact when full of milk)<br>
+ * flavor (how tasty it makes the cookie)<br>
+ * texture (how it improves the feel of the cookie)<br>
+ * calories (how many calories it adds to the cookie)<br><br>
+ * You can only measure ingredients in whole-teaspoon amounts accurately,
+ * and you have to be accurate, so you can reproduce your results in the future.<br> <br>
+ * The total score of a cookie can be found by adding up each of the properties
+ * (negative totals become 0) and then multiplying together everything except calories.
+ * <p><br>
+ * For instance, suppose you have these two ingredients:
+ * <p>
+ * Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8<br>
+ * Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3<br><br>
+ * Then, choosing to use 44 teaspoons of butterscotch and 56 teaspoons of cinnamon
+ * (because the amounts of each ingredient must add up to 100) would result in a cookie with the following properties:
+ * <p>
+ * A capacity of 44*-1 + 56*2 = 68<br>
+ * A durability of 44*-2 + 56*3 = 80<br>
+ * A flavor of 44*6 + 56*-2 = 152<br>
+ * A texture of 44*3 + 56*-1 = 76<br><br>
+ * Multiplying these together (68 * 80 * 152 * 76, ignoring calories for now)<br>
+ * results in a total score of 62842880, which happens to be the best score possible given these ingredients.<br><br>
+ * If any properties had produced a negative total,
+ * it would have instead become zero, causing the whole score to multiply to zero.
+ *
+ * @param ingredients The list of available Ingredients.
+ */
 public record CookieRecipe(List<Ingredient> ingredients) {
     public static final long MAX_ITERATIONS = 10_000_000L;
     public static final long CALORIES_TARGET = 500L;
 
+    /**
+     * A simple data class for holding the properties of an Ingredient.
+     *
+     * @param name       The name of the Ingredient.
+     * @param capacity   How well it helps the cookie absorb milk.
+     * @param durability How well it keeps the cookie intact when full of milk.
+     * @param flavor     How tasty it makes the cookie.
+     * @param texture    How it improves the feel of the cookie.
+     * @param calories   How many calories it adds to the cookie.
+     */
     public record Ingredient(
             String name,
             long capacity,
@@ -19,8 +65,25 @@ public record CookieRecipe(List<Ingredient> ingredients) {
             long flavor,
             long texture,
             long calories
-    ) {}
+    ) {
+    }
 
+    /**
+     * Parses a list of Ingredients and returns a new CookieRecipe instance with the list of parsed Ingredients.
+     * <br><br>
+     * Parses Ingredients in the following format:<br>
+     * <ul>
+     *     <li>
+     *         Sugar: capacity 3, durability 0, flavor 0, texture -3, calories 2
+     *     </li>
+     *     <li>
+     *         Sprinkles: capacity -3, durability 3, flavor 0, texture 0, calories 9
+     *     </li>
+     * </ul>
+     *
+     * @param input The list of Ingredients to parse.
+     * @return A new CookieRecipe instance with the list of parsed Ingredients.
+     */
     public static CookieRecipe parse(List<String> input) {
         return new CookieRecipe(input.stream().map(CookieRecipe::parseLine).filter(Objects::nonNull).toList());
     }
@@ -58,6 +121,14 @@ public record CookieRecipe(List<Ingredient> ingredients) {
         return new Ingredient(name, capacity, durability, flavor, texture, calories);
     }
 
+    /**
+     * Returns the best scoring recipe as a Pair where the first property is the score and the second is a
+     * Map of the ingredients used the number of teaspoons used of the ingredients.
+     *
+     * @param caloriesRestricted Set to true if the best cookie has to contain exactly 500 calories.
+     * @return The best scoring recipe as a Pair where the first property is the score and the second is a
+     * Map of the ingredients used the number of teaspoons used of the ingredients.
+     */
     public Pair<Long, Map<Ingredient, Long>> getBestRecipe(boolean caloriesRestricted) {
         var solver = setupSolver(caloriesRestricted);
 

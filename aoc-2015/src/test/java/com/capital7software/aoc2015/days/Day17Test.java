@@ -54,9 +54,9 @@ class Day17Test {
 
         var actual = instance.combinationsOfContainersToHoldEggNog(25, lines);
 
-        var min = actual.second().stream().min(Comparator.naturalOrder()).orElse(-1);
+        var min = actual.second().stream().map(List::size).min(Comparator.naturalOrder()).orElse(-1);
         assertEquals(minExpected, min, "The minimum number of containers needed did not meet expectations: " + minExpected);
-        var minCount = actual.second().stream().filter(it -> it.equals(min)).count();
+        var minCount = actual.second().stream().filter(it -> it.size() == min).count();
         assertEquals(expected, minCount, "The number of Egg Nog container combinations " +
                 "is not what was expected: " + expected);
     }

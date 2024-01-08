@@ -57,14 +57,14 @@ public class Day17 implements AdventOfCodeSolution {
     public void runPart2(List<String> input) {
         var start = Instant.now();
         var combinations = combinationsOfContainersToHoldEggNog(150, input);
-        var min = combinations.second().stream().min(Comparator.naturalOrder()).orElse(-1);
-        var minCount = combinations.second().stream().filter(it -> it.equals(min)).count();
+        var min = combinations.second().stream().map(List::size).min(Comparator.naturalOrder()).orElse(-1);
+        var minCount = combinations.second().stream().filter(it -> it.size() == min).count();
         var end = Instant.now();
         System.out.printf("The minimum number of containers needed is %d and there are %d of those containers on hand%n", min, minCount);
         printTiming(start, end);
     }
 
-    public Pair<Integer, List<Integer>> combinationsOfContainersToHoldEggNog(int liters, List<String> input) {
+    public Pair<Integer, List<List<Long>>> combinationsOfContainersToHoldEggNog(int liters, List<String> input) {
         var nog = EggNog.parse(liters, input);
 
         return nog.combinations();

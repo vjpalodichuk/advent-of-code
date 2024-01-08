@@ -1,7 +1,24 @@
 package com.capital7software.aoc2015.lib.analysis;
 
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * Properties that various Aunt Sues have.
+ *
+ * @param id The ID in that uniquely identifies this Aunt Sue.
+ * @param children The number of children she may have; may be null if unknown.
+ * @param cats The number of cats she may have; may be null if unknown.
+ * @param samoyeds The number of samayeds she may have; may be null if unknown.
+ * @param pomeranians The number of pomeranians she may have; may be null if unknown.
+ * @param akitas The number of akitas she may have; may be null if unknown.
+ * @param vizslas The number of vixslas she may have; may be null if unknown.
+ * @param goldfish The number of goldfish she may have; may be null if unknown.
+ * @param trees The number of trees she may have; may be null if unknown.
+ * @param cars The number of cars she may own; may be null if unknown.
+ * @param perfumes The number of perfumes she may be wearing; may be null if unknown.
+ */
 public record AuntSue(
-        Integer id,
+        @NotNull Integer id,
         Integer children,
         Integer cats,
         Integer samoyeds,
@@ -13,6 +30,26 @@ public record AuntSue(
         Integer cars,
         Integer perfumes
 ) {
+    /**
+     * Parses the input and creates an Aunt Sue instance.
+     * <p>
+     * The input must be in this format:
+     * <p>
+     * <ul>
+     *     <li>
+     *         Sue 1: goldfish: 9, cars: 0, samoyeds: 9
+     *     </li>
+     *     <li>
+     *         Sue 9: cats: 4, pomeranians: 0, trees: 0
+     *     </li>
+     * </ul>
+     * <p>
+     * Only known properties should be specified. If a property not supported by this record is
+     * listed an exception is thrown.
+     *
+     * @param input The input string to parse. Must be in the above format.
+     * @return A new Aunt Sue instance with the values from the specified input.
+     */
     public static AuntSue parse(String input) {
         if (input == null || input.isBlank()) {
             return null;

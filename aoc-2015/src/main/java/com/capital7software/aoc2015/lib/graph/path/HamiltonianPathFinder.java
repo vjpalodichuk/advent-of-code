@@ -108,7 +108,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
         }
         if (properties.contains(Props.STARTING_VERTICES)) {
             if ((properties.get(Props.STARTING_VERTICES)) instanceof List<?> list) {
-                if (list.isEmpty() || !(list.get(0) instanceof Vertex<?, ?>)) {
+                if (list.isEmpty() || !(list.getFirst() instanceof Vertex<?, ?>)) {
                     return false;
                 }
             } else {
@@ -213,8 +213,8 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
         if (path.size() == requiredCount) {
             if (cycleRequired) {
                 // Validate we can get from the last vertex back to the starting vertex!
-                var lastVertex = path.get(path.size() - 1);
-                var firstVertex = path.get(0);
+                var lastVertex = path.getLast();
+                var firstVertex = path.getFirst();
                 var edge = lastVertex.getEdge(firstVertex.getId());
                 if (edge.isPresent()) {
                     return validCallback.apply(buildPathResult(path, edges, pathId.getAndIncrement(), true, sumRequired));
@@ -233,9 +233,9 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
         // Go through all the vertices
         for (var vertex : vertices) {
              if (!visitedIds.contains(vertex.getId()) &&
-                     path.get(path.size() - 1).getEdge(vertex.getId()).isPresent()) {
+                     path.getLast().getEdge(vertex.getId()).isPresent()) {
                  // Add the vertex and edge to the path and mark the vertex as visited.
-                 edges.add(path.get(path.size() - 1).getEdge(vertex.getId()).get());
+                 edges.add(path.getLast().getEdge(vertex.getId()).get());
                  visitedIds.add(vertex.getId());
                  path.add(vertex);
 
@@ -254,9 +254,9 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
                  lastStatus = status;
 
                  // Clean-up
-                 path.remove(path.size() - 1);
+                 path.removeLast();
                  visitedIds.remove(vertex.getId());
-                 edges.remove(edges.size() - 1);
+                 edges.removeLast();
 
                  if (status != PathFinderStatus.CONTINUE) {
                      return status;
@@ -291,8 +291,8 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
             boolean cycleRequired,
             boolean sumRequired
     ) {
-        var start = path.get(0);
-        var end = path.size() > 1 ? path.get(path.size() - 1) : path.get(0);
+        var start = path.getFirst();
+        var end = path.size() > 1 ? path.getLast() : path.getFirst();
         E sum = null;
 
         if (sumRequired) {
@@ -314,8 +314,8 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
         weights.addAll(edges.stream().map(Edge::getWeight).filter(Optional::isPresent).map(Optional::get).toList());
 
         if (cycleRequired) {
-            var lastVertex = path.get(size - 1);
-            var firstVertex = path.get(0);
+            var lastVertex = path.getLast();
+            var firstVertex = path.getFirst();
             var edge = lastVertex.getEdge(firstVertex.getId());
 
             if (edge.isEmpty()) {

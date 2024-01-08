@@ -1,6 +1,7 @@
 package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
+import com.capital7software.aoc2015.lib.graph.constaint.CookieRecipe;
 
 import java.time.Instant;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
  * texture (how it improves the feel of the cookie)
  * calories (how many calories it adds to the cookie)
  * You can only measure ingredients in whole-teaspoon amounts accurately,
- * and you have to be accurate so you can reproduce your results in the future.
+ * and you have to be accurate, so you can reproduce your results in the future.
  * The total score of a cookie can be found by adding up each of the properties
  * (negative totals become 0) and then multiplying together everything except calories.
  * <p>
@@ -62,10 +63,21 @@ import java.util.List;
  * Given the ingredients in your kitchen and their properties, what is the total
  * score of the highest-scoring cookie you can make?
  * <p>
- * Your puzzle answer was .
+ * Your puzzle answer was 222870.
  * <p>
+ * --- Part Two ---
+ * Your cookie recipe becomes wildly popular! Someone asks if you can make another recipe that has exactly
+ * 500 calories per cookie (so they can use it as a meal replacement). Keep the rest of your award-winning
+ * process the same (100 teaspoons, same ingredients, same scoring system).
  * <p>
- * Your puzzle answer was .
+ * For example, given the ingredients above, if you had instead selected 40 teaspoons of butterscotch and
+ * 60 teaspoons of cinnamon (which still adds to 100), the total calorie count would be 40*8 + 60*3 = 500.
+ * The total score would go down, though: only 57600000, the best you can do in such trying circumstances.
+ * <p>
+ * Given the ingredients in your kitchen and their properties, what is the total score of the highest-scoring
+ * cookie you can make with a calorie total of 500?
+ * <p>
+ * Your puzzle answer was 117936.
  * <p>
  */
 public class Day15 implements AdventOfCodeSolution {
@@ -83,7 +95,28 @@ public class Day15 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    @Override
+    public void runPart2(List<String> input) {
+        var start = Instant.now();
+        var max = whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(input);
+        var end = Instant.now();
+        System.out.printf("Total score of the highest scoring calorie restricted cookie is: %d%n", max);
+        printTiming(start, end);
+    }
+
     public long whatIsTheTotalScoreOfTheHighestScoringCookie(List<String> input) {
-        return 0;
+        var cookieRecipe = CookieRecipe.parse(input);
+
+        var max = cookieRecipe.getBestRecipe(false);
+
+        return max.first();
+    }
+
+    public long whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(List<String> input) {
+        var cookieRecipe = CookieRecipe.parse(input);
+
+        var max = cookieRecipe.getBestRecipe(true);
+
+        return max.first();
     }
 }

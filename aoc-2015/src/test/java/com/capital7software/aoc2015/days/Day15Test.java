@@ -38,22 +38,20 @@ class Day15Test {
     @Test
     void whatIsTheTotalScoreOfTheHighestScoringCookie() {
         var instance = new Day15();
-        long [] expected = {0, 0, 0, 0};
+        long expected = 62_842_880;
 
         var actual = instance.whatIsTheTotalScoreOfTheHighestScoringCookie(lines);
-        assertEquals(expected[0], actual, "The distance traveled of the winning reindeer is " +
-                "not what was expected: " + expected[0]);
+        assertEquals(expected, actual, "The total score of the highest-scoring " +
+                "cookie is not what was expected: " + expected);
+    }
 
-        actual = instance.whatIsTheTotalScoreOfTheHighestScoringCookie(lines);
-        assertEquals(expected[1], actual, "The distance traveled of the winning reindeer is " +
-                "not what was expected: " + expected[0]);
+    @Test
+    void whatIsTheTotalScoreOfTheHighestScoringCalorieRestrictedCookie() {
+        var instance = new Day15();
+        long expected = 57_600_000;
 
-        actual = instance.whatIsTheTotalScoreOfTheHighestScoringCookie(lines);
-        assertEquals(expected[2], actual, "The distance traveled of the winning reindeer is " +
-                "not what was expected: " + expected[0]);
-
-        actual = instance.whatIsTheTotalScoreOfTheHighestScoringCookie(lines);
-        assertEquals(expected[3], actual, "The distance traveled of the winning reindeer is " +
-                "not what was expected: " + expected[0]);
+        var actual = instance.whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(lines);
+        assertEquals(expected, actual, "The total score of the highest-scoring " +
+                "cookie is not what was expected: " + expected);
     }
 }

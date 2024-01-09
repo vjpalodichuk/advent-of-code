@@ -89,7 +89,7 @@ public class Day15 implements AdventOfCodeSolution {
     @Override
     public void runPart1(List<String> input) {
         var start = Instant.now();
-        var max = whatIsTheTotalScoreOfTheHighestScoringCookie(input);
+        var max = whatIsTheTotalScoreOfTheHighestScoringCookie(input, CookieRecipe.MAX_ITERATIONS);
         var end = Instant.now();
         System.out.printf("Total score of the highest scoring cookie is: %d%n", max);
         printTiming(start, end);
@@ -98,24 +98,24 @@ public class Day15 implements AdventOfCodeSolution {
     @Override
     public void runPart2(List<String> input) {
         var start = Instant.now();
-        var max = whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(input);
+        var max = whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(input, CookieRecipe.MAX_ITERATIONS);
         var end = Instant.now();
         System.out.printf("Total score of the highest scoring calorie restricted cookie is: %d%n", max);
         printTiming(start, end);
     }
 
-    public long whatIsTheTotalScoreOfTheHighestScoringCookie(List<String> input) {
+    public long whatIsTheTotalScoreOfTheHighestScoringCookie(List<String> input, long iterations) {
         var cookieRecipe = CookieRecipe.parse(input);
 
-        var max = cookieRecipe.getBestRecipe(false);
+        var max = cookieRecipe.getBestRecipe(false, iterations);
 
         return max.first();
     }
 
-    public long whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(List<String> input) {
+    public long whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(List<String> input, long iterations) {
         var cookieRecipe = CookieRecipe.parse(input);
 
-        var max = cookieRecipe.getBestRecipe(true);
+        var max = cookieRecipe.getBestRecipe(true, iterations);
 
         return max.first();
     }

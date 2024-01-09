@@ -126,13 +126,14 @@ public record CookieRecipe(List<Ingredient> ingredients) {
      * Map of the ingredients used the number of teaspoons used of the ingredients.
      *
      * @param caloriesRestricted Set to true if the best cookie has to contain exactly 500 calories.
+     * @param maxIterations The maximum number of iterations to perform.
      * @return The best scoring recipe as a Pair where the first property is the score and the second is a
      * Map of the ingredients used the number of teaspoons used of the ingredients.
      */
-    public Pair<Long, Map<Ingredient, Long>> getBestRecipe(boolean caloriesRestricted) {
+    public Pair<Long, Map<Ingredient, Long>> getBestRecipe(boolean caloriesRestricted, long maxIterations) {
         var solver = setupSolver(caloriesRestricted);
 
-        var max = solver.max(MAX_ITERATIONS);
+        var max = solver.max(maxIterations);
 
         return new Pair<>(
                 max.first(),

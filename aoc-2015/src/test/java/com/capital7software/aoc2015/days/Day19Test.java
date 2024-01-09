@@ -8,18 +8,17 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class Day17Test {
+class Day19Test {
     List<String> lines;
     Path path;
 
     @BeforeEach
     void setUp() {
-        var instance = new Day17();
+        var instance = new Day19();
         setupFromFile(instance.getDefaultInputFilename());
     }
 
@@ -37,27 +36,22 @@ class Day17Test {
     }
 
     @Test
-    void combinationsOfContainersToHoldEggNog() {
-        var instance = new Day17();
-        int expected = 4;
+    void calibrate() {
+        var instance = new Day19();
+        int expected = 7;
 
-        var actual = instance.combinationsOfContainersToHoldEggNog(25, lines);
-        assertEquals(expected, actual.first(), "The number of Egg Nog container combinations " +
+        var actual = instance.calibrate(lines);
+        assertEquals(expected, actual.first(), "The number of distinct molecules " +
                 "is not what was expected: " + expected);
     }
 
     @Test
-    void minimumNumberOfContainersToHoldEggNog() {
-        var instance = new Day17();
-        int expected = 3;
-        int minExpected = 2;
+    void fabricate() {
+        var instance = new Day19();
+        int expected = 6;
 
-        var actual = instance.combinationsOfContainersToHoldEggNog(25, lines);
-
-        var min = actual.second().stream().map(List::size).min(Comparator.naturalOrder()).orElse(-1);
-        assertEquals(minExpected, min, "The minimum number of containers needed did not meet expectations: " + minExpected);
-        var minCount = actual.second().stream().filter(it -> it.size() == min).count();
-        assertEquals(expected, minCount, "The number of Egg Nog container combinations " +
+        var actual = instance.fabricate(lines);
+        assertEquals(expected, actual.first(), "The fewest number of steps to build the medicine " +
                 "is not what was expected: " + expected);
     }
 }

@@ -8,18 +8,17 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class Day17Test {
+class Day18Test {
     List<String> lines;
     Path path;
 
     @BeforeEach
     void setUp() {
-        var instance = new Day17();
+        var instance = new Day18();
         setupFromFile(instance.getDefaultInputFilename());
     }
 
@@ -37,27 +36,23 @@ class Day17Test {
     }
 
     @Test
-    void combinationsOfContainersToHoldEggNog() {
-        var instance = new Day17();
+    void animateLights() {
+        var instance = new Day18();
         int expected = 4;
 
-        var actual = instance.combinationsOfContainersToHoldEggNog(25, lines);
-        assertEquals(expected, actual.first(), "The number of Egg Nog container combinations " +
+        var actual = instance.animateLights(4, lines, false);
+        assertEquals(expected, actual.first(), "The number of lights on " +
                 "is not what was expected: " + expected);
     }
 
     @Test
-    void minimumNumberOfContainersToHoldEggNog() {
-        var instance = new Day17();
-        int expected = 3;
-        int minExpected = 2;
+    void animateLightsCornersAlwaysOn() {
+        var instance = new Day18();
+        int expected = 17;
 
-        var actual = instance.combinationsOfContainersToHoldEggNog(25, lines);
-
-        var min = actual.second().stream().map(List::size).min(Comparator.naturalOrder()).orElse(-1);
-        assertEquals(minExpected, min, "The minimum number of containers needed did not meet expectations: " + minExpected);
-        var minCount = actual.second().stream().filter(it -> it.size() == min).count();
-        assertEquals(expected, minCount, "The number of Egg Nog container combinations " +
+        var actual = instance.animateLights(5, lines, true);
+        assertEquals(expected, actual.first(), "The number of lights on " +
                 "is not what was expected: " + expected);
     }
+
 }

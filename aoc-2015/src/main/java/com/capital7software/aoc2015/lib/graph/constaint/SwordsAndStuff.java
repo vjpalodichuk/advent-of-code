@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <p><br>
- * In this game, the player (you) and the enemy (the boss) take turns attacking.
- * The player always goes first. Each attack reduces the opponent's hit points by at least 1.
+ * In this game, the mage (you) and the enemy (the boss) take turns attacking.
+ * The mage always goes first. Each attack reduces the opponent's hit points by at least 1.
  * The first character at or below 0 hit points loses.
  * <p><br>
  * Damage dealt by an attacker each turn is equal to the attacker's damage score minus the
@@ -54,24 +54,24 @@ import java.util.concurrent.atomic.AtomicInteger;
  * For example, suppose you have 8 hit points, 5 damage, and 5 armor,
  * and that the boss has 12 hit points, 7 damage, and 2 armor:
  * <p><br>
- * The player deals 5-2 = 3 damage; the boss goes down to 9 hit points.<br>
- * The boss deals 7-5 = 2 damage; the player goes down to 6 hit points.<br>
- * The player deals 5-2 = 3 damage; the boss goes down to 6 hit points.<br>
- * The boss deals 7-5 = 2 damage; the player goes down to 4 hit points.<br>
- * The player deals 5-2 = 3 damage; the boss goes down to 3 hit points.<br>
- * The boss deals 7-5 = 2 damage; the player goes down to 2 hit points.<br>
- * The player deals 5-2 = 3 damage; the boss goes down to 0 hit points.<br>
+ * The mage deals 5-2 = 3 damage; the boss goes down to 9 hit points.<br>
+ * The boss deals 7-5 = 2 damage; the mage goes down to 6 hit points.<br>
+ * The mage deals 5-2 = 3 damage; the boss goes down to 6 hit points.<br>
+ * The boss deals 7-5 = 2 damage; the mage goes down to 4 hit points.<br>
+ * The mage deals 5-2 = 3 damage; the boss goes down to 3 hit points.<br>
+ * The boss deals 7-5 = 2 damage; the mage goes down to 2 hit points.<br>
+ * The mage deals 5-2 = 3 damage; the boss goes down to 0 hit points.<br>
  * <p><br>
- * In this scenario, the player wins! (Barely.)
+ * In this scenario, the mage wins! (Barely.)
  * <p>
  *
  * @param shop   The ItemShop that this simulator will use.
- * @param player You are the player!!
+ * @param player You are the mage!!
  * @param boss   The Boss is a mean one!
  */
-public record RolePlayingSimulator(ItemShop shop, Player player, Player boss) {
+public record SwordsAndStuff(ItemShop shop, Player player, Player boss) {
 
-    public static final int MAX_ITERATIONS = 10_000;
+    public static final int MAX_ITERATIONS = 1_000;
 
     public enum ItemType {
         WEAPON(1, 1),
@@ -140,9 +140,9 @@ public record RolePlayingSimulator(ItemShop shop, Player player, Player boss) {
      * Builds a simulator instance from the specified input
      *
      * @param input The lines of input
-     * @return A new RolePlayingSimulator instance populated with the data from the input.
+     * @return A new SwordsAndStuff instance populated with the data from the input.
      */
-    public static RolePlayingSimulator buildSimulator(List<String> input) {
+    public static SwordsAndStuff buildSimulator(List<String> input) {
         var inWeapons = new AtomicBoolean(false);
         var inArmor = new AtomicBoolean(false);
         var inRings = new AtomicBoolean(false);
@@ -200,7 +200,7 @@ public record RolePlayingSimulator(ItemShop shop, Player player, Player boss) {
             }
         }
 
-        return new RolePlayingSimulator(new ItemShop(weapons, armor, rings), player, boss);
+        return new SwordsAndStuff(new ItemShop(weapons, armor, rings), player, boss);
     }
 
     private static Item parseItem(String line, ItemType type) {
@@ -234,12 +234,12 @@ public record RolePlayingSimulator(ItemShop shop, Player player, Player boss) {
     /**
      * Finds the least expensive Items You can buy to win this game against the Boss.<p><br>This method returns
      * a Pair where the first property is the amount of gold spent to win the game and the second
-     * property is a copy of the Player and the items it carries.<p><br>The sum of the cost of the items in the Player
+     * property is a copy of the Mage and the items it carries.<p><br>The sum of the cost of the items in the Mage
      * is the same as that found in the first property of the Pair.<p><br>
      * When this method returns the simulation is returned to its starting state.
      *
      * @return A Pair where the first property is the amount of gold spent to win the game and the second
-     * property is a copy of the Player and the items it carries.
+     * property is a copy of the Mage and the items it carries.
      */
     public Pair<Integer, Player> calculateLeastGoldSpentToWinTheGame() {
         var solver = createSolver(true);
@@ -253,12 +253,12 @@ public record RolePlayingSimulator(ItemShop shop, Player player, Player boss) {
     /**
      * Finds the most expensive Items You can buy and still Lose this game against the Boss.<p><br>This method returns
      * a Pair where the first property is the amount of gold spent to lose the game and the second
-     * property is a copy of the Player and the items it carries.<p><br>The sum of the cost of the items in the Player
+     * property is a copy of the Mage and the items it carries.<p><br>The sum of the cost of the items in the Mage
      * is the same as that found in the first property of the Pair.<p><br>
      * When this method returns the simulation is returned to its starting state.
      *
      * @return A Pair where the first property is the amount of gold spent to lose the game and the second
-     * property is a copy of the Player and the items it carries.
+     * property is a copy of the Mage and the items it carries.
      */
     public Pair<Integer, Player> calculateMostAmountOfGoldAndStillLose() {
         var solver = createSolver(false);
@@ -349,7 +349,7 @@ public record RolePlayingSimulator(ItemShop shop, Player player, Player boss) {
         if (playerWins) {
             solver.addConstraint("playerWins", (items, variables) -> willPlayerWin());
         } else {
-            solver.addConstraint("playerWins", (items, variables) -> !willPlayerWin());
+            solver.addConstraint("playerLoses", (items, variables) -> !willPlayerWin());
         }
         return solver;
     }
@@ -363,7 +363,7 @@ public record RolePlayingSimulator(ItemShop shop, Player player, Player boss) {
 
     private static int turnsTillPlayerDies(Player defender, Player attacker) {
         // turnsTillDeath = hit-points / damage-taken-each-turn + 1 if there is any remainder.
-        // If the player and boss both have the same turnsTillDeath the player will win as they go first!
+        // If the mage and boss both have the same turnsTillDeath the mage will win as they go first!
         var damageDealt = calculateDamageDealt(defender, attacker);
         var turnsTillDeath = defender.getHitPoints() / damageDealt;
 

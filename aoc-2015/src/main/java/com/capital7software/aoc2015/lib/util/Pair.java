@@ -34,11 +34,11 @@ public final class Pair<T, U> {
         return second;
     }
 
-    public void setFirst(T first) {
+    public void first(T first) {
         this.first = first;
     }
 
-    public void setSecond(U second) {
+    public void second(U second) {
         this.second = second;
     }
 

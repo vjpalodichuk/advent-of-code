@@ -1,7 +1,7 @@
 package com.capital7software.aoc2015.days;
 
 import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.graph.constaint.RolePlayingSimulator;
+import com.capital7software.aoc2015.lib.graph.constaint.SwordsAndStuff;
 
 import java.time.Instant;
 import java.util.List;
@@ -11,8 +11,8 @@ import java.util.List;
  * Little Henry Case got a new video game for Christmas. It's an RPG, and he's stuck on a boss.
  * He needs to know what equipment to buy at the shop. He hands you the controller.
  * <p><br>
- * In this game, the player (you) and the enemy (the boss) take turns attacking.
- * The player always goes first. Each attack reduces the opponent's hit points by at least 1.
+ * In this game, the mage (you) and the enemy (the boss) take turns attacking.
+ * The mage always goes first. Each attack reduces the opponent's hit points by at least 1.
  * The first character at or below 0 hit points loses.
  * <p><br>
  * Damage dealt by an attacker each turn is equal to the attacker's damage score minus the
@@ -53,15 +53,15 @@ import java.util.List;
  * <p><br>
  * For example, suppose you have 8 hit points, 5 damage, and 5 armor, and that the boss has 12 hit points, 7 damage, and 2 armor:
  * <p><br>
- * The player deals 5-2 = 3 damage; the boss goes down to 9 hit points.<br>
- * The boss deals 7-5 = 2 damage; the player goes down to 6 hit points.<br>
- * The player deals 5-2 = 3 damage; the boss goes down to 6 hit points.<br>
- * The boss deals 7-5 = 2 damage; the player goes down to 4 hit points.<br>
- * The player deals 5-2 = 3 damage; the boss goes down to 3 hit points.<br>
- * The boss deals 7-5 = 2 damage; the player goes down to 2 hit points.<br>
- * The player deals 5-2 = 3 damage; the boss goes down to 0 hit points.<br>
+ * The mage deals 5-2 = 3 damage; the boss goes down to 9 hit points.<br>
+ * The boss deals 7-5 = 2 damage; the mage goes down to 6 hit points.<br>
+ * The mage deals 5-2 = 3 damage; the boss goes down to 6 hit points.<br>
+ * The boss deals 7-5 = 2 damage; the mage goes down to 4 hit points.<br>
+ * The mage deals 5-2 = 3 damage; the boss goes down to 3 hit points.<br>
+ * The boss deals 7-5 = 2 damage; the mage goes down to 2 hit points.<br>
+ * The mage deals 5-2 = 3 damage; the boss goes down to 0 hit points.<br>
  * <p><br>
- * In this scenario, the player wins! (Barely.)
+ * In this scenario, the mage wins! (Barely.)
  * <p><br>
  * You have 100 hit points. The boss's actual stats are in your puzzle input. What is the least amount of gold you can spend and still win the fight?
  * <p>
@@ -101,13 +101,13 @@ public class Day21 implements AdventOfCodeSolution {
     }
 
     public int leastAmountOfGoldAndStillWin(List<String> lines) {
-        var simulator = RolePlayingSimulator.buildSimulator(lines);
+        var simulator = SwordsAndStuff.buildSimulator(lines);
         var least = simulator.calculateLeastGoldSpentToWinTheGame();
         return least.first();
     }
 
     public int mostAmountOfGoldAndStillLose(List<String> lines) {
-        var simulator = RolePlayingSimulator.buildSimulator(lines);
+        var simulator = SwordsAndStuff.buildSimulator(lines);
         var most = simulator.calculateMostAmountOfGoldAndStillLose();
         return most.first();
     }

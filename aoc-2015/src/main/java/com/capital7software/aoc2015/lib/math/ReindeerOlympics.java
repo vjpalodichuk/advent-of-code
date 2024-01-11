@@ -54,13 +54,13 @@ public class ReindeerOlympics {
                     .sorted(Comparator.comparingDouble(Pair::second))
                     .toList();
             // Get the max distance
-            var currentMax = current.get(current.size() - 1).second();
+            var currentMax = current.getLast().second();
             // Update the score for anyone with that distance.
             current
                     .stream()
                     .filter(it -> it.second().equals(currentMax))
                     .map(Pair::first)
-                    .forEach(it -> points.get(it).setSecond(points.get(it).second() + 1.0));
+                    .forEach(it -> points.get(it).second(points.get(it).second() + 1.0));
         }
 
         return points.entrySet()

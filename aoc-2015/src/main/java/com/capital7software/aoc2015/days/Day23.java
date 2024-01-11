@@ -58,12 +58,12 @@ import java.util.List;
  * <p>
  * Your puzzle answer was 184.
  * <p>
- * --- Part Two ---
+ * --- Part Two ---<br>
  * The unknown benefactor is very thankful for releasi-- er, helping little Jane Marie with her computer.
  * Definitely not to distract you, what is the value in register b after the program is
  * finished executing if register a starts as 1 instead?
  * <p>
- * Your puzzle answer was .
+ * Your puzzle answer was 231.
  * <p>
  */
 public class Day23 implements AdventOfCodeSolution {

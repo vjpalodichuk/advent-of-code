@@ -12,13 +12,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class Day15Test {
+class Day22Test {
     List<String> lines;
     Path path;
 
     @BeforeEach
     void setUp() {
-        var instance = new Day15();
+        var instance = new Day22();
         setupFromFile(instance.getDefaultInputFilename());
     }
 
@@ -36,22 +36,20 @@ class Day15Test {
     }
 
     @Test
-    void whatIsTheTotalScoreOfTheHighestScoringCookie() {
-        var instance = new Day15();
-        long expected = 62_842_880;
-
-        var actual = instance.whatIsTheTotalScoreOfTheHighestScoringCookie(lines, 100_000);
-        assertEquals(expected, actual, "The total score of the highest-scoring " +
-                "cookie is not what was expected: " + expected);
+    void leastAmountOfManaAndStillWin() {
+        var instance = new Day22();
+        int expected = 953;
+        var actual = instance.leastAmountOfManaAndStillWin(lines, false);
+        assertEquals(expected, actual, "The least amount of mana " +
+                "is not what was expected: " + expected);
     }
 
     @Test
-    void whatIsTheTotalScoreOfTheHighestScoringCalorieRestrictedCookie() {
-        var instance = new Day15();
-        long expected = 57_600_000;
-
-        var actual = instance.whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(lines, 250_000);
-        assertEquals(expected, actual, "The total score of the highest-scoring " +
-                "cookie is not what was expected: " + expected);
+    void leastAmountOfManaOnHardAndStillWin() {
+        var instance = new Day22();
+        int expected = 1289;
+        var actual = instance.leastAmountOfManaAndStillWin(lines, true);
+        assertEquals(expected, actual, "The least amount of mana on hard " +
+                "is not what was expected: " + expected);
     }
 }

@@ -1,0 +1,12 @@
+Instants:       Cost  Damage  Armor  Health  Mana   Turns
+Magic-Missile   53     4       0        0       0     0
+Drain           73     2       0        2       0     0
+
+Effects:        Cost  Damage  Armor  Health  Mana   Turns
+Shield          113     0       7       0       0     6
+Poison          173     3       0       0       0     6
+Recharge        229     0       0       0       101   5
+
+Players:    Points  Damage  Mana
+You         50      0       500
+Boss        55      8       0

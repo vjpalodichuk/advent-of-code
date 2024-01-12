@@ -91,7 +91,9 @@ public class QuantumEntanglement {
 
     /**
      * Returns the product of the weight of the packages in the smallest set that is capable of
-     * balancing the sleigh into k number of equal weight sets!
+     * balancing the sleigh into k number of equal weight sets! Please note that the returned value is the
+     * lowest QE score among sets that contain the fewest number of elements. That does mean it is possible
+     * for there to be a lower QE score but only in a subset with more elements.
      *
      * @param k The number of sets to balance the packages into.
      * @return the product of the weight of the packages in the smallest set that is capable of
@@ -114,7 +116,6 @@ public class QuantumEntanglement {
                 1,
                 0,
                 0,
-                0,
                 new Pair<>(-1L, 0)
         );
         return lowest.first();
@@ -128,11 +129,11 @@ public class QuantumEntanglement {
             long totalScore,
             int totalSum,
             int itemsUsed, // Our bitmask indicating which elements have been used!,
-            int numItemsUsed, // How many elements in the group? We want the fewest!
             Pair<Long, Integer> bestSoFar
     ) {
         // Bail early if we have already calculated a better result!
-        if (bestSoFar.first() != -1 && numItemsUsed >= bestSoFar.second() && totalScore >= bestSoFar.first()) {
+        int setSize = Integer.bitCount(itemsUsed);
+        if (bestSoFar.first() != -1 && setSize >= bestSoFar.second() && totalScore >= bestSoFar.first()) {
             return bestSoFar;
         }
 
@@ -147,15 +148,15 @@ public class QuantumEntanglement {
                     itemsUsed
             )) {
                 // We can split the remainder so return our result!
-                return new Pair<>(totalScore, numItemsUsed);
+                return new Pair<>(totalScore, setSize);
             } else {
-                return new Pair<>(-1L, numItemsUsed);
+                return new Pair<>(-1L, setSize);
             }
         }
 
         // If we have gone through all the items or have exceeded the targetSum, bail!
         if (currentIndex >= items.size() || totalSum > targetSum) {
-            return new Pair<>(-1L, numItemsUsed);
+            return new Pair<>(-1L, setSize);
         }
 
         // We have to split the recursion in two where we either add to the totals or don't.
@@ -168,7 +169,6 @@ public class QuantumEntanglement {
                 totalScore * items.get(currentIndex),
                 totalSum + items.get(currentIndex),
                 itemsUsed | (1 << currentIndex),
-                numItemsUsed + 1,
                 bestSoFar
         );
         if (bestSoFar.first() == -1) {
@@ -178,7 +178,7 @@ public class QuantumEntanglement {
                 // Using fewer packages is better than more packages but a lower QE score.
                 bestSoFar = added;
             } else if (added.second().equals(bestSoFar.second()) && added.first() < bestSoFar.first()) {
-                // Used same number of packages but we have a better score!
+                // Used same number of packages, but we have a better score!
                 bestSoFar = added;
             }
         }
@@ -191,7 +191,6 @@ public class QuantumEntanglement {
                 totalScore,
                 totalSum,
                 itemsUsed,
-                numItemsUsed,
                 bestSoFar
         );
         if (added.first() == -1) {
@@ -204,7 +203,7 @@ public class QuantumEntanglement {
             // Using fewer packages is better than more packages but a lower QE score.
             return added;
         } else if (added.second().equals(notAdded.second()) && added.first() < notAdded.first()) {
-            // Used same number of packages but we have a better score!
+            // Used same number of packages, but we have a better score!
             return added;
         }
         return notAdded;

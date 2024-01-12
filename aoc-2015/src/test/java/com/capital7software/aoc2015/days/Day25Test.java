@@ -1,5 +1,6 @@
 package com.capital7software.aoc2015.days;
 
+import com.capital7software.aoc2015.lib.grid.CodeGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,20 +37,12 @@ class Day25Test {
     }
 
     @Test
-    void getLowestQEScoreWith3Partitions() {
+    void getNextCode() {
         var instance = new Day25();
-        int expected = 99;
-        var actual = instance.getLowestQEScore(lines, 3);
-        assertEquals(expected, actual, "The lowest QE Score with 3 partitions " +
-                "is not what was expected: " + expected);
-    }
-
-    @Test
-    void getLowestQEScoreWith4Partitions() {
-        var instance = new Day25();
-        int expected = 44;
-        var actual = instance.getLowestQEScore(lines, 4);
-        assertEquals(expected, actual, "The lowest QE Score with 4 partitions " +
+        var generator = CodeGenerator.buildGenerator(lines.getFirst());
+        int expected = 9132360;
+        var actual = instance.getNextCode(generator);
+        assertEquals(expected, actual, "The next code " +
                 "is not what was expected: " + expected);
     }
 }

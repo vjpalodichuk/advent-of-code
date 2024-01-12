@@ -71,7 +71,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public record SwordsAndStuff(ItemShop shop, Player player, Player boss) {
 
-    public static final int MAX_ITERATIONS = 1_000;
+    public static final int MAX_ITERATIONS = 100_000;
 
     public enum ItemType {
         WEAPON(1, 1),

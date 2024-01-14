@@ -1,7 +1,7 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.crypt.MD5Fun;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.crypt.MD5Fun;
 
 import java.time.Instant;
 import java.util.List;

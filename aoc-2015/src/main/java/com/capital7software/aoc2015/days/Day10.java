@@ -1,7 +1,7 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.string.RunLengthEncoder;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.string.RunLengthEncoder;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
@@ -11,7 +11,7 @@ import java.util.List;
  * --- Day 10: Elves Look, Elves Say ---
  * Today, the Elves are playing a game called look-and-say. They take turns making sequences
  * by reading aloud the previous sequence and using that reading as the next sequence.
- * For example, 211 is read as "one two, two ones", which becomes 1221 (1 2, 2 1s).
+ * For capital7software, 211 is read as "one two, two ones", which becomes 1221 (1 2, 2 1s).
  * <p>
  * Look-and-say sequences are generated iteratively, using the previous value as input for
  * the next step. For each step, take the previous value, and replace each run of digits

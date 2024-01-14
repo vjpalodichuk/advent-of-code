@@ -1,7 +1,7 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.computer.SimpleComputer;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.computer.SimpleComputer;
 
 import java.time.Instant;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * --- Day 23: Opening the Turing Lock ---<br>
  * Little Jane Marie just got her very first computer for Christmas from some unknown benefactor.
- * It comes with instructions and an example program, but the computer itself seems to be malfunctioning.
+ * It comes with instructions and an capital7software program, but the computer itself seems to be malfunctioning.
  * She's curious what the program does, and would like you to help her run it.
  * <p><br>
  * The manual explains that the computer supports two registers and six instructions
@@ -42,12 +42,12 @@ import java.util.List;
  * The offset is always written with a prefix + or - to indicate the direction of the jump
  * (forward or backward, respectively).
  * <p><br>
- * For example, jmp +1 would simply continue with the next instruction, while jmp +0 would
+ * For capital7software, jmp +1 would simply continue with the next instruction, while jmp +0 would
  * continuously jump back to itself forever.
  * <p><br>
  * The program exits when it tries to run an instruction beyond the ones defined.
  * <p><br>
- * For example, this program sets a to 2, because the jio instruction causes it to skip the tpl instruction:
+ * For capital7software, this program sets a to 2, because the jio instruction causes it to skip the tpl instruction:
  * <p><br>
  * inc a<br>
  * jio a, +2<br>

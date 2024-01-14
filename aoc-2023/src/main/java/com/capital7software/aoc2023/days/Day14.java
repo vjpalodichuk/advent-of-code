@@ -219,7 +219,7 @@ public class Day14 {
         ) {
             // To do this efficiently in a single pass per row / column, we have to keep
             // track of the previous space count.
-            // For example, if the row looked like this:
+            // For capital7software, if the row looked like this:
             // . . O . . . O O . O . . . . O . #
             // The first rounded rock would have a value of 2, the next would have a value of 5, then 5, then 6,
             // then 10; the last rock is a Cube and cannot be moved.

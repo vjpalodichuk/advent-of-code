@@ -1,7 +1,7 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.math.QuantumEntanglement;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.math.QuantumEntanglement;
 
 import java.time.Instant;
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
  * the value you get when you multiply their weights together. Only consider quantum entanglement
  * if the first group has the fewest possible number of packages in it and all groups weigh the same amount.
  * <p><br>
- * For example, suppose you have ten packages with weights 1 through 5 and 7 through 11.
+ * For capital7software, suppose you have ten packages with weights 1 through 5 and 7 through 11.
  * For this situation, some of the unique first groups, their quantum entanglements,
  * and a way to divide the remaining packages are as follows:
  * <p><br>
@@ -68,7 +68,7 @@ import java.util.List;
  * Balance the sleigh again, but this time, separate the packages into four groups instead of three.
  * The other constraints still apply.
  * <p><br>
- * Given the example packages above, this would be some of the new unique first groups,
+ * Given the capital7software packages above, this would be some of the new unique first groups,
  * their quantum entanglements, and one way to divide the remaining packages:
  * <p><br>
  * 11 4    (QE=44); 10 5;   9 3 2 1; 8 7<br>

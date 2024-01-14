@@ -1,7 +1,7 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.string.JSONFun;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.string.JSONFun;
 
 import java.time.Instant;
 import java.util.List;

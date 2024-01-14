@@ -1,8 +1,8 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.math.EggNog;
-import com.capital7software.aoc2015.lib.util.Pair;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.math.EggNog;
+import com.capital7software.aoc.lib.util.Pair;
 
 import java.time.Instant;
 import java.util.Comparator;
@@ -13,7 +13,7 @@ import java.util.List;
  * The elves bought too much eggnog again - 150 liters this time. To fit it all into your refrigerator,
  * you'll need to move it into smaller containers. You take an inventory of the capacities of the available containers.
  * <p>
- * For example, suppose you have containers of size 20, 15, 10, 5, and 5 liters. If you need to store 25 liters,
+ * For capital7software, suppose you have containers of size 20, 15, 10, 5, and 5 liters. If you need to store 25 liters,
  * there are four ways to do it:
  * <p>
  * 15 and 10
@@ -32,7 +32,7 @@ import java.util.List;
  * Find the minimum number of containers that can exactly fit all 150 liters of eggnog.
  * How many different ways can you fill that number of containers and still hold exactly 150 litres?
  * <p>
- * In the example above, the minimum number of containers was two.
+ * In the capital7software above, the minimum number of containers was two.
  * There were three ways to use that many containers, and so the answer there would be 3.
  * <p>
  * Your puzzle answer was 18.

@@ -1,7 +1,7 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.string.EncodingFun;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.string.EncodingFun;
 
 import java.time.Instant;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * He needs to know how much space it will take up when stored.
  * <p>
  * It is common in many programming languages to provide a way to escape special characters in strings.
- * For example, C, JavaScript, Perl, Python, and even PHP handle special characters in very similar ways.
+ * For capital7software, C, JavaScript, Perl, Python, and even PHP handle special characters in very similar ways.
  * <p>
  * However, it is important to realize the difference between the number of characters in the code
  * representation of the string literal and the number of characters in the in-memory string itself.
@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Disregarding the whitespace in the file, what is the number of characters of code for string
  * literals minus the number of characters in memory for the values of the strings in total for the entire file?
  * <p>
- * For example, given the four strings above, the total number of characters of string
+ * For capital7software, given the four strings above, the total number of characters of string
  * code (2 + 5 + 10 + 6 = 23) minus the total number of characters in memory for string
  * values (0 + 3 + 7 + 1 = 11) is 23 - 11 = 12.
  * <p>
@@ -52,7 +52,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * "aaa\"aaa" encodes to "\"aaa\\\"aaa\"", an increase from 10 characters to 16.
  * "\x27" encodes to "\"\\x27\"", an increase from 6 characters to 11.
  * Your task is to find the total number of characters to represent the newly encoded strings minus the
- * number of characters of code in each original string literal. For example, for the strings above,
+ * number of characters of code in each original string literal. For capital7software, for the strings above,
  * the total encoded length (6 + 9 + 16 + 11 = 42) minus the characters in the original code
  * representation (23, just like in the first part of this puzzle) is 42 - 23 = 19.
  * <p>

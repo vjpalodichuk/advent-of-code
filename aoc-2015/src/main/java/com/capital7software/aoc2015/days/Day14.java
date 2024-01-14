@@ -1,8 +1,8 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.math.ReindeerOlympics;
-import com.capital7software.aoc2015.lib.graph.parser.Day14Parser;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.math.ReindeerOlympics;
+import com.capital7software.aoc.lib.graph.parser.Day14Parser;
 
 import java.time.Instant;
 import java.util.Comparator;
@@ -16,7 +16,7 @@ import java.util.List;
  * Reindeer can only either be flying (always at their top speed) or resting (not moving at all),
  * and always spend whole seconds in either state.
  * <p>
- * For example, suppose you have the following Reindeer:
+ * For capital7software, suppose you have the following Reindeer:
  * <p>
  * Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.
  * Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.
@@ -26,7 +26,7 @@ import java.util.List;
  * They continue to rest until the 138th second, when Comet flies for another ten seconds. On the 174th second,
  * Dancer flies for another 11 seconds.
  * <p>
- * In this example, after the 1000th second, both reindeer are resting, and Comet is in the lead at 1120
+ * In this capital7software, after the 1000th second, both reindeer are resting, and Comet is in the lead at 1120
  * km (poor Dancer has only gotten 1056 km by that point). So, in this situation, Comet would win
  * (if the race ended at 1000 seconds).
  * <p>
@@ -42,7 +42,7 @@ import java.util.List;
  * (If there are multiple reindeer tied for the lead, they each get one point.)
  * He keeps the traditional 2503 second time limit, of course, as doing otherwise would be entirely ridiculous.
  * <p>
- * Given the example reindeer from above, after the first second, Dancer is in the lead and gets one point.
+ * Given the capital7software reindeer from above, after the first second, Dancer is in the lead and gets one point.
  * He stays in the lead until several seconds into Comet's second burst: after the 140th second,
  * Comet pulls into the lead and gets his first point. Of course, since Dancer had been in the
  * lead for the 139 seconds before that, he has accumulated 139 points by the 140th second.

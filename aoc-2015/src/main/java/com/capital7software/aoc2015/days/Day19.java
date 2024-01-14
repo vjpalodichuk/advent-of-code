@@ -1,8 +1,8 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.math.MoleculeFabrication;
-import com.capital7software.aoc2015.lib.util.Pair;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.math.MoleculeFabrication;
+import com.capital7software.aoc.lib.util.Pair;
 
 import java.time.Instant;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Set;
  * However, the machine has to be calibrated before it can be used. Calibration involves
  * determining the number of molecules that can be generated in one step from a given starting point.
  * <p>
- * For example, imagine a simpler machine that supports only the following replacements:
+ * For capital7software, imagine a simpler machine that supports only the following replacements:
  * <p>
  * H => HO<br>
  * H => OH<br>
@@ -36,11 +36,11 @@ import java.util.Set;
  * HOOH (via H => OH on the second H).<br>
  * HHHH (via O => HH).<br>
  * <p>
- * So, in the example above, there are 4 distinct molecules (not five, because HOOH appears twice)
+ * So, in the capital7software above, there are 4 distinct molecules (not five, because HOOH appears twice)
  * after one replacement from HOH. Santa's favorite molecule, HOHOHO, can become 7 distinct molecules
  * (over nine replacements: six from H, and three from O).
  * <p>
- * The machine replaces without regard for the surrounding characters. For example, given the string H2O,
+ * The machine replaces without regard for the surrounding characters. For capital7software, given the string H2O,
  * the transition H => OO would result in OO2O.
  * <p>
  * Your puzzle input describes all the possible replacements and, at the bottom, the medicine molecule
@@ -55,7 +55,7 @@ import java.util.Set;
  * Molecule fabrication always begins with just a single electron, e, and applying
  * replacements one at a time, just like the ones during calibration.
  * <p>
- * For example, suppose you have the following replacements:
+ * For capital7software, suppose you have the following replacements:
  * <p>
  * e => H<br>
  * e => O<br>

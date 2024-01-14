@@ -1,8 +1,8 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.analysis.AuntSueIdentifier.AuntSue;
-import com.capital7software.aoc2015.lib.analysis.AuntSueIdentifier;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.analysis.AuntSueIdentifier.AuntSue;
+import com.capital7software.aoc.lib.analysis.AuntSueIdentifier;
 
 import java.time.Instant;
 import java.util.List;

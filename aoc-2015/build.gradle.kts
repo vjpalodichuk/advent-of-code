@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.capital7software.aoc"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -34,7 +34,7 @@ tasks.withType<JavaExec>().configureEach {
     group = "aoc-2015"
     description = "Advent of Code 2015 Puzzles"
     classpath = sourceSets["main"].runtimeClasspath
-    mainClass = "com.capital7software.aoc2015.lib.AdventOfCodeRunner"
+    mainClass = "com.capital7software.aoc.lib.AdventOfCodeRunner"
 }
 
 tasks.register("run", JavaExec::class)

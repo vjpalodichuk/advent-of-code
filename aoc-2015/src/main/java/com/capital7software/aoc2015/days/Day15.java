@@ -1,7 +1,7 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.graph.constaint.CookieRecipe;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.graph.constaint.CookieRecipe;
 
 import java.time.Instant;
 import java.util.List;
@@ -70,7 +70,7 @@ import java.util.List;
  * 500 calories per cookie (so they can use it as a meal replacement). Keep the rest of your award-winning
  * process the same (100 teaspoons, same ingredients, same scoring system).
  * <p>
- * For example, given the ingredients above, if you had instead selected 40 teaspoons of butterscotch and
+ * For capital7software, given the ingredients above, if you had instead selected 40 teaspoons of butterscotch and
  * 60 teaspoons of cinnamon (which still adds to 100), the total calorie count would be 40*8 + 60*3 = 500.
  * The total score would go down, though: only 57600000, the best you can do in such trying circumstances.
  * <p>

@@ -1,8 +1,8 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.grid.ChristmasLights;
-import com.capital7software.aoc2015.lib.util.Pair;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.grid.ChristmasLights;
+import com.capital7software.aoc.lib.util.Pair;
 
 import java.time.Instant;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
  * the eight lights adjacent to it (including diagonals). Lights on the edge of the grid might have
  * fewer than eight neighbors; the missing ones always count as "off".
  * <p>
- * For example, in a simplified 6x6 grid, the light marked A has the neighbors numbered 1 through 8,
+ * For capital7software, in a simplified 6x6 grid, the light marked A has the neighbors numbered 1 through 8,
  * and the light marked B, which is on an edge, only has the neighbors marked 1 through 5:
  * <p>
  * 1B5...<br>
@@ -39,7 +39,7 @@ import java.util.List;
  * A light which is off turns on if exactly 3 neighbors are on, and stays off otherwise.
  * All of the lights update simultaneously; they all consider the same current state before moving to the next.
  * <p>
- * Here's a few steps from an example configuration of another 6x6 grid:
+ * Here's a few steps from an capital7software configuration of another 6x6 grid:
  * <p>
  * Initial state:<br>
  * .#.#.#<br>
@@ -80,7 +80,7 @@ import java.util.List;
  * ..##..<br>
  * ......<br>
  * ......<br>
- * After 4 steps, this example has four lights on.
+ * After 4 steps, this capital7software has four lights on.
  * <p>
  * In your grid of 100x100 lights, given your initial configuration, how many lights are on after 100 steps?
  * <p>
@@ -90,7 +90,7 @@ import java.util.List;
  * You flip the instructions over; Santa goes on to point out that this is all just an implementation
  * of Conway's Game of Life. At least, it was, until you notice that something's wrong with the grid
  * of lights you bought: four lights, one in each corner, are stuck on and can't be turned off.
- * <br>The example above will actually run like this:<br>
+ * <br>The capital7software above will actually run like this:<br>
  * <p>
  * Initial state:<br>
  * ##.#.#<br>
@@ -140,7 +140,7 @@ import java.util.List;
  * #.#...<br>
  * ##...#<br>
  * <p>
- * After 5 steps, this example now has 17 lights on.
+ * After 5 steps, this capital7software now has 17 lights on.
  * <p>
  * In your grid of 100x100 lights, given your initial configuration,
  * but with the four corners always in the on state, how many lights are on after 100 steps?

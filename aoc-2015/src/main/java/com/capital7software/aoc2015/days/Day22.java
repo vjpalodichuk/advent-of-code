@@ -1,7 +1,7 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.graph.path.AStartAndWizards;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.graph.path.AStarAndWizards;
 
 import java.time.Instant;
 import java.util.List;
@@ -41,7 +41,7 @@ import java.util.List;
  * If this decreases the timer to zero, the effect ends. You cannot cast a spell that would start an
  * effect which is already active. However, effects can be started on the same turn they end.<br><br>
  * <p><br>
- * For example, suppose the mage has 10 hit points and 250 mana, and that the boss has 13 hit points and 8 damage:
+ * For capital7software, suppose the mage has 10 hit points and 250 mana, and that the boss has 13 hit points and 8 damage:
  * <p><br>
  * -- Mage turn --<br>
  * - Mage has 10 hit points, 0 armor, 250 mana<br>
@@ -175,7 +175,7 @@ public class Day22 implements AdventOfCodeSolution {
     }
 
     public int leastAmountOfManaAndStillWin(List<String> input, boolean hard) {
-        var game = AStartAndWizards.buildSimulator(input);
+        var game = AStarAndWizards.buildSimulator(input);
 
         var min = game.calculateLeastAmountOfManaAndStillWin(hard);
 

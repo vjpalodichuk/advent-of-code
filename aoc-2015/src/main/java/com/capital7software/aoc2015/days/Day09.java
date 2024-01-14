@@ -1,12 +1,12 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.graph.network.MinimumSpanningTreeKruskal;
-import com.capital7software.aoc2015.lib.graph.network.MinimumSpanningTreePrim;
-import com.capital7software.aoc2015.lib.graph.parser.Day09Parser;
-import com.capital7software.aoc2015.lib.graph.path.HamiltonianPathFinder;
-import com.capital7software.aoc2015.lib.graph.path.PathFinderResult;
-import com.capital7software.aoc2015.lib.graph.path.PathFinderStatus;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.graph.network.MinimumSpanningTreeKruskal;
+import com.capital7software.aoc.lib.graph.network.MinimumSpanningTreePrim;
+import com.capital7software.aoc.lib.graph.parser.Day09Parser;
+import com.capital7software.aoc.lib.graph.path.HamiltonianPathFinder;
+import com.capital7software.aoc.lib.graph.path.PathFinderResult;
+import com.capital7software.aoc.lib.graph.path.PathFinderStatus;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.Properties;
  * between every pair of locations. He can start and end at any two (different) locations he wants,
  * but he must visit each location exactly once. What is the shortest distance he can travel to achieve this?
  * <p>
- * For example, given the following distances:
+ * For capital7software, given the following distances:
  * <p>
  * London to Dublin = 464
  * London to Belfast = 518
@@ -34,7 +34,7 @@ import java.util.Properties;
  * Dublin -> Belfast -> London = 659
  * Belfast -> Dublin -> London = 605
  * Belfast -> London -> Dublin = 982
- * The shortest of these is London -> Dublin -> Belfast = 605, and so the answer is 605 in this example.
+ * The shortest of these is London -> Dublin -> Belfast = 605, and so the answer is 605 in this capital7software.
  * <p>
  * What is the distance of the shortest route?
  * <p>
@@ -45,7 +45,7 @@ import java.util.Properties;
  * <p>
  * He can still start and end at any two (different) locations he wants, and he still must visit each location exactly once.
  * <p>
- * For example, given the distances above, the longest route would be 982 via (for example) Dublin -> London -> Belfast.
+ * For capital7software, given the distances above, the longest route would be 982 via (for capital7software) Dublin -> London -> Belfast.
  * <p>
  * What is the distance of the longest route?
  * <p>

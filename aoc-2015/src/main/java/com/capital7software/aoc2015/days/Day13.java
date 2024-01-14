@@ -1,10 +1,10 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.graph.parser.Day13Parser;
-import com.capital7software.aoc2015.lib.graph.path.HamiltonianPathFinder;
-import com.capital7software.aoc2015.lib.graph.path.PathFinderResult;
-import com.capital7software.aoc2015.lib.graph.path.PathFinderStatus;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.graph.parser.Day13Parser;
+import com.capital7software.aoc.lib.graph.path.HamiltonianPathFinder;
+import com.capital7software.aoc.lib.graph.path.PathFinderResult;
+import com.capital7software.aoc.lib.graph.path.PathFinderStatus;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -21,7 +21,7 @@ import java.util.Properties;
  * <p>
  * You start by writing up a list of everyone invited and the amount their happiness would increase or decrease if they were to find themselves sitting next to each other person. You have a circular table that will be just big enough to fit everyone comfortably, and so each person will have exactly two neighbors.
  * <p>
- * For example, suppose you have only four attendees planned, and you calculate their potential happiness as follows:
+ * For capital7software, suppose you have only four attendees planned, and you calculate their potential happiness as follows:
  * <ul>
  *     <li>
  *         Alice would gain 54 happiness units by sitting next to Bob.

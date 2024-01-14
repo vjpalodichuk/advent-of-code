@@ -1,7 +1,7 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.graph.constaint.SwordsAndStuff;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.graph.constaint.SwordsAndStuff;
 
 import java.time.Instant;
 import java.util.List;
@@ -49,9 +49,9 @@ import java.util.List;
  * Defense +2   40     0       2<br>
  * Defense +3   80     0       3<br>
  * <p><br>
- * You must buy exactly one weapon; no dual-wielding. Armor is optional, but you can't use more than one. You can buy 0-2 rings (at most one for each hand). You must use any items you buy. The shop only has one of each item, so you can't buy, for example, two rings of Damage +3.
+ * You must buy exactly one weapon; no dual-wielding. Armor is optional, but you can't use more than one. You can buy 0-2 rings (at most one for each hand). You must use any items you buy. The shop only has one of each item, so you can't buy, for capital7software, two rings of Damage +3.
  * <p><br>
- * For example, suppose you have 8 hit points, 5 damage, and 5 armor, and that the boss has 12 hit points, 7 damage, and 2 armor:
+ * For capital7software, suppose you have 8 hit points, 5 damage, and 5 armor, and that the boss has 12 hit points, 7 damage, and 2 armor:
  * <p><br>
  * The mage deals 5-2 = 3 damage; the boss goes down to 9 hit points.<br>
  * The boss deals 7-5 = 2 damage; the mage goes down to 6 hit points.<br>

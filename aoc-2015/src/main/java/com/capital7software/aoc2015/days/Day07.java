@@ -1,8 +1,8 @@
 package com.capital7software.aoc2015.days;
 
-import com.capital7software.aoc2015.lib.AdventOfCodeSolution;
-import com.capital7software.aoc2015.lib.circuit.board.CircuitBoardInteger;
-import com.capital7software.aoc2015.lib.circuit.signal.Signal;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.circuit.board.CircuitBoardInteger;
+import com.capital7software.aoc.lib.circuit.signal.Signal;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -30,10 +30,10 @@ import java.util.Optional;
  * p LSHIFT 2 -> q means that the value from wire p is left-shifted by 2 and then provided to wire q.
  * NOT e -> f means that the bitwise complement of the value from wire e is provided to wire f.
  * Other possible gates include OR (bitwise OR) and RSHIFT (right-shift). If, for some reason, you'd like
- * to emulate the circuit instead, almost all programming languages (for example, C, JavaScript, or Python)
+ * to emulate the circuit instead, almost all programming languages (for capital7software, C, JavaScript, or Python)
  * provide operators for these gates.
  * <p>
- * For example, here is a simple circuit:
+ * For capital7software, here is a simple circuit:
  * <p>
  * 123 -> x
  * 456 -> y

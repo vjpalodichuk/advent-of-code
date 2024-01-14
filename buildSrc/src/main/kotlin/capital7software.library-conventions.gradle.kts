@@ -19,11 +19,39 @@ publishing {
     repositories {
         maven {
             name = "artifactory-publish"
-            url = uri("https://artifactory.capital7software.com/artifactory/libs-snapshot-local/")
+            url = uri("${artifactory_contextUrl}/${repoKeyValuePublish}/")
             credentials {
-                username = "vincent"
-                password = "cmVmdGtuOjAxOjE3MzY3NjQ1MTM6dW44NUxkNWVOaG9MWDh2YkRDRm9Kc0xkVVc3"
+                username = "${artifactory_user}"
+                password = "${artifactory_password}"
             }
+        }
+    }
+}
+
+artifactory {
+    setContextUrl("${artifactory_contextUrl}")
+
+    publish {
+        setContextUrl("${artifactory_contextUrl}")
+        repository {
+            setRepoKey("${repoKeyValuePublish}")
+            setUsername("${artifactory_user}")
+            setPassword("${artifactory_password}")
+            setMavenCompatible(true)
+        }
+        defaults {
+            setPublishPom(true)
+            setPublishArtifacts(true)
+            publications("ALL_PUBLICATIONS")
+            //publishConfigs(configurations.findByName("archives")?.isCanBeResolved == true)
+        }
+    }
+    resolve {
+        repository {
+            setRepoKey("${repoKeyValue}")
+            setUsername("${artifactory_user}")
+            setPassword("${artifactory_password}")
+            setMavenCompatible(true)
         }
     }
 }

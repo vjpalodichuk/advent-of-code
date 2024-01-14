@@ -8,6 +8,7 @@ plugins {
     checkstyle
     // NOTE: external plugin version is specified in implementation dependency artifact of the project's build file
     id("com.github.spotbugs")
+    id("com.jfrog.artifactory")
 }
 
 // Java Projects need to use the latest version!
@@ -19,8 +20,12 @@ java {
 // This could be the organization's private repository
 repositories {
     maven {
-        name = "artifactory-snapshots"
-        url = uri("https://artifactory.capital7software.com/artifactory/libs-snapshot/")
+        name = "artifactory-publish"
+        url = uri("${artifactory_contextUrl}/${repoKeyValue}/")
+        credentials {
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+        }
     }
     mavenCentral()
 }

@@ -51,9 +51,18 @@ import java.util.concurrent.atomic.AtomicReference;
  * H => OH (on the second H) to get HOH<br>
  * <p>
  * So, you could make HOH after 3 steps. Santa's favorite molecule, HOHOHO, can be made in 6 steps.
- * <p>
+ *
+ * @param molecule The molecule to fabricate.
+ * @param replacements The grammar rules for building the molecule.
  */
 public record MoleculeFabrication(@NotNull String molecule, @NotNull List<Pair<String, String>> replacements) {
+    /**
+     * Instantiates a new MoleculeFabrication instance with the specified molecule and List of replacements
+     * to make that this instance owns.
+     *
+     * @param molecule The molecule to fabricate.
+     * @param replacements The list of replacements to make.
+     */
     public MoleculeFabrication(@NotNull String molecule, @NotNull List<Pair<String, String>> replacements) {
         this.molecule = molecule;
         this.replacements = new ArrayList<>(
@@ -61,6 +70,11 @@ public record MoleculeFabrication(@NotNull String molecule, @NotNull List<Pair<S
         );
     }
 
+    /**
+     * Returns an unmodifiable List of Pairs that specify the replacements to make.
+     *
+     * @return An unmodifiable List of Pairs that specify the replacements to make.
+     */
     @Override
     public List<Pair<String, String>> replacements() {
         return replacements.stream().map(it -> new Pair<>(it.first(), it.second())).toList();
@@ -69,7 +83,6 @@ public record MoleculeFabrication(@NotNull String molecule, @NotNull List<Pair<S
     /**
      * Builds a new MoleculeFabrication instance from the specified input.<br>
      * This method supports the following format:<br>
-     * <p>
      * <ul>
      *     <li>
      *         Al => ThF
@@ -172,6 +185,15 @@ public record MoleculeFabrication(@NotNull String molecule, @NotNull List<Pair<S
         return new Pair<>(steps, stepsSet);
     }
 
+    /**
+     * Performs a replacement in String t by replacing the characters within t at the specified index
+     * and length i with String o. Returns a new String with the replacement substring.
+     * @param t The string that contains the substring to replace.
+     * @param i The substring to replace.
+     * @param o The replacement substring to add.
+     * @param index The index of the start of the replacement in String t.
+     * @return A new String with the replacement substring.
+     */
     public static @NotNull String replace(String t, String i, String o, int index) {
         return t.substring(0, index) + o + t.substring(index + i.length());
     }

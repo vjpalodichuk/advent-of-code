@@ -23,5 +23,5 @@ public interface SpanningTree<T extends Comparable<T>, E extends Comparable<E>> 
      * @return A collection of the Edges in the SpanningTree in they order they were added.
      */
     @NotNull
-    Collection<Edge<T, E>> build(@NotNull Graph<T, E> graph);
+    Collection<Edge<E>> build(@NotNull Graph<T, E> graph);
 }

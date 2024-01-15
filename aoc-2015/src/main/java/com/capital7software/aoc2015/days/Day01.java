@@ -50,12 +50,16 @@ import java.util.List;
  * Your puzzle answer was 1797.
  */
 public class Day01 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day01() {
 
-    private static final String defaultFilename = "inputs/input_day_01-01.txt";
+    }
 
     @Override
     public String getDefaultInputFilename() {
-        return defaultFilename;
+        return "inputs/input_day_01-01.txt";
     }
 
     @Override
@@ -78,11 +82,24 @@ public class Day01 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the floor Santa is on after following the instructions.
+     *
+     * @param input The instructions to follow.
+     * @return The floor Santa is on after following the instructions.
+     */
     public long getFloor(List<String> input) {
         var building = new ApartmentBuilding(input);
         return building.finalFloor();
     }
 
+    /**
+     * Returns the position of the item that sent Santa to the basement
+     * for the first time.
+     *
+     * @param input The instructions to follow.
+     * @return The index of the instruction that sent Santa to the basement.
+     */
     public long getFirstBasementFloorPosition(List<String> input) {
         var building = new ApartmentBuilding(input);
         return building.firstBasementFloorPosition();

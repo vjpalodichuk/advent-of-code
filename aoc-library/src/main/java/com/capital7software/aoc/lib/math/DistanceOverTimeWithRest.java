@@ -20,7 +20,6 @@ public record DistanceOverTimeWithRest(double rate, long duration, long rest) im
      * Where r is the rate of this object and dt is the amount of time spent traveling for this object.
      * <p>
      * dt = duration * (time / (duration + rest)) + min(duration, time % (duration + rest))
-     * <p>
      *
      * @param time The time to calculate the distance traveled for.
      * @return The distance traveled by this object at the specified time.
@@ -32,7 +31,7 @@ public record DistanceOverTimeWithRest(double rate, long duration, long rest) im
             return 0;
         }
 
-        var secondsTraveling = (duration * (time / (double) cycle)) + Math.min(duration, time % cycle);
+        var secondsTraveling = (duration * (time / cycle)) + Math.min(duration, time % cycle);
 
         return secondsTraveling * rate;
     }

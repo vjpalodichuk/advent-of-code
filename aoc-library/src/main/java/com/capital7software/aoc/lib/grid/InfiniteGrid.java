@@ -9,8 +9,16 @@ import org.jetbrains.annotations.NotNull;
  */
 public class InfiniteGrid {
     /**
+     * Instantiates a new and empty InfiniteGrid instance.
+     *
+     */
+    public InfiniteGrid() {
+
+    }
+
+    /**
      * Returns a new Point2D in the direction from the specified point.
-     * <p>
+     *
      * @param point The point to calculate the new point from.
      * @param direction The direction of the new point from the specified point.
      * @return A new Point2D that is in the direction from the specified point.

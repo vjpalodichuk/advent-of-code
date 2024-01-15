@@ -8,19 +8,51 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
+/**
+ * A PriorityQueue that uses a backing MinHeap to maintain the priority of its items.
+ * Supports both natural ordering for items that implement the Comparable interface. For those items
+ * that do not support the Comparable interface a Comparator must be passed to the constructor.
+ *
+ * @param <T> The type of the items held by this PriorityQueue.
+ */
 public class PriorityQueue<T> extends MinHeap<T> implements Queue<T> {
+    /**
+     * Instantiates a new empty PriorityQueue with default capacity and uses the natural ordering.
+     * Please note that the type of the items held by this PriorityQueue must implement the
+     * Comparable interface.
+     *
+     */
     public PriorityQueue() {
         super(DEFAULT_INITIAL_SIZE);
     }
 
+    /**
+     * Instantiates a new empty PriorityQueue with the specified capacity and uses the natural ordering.
+     * Please note that the type of the items held by this PriorityQueue must implement the
+     * Comparable interface.
+     *
+     * @param initialCapacity The initial size of this PriorityQueue.
+     */
     public PriorityQueue(int initialCapacity) {
         super(initialCapacity);
     }
 
+    /**
+     * Instantiates a new empty PriorityQueue with the specified capacity and uses the specified Comparator.
+     *
+     * @param initialCapacity The initial size of this PriorityQueue.
+     * @param comparator The Comparator to use for this PriorityQueue.
+     */
     public PriorityQueue(int initialCapacity, Comparator<? super T> comparator) {
         super(initialCapacity, comparator);
     }
 
+    /**
+     * Instantiates a new PriorityQueue with the specified items and uses the specified Comparator.
+     *
+     * @param items The items to store in this PriorityQueue.
+     * @param comparator The Comparator to use for this PriorityQueue.
+     */
     public PriorityQueue(T[] items, Comparator<? super T> comparator) {
         super(items, comparator);
     }

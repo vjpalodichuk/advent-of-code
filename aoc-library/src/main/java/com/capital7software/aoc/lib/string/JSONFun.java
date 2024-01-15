@@ -7,11 +7,18 @@ import org.jetbrains.annotations.NotNull;
  */
 public class JSONFun {
     /**
+     * Instantiates a new and empty JSONFun instance.
+     *
+     */
+    public JSONFun() {
+
+    }
+
+    /**
      * Finds and sums all the numbers in the specified JSON document. Any string values that
      * contain numbers are ignored.
      * <p>
      * For example:
-     * <p>
      * <ul>
      *     <li>
      *         [1,2,3] and {"a":2,"b":4} both have a sum of 6.
@@ -65,7 +72,6 @@ public class JSONFun {
      * a property with the value of red.
      * <p>
      * For example:
-     * <p>
      * <ul>
      *     <li>
      *         [1,2,3] and {"a":2,"b":4} both still have a sum of 6.

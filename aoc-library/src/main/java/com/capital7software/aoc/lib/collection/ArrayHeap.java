@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Comparator;
 
 /**
- * <h3>Invariant of the ArrayHeap class:</h3>
+ * Invariant of the ArrayHeap class:
  * <ol>
  *     <li>
  *         The number of elements in the heap is in the instance variable numberOfItems.
@@ -35,9 +35,21 @@ import java.util.Comparator;
  * @version 01/02/2024
  */
 public abstract class ArrayHeap<T> implements Heap<T> {
+    /**
+     * The default initial size if one isn't specified.
+     */
     protected static final int DEFAULT_INITIAL_SIZE = 32;
+    /**
+     * The index where the highest priority item is kept.
+     */
     protected static final int ROOT_INDEX = 0;
+    /**
+     * The array to hold all the items in this Heap.
+     */
     protected Object[] items;
+    /**
+     * The number of items currently in this Heap.
+     */
     protected int numberOfItems;
 
     /**
@@ -102,6 +114,7 @@ public abstract class ArrayHeap<T> implements Heap<T> {
      *
      * @param items The array to get the item from.
      * @param index The index of the item in the array.
+     * @param <T> The type of the items.
      * @return The item in th array at that index or null if there is no element at that index.
      */
     @SuppressWarnings("unchecked")
@@ -382,6 +395,7 @@ public abstract class ArrayHeap<T> implements Heap<T> {
      * @param items The array to swap the values in.
      * @param i The first index in the swap.
      * @param j The second index in the swap.
+     * @param <T> The type of the items.
      */
     protected static <T> void swap(@NotNull T[] items, int i, int j) {
         T temp = items[i];
@@ -497,25 +511,37 @@ public abstract class ArrayHeap<T> implements Heap<T> {
         return (numberOfItems == 0);
     }
 
+    /**
+     * Returns a copy of the elements in the items array.
+     *
+     * @return A copy of the elements in the items array.
+     */
     @NotNull
     public Object @NotNull [] toArray() {
         return Arrays.copyOf(items, numberOfItems);
     }
 
+    /**
+     * A type-safe way of obtaining a copy of the elements in the items array.
+     *
+     * @param array The destination array. If it is large enough it will be filled with the items in this Heap.
+     * @param <E> The type of the elements in the array.
+     * @return A copy of the items array.
+     */
     @NotNull
     @SuppressWarnings({"all", "unchecked"})
-    public <E> E @NotNull [] toArray(@NotNull E @NotNull [] a) {
+    public <E> E @NotNull [] toArray(@NotNull E @NotNull [] array) {
         final int size = this.numberOfItems;
-        if (a.length < size) {
+        if (array.length < size) {
             // Make a new array of a's runtime type, but my contents:
-            return (E[]) Arrays.copyOf(items, size, a.getClass());
+            return (E[]) Arrays.copyOf(items, size, array.getClass());
         }
 
-        System.arraycopy(items, 0, a, 0, size);
-        if (a.length > size) {
-            a[size] = null;
+        System.arraycopy(items, 0, array, 0, size);
+        if (array.length > size) {
+            array[size] = null;
         }
-        return a;
+        return array;
     }
 
     @Override
@@ -547,6 +573,12 @@ public abstract class ArrayHeap<T> implements Heap<T> {
         return answer;
     }
 
+    /**
+     * Sorts and destroys this Heap. After this method returns, the Heap
+     * has been destroyed and the items array contains the elements in
+     * reverse priority.
+     *
+     */
     protected void heapSort() { heapSort(false); }
 
     @Override
@@ -599,8 +631,14 @@ public abstract class ArrayHeap<T> implements Heap<T> {
         }
     }
 
-    public boolean addAll(@NotNull Collection<? extends T> arg0) {
-        arg0.forEach(this::add);
+    /**
+     * Adds all the items in the specified collection to this Heap.
+     *
+     * @param collection The collection of items to add to this Heap.
+     * @return True if the items were added.
+     */
+    public boolean addAll(@NotNull Collection<? extends T> collection) {
+        collection.forEach(this::add);
         return true;
     }
 
@@ -608,22 +646,22 @@ public abstract class ArrayHeap<T> implements Heap<T> {
      * Returns true if this heap contains the specified element. More formally, returns true if and only if this heap
      * contains at least one element e such that o.equals(e).
      *
-     * @param arg0 object to be checked for containment in this heap.
+     * @param object object to be checked for containment in this heap.
      * @return True if this heap contains the specified element.
      */
-    public boolean contains(Object arg0) {
-        return indexOf(arg0) >= 0;
+    public boolean contains(Object object) {
+        return indexOf(object) >= 0;
     }
 
     /**
      * Returns true if this heap contains all the specified elements. More formally, returns true if and only
      * if this heap contains all the elements such that for each element o.equals(e).
      *
-     * @param arg0 The list that contains the objects to be checked for containment in this heap.
+     * @param collection The list that contains the objects to be checked for containment in this heap.
      * @return True if this heap contains all the specified elements in the list.
      */
-    public boolean containsAll(@NotNull Collection<?> arg0) {
-        return arg0.stream().map(this::contains).filter(it -> it).count() == arg0.size();
+    public boolean containsAll(@NotNull Collection<?> collection) {
+        return collection.stream().map(this::contains).filter(it -> it).count() == collection.size();
     }
 
     /**
@@ -654,6 +692,9 @@ public abstract class ArrayHeap<T> implements Heap<T> {
      * that was previously at the end of the list and is now at some
      * position before i. This fact is used by iterator.remove so as to
      * avoid missing traversing elements.
+     *
+     * @param i The index of the item to remove.
+     * @return The removed item or null if the item doesn't exist.
      */
     @SuppressWarnings("unchecked")
     protected T removeAt(int i) {

@@ -57,6 +57,13 @@ import java.util.List;
  * Your puzzle answer was 14110788.
  */
 public class Day06 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day06() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_06-01.txt";
@@ -92,14 +99,36 @@ public class Day06 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Loads the lighting instructions and returns a ChristLights instance setup with those
+     * instructions on a grid with the specified dimensions.
+     *
+     * @param rawInstructions The lighting instructions to parse.
+     * @param columns The number of columns in the lighting grid.
+     * @param rows The number of rows in the lighting grid.
+     * @return A ChristLights instance setup with the specified instructions on a grid
+     * with the specified dimensions.
+     */
     public ChristmasLights loadLights(List<String> rawInstructions, int columns, int rows) {
         return ChristmasLights.buildFromLightingInstructions(columns, rows, rawInstructions);
     }
 
+    /**
+     * Returns the number of lights that are on.
+     *
+     * @param lights The ChristmasLights.
+     * @return The number of lights that are on.
+     */
     public long getOnLightCount(ChristmasLights lights) {
         return lights.getOnLightCount();
     }
 
+    /**
+     * Returns the total brightness of the ChristmasLights setup.
+     *
+     * @param lights The ChristmasLights.
+     * @return The total brightness of the ChristmasLights setup.
+     */
     public long getTotalBrightness(ChristmasLights lights) {
         return lights.getTotalBrightness();
     }

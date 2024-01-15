@@ -12,6 +12,7 @@ import java.util.Optional;
  *
  * @param id The ID of this Gate.
  * @param supplier The supplier of the Signal that will pass through this Gate.
+ * @param <T> The type of the value supported by the Gate.
  */
 public record IdentityGate<T extends Comparable<T>>(
         @NotNull String id,

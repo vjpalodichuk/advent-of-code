@@ -69,6 +69,8 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
+     * Returns the name of this Graph.
+     *
      * @return The name of this Graph.
      */
     @NotNull
@@ -77,6 +79,8 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
+     * Returns a modifiable list of Vertices in this Graph.
+     *
      * @return A modifiable list of Vertices in this Graph.
      */
     @NotNull
@@ -85,7 +89,9 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
-     * @return The map of Vertices in this Graph.
+     * Returns an unmodifiable map of Vertices in this Graph.
+     *
+     * @return An unmodifiable map of Vertices in this Graph.
      */
     @NotNull
     public Map<String, Vertex<T, E>> getVertexMap() {
@@ -187,6 +193,8 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
+     * Returns the number of Vertices in this Graph.
+     *
      * @return The number of Vertices in this Graph.
      */
     public int size() {
@@ -194,6 +202,8 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
+     * Returns an Optional with a reference to the specified Vertex ID.
+     *
      * @param vertexId The ID of the Vertex to retrieve from this Graph.
      * @return An Optional with a reference to the specified Vertex ID.
      */
@@ -203,6 +213,8 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
+     * Returns the Set of IDs for the Vertices in this Graph.
+     *
      * @return The Set of IDs for the Vertices in this Graph.
      */
     @NotNull
@@ -343,16 +355,24 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
         return vertices.get(sourceId).add(vertices.get(targetId));
     }
 
-    public void addAsNew(@NotNull Edge<T, E> edge) {
-        add(edge.getSource().getId());
-        add(edge.getTarget().getId());
+    /**
+     * Adds the Vertices of the specified Edge to this Graph and then adds
+     * the Edge to this Graph.
+     *
+     * @param edge The Edge and Vertices to add to this Graph.
+     */
+    public void addAsNew(@NotNull Edge<E> edge) {
+        add(edge.getSource());
+        add(edge.getTarget());
         edge.getWeight().ifPresentOrElse(
-                weight -> add(edge.getSource().getId(), edge.getTarget().getId(), edge.getLabel(), weight),
-                () -> add(edge.getSource().getId(), edge.getTarget().getId(), edge.getLabel())
+                weight -> add(edge.getSource(), edge.getTarget(), edge.getLabel(), weight),
+                () -> add(edge.getSource(), edge.getTarget(), edge.getLabel())
         );
     }
 
     /**
+     * Returns the number of Edges in all Vertices in this Graph.
+     *
      * @return The number of Edges in all Vertices in this Graph.
      */
     public int edgeCount() {
@@ -375,15 +395,15 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
      * @return An Optional that contains a reference to the removed Edge if it existed.
      */
     @NotNull
-    public Optional<Edge<T, E>> remove(@NotNull Edge<T, E> edge) {
+    public Optional<Edge<E>> remove(@NotNull Edge<E> edge) {
         Objects.requireNonNull(edge);
 
-        if (!vertices.containsKey(Objects.requireNonNull(edge.getSource()).getId()) &&
-                !vertices.containsKey(Objects.requireNonNull(edge.getTarget()).getId())) {
+        if (!vertices.containsKey(Objects.requireNonNull(edge.getSource())) &&
+                !vertices.containsKey(Objects.requireNonNull(edge.getTarget()))) {
             return Optional.empty();
         }
 
-        return vertices.get(edge.getSource().getId()).remove(edge.getTarget());
+        return vertices.get(edge.getSource()).remove(edge.getTarget());
     }
 
     /**
@@ -393,7 +413,7 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
      * @param target The target Vertex of the Edges we are removing.
      * @return The removed Edge.
      */
-    public @NotNull Optional<Edge<T, E>> remove(@NotNull Vertex<T, E> source, @NotNull Vertex<T, E> target) {
+    public @NotNull Optional<Edge<E>> remove(@NotNull Vertex<T, E> source, @NotNull Vertex<T, E> target) {
         return remove(Objects.requireNonNull(source).getId(), Objects.requireNonNull(target).getId());
     }
 
@@ -404,19 +424,21 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
      * @param target The target Vertex ID of the Edges we are removing.
      * @return The removed Edge.
      */
-    public @NotNull Optional<Edge<T, E>> remove(@NotNull String source, @NotNull String target) {
+    public @NotNull Optional<Edge<E>> remove(@NotNull String source, @NotNull String target) {
         if (!vertices.containsKey(Objects.requireNonNull(source)) && !vertices.containsKey(Objects.requireNonNull(target))) {
             return Optional.empty();
         }
 
-        return vertices.get(source).remove(vertices.get(target));
+        return vertices.get(source).remove(vertices.get(target).getId());
     }
 
     /**
+     * Returns an unmodifiable Set of all Edges in this Graph.
+     *
      * @return An unmodifiable Set of all Edges in this Graph.
      */
     @NotNull
-    public Set<Edge<T, E>> getEdges() {
+    public Set<Edge<E>> getEdges() {
         return vertices.values().stream().flatMap(it -> it.getEdgeSet().stream()).collect(Collectors.toSet());
     }
 
@@ -427,7 +449,7 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
      * @return A Set of all Edges coming from the specified Vertex.
      */
     @NotNull
-    public Set<Edge<T, E>> getEdges(@NotNull Vertex<T, E> vertex) {
+    public Set<Edge<E>> getEdges(@NotNull Vertex<T, E> vertex) {
         return Objects.requireNonNull(vertex).getEdgeSet();
     }
 
@@ -438,7 +460,7 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
      * @return A Set of all Edges coming from the specified Vertex ID.
      */
     @NotNull
-    public Set<Edge<T, E>> getEdges(@NotNull String vertexId) {
+    public Set<Edge<E>> getEdges(@NotNull String vertexId) {
         Objects.requireNonNull(vertexId);
 
         if (!vertices.containsKey(Objects.requireNonNull(vertexId))) {
@@ -456,9 +478,9 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
      * @return The Set of Edges containing the requested target.
      */
     @NotNull
-    public Set<Edge<T, E>> getEdgesTo(@NotNull Vertex<T, E> target) {
+    public Set<Edge<E>> getEdgesTo(@NotNull Vertex<T, E> target) {
         Objects.requireNonNull(target);
-        var answer = new HashSet<Edge<T, E>>();
+        var answer = new HashSet<Edge<E>>();
 
         vertices.values()
                 .forEach((vertex) -> {
@@ -478,7 +500,7 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
      * @return The Set of Edges containing the requested target.
      */
     @NotNull
-    public Set<Edge<T, E>> getEdgesTo(@NotNull String targetId) {
+    public Set<Edge<E>> getEdgesTo(@NotNull String targetId) {
         Objects.requireNonNull(targetId);
 
         if (!vertices.containsKey(Objects.requireNonNull(targetId))) {
@@ -489,6 +511,7 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     /**
+     * Returns true if a Vertex with the specified vertexId is in this Graph.
      *
      * @param vertexId The vertexId to check for existence.
      * @return True if a Vertex with the specified vertexId is in this Graph.

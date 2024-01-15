@@ -84,9 +84,16 @@ import java.util.List;
  * Now, what is the quantum entanglement of the first group of packages in the ideal configuration?
  * <p>
  * Your puzzle answer was 74850409.
- * <p>
+ *
  */
 public class Day24 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day24() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_24-01.txt";
@@ -110,6 +117,14 @@ public class Day24 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the lowest Quantum Entanglement Score for the specified number of
+     * gifts and the number of equal partitions to break them up into.
+     *
+     * @param input The gifts to put in to equal weight sets.
+     * @param partitions The number of sets to put the gifts in.
+     * @return the lowest Quantum Entanglement Score.
+     */
     public long getLowestQEScore(List<String> input, int partitions) {
         var sleigh = new QuantumEntanglement(input);
         return sleigh.getLowestQEScore(partitions);

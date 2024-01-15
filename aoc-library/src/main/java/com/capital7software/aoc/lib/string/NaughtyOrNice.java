@@ -19,7 +19,7 @@ public record NaughtyOrNice() {
      * jchzalrnumimnmhp is naughty because it has no double letter.
      * haegwjzuvuyypxyu is naughty because it contains the string xy.
      * dvszwmarrgswjxmb is naughty because it contains only one vowel.
-     * <p>
+     *
      * @param letters The letters of the string to test if it is Naught or Nice.
      * @return Returns true if the letters make up a Nice string.
      */
@@ -76,7 +76,7 @@ public record NaughtyOrNice() {
      * uurcxstgmygtbstg is naughty because it has a pair (tg) but no repeat with a single letter between them.
      * ieodomkazucvgmuy is naughty because it has a repeating letter with one between (odo),
      * but no pair that appears twice.
-     * <p>
+     *
      * @param letters The letters of the string to test if it is Naught or Nice.
      * @return Returns true if the letters make up a Nice string.
      */
@@ -115,14 +115,34 @@ public record NaughtyOrNice() {
         return repeatLetterCount > 0 && twoLetterCount > 0;
     }
 
+    /**
+     * Returns true if the specified characters form a restricted sequence.
+     *
+     * @param c The first character to check.
+     * @param o The second character to check.
+     * @return True if the specified characters form a restricted sequence.
+     */
     public static boolean isRestricted(char c, char o) {
         return (c == 'a' && o == 'b') || (c == 'c' && o == 'd') || (c == 'p' && o == 'q') || (c == 'x' && o == 'y');
     }
 
+    /**
+     * Returns true if the two characters are the same character.
+     *
+     * @param c The first character to check.
+     * @param o The second character to check.
+     * @return True if the two characters are the same character.
+     */
     public static boolean isDoubleLetter(char c, char o) {
         return c == o;
     }
 
+    /**
+     * Returns true if the specified character is a vowel.
+     *
+     * @param c The character to check.
+     * @return True if the specified character is a vowel.
+     */
     public static boolean isVowel(char c) {
         return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
     }

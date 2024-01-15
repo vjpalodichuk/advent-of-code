@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
  * </ul>
  * <p>
  * For example:
- * <p>
  * <ul>
  *     <li>
  *         hijklmmn meets the first requirement (because it contains the straight hij)
@@ -42,8 +41,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public class PasswordPolicy {
     /**
+     * Instantiates a new and empty PasswordPolicy instance.
+     *
+     */
+    public PasswordPolicy() {
+
+    }
+
+    /**
      * Returns true if the specified input is a valid password.
-     * <p>
      *     <ul>
      *         <li>
      *             Passwords must include one increasing straight of at least three letters,
@@ -73,7 +79,6 @@ public class PasswordPolicy {
 
     /**
      * Returns true if the specified input is a valid password.
-     * <p>
      *     <ul>
      *         <li>
      *             Passwords must include one increasing straight of at least three letters,

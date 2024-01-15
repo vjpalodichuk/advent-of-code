@@ -29,7 +29,7 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
     private final String id;
     private String name;
     private T value;
-    private final Map<String, Edge<T, E>> edges;
+    private final Map<String, Edge<E>> edges;
 
     /**
      * Instantiates a new Vertex with the specified ID, name, value, and set of Edges.
@@ -39,7 +39,7 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
      * @param value The value contained by this Vertex.
      * @param edges The Map to store the set of edges coming from this Vertex.
      */
-    public Vertex(@NotNull String id, @NotNull String name, T value, @NotNull Map<String, Edge<T, E>> edges) {
+    public Vertex(@NotNull String id, @NotNull String name, T value, @NotNull Map<String, Edge<E>> edges) {
         this.id = Objects.requireNonNull(id);
         this.name = Objects.requireNonNull(name);
         this.value = value;
@@ -68,6 +68,8 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
     }
 
     /**
+     * Returns the ID of this Vertex.
+     *
      * @return The ID of this Vertex.
      */
     @NotNull
@@ -76,6 +78,8 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
     }
 
     /**
+     * Returns the name of this Vertex.
+     *
      * @return The name of this Vertex.
      */
     @NotNull
@@ -93,6 +97,8 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
     }
 
     /**
+     * Returns an Optional of the value held by this Vertex.
+     *
      * @return An Optional of the value held by this Vertex.
      */
     @NotNull
@@ -101,6 +107,8 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
     }
 
     /**
+     * Sets the value of this Vertex to the specified value, which may be null.
+     *
      * @param value Sets the value of this Vertex to the specified value, which may be null.
      */
     public void setValue(T value) {
@@ -108,18 +116,22 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
     }
 
     /**
+     * Returns an unmodifiable copy of the Edges in this Vertex.
+     *
      * @return An unmodifiable copy of the Edges in this Vertex.
      */
     @NotNull
-    public Map<String, Edge<T, E>> getEdges() {
+    public Map<String, Edge<E>> getEdges() {
         return Collections.unmodifiableMap(edges);
     }
 
     /**
+     * Returns a copy of the set of all Edges in this Vertex.
+     *
      * @return A copy of the set of all Edges in this Vertex.
      */
     @NotNull
-    public Set<Edge<T, E>> getEdgeSet() {
+    public Set<Edge<E>> getEdgeSet() {
         return new HashSet<>(edges.values());
     }
 
@@ -136,8 +148,8 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
      */
     public boolean add(@NotNull Vertex<T, E> target, @NotNull String label, E weight) {
         return edges.putIfAbsent(target.getId(), new Edge<>(
-                this,
-                Objects.requireNonNull(target),
+                getId(),
+                Objects.requireNonNull(target).getId(),
                 Objects.requireNonNull(label),
                 weight)
         ) == null;
@@ -155,7 +167,7 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
      */
     public boolean add(@NotNull Vertex<T, E> target, @NotNull String label) {
         return edges.putIfAbsent(target.getId(), new Edge<>(
-                this, Objects.requireNonNull(target), Objects.requireNonNull(label), null)
+                getId(), Objects.requireNonNull(target).getId(), Objects.requireNonNull(label), null)
         ) == null;
     }
 
@@ -170,11 +182,13 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
      */
     public boolean add(@NotNull Vertex<T, E> target) {
         return edges.putIfAbsent(target.getId(), new Edge<>(
-                this, Objects.requireNonNull(target))
+                getId(), Objects.requireNonNull(target).getId())
         ) == null;
     }
 
     /**
+     * Returns the number of Edges coming from this Vertex by target.
+     *
      * @return The number of Edges coming from this Vertex by target.
      */
     public int size() {
@@ -196,8 +210,8 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
      * @return The removed Edge.
      */
     @NotNull
-    public Optional<Edge<T, E>> remove(@NotNull Vertex<T, E> target) {
-        return Optional.ofNullable(edges.remove(Objects.requireNonNull(target).getId()));
+    public Optional<Edge<E>> remove(@NotNull String target) {
+        return Optional.ofNullable(edges.remove(Objects.requireNonNull(target)));
     }
 
     /**
@@ -253,7 +267,7 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
      * @param targetId The Vertex to get the Edge to.
      * @return The Edge for the specified Vertex targetId.
      */
-    public Optional<Edge<T, E>> getEdge(@NotNull String targetId) {
+    public Optional<Edge<E>> getEdge(@NotNull String targetId) {
         return Optional.ofNullable(edges.get(targetId));
     }
 
@@ -270,6 +284,11 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>> implements
         }
     }
 
+    /**
+     * Returns a new instance that is a copy of this instance.
+     *
+     * @return A new instance that is a copy of this instance.
+     */
     public Vertex<T, E> copy() {
         return new Vertex<>(id, name, value, edges);
     }

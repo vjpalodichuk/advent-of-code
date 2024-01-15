@@ -12,17 +12,19 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  * A Signal is retrieved from its source automatically if supply() is called and the Signal currently produced by
  * this Wire is currently invalid.
- * <p>
+ *
  * @param <T> The type of the value that is carried by a Signal.
  */
 public interface Wire<T extends Comparable<T>> extends SignalSupplier<T>, SignalConsumer<T> {
     /**
+     * Returns the ID of this Wire.
      *
-     * @return The ID of this Wire
+     * @return The ID of this Wire.
      */
     String id();
 
     /**
+     * Sets the source of this Signal.
      *
      * @param source The source of this Signal. There can only be one source at any given time.
      */

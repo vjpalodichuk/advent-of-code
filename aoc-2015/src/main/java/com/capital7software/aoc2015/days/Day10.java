@@ -34,9 +34,16 @@ import java.util.List;
  * Now, starting again with the digits in your puzzle input, apply this process 50 times. What is the length of the new result?
  * <p>
  * Your puzzle answer was 5103798.
- * <p>
+ *
  */
 public class Day10 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day10() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_10-01.txt";
@@ -76,6 +83,11 @@ public class Day10 implements AdventOfCodeSolution {
         }
     }
 
+    /**
+     * Encodes and returns the new Run Length Encoded String.
+     * @param line The String to encode.
+     * @return The new Run Length Encoded String.
+     */
     @NotNull
     public String getRunLengthEncodedStringString(@NotNull String line) {
         return RunLengthEncoder.encode(line);

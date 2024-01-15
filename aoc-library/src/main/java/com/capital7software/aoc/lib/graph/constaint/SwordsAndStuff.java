@@ -67,7 +67,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * The mage deals 5-2 = 3 damage; the boss goes down to 0 hit points.<br>
  * <p><br>
  * In this scenario, the mage wins! (Barely.)
- * <p>
  *
  * @param shop   The ItemShop that this simulator will use.
  * @param player You are the mage!!
@@ -75,77 +74,184 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public record SwordsAndStuff(@NotNull ItemShop shop, @NotNull Player player, @NotNull Player boss) {
 
+    /**
+     * The default maximum number of iterations to have the Solver run for.
+     */
     public static final int MAX_ITERATIONS = 100_000;
 
+    /**
+     * The different types of Items in the game that the Player can carry and equip.
+     */
     public enum ItemType {
+        /**
+         * The Weapon type. The Player must carry exactly one of these types of Items.
+         */
         WEAPON(1, 1),
+        /**
+         * The Armor type. The Player can carry zero or one of these types of Items.
+         */
         ARMOR(0, 1),
+        /**
+         * The Ring type. The Player can carry zero to two of these types of Items.
+         */
         RING(0, 2);
 
         private final int minimum;
         private final int maximum;
 
+        /**
+         * Instantiates a new ItemType with the specified minimum and maximum carry values.
+         *
+         * @param minimum The minimum number of Items of this type the Player must carry at once.
+         * @param maximum The maximum number of Items of this type the Player can carry at once.
+         */
         ItemType(int minimum, int maximum) {
             this.minimum = minimum;
             this.maximum = maximum;
         }
 
+        /**
+         * Returns the minimum number of Items of this type the Player must carry at once.
+         *
+         * @return The minimum number of Items of this type the Player must carry at once.
+         */
         public int getMinimum() {
             return minimum;
         }
 
+        /**
+         * Returns the maximum number of Items of this type the Player can carry at once.
+         *
+         * @return The maximum number of Items of this type the Player can carry at once.
+         */
         public int getMaximum() {
             return maximum;
         }
     }
 
+    /**
+     * A physical Item that the Player can equip.
+     *
+     * @param type The type of this Item.
+     * @param name The name of this Item.
+     * @param cost The cost in gold of this Item.
+     * @param damage The damage this Item does.
+     * @param armor The armor this item provides.
+     */
     public record Item(@NotNull ItemType type, @NotNull String name, int cost, int damage, int armor) {
     }
 
+    /**
+     * Instantiates a new ItemShop with the specified Lists of weapons, armor, and rings that
+     * this ItemShop owns.
+     *
+     * @param weapons The list of Weapons.
+     * @param armor The List of Armor.
+     * @param rings The List of Rings.
+     */
     public record ItemShop(@NotNull List<Item> weapons, @NotNull List<Item> armor, @NotNull List<Item> rings) {
+        /**
+         * Instantiates a new ItemShop with the specified Lists of weapons, armor, and rings that
+         * this ItemShop owns.
+         *
+         * @param weapons The list of Weapons.
+         * @param armor The List of Armor.
+         * @param rings The List of Rings.
+         */
         public ItemShop(@NotNull List<Item> weapons, @NotNull List<Item> armor, @NotNull List<Item> rings) {
             this.weapons = new ArrayList<>(weapons);
             this.armor = new ArrayList<>(armor);
             this.rings = new ArrayList<>(rings);
         }
 
+        /**
+         * Returns an unmodifiable List of Armor this Shop has.
+         *
+         * @return An unmodifiable List of Armor this Shop has.
+         */
         @Override
         public @NotNull List<Item> armor() {
             return Collections.unmodifiableList(armor);
         }
 
+        /**
+         * Returns an unmodifiable List of Rings this Shop has.
+         *
+         * @return An unmodifiable List of Rings this Shop has.
+         */
         @Override
         public @NotNull List<Item> rings() {
             return Collections.unmodifiableList(rings);
         }
 
+        /**
+         * Returns an unmodifiable List of Weapons this Shop has.
+         *
+         * @return An unmodifiable List of Weapons this Shop has.
+         */
         @Override
         public @NotNull List<Item> weapons() {
             return Collections.unmodifiableList(weapons);
         }
     }
 
+    /**
+     * A data class to hold this Player's information.
+     *
+     * @param name The name of this Player.
+     * @param hitPoints The hit-points of this Player.
+     * @param items The items for this Player that it owns.
+     */
     public record Player(@NotNull String name, @NotNull AtomicInteger hitPoints, @NotNull List<Item> items) {
+        /**
+         * Instantiates a new Player instance with the specified name, hit-points, and Items.
+         *
+         * @param name The name of this Player.
+         * @param hitPoints The hit-points of this Player.
+         * @param items The items for this Player that it owns.
+         */
         public Player(@NotNull String name, @NotNull AtomicInteger hitPoints, @NotNull List<Item> items) {
             this.name = name;
             this.hitPoints = new AtomicInteger(hitPoints.get());
             this.items = new ArrayList<>(items);
         }
 
+        /**
+         * Instantiates a new Player instance with the specified name and hit-points and no Items.
+         *
+         * @param name The name of this Player.
+         * @param hitPoints The hit-points of this Player.
+         */
         public Player(@NotNull String name, int hitPoints) {
             this(name, new AtomicInteger(hitPoints), new ArrayList<>());
         }
 
+        /**
+         * Returns the hit-points this Player has.
+         *
+         * @return The hit-points this Player has.
+         */
         @Override
         public AtomicInteger hitPoints() {
             return new AtomicInteger(hitPoints.get());
         }
 
+        /**
+         * Returns an unmodifiable List of the Items this Player has.
+         *
+         * @return An unmodifiable List of the Items this Player has.
+         */
         @Override
         public List<Item> items() {
             return Collections.unmodifiableList(items);
         }
 
+        /**
+         * Returns true if the specified Item was successfully added to this Player's inventory.
+         *
+         * @param item The Item to add.
+         * @return True if the specified Item was successfully added to this Player's inventory.
+         */
         public boolean add(Item item) {
             var count = countItems(item.type());
 
@@ -156,22 +262,48 @@ public record SwordsAndStuff(@NotNull ItemShop shop, @NotNull Player player, @No
             }
         }
 
+        /**
+         * Returns the number of items this Player has of the specified type.
+         *
+         * @param type The type of Items to get the count of.
+         * @return The number of items this Player has of the specified type.
+         */
         public long countItems(ItemType type) {
             return items.stream().filter(it -> it.type() == type).count();
         }
 
+        /**
+         * Returns the total amount of hit-points this Player has left.
+         *
+         * @return The total amount of hit-points this Player has left.
+         */
         public int getHitPoints() {
             return hitPoints.get();
         }
 
+        /**
+         * Returns the total amount of Damage this Player does.
+         *
+         * @return The total amount of Damage this Player does.
+         */
         public int getDamage() {
             return items.stream().mapToInt(Item::damage).sum();
         }
 
+        /**
+         * Returns The total amount of Armor this Player has.
+         *
+         * @return The total amount of Armor this Player has.
+         */
         public int getArmor() {
             return items.stream().mapToInt(Item::armor).sum();
         }
 
+        /**
+         * Returns the total gold spent by this Player.
+         *
+         * @return The total gold spent by this Player.
+         */
         public int getCost() {
             return items.stream().mapToInt(Item::cost).sum();
         }

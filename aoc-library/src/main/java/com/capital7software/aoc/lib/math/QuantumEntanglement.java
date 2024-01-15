@@ -74,11 +74,16 @@ import java.util.List;
  * in the first group: 11 4, 10 5, and 8 7. Of these, 11 4 has the lowest quantum entanglement, and so it is selected.
  * <p><br>
  * Now, what is the quantum entanglement of the first group of packages in the ideal configuration?
- * <p>
+ *
  */
 public class QuantumEntanglement {
     private final List<Integer> source;
 
+    /**
+     * Instantiates a new QuantumEntanglement instance with the specified list of packages.
+     *
+     * @param input The packages for the sleigh.
+     */
     public QuantumEntanglement(List<String> input) {
         source = new ArrayList<>();
 

@@ -81,6 +81,13 @@ public record CircuitBoardInteger(
         this(id, new HashMap<>(), new HashMap<>());
     }
 
+    /**
+     * Instantiates a new CircuitBoardInteger with the specified ID, Wires, and Gates.
+     *
+     * @param id The ID of this CircuitBoardInteger
+     * @param gateMap The map of existing Gates.
+     * @param wireMap The map of existing Wires.
+     */
     public CircuitBoardInteger(
             @NotNull String id,
             @NotNull Map<String, Gate<Integer>> gateMap,
@@ -289,26 +296,53 @@ public record CircuitBoardInteger(
         return splitMap;
     }
 
+    /**
+     * Returns an unmodifiable Map of the Wires held by this instance.
+     *
+     * @return An unmodifiable Map of the Wires held by this instance.
+     */
     @Override
     public Map<String, Wire<Integer>> wires() {
         return Collections.unmodifiableMap(wireMap);
     }
 
+    /**
+     * Adds a new Gate or replaces an existing Gate.
+     *
+     * @param gate The gate to add.
+     * @return The previous Gate with the same ID or null if there wasn't one.
+     */
     @Override
     public Gate<Integer> add(@NotNull Gate<Integer> gate) {
         return gateMap.put(gate.id(), gate);
     }
 
+    /**
+     * Adds a new Wire or replaces an existing Wire.
+     *
+     * @param wire The wire to add.
+     * @return The previous Wire with the same ID or null if there wasn't one.
+     */
     @Override
     public Wire<Integer> add(@NotNull Wire<Integer> wire) {
         return wireMap.put(wire.id(), wire);
     }
 
+    /**
+     * Returns an unmodifiable instance of the Wire Map used by this instance.
+     *
+     * @return An unmodifiable instance of the Wire Map used by this instance.
+     */
     @Override
     public Map<String, Wire<Integer>> wireMap() {
         return Collections.unmodifiableMap(wireMap);
     }
 
+    /**
+     * Returns an unmodifiable instance of the Gate Map used by this instance.
+     *
+     * @return An unmodifiable instance of the Gate Map used by this instance.
+     */
     @Override
     public Map<String, Gate<Integer>> gateMap() {
         return Collections.unmodifiableMap(gateMap);

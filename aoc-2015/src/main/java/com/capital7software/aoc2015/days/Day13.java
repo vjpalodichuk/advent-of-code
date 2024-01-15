@@ -94,9 +94,16 @@ import java.util.Properties;
  * What is the total change in happiness for the optimal seating arrangement that actually includes yourself?
  * <p>
  * Your puzzle answer was 601.
- * <p>
+ *
  */
 public class Day13 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day13() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_13-01.txt";
@@ -130,6 +137,13 @@ public class Day13 implements AdventOfCodeSolution {
         }
     }
 
+    /**
+     * Uses a Graph to find Hamiltonian Cycles and returns the path
+     * with the greatest cost, which represents the greatest change in happiness.
+     *
+     * @param happiness The seating arrangement that specifies the levels of happiness.
+     * @return The path with the greatest cost, which represents the greatest change in happiness.
+     */
     public long greatestChangeInHappiness(List<String> happiness) {
         var graph = new Day13Parser().parse(happiness, "day13");
         var pathFinder = new HamiltonianPathFinder<String, Integer>();

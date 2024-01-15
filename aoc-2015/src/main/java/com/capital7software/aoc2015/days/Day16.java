@@ -63,9 +63,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * What is the number of the real Aunt Sue?
  * <p>
  * Your puzzle answer was 241.
- * <p>
+ *
  */
 public class Day16 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day16() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_16-01.txt";
@@ -89,6 +96,12 @@ public class Day16 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the ID of the AuntSue based on the all the available suspects.
+     *
+     * @param input The suspect AuntSues.
+     * @return The ID of the AuntSue based on the all the available suspects.
+     */
     public long identifyAuntSue(List<String> input) {
         var identifier = AuntSueIdentifier.parse(input);
         var target = new AuntSue(0, 3, 7, 2, 3, 0, 0, 5, 3, 2, 1);
@@ -101,6 +114,12 @@ public class Day16 implements AdventOfCodeSolution {
         return answer.get();
     }
 
+    /**
+     * Returns the ID of the AuntSue based on the all the available suspects.
+     *
+     * @param input The suspect AuntSues.
+     * @return The ID of the AuntSue based on the all the available suspects.
+     */
     public long identifyRealAuntSue(List<String> input) {
         var identifier = AuntSueIdentifier.parse(input);
         var target = new AuntSue(0, 3, 7, 2, 3, 0, 0, 5, 3, 2, 1);
@@ -112,5 +131,4 @@ public class Day16 implements AdventOfCodeSolution {
 
         return answer.get();
     }
-
 }

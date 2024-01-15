@@ -28,7 +28,8 @@ package com.capital7software.aoc.lib.math;
  * The first house gets 10 presents: it is visited only by Elf 1, which delivers 1 * 10 = 10 presents.<br>
  * The fourth house gets 70 presents, because it is visited by Elves 1, 2, and 4,
  * for a total of 10 + 20 + 40 = 70 presents.
- * <p>
+ *
+ * @param deliveredPresents The number of presents that have been delivered.
  */
 public record InfiniteHouses(int deliveredPresents) {
     public static final int MAX_ITERATIONS = 1_000_000;

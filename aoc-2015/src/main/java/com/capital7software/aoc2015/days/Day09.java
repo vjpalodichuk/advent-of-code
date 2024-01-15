@@ -50,9 +50,16 @@ import java.util.Properties;
  * What is the distance of the longest route?
  * <p>
  *     Your puzzle answer was 909
- * </p>
+ *
  */
 public class Day09 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day09() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_09-01.txt";
@@ -76,6 +83,13 @@ public class Day09 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Uses a Hamiltonian PathFinder to determine the shortest route visiting
+     * each node at least once along the available routes.
+     *
+     * @param routes All the available routes.
+     * @return The distance of the shortest route that visits every node.
+     */
     public long distanceOfShortestRouteVisitingEachNodeOnce(List<String> routes) {
         var graph = new Day09Parser().parse(routes, "day09");
         var pathFinder = new HamiltonianPathFinder<String, Integer>();
@@ -98,6 +112,13 @@ public class Day09 implements AdventOfCodeSolution {
                 .orElse(0);
     }
 
+    /**
+     * Uses a Hamiltonian PathFinder to determine the longest route visiting
+     * each node at least once along the available routes.
+     *
+     * @param routes All the available routes.
+     * @return The distance of the longest route that visits every node.
+     */
     public long distanceOfLongestRouteVisitingEachNodeOnce(List<String> routes) {
         var graph = new Day09Parser().parse(routes, "day09");
         var pathFinder = new HamiltonianPathFinder<String, Integer>();
@@ -120,6 +141,13 @@ public class Day09 implements AdventOfCodeSolution {
                 .orElse(0);
     }
 
+    /**
+     * Uses a Hamiltonian PathFinder to determine the shortest route visiting
+     * each node at least once along the available routes that completes a Cycle.
+     *
+     * @param routes All the available routes.
+     * @return The distance of the shortest route that visits every node in a Cycle.
+     */
     public long distanceOfShortestCycleVisitingEachNodeOnce(List<String> routes) {
         var graph = new Day09Parser().parse(routes, "day09");
         var pathFinder = new HamiltonianPathFinder<String, Integer>();
@@ -133,7 +161,7 @@ public class Day09 implements AdventOfCodeSolution {
         var props = new Properties();
         props.put(HamiltonianPathFinder.Props.DETECT_CYCLES, Boolean.TRUE);
         props.put(HamiltonianPathFinder.Props.SUM_PATH, Boolean.TRUE);
-        props.put(HamiltonianPathFinder.Props.STARTING_VERTICES, List.of(graph.get().getVertices().get(0)));
+        props.put(HamiltonianPathFinder.Props.STARTING_VERTICES, List.of(graph.get().getVertices().getFirst()));
 
         pathFinder.find(graph.get(), props, result -> {
             results.add(result);
@@ -142,11 +170,24 @@ public class Day09 implements AdventOfCodeSolution {
 
         return results
                 .stream()
-                .mapToInt(it -> it.edges().stream().filter(edge -> edge.getWeight().isPresent()).mapToInt(edge -> edge.getWeight().get()).sum())
+                .mapToInt(
+                        it -> it.edges()
+                                .stream()
+                                .filter(edge -> edge.getWeight().isPresent())
+                                .mapToInt(edge -> edge.getWeight().get())
+                                .sum()
+                )
                 .min()
                 .orElse(0);
     }
 
+    /**
+     * Builds the Minimum Spanning Tree of the available routes using Kruskal's
+     * algorithm.
+     *
+     * @param routes The available routes.
+     * @return The sum of the Edges in the MST.
+     */
     public long mstKruskal(List<String> routes) {
         var graph = new Day09Parser().parse(routes, "day09");
         var mstBuilder = new MinimumSpanningTreeKruskal<String, Integer>();
@@ -164,6 +205,13 @@ public class Day09 implements AdventOfCodeSolution {
                 .sum();
     }
 
+    /**
+     * Builds the Minimum Spanning Tree of the available routes using Prim's
+     * algorithm.
+     *
+     * @param routes The available routes.
+     * @return The sum of the Edges in the MST.
+     */
     public long mstPrim(List<String> routes) {
         var graph = new Day09Parser().parse(routes, "day09");
         var mstBuilder = new MinimumSpanningTreePrim<String, Integer>(0, Integer.MAX_VALUE);

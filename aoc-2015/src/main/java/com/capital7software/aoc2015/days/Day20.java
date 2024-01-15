@@ -49,9 +49,16 @@ import java.util.List;
  * at least as many presents as the number in your puzzle input?
  * <p>
  * Your puzzle answer was 786240.
- * <p>
+ *
  */
 public class Day20 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day20() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_20-01.txt";
@@ -78,12 +85,26 @@ public class Day20 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the lowest house number based on the number of delivered presents.
+     *
+     * @param deliveredPresents The number of delivered presents.
+     * @return The lowest house number based on the number of delivered presents.
+     */
     public int lowestHouseNumber(int deliveredPresents) {
         var infiniteHouses = new InfiniteHouses(deliveredPresents);
 
         return infiniteHouses.lowestHouseNumber();
     }
 
+    /**
+     * Returns the lowest house number based on the number of delivered presents
+     * using the new rules.
+     *
+     * @param deliveredPresents The number of delivered presents.
+     * @return The lowest house number based on the number of delivered presents
+     * using the new rules.
+     */
     public int lowestHouseNumberNewRules(int deliveredPresents) {
         var infiniteHouses = new InfiniteHouses(deliveredPresents);
 

@@ -24,6 +24,13 @@ import java.util.Optional;
  *
  */
 public class Day09Parser implements GraphParser<String, Integer> {
+    /**
+     * Instantiates a new empty Day09Parser instance.
+     */
+    public Day09Parser() {
+
+    }
+
     @Override
     public @NotNull Optional<Graph<String, Integer>> parse(@NotNull List<String> input, @NotNull String name) {
         var graph = new Graph<String, Integer>(Objects.requireNonNull(name));

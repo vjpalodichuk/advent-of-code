@@ -19,6 +19,13 @@ import java.util.function.Function;
  * @param <T> The type for the items stored in this grid.
  */
 public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
+    /**
+     * Instantiates a new Grid2D that owns the specified items array.
+     *
+     * @param columns The number of columns in this grid.
+     * @param rows The number of rows in this grid.
+     * @param items The array, whose size is columns x rows, to store the data of this grid.
+     */
     public Grid2D(int columns, int rows, @NotNull T[] items) {
         this.columns = columns;
         this.rows = rows;
@@ -256,7 +263,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
 
     /**
      * Returns a new Point2D in the direction from the specified point.
-     * <p>
+     *
      * @param x The x point to calculate the new point from.
      * @param y The y point to calculate the new point from.
      * @param direction The direction of the new point from the specified point.
@@ -268,7 +275,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
 
     /**
      * Returns a new Point2D in the direction from the specified point.
-     * <p>
+     *
      * @param point The point to calculate the new point from.
      * @param direction The direction of the new point from the specified point.
      * @return A new Point2D that is in the direction from the specified point.
@@ -313,6 +320,11 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
         return getAllNeighbors(point.x(), point.y());
     }
 
+    /**
+     * Returns a copy of the items held by this Grid2D in a new array.
+     *
+     * @return A copy of the items held by this Grid2D in a new array.
+     */
     @Override
     public T[] items() {
         return Arrays.copyOf(items, items.length);

@@ -57,9 +57,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * representation (23, just like in the first part of this puzzle) is 42 - 23 = 19.
  * <p>
  *     Your puzzle answer was 1350.
- * <p>
+ *
  */
 public class Day08 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day08() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_08-01.txt";
@@ -105,14 +112,33 @@ public class Day08 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the count of Code characters in the specified String.
+     *
+     * @param string The String to count the Code characters in.
+     * @return The count of Code characters in the specified String.
+     */
     public int codeCount(String string) {
         return EncodingFun.countCode(string);
     }
 
+    /**
+     * Returns the count of Memory characters in the specified String.
+     *
+     * @param string The String to count the Code characters in.
+     * @return The count of Memory characters in the specified String.
+     */
     public int memoryCount(String string) {
         return EncodingFun.countMemory(string);
     }
 
+    /**
+     * Encodes the specified String as a new String with Code characters.
+     * Returns the new encoded String.
+     *
+     * @param string The String to encode.
+     * @return The new encoded String.
+     */
     public String encodeString(String string) {
         return EncodingFun.encodeString(string);
     }

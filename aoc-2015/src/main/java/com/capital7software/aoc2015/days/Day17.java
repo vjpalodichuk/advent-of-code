@@ -36,9 +36,16 @@ import java.util.List;
  * There were three ways to use that many containers, and so the answer there would be 3.
  * <p>
  * Your puzzle answer was 18.
- * <p>
+ *
  */
 public class Day17 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day17() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_17-01.txt";
@@ -64,6 +71,13 @@ public class Day17 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the minimum number of containers to hold the specified amount of EggNog.
+     *
+     * @param liters The amount of EggNog needing to be stored.
+     * @param input The available containers to store EggNog.
+     * @return The minimum number of containers to hold the specified amount of EggNog.
+     */
     public Pair<Integer, List<List<Long>>> combinationsOfContainersToHoldEggNog(int liters, List<String> input) {
         var nog = EggNog.parse(liters, input);
 

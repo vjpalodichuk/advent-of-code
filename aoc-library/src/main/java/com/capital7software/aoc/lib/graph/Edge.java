@@ -22,13 +22,12 @@ import java.util.Random;
  * <p>
  * If the Edge contains a weight value then Comparable.compareTo can be used.
  *
- * @param <T> The type of the value that the Vertices contain.
  * @param <E> The type of the weight for this Edge.
  */
-public class Edge<T extends Comparable<T>, E extends Comparable<E>> implements Comparable<Edge<T, E>> {
+public class Edge<E extends Comparable<E>> implements Comparable<Edge<E>> {
     private static final Random LABEL_GENERATOR = new Random(System.nanoTime());
-    private final Vertex<T, E> source;
-    private final Vertex<T, E> target;
+    private final String source;
+    private final String target;
     private final String label;
     private E weight;
 
@@ -40,9 +39,9 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> implements C
      * @param label  The label of this Edge; it is not optional and should be non-null.
      * @param weight The weight of this Edge, which may be null.
      */
-    public Edge(@NotNull Vertex<T, E> source, @NotNull Vertex<T, E> target, @NotNull String label, E weight) {
-        this.source = Objects.requireNonNull(source).copy();
-        this.target = Objects.requireNonNull(target).copy();
+    public Edge(@NotNull String source, @NotNull String target, @NotNull String label, E weight) {
+        this.source = Objects.requireNonNull(source);
+        this.target = Objects.requireNonNull(target);
         this.label = Objects.requireNonNull(label);
         this.weight = weight;
     }
@@ -54,28 +53,34 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> implements C
      * @param source The source vertex that this Edge is coming from.
      * @param target The target vertex that this Edge is going to.
      */
-    public Edge(@NotNull Vertex<T, E> source, @NotNull Vertex<T, E> target) {
-        this(source, target, source.getId() + "-" + target.getId() + "-" +
+    public Edge(@NotNull String source, @NotNull String target) {
+        this(source, target, source + "-" + target + "-" +
                 LABEL_GENERATOR.nextInt(100_001), null);
     }
 
     /**
-     * @return The source Vertex of this Edge.
+     * Returns the source Vertex ID of this Edge.
+     *
+     * @return The source Vertex ID of this Edge.
      */
     @NotNull
-    public Vertex<T, E> getSource() {
-        return source.copy();
+    public String getSource() {
+        return source;
     }
 
     /**
-     * @return The target Vertex of this Edge.
+     * Returns the target Vertex ID of this Edge.
+     *
+     * @return The target Vertex ID of this Edge.
      */
     @NotNull
-    public Vertex<T, E> getTarget() {
-        return target.copy();
+    public String getTarget() {
+        return target;
     }
 
     /**
+     * Returns the label of this Edge.
+     *
      * @return The label of this Edge.
      */
     @NotNull
@@ -84,6 +89,7 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> implements C
     }
 
     /**
+     * Returns an Optional of the weight of this Edge.
      *
      * @return An Optional of the weight of this Edge.
      */
@@ -107,7 +113,7 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> implements C
      * @param target The Vertex to test against.
      * @return True if the specified target Vertex is the target of this Edge.
      */
-    public boolean hasTarget(@NotNull Vertex<T, E> target) {
+    public boolean hasTarget(@NotNull String target) {
         return this.target.equals(target);
     }
 
@@ -117,7 +123,7 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> implements C
      * @param source The Vertex to test against.
      * @return True if the specified source Vertex is the source of this Edge.
      */
-    public boolean hasSource(@NotNull Vertex<T, E> source) {
+    public boolean hasSource(@NotNull String source) {
         return this.source.equals(source);
     }
 
@@ -130,6 +136,14 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> implements C
         return this.label.equals(label);
     }
 
+    /**
+     * Returns a new Edge instance that is an independent copy of this Edge.
+     *
+     * @return A new Edge instance that is an independent copy of this Edge.
+     */
+    public Edge<E> copy() {
+        return new Edge<>(source, target, label, weight);
+    }
 
     /**
      * Two Edges are equal if they have the same source and target Vertices.
@@ -142,7 +156,7 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> implements C
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Edge<?, ?> edge)) {
+        if (!(o instanceof Edge<?> edge)) {
             return false;
         }
         return getSource().equals(edge.getSource()) &&
@@ -165,7 +179,7 @@ public class Edge<T extends Comparable<T>, E extends Comparable<E>> implements C
     }
 
     @Override
-    public int compareTo(@NotNull Edge<T, E> o) {
+    public int compareTo(@NotNull Edge<E> o) {
         if (weight == null && o.weight == null) {
             return 0;
         } else if (weight != null && o.weight != null) {

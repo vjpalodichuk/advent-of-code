@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.List;
 
 /**
- * --- Day 21: RPG Simulator 20XX ---<<br>
+ * --- Day 21: RPG Simulator 20XX ---<br>
  * Little Henry Case got a new video game for Christmas. It's an RPG, and he's stuck on a boss.
  * He needs to know what equipment to buy at the shop. He hands you the controller.
  * <p><br>
@@ -74,9 +74,16 @@ import java.util.List;
  * What is the most amount of gold you can spend and still lose the fight?
  * <p>
  * Your puzzle answer was 158.
- * <p>
+ *
  */
 public class Day21 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day21() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_21-01.txt";
@@ -100,12 +107,24 @@ public class Day21 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the least amount of Gold the Player can spend and still win the game.
+     *
+     * @param lines The available items and the player and boss stats.
+     * @return The least amount of Gold the Player can spend and still win the game.
+     */
     public int leastAmountOfGoldAndStillWin(List<String> lines) {
         var simulator = SwordsAndStuff.buildSimulator(lines);
         var least = simulator.calculateLeastGoldSpentToWinTheGame();
         return least.first();
     }
 
+    /**
+     * Returns the most amount of Gold the Player can spend and still lose the game.
+     *
+     * @param lines The available items and the player and boss stats.
+     * @return The most amount of Gold the Player can spend and still lose the game.
+     */
     public int mostAmountOfGoldAndStillLose(List<String> lines) {
         var simulator = SwordsAndStuff.buildSimulator(lines);
         var most = simulator.calculateMostAmountOfGoldAndStillLose();

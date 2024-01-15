@@ -79,8 +79,9 @@ public record CodeGenerator(int targetRow, int targetColumn) {
     }
 
     /**
+     * Calculates and returns the code for the targeted row and column.
      *
-     * @return Calculates and returns the for the targeted row and column.
+     * @return The code for the targeted row and column.
      */
     public long calculateCode() {
         var currentRow = 1L;

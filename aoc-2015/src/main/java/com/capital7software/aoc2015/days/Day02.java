@@ -46,11 +46,16 @@ import java.util.List;
  *     Your puzzle answer was 3842356.
  */
 public class Day02 implements AdventOfCodeSolution {
-    private static final String defaultFilename = "inputs/input_day_02-01.txt";
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day02() {
+
+    }
 
     @Override
     public String getDefaultInputFilename() {
-        return defaultFilename;
+        return "inputs/input_day_02-01.txt";
     }
 
     @Override
@@ -75,10 +80,22 @@ public class Day02 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Parses the specified input and returns it as a List of Presents.
+     *
+     * @param input The input to parse.
+     * @return A List of Presents.
+     */
     public List<Present> loadPresents(List<String> input) {
         return Present.parse(input);
     }
 
+    /**
+     * Returns the total amount of wrapping paper the Elves need.
+     *
+     * @param presents The number of presents to wrap.
+     * @return The total amount of wrapping paper the Elves need.
+     */
     public long howMuchTotalWrappingPaper(List<Present> presents) {
         return presents
                 .stream()
@@ -86,6 +103,12 @@ public class Day02 implements AdventOfCodeSolution {
                 .sum();
     }
 
+    /**
+     * Returns the total amount of ribbon the Elves need.
+     *
+     * @param presents The number of presents to put a bow on.
+     * @return The total amount of ribbon the Elves need.
+     */
     public long howMuchTotalRibbon(List<Present> presents) {
         return presents
                 .stream()

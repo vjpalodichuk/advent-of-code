@@ -12,6 +12,16 @@ import java.util.regex.Pattern;
  *
  */
 public class RunLengthEncoder {
+    /**
+     * Instantiates a new and empty RunLengthEncoder.
+     */
+    public RunLengthEncoder() {
+
+    }
+
+    /**
+     * A RegEx pattern for matching only the digits in a string.
+     */
     public static final Pattern DIGITS_ONLY = Pattern.compile("^\\d+$");
 
     /**

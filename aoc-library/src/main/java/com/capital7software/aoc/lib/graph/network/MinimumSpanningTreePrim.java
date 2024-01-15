@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * An implementation of Prim's MST algorithm.
  * <p>
  *     The algorithm can be informally described as:
- * <code>
  *     <ol>
  *         <li>
  *             Initialize a tree with a single vertex, chosen arbitrarily from the graph.
@@ -30,10 +29,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *             Repeat step 2 (until all vertices are in the tree).
  *         </li>
  *     </ol>
- * </code>
  * <p>
  *     A more formal description:
- *     <code>
  *         <ol>
  *             <li>
  *                 Associate with each vertex v of the graph a number C[v] (the cheapest cost of a connection to v)
@@ -74,7 +71,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *                 Return F, which specifically includes the corresponding edges in E
  *             </li>
  *         </ol>
- *     </code>
  * @param <T> The type of the value held by Vertices in the graph.
  * @param <E> The type of the weight held by Edges in the graph.
  */
@@ -149,7 +145,6 @@ public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparab
      * When build is called, all Vertices in the Graph are assigned the maxValue except for one that is picked as
      * random and is assigned the minValue. The Vertex assigned the minValue will be selected first and all other
      * Vertices will have their value updated as the algorithm progresses.
-     * <p>
      *
      * @param minValue The lowest initial value to assign to the starting Vertex.
      * @param maxValue The highest initial value to assign to all other Vertices.
@@ -160,11 +155,11 @@ public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparab
     }
 
     @Override
-    public @NotNull Collection<Edge<T, E>> build(@NotNull Graph<T, E> graph) {
+    public @NotNull Collection<Edge<E>> build(@NotNull Graph<T, E> graph) {
         var vertices = graph.getVertices();
         var vertexMap = new HashMap<String, PrimVertex<T, E>>(vertices.size());
         var vertexQueue = new PriorityQueue<PrimVertex<T, E>>(vertices.size());
-        var edges = new ArrayList<Edge<T, E>>();
+        var edges = new ArrayList<Edge<E>>();
         var visited = new HashSet<String>(vertices.size());
         var first = new AtomicBoolean(true);
 
@@ -207,12 +202,12 @@ public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparab
                     continue;
                 }
 
-                if (!visited.contains(edge.getTarget().getId())) {
-                    var vertex2 = vertexMap.get(edge.getTarget().getId());
+                if (!visited.contains(edge.getTarget())) {
+                    var vertex2 = vertexMap.get(edge.getTarget());
                     var realWeight = weight.get();
 
                     if (realWeight.compareTo(vertex2.getKey()) < 0) {
-                      vertex2.setPrevious(edge.getSource());
+                      vertex2.setPrevious(vertexMap.get(edge.getSource()).getVertex());
                       vertex2.setKey(realWeight);
                       vertexQueue.adjustTopUp(vertex2);
                   }

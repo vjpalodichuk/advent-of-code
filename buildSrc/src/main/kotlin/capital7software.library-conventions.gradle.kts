@@ -10,6 +10,12 @@ plugins {
 // Projects have the 'com.capital7software' group by convention
 group = "com.capital7software.aoc"
 
+val artifactoryContextUrl: String by project
+val repoKeyValue: String by project
+val repoKeyValuePublish: String by project
+val artifactoryUser: String by project
+val artifactoryPassword: String by project
+
 publishing {
     publications {
         create<MavenPublication>("library") {
@@ -19,38 +25,37 @@ publishing {
     repositories {
         maven {
             name = "artifactory-publish"
-            url = uri("${artifactory_contextUrl}/${repoKeyValuePublish}/")
+            url = uri("${artifactoryContextUrl}/${repoKeyValuePublish}/")
             credentials {
-                username = "${artifactory_user}"
-                password = "${artifactory_password}"
+                username = artifactoryUser
+                password = artifactoryPassword
             }
         }
     }
 }
 
 artifactory {
-    setContextUrl("${artifactory_contextUrl}")
+    setContextUrl(artifactoryContextUrl)
 
     publish {
-        setContextUrl("${artifactory_contextUrl}")
+        setContextUrl(artifactoryContextUrl)
         repository {
-            setRepoKey("${repoKeyValuePublish}")
-            setUsername("${artifactory_user}")
-            setPassword("${artifactory_password}")
+            setRepoKey(repoKeyValuePublish)
+            setUsername(artifactoryUser)
+            setPassword(artifactoryPassword)
             setMavenCompatible(true)
         }
         defaults {
             setPublishPom(true)
             setPublishArtifacts(true)
             publications("ALL_PUBLICATIONS")
-            //publishConfigs(configurations.findByName("archives")?.isCanBeResolved == true)
         }
     }
     resolve {
         repository {
-            setRepoKey("${repoKeyValue}")
-            setUsername("${artifactory_user}")
-            setPassword("${artifactory_password}")
+            setRepoKey(repoKeyValue)
+            setUsername(artifactoryUser)
+            setPassword(artifactoryPassword)
             setMavenCompatible(true)
         }
     }

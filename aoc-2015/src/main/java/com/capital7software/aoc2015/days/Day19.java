@@ -75,9 +75,16 @@ import java.util.Set;
  * medicine molecule in your puzzle input, what is the fewest number of steps to go from e to the medicine molecule?
  * <p>
  * Your puzzle answer was 212.
- * <p>
+ *
  */
 public class Day19 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day19() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_19-01.txt";
@@ -101,11 +108,24 @@ public class Day19 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the number of distinct molecules from the calibration process.
+     *
+     * @param input The replacement String and the molecule to fabricate.
+     * @return The number of distinct molecules from the calibration process.
+     */
     public Pair<Integer, Set<String>> calibrate(List<String> input) {
         var machine = MoleculeFabrication.buildMachine(input);
         return machine.calibrate();
     }
 
+    /**
+     * Returns the fewest number of steps to fabricate the desired molecule
+     * from the input Strings.
+     *
+     * @param input The replacement String and the molecule to fabricate.
+     * @return The fewest number of steps to fabricate the desired molecule.
+     */
     public Pair<Integer, Set<String>> fabricate(List<String> input) {
         var machine = MoleculeFabrication.buildMachine(input);
         return machine.fabricate();

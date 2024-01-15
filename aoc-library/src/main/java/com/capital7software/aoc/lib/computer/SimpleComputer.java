@@ -11,7 +11,6 @@ import java.util.Map;
  * (truly, it goes on to remind the reader, a state-of-the-art technology).
  * The registers are named a and b, can hold any non-negative integer, and begin with a value of 0.
  * The instructions are as follows:
- * <p>
  * <ul>
  *     <li>
  *         hlf r sets register r to half its current value, then continues with the next instruction.
@@ -53,6 +52,9 @@ public class SimpleComputer {
     private final List<String> instructions;
     private final Map<String, Long> registers;
 
+    /**
+     * Instantiates a new Computer instance with no program loaded.
+     */
     public SimpleComputer() {
         instructions = new ArrayList<>();
         registers = new HashMap<>();
@@ -60,25 +62,49 @@ public class SimpleComputer {
         init();
     }
 
+    /**
+     * Initializes this Computer instance by clearing the loaded instructions and resetting the
+     * registers back to zero.
+     */
     public void init() {
         instructions.clear();
         registers.put("a", 0L);
         registers.put("b", 0L);
     }
 
+    /**
+     * Loads the specified instructions from the List of Strings.
+     *
+     * @param input The list of instructions.
+     */
     public void loadProgram(List<String> input) {
         instructions.clear();
         instructions.addAll(input);
     }
 
+    /**
+     * Returns the value stored in the specified register.
+     *
+     * @param register The register to retrieve the value from.     *
+     * @return The value stored in the specified register.
+     */
     public Long getRegister(String register) {
         return registers.get(register);
     }
 
+    /**
+     * Sets the specified register to the specified value.
+     *
+     * @param register The register to set.
+     * @param value The value to store in the register.
+     */
     public void setRegister(String register, Long value) {
         registers.put(register, value);
     }
 
+    /**
+     * Runs the loaded program.
+     */
     public void run() {
         int i = 0;
         while (i < instructions.size()) {

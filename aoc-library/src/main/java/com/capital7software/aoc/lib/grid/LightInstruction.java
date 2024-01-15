@@ -24,7 +24,7 @@ public record LightInstruction(LightInstructionType type, Point2D<Integer> point
      * turn off 0,0 through 999,999
      * <p>
      * toggle 0,0 through 999,999
-     * <p>
+     *
      * @param input The raw instructions.
      * @return The list of parsed LightInstructions.
      */
@@ -46,7 +46,7 @@ public record LightInstruction(LightInstructionType type, Point2D<Integer> point
      * turn off 0,0 through 999,999
      * <p>
      * toggle 0,0 through 999,999
-     * <p>
+     *
      * @param line The raw instructions.
      * @return The parsed LightInstruction.
      */

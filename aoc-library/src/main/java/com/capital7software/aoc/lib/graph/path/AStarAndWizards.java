@@ -154,11 +154,32 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player boss) {
 
+    /**
+     * Specifies the available Spell types.
+     */
     public enum SpellType {
+        /**
+         * Instant spells fire and take effect immediately.
+         */
         INSTANT,
+        /**
+         * Effects take effect the following turn.
+         */
         EFFECT
     }
 
+    /**
+     * The Mage must cast one Spell each turn.
+     *
+     * @param type The type of Spell to cast.
+     * @param name The name of the Spell to cast.
+     * @param cost The mana cost of the Spell.
+     * @param damage The amount of damage the Spell does.
+     * @param armor The amount of protection the Spell offers.
+     * @param health The amount of health the Spell provides.
+     * @param mana The amount of mana the Spell provides.
+     * @param turns If the Spell is an effect, how many turns it lasts.
+     */
     public record Spell(
             @NotNull SpellType type,
             @NotNull String name,
@@ -171,33 +192,81 @@ public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player b
     ) {
     }
 
+    /**
+     * Holds all the available Spells in the game.
+     *
+     * @param spells The List of spells to make available to the Mage.
+     */
     public record SpellShop(@NotNull List<Spell> spells) {
+        /**
+         * Instantiates a new Shop and ensures the List of Spells is owned by
+         * this instance.
+         *
+         * @param spells The List of spells to make available to the Mage.
+         */
         public SpellShop(@NotNull List<Spell> spells) {
             this.spells = new ArrayList<>(spells);
         }
 
+        /**
+         * Returns an unmodifiable List of Spells available in this Shop.
+         * @return An unmodifiable List of Spells available in this Shop.
+         */
         @Override
         public @NotNull List<Spell> spells() {
             return Collections.unmodifiableList(spells);
         }
     }
 
+    /**
+     * The Mage is you! You play as the Mage to take on the Boss!
+     *
+     * @param name The name of the Mage.
+     * @param hitPoints How many hit-points the Mage has.
+     * @param mana How much mana the Mage has available.
+     * @param spells The Spells this Mage has cast this game.
+     */
     public record Mage(@NotNull String name, int hitPoints, int mana, @NotNull List<Spell> spells) {
+        /**
+         * Instantiates a new Mage and ensures that it owns the List of Spells.
+         *
+         * @param name The name of the Mage.
+         * @param hitPoints How many hit-points the Mage has.
+         * @param mana How much mana the Mage has available.
+         * @param spells The Spells this Mage has cast this game.
+         */
         public Mage(@NotNull String name, int hitPoints, int mana, @NotNull List<Spell> spells) {
             this.name = name;
             this.hitPoints = hitPoints;
             this.mana = mana;
             this.spells = new ArrayList<>(spells);
         }
+
+        /**
+         * Instantiates a new Mage with an empty List of Spells cast.
+         *
+         * @param name The name of the Mage.
+         * @param hitPoints How many hit-points the Mage has.
+         * @param mana How much mana the Mage has available.
+         */
         public Mage(String name, int hitPoints, int mana) {
             this(name, hitPoints, mana, new ArrayList<>());
         }
 
+        /**
+         * Returns an unmodifiable List of Spells this Mage has cast.
+         * @return An unmodifiable List of Spells this Mage has cast.
+         */
         @Override
         public List<Spell> spells() {
             return Collections.unmodifiableList(spells);
         }
 
+        /**
+         * Adds a new Spell to the list of cast Spells.
+         *
+         * @param spell The Spell the Mage has cast.
+         */
         public void add(Spell spell) {
             spells.add(spell);
         }
@@ -207,6 +276,12 @@ public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player b
         private record EffectsState(
                 int playerHitPoints, int playerMana, int bossHitPoints, int armor, List<Pair<Integer, Spell>> effects
         ) {
+            /**
+             * Returns true if the Mage is unable to cast the specified Spell.
+             *
+             * @param spell The Spell to check.
+             * @return True if the Mage is unable to cast the specified Spell.
+             */
             public boolean cannotCastSpell(Spell spell) {
                 if (playerMana >= spell.cost()) {
                     if (spell.type() == SpellType.EFFECT) {
@@ -231,6 +306,19 @@ public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player b
         private final GameState parent;
         private final Spell spell;
 
+        /**
+         * Instantiates a new GameState with the specified values.
+         *
+         * @param playerHitPoints The hit-points the Mage has left.
+         * @param playerMana The mana the Mage has left.
+         * @param bossHitPoints The hit-points the Boss has left.
+         * @param bossDamage The amount of damage the Boss does on his turn.
+         * @param spentMana The amount of the mana the Mage has spent casting Spells.
+         * @param effects The currently active Effects.
+         * @param hardMode If Hard mode is enabled.
+         * @param parent A reference to the Parent GameState.
+         * @param spell A reference to the Spell that was cast during this GameState.
+         */
         public GameState(
                 int playerHitPoints,
                 int playerMana,
@@ -253,14 +341,27 @@ public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player b
             this.spell = spell;
         }
 
+        /**
+         * Returns true if the Boss is dead.
+         * @return True if the Boss is dead.
+         */
         public boolean isBossDead() {
             return bossHitPoints <= 0;
         }
 
+        /**
+         * Returns true if the Mage is still alive.
+         * @return True if the Mage is still alive.
+         */
         public boolean isPlayerAlive() {
             return playerHitPoints > 0;
         }
 
+        /**
+         * Casts the specified spell and applies its effects.
+         *
+         * @param spell The Spell to cast.
+         */
         public void applySpell(Spell spell) {
             if (spell.type == SpellType.INSTANT) {
                 playerHitPoints += spell.health();
@@ -270,6 +371,12 @@ public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player b
             }
         }
 
+        /**
+         * Applies the specified EffectState and returns a new EffectState with the changes.
+         *
+         * @param effectsState The EffectsState to apply.
+         * @return A new EffectState with the changes.
+         */
         public static EffectsState applyEffects(EffectsState effectsState) {
             var armor = 0;
             var effects = new ArrayList<Pair<Integer, Spell>>(effectsState.effects.size());
@@ -289,6 +396,9 @@ public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player b
             return new EffectsState(playerHitPoints, playerMana, bossHitPoints, armor, effects);
         }
 
+        /**
+         * Applies the effects and Boss damage to this GameState.
+         */
         public void bossTurn() {
             var updates = applyEffects(new EffectsState(playerHitPoints, playerMana, bossHitPoints, 0, effects));
             playerHitPoints = updates.playerHitPoints();
@@ -301,14 +411,29 @@ public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player b
             }
         }
 
+        /**
+         * Returns the Spell that was cast during this GameState.
+         *
+         * @return The Spell that was cast during this GameState.
+         */
         public Spell getSpell() {
             return spell;
         }
 
+        /**
+         * Returns the parent GameState or null if there is no parent.
+         * @return The parent GameState or null if there is no parent.
+         */
         public GameState getParent() {
             return parent;
         }
 
+        /**
+         * Returns a List of the next GameStates that are possible from this GameState.
+         *
+         * @param shop The SpellShop with the Spells that are available to the Mage.
+         * @return A List of the next GameStates that are possible from this GameState.
+         */
         public @NotNull List<GameState> getNextStates(@NotNull SpellShop shop) {
             var updates = applyEffects(
                     new EffectsState(
@@ -392,6 +517,10 @@ public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player b
                     '}';
         }
 
+        /**
+         * Traverses the parent GameStates and returns a List of all Spells cast by the Mage.
+         * @return A List of all Spells cast by the Mage.
+         */
         public List<Spell> getSpells() {
             var castedSpells = new ArrayList<Spell>();
 

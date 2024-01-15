@@ -1,31 +1,11 @@
 plugins {
-    java
+    id("capital7software.library-conventions")
 }
 
-group = "com.capital7software.aoc"
-version = "1.0.0"
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-}
-
-repositories {
-    mavenCentral()
-}
+version = "1.0-SNAPSHOT"
 
 dependencies {
-    implementation("org.jetbrains:annotations:24.0.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
-}
-
-tasks.withType<JavaCompile>().configureEach {
-    options.compilerArgs.add("-Xlint:unchecked")
+    implementation(project(":aoc-library"))
 }
 
 tasks.withType<JavaExec>().configureEach {

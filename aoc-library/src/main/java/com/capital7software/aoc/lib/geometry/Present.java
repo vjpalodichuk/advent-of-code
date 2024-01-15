@@ -19,7 +19,6 @@ import java.util.Objects;
  * any one face. Each present also requires a bow made out of ribbon as well; the feet of ribbon required for the
  * perfect bow is equal to the cubic feet of volume of the present. Don't ask how they tie the bow, though;
  * they'll never tell.
- * <p>
  *
  * @param length The length of the box.
  * @param width The width of the box.

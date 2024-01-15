@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 public interface CircuitBoard<T extends Comparable<T>> {
     /**
-     *
+     * Returns the id of this circuit board.
      * @return The id of this circuit board.
      */
     String id();

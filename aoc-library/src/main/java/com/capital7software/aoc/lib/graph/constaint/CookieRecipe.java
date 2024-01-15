@@ -51,10 +51,21 @@ public record CookieRecipe(@NotNull List<Ingredient> ingredients) {
     public static final long MAX_ITERATIONS = 10_000_000L;
     public static final long CALORIES_TARGET = 500L;
 
+    /**
+     * Instantiates a new CookieRecipe ensuring this instance owns the List
+     * of Ingredients.
+     *
+     * @param ingredients The list of available Ingredients.
+     */
     public CookieRecipe(@NotNull List<Ingredient> ingredients) {
         this.ingredients = new ArrayList<>(ingredients);
     }
 
+    /**
+     * Returns an unmodifiable List of Ingredients available to this instance.
+     *
+     * @return An unmodifiable List of Ingredients available to this instance.
+     */
     @Override
     public @NotNull List<Ingredient> ingredients() {
         return Collections.unmodifiableList(ingredients);

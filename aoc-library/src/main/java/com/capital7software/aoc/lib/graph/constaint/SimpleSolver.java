@@ -28,6 +28,9 @@ public class SimpleSolver<T extends Number & Comparable<T> > implements Solver<T
     private final Map<String, BiPredicate<Map<String, T>, Map<String, T>>> constraints;
     private BiFunction<Map<String, T>, Map<String, T>, T> score;
 
+    /**
+     * Instantiates a new SimpleSolver.
+     */
     public SimpleSolver() {
         this.unknowns = new HashMap<>();
         this.valueDomain = null;

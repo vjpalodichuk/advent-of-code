@@ -9,6 +9,8 @@ import java.util.Optional;
  */
 public interface Signal<T extends Comparable<T>> {
     /**
+     * Returns the typesafe value that is carried by this Signal.
+     *
      * @return The typesafe value that is carried by this Signal.
      */
     Optional<T> signal();

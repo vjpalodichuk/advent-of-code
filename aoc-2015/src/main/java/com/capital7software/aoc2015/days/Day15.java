@@ -26,7 +26,6 @@ import java.util.List;
  * (negative totals become 0) and then multiplying together everything except calories.
  * <p>
  * For instance, suppose you have these two ingredients:
- * <p>
  * <ul>
  *     <li>
  *         Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
@@ -39,7 +38,6 @@ import java.util.List;
  * Then, choosing to use 44 teaspoons of butterscotch and 56 teaspoons of
  * cinnamon (because the amounts of each ingredient must add up to 100) would
  * result in a cookie with the following properties:
- * <p>
  * <ul>
  *     <li>
  *         A capacity of 44*-1 + 56*2 = 68
@@ -78,9 +76,16 @@ import java.util.List;
  * cookie you can make with a calorie total of 500?
  * <p>
  * Your puzzle answer was 117936.
- * <p>
+ *
  */
 public class Day15 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day15() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_15-01.txt";
@@ -104,6 +109,14 @@ public class Day15 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * The CookieRecipe uses the Solver to determine the best mix of ingredients to get the
+     * highest score. Returns the total score of the highest scoring cookie.
+     *
+     * @param input The available ingredients for the recipe.
+     * @param iterations How many iterations to let the Solver run to find the best mix.
+     * @return The total score of the highest scoring cookie.
+     */
     public long whatIsTheTotalScoreOfTheHighestScoringCookie(List<String> input, long iterations) {
         var cookieRecipe = CookieRecipe.parse(input);
 
@@ -112,6 +125,14 @@ public class Day15 implements AdventOfCodeSolution {
         return max.first();
     }
 
+    /**
+     * The CookieRecipe uses the Solver to determine the best mix of ingredients to get the
+     * highest score for a 500 calorie cookie. Returns the total score of the highest scoring 500 calorie cookie.
+     *
+     * @param input The available ingredients for the recipe.
+     * @param iterations How many iterations to let the Solver run to find the best mix.
+     * @return The total score of the highest scoring 500 calorie cookie.
+     */
     public long whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(List<String> input, long iterations) {
         var cookieRecipe = CookieRecipe.parse(input);
 

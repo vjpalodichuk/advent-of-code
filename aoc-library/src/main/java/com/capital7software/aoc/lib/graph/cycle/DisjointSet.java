@@ -38,6 +38,7 @@ public class DisjointSet {
     }
 
     /**
+     * Returns the parent of this DisjointSet.
      *
      * @return The parent of this DisjointSet.
      */
@@ -47,6 +48,7 @@ public class DisjointSet {
     }
 
     /**
+     * Sets the parent of this instance to the specified value.
      *
      * @param parent The new value to set as the parent of this DisjointSet.
      */
@@ -55,7 +57,7 @@ public class DisjointSet {
     }
 
     /**
-     *
+     * Returns the rank of this DisjointSet.
      * @return The rank of this DisjointSet.
      */
     public int getRank() {
@@ -63,6 +65,7 @@ public class DisjointSet {
     }
 
     /**
+     * Sets the Rank of this DisjointSet to the specified Rank.
      *
      * @param rank The new rank of this DisjointSet.
      */

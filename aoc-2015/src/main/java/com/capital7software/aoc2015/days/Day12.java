@@ -39,9 +39,16 @@ import java.util.List;
  * [1,"red",5] has a sum of 6, because "red" in an array has no effect.
  * <p>
  * Your puzzle answer was 96852.
- * <p>
+ *
  */
 public class Day12 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day12() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_12-01.txt";
@@ -69,11 +76,26 @@ public class Day12 implements AdventOfCodeSolution {
         }
     }
 
+    /**
+     * Returns the sum of all the numbers encountered in the specified JSON String.
+     *
+     * @param line The JSON String to sum the numbers from.
+     * @return The sum of all the numbers encountered in the specified JSON String.
+     */
     public long sumNumbersInString(String line) {
-        return JSONFun.SumOfAllNumbers(line);
+        return JSONFun.sumOfAllNumbers(line);
     }
 
+
+    /**
+     * Returns the sum of all the numbers encountered in the specified JSON String
+     * that are not in a Red object or sub-object.
+     *
+     * @param line The JSON String to sum the numbers from.
+     * @return The sum of all the numbers encountered in the specified JSON String
+     * that are not in a Red object or sub-object.
+     */
     public long sumNumbersInStringSkippingRedObjects(String line) {
-        return JSONFun.SumOfAllNumbersSkippingObjectsWithRedPropertyValues(line);
+        return JSONFun.sumOfAllNumbersSkippingObjectsWithRedPropertyValues(line);
     }
 }

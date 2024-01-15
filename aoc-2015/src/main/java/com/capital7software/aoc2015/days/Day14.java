@@ -54,9 +54,16 @@ import java.util.List;
  * how many points does the winning reindeer have?
  * <p>
  * Your puzzle answer was 1256.
- * <p>
+ *
  */
 public class Day14 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day14() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_14-01.txt";
@@ -80,6 +87,14 @@ public class Day14 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Uses a Graph and the ReindeerOlympics to calculate how many points the
+     * winning reindeer has after the specified time has elapsed in the race.
+     *
+     * @param input The horses and their stats, which is the Graph input.
+     * @param time The amount of time to run the race for.
+     * @return The number of points the winning reindeer has after the specified time.
+     */
     public double howManyPointsDoesTheWinnerHave(List<String> input, long time) {
         var optional = new Day14Parser().parse(input, "day14");
 
@@ -95,6 +110,14 @@ public class Day14 implements AdventOfCodeSolution {
         return results.values().stream().max(Comparator.naturalOrder()).orElse(0.0);
     }
 
+    /**
+     * Uses a Graph and the ReindeerOlympics to calculate how far the
+     * winning reindeer traveled has after the specified time has elapsed in the race.
+     *
+     * @param input The horses and their stats, which is the Graph input.
+     * @param time The amount of time to run the race for.
+     * @return The distance the winning reindeer has traveled after the specified time.
+     */
     public double whatDistanceHasTheWinnerTraveled(List<String> input, long time) {
         var optional = new Day14Parser().parse(input, "day14");
 

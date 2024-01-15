@@ -10,9 +10,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Utility class for running Advent of Code Solutions.
+ */
 public class AdventOfCodeRunner {
     private static Path path;
 
+    /**
+     * Instantiates a new instance of the runner.
+     */
+    public AdventOfCodeRunner() {
+
+    }
+
+    /**
+     * The main method that is called by the JVM.
+     *
+     * @param args The command-line arguments passed to the JVM.
+     */
     public static void main(String @NotNull [] args) {
         if (args.length == 0 || args[0] == null || args[0].trim().isBlank()) {
             printUsage();

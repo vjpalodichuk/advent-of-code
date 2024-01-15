@@ -34,11 +34,22 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @param containers The list of container sizes that are available to store the Eggnog.
  */
 public record EggNog(long liters, @NotNull List<Long> containers) {
+    /**
+     * Instantiates a new EggNog instance that owns the list of containers.
+     *
+     * @param liters The amount of eggnog to store.
+     * @param containers The sizes of the available containers to store the eggnog.
+     */
     public EggNog(long liters, @NotNull List<Long> containers) {
         this.liters = liters;
         this.containers = new ArrayList<>(containers);
     }
 
+    /**
+     * Returns an unmodifiable List of the containers held by this instance.
+     *
+     * @return An unmodifiable List of the containers held by this instance.
+     */
     @Override
     public List<Long> containers() {
         return Collections.unmodifiableList(containers);

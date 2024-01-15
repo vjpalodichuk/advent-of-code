@@ -16,7 +16,6 @@ import java.util.List;
  * (truly, it goes on to remind the reader, a state-of-the-art technology).
  * The registers are named a and b, can hold any non-negative integer, and begin with a value of 0.
  * The instructions are as follows:
- * <p>
  * <ul>
  *     <li>
  *         hlf r sets register r to half its current value, then continues with the next instruction.
@@ -64,9 +63,16 @@ import java.util.List;
  * finished executing if register a starts as 1 instead?
  * <p>
  * Your puzzle answer was 231.
- * <p>
+ *
  */
 public class Day23 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day23() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_23-01.txt";
@@ -90,6 +96,14 @@ public class Day23 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Runs the specified program and returns the value in the specified register after the
+     * program completes.
+     *
+     * @param input The program to run.
+     * @param register The register to retrieve the value of after the program runs.
+     * @return The value in the specified register after the program completes.
+     */
     public long runProgramAndGetValueInRegister(List<String> input, String register) {
         var computer = new SimpleComputer();
         computer.loadProgram(input);
@@ -97,6 +111,16 @@ public class Day23 implements AdventOfCodeSolution {
         return computer.getRegister(register);
     }
 
+    /**
+     * Runs the specified program and returns the value in the specified register after the
+     * program completes. Prior to execution, the put register is updated with the specified value.
+     *
+     * @param input The program to run.
+     * @param registerPut The register to set the value of before running the program.
+     * @param value The value to put in the register.
+     * @param registerGet The register to retrieve the value of after the program runs.
+     * @return The value in the specified register after the program completes.
+     */
     public long runProgramWithStartingRegisterAndValueAndGetValueInRegister(
             List<String> input,
             String registerPut,

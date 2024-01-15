@@ -6,6 +6,7 @@ import com.github.spotbugs.snom.SpotBugsTask
 plugins {
     java
     checkstyle
+    kotlin("jvm")
     // NOTE: external plugin version is specified in implementation dependency artifact of the project's build file
     id("com.github.spotbugs")
     id("com.jfrog.artifactory")
@@ -14,17 +15,35 @@ plugins {
 // Java Projects need to use the latest version!
 java {
     sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    withJavadocJar()
 }
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+
+    compilerOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+    }
+}
+
+val artifactoryContextUrl: String by project
+val repoKeyValue: String by project
+val repoKeyValuePublish: String by project
+val artifactoryUser: String by project
+val artifactoryPassword: String by project
 
 // Projects should use Maven Central for external dependencies
 // This could be the organization's private repository
 repositories {
     maven {
         name = "artifactory-publish"
-        url = uri("${artifactory_contextUrl}/${repoKeyValue}/")
+        url = uri("${artifactoryContextUrl}/${repoKeyValue}/")
         credentials {
-            username = "${artifactory_user}"
-            password = "${artifactory_password}"
+            username = artifactoryUser
+            password = artifactoryPassword
         }
     }
     mavenCentral()
@@ -35,6 +54,22 @@ repositories {
 checkstyle {
     config = resources.text.fromString(com.capital7software.CheckstyleUtil.getCheckstyleConfig("/checkstyle.xml"))
     maxWarnings = 0
+}
+
+dependencies {
+    implementation("org.jetbrains:annotations:24.0.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.getByName<Test>("test") {
+    useJUnitPlatform()
+}
+
+tasks.withType<JavaExec>().configureEach {
+    dependsOn(":assemble")
+    jvmArgs = listOf("-Xss4m")
 }
 
 // Enable deprecation messages when compiling Java code

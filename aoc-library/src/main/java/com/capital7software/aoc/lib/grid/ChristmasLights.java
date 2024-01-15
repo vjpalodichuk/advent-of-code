@@ -21,11 +21,17 @@ import java.util.stream.Stream;
  * toggle various inclusive ranges given as coordinate pairs. Each coordinate pair represents
  * opposite corners of a rectangle, inclusive; a coordinate pair like 0,0 through 2,2 therefore
  * refers to 9 lights in a 3x3 square. The lights all start turned off.
- * <p>
+ *
  * @param grid The grid that holds all the lights.
  * @param instructions The list of instructions to apply to the light grid.
  */
 public record ChristmasLights(@NotNull Grid2D<Integer> grid, @NotNull List<LightInstruction> instructions) {
+    /**
+     * Instantiates a new ChristmasLights that owns the Grid2D and List of LightInstructions.
+     *
+     * @param grid The grid that holds all the lights.
+     * @param instructions The list of instructions to apply to the light grid.
+     */
     public ChristmasLights(@NotNull Grid2D<Integer> grid, @NotNull List<LightInstruction> instructions) {
         this.grid = grid.copy();
         this.instructions = new ArrayList<>(instructions);
@@ -146,11 +152,19 @@ public record ChristmasLights(@NotNull Grid2D<Integer> grid, @NotNull List<Light
         }
     }
 
+    /**
+     * Returns a copy of the Grid2D used by this instance.
+     * @return A copy of the Grid2D used by this instance.
+     */
     @Override
     public @NotNull Grid2D<Integer> grid() {
         return grid.copy();
     }
 
+    /**
+     * Returns an unmodifiable List of LightInstructions loaded into this instance.
+     * @return An unmodifiable List of LightInstructions loaded into this instance.
+     */
     @Override
     public @NotNull List<LightInstruction> instructions() {
         return Collections.unmodifiableList(instructions);
@@ -173,7 +187,7 @@ public record ChristmasLights(@NotNull Grid2D<Integer> grid, @NotNull List<Light
      * that were on, and turning on the ones that were off.
      * turn off 499,499 through 500,500 would turn off (or leave off) the middle four lights.
      * After following the instructions, how many lights are lit?
-     * <p>
+     *
      */
     public void applyInstructions() {
         for (var instruction : instructions) {
@@ -204,7 +218,7 @@ public record ChristmasLights(@NotNull Grid2D<Integer> grid, @NotNull List<Light
      * <p>
      * turn on 0,0 through 0,0 would increase the total brightness by 1.
      * toggle 0,0 through 999,999 would increase the total brightness by 2000000.
-     * <p>
+     *
      */
     public void applyNewInterpretationOfInstructions() {
         for (var instruction : instructions) {
@@ -219,7 +233,7 @@ public record ChristmasLights(@NotNull Grid2D<Integer> grid, @NotNull List<Light
     }
 
     /**
-     *
+     * Returns the count of lights that are currently on.
      * @return The count of lights that are currently on.
      */
     public long getOnLightCount() {
@@ -227,7 +241,7 @@ public record ChristmasLights(@NotNull Grid2D<Integer> grid, @NotNull List<Light
     }
 
     /**
-     *
+     * Returns the total brightness of all the lights that are on.
      * @return The total brightness of all the lights that are on.
      */
     public long getTotalBrightness() {
@@ -236,7 +250,6 @@ public record ChristmasLights(@NotNull Grid2D<Integer> grid, @NotNull List<Light
 
     /**
      * Animates the lights using the following rules:<br>
-     * <p>
      * <ul>
      *     <li>
      *         A light which is on stays on when 2 or 3 neighbors are on, and turns off otherwise.

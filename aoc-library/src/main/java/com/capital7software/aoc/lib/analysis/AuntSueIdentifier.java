@@ -15,11 +15,20 @@ import java.util.Objects;
  * @param auntSues The list of all known Aunt Sues.
  */
 public record AuntSueIdentifier(@NotNull List<AuntSue> auntSues) {
-
+    /**
+     * Instantiates a new AuntSueIdentifier instance that ensures the list of
+     * suspect AuthSues is owned by this instance.
+     *
+     * @param auntSues The list of suspected AuntSues.
+     */
     public AuntSueIdentifier(@NotNull List<AuntSue> auntSues) {
         this.auntSues = new ArrayList<>(auntSues);
     }
 
+    /**
+     * Returns an unmodifiable List of AuntSue suspects.
+     * @return An unmodifiable List of AuntSue suspects.
+     */
     @Override
     public List<AuntSue> auntSues() {
         return Collections.unmodifiableList(auntSues);
@@ -57,7 +66,6 @@ public record AuntSueIdentifier(@NotNull List<AuntSue> auntSues) {
          * Parses the input and creates an Aunt Sue instance.
          * <p>
          * The input must be in this format:
-         * <p>
          * <ul>
          *     <li>
          *         Sue 1: goldfish: 9, cars: 0, samoyeds: 9

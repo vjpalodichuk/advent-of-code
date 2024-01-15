@@ -86,9 +86,16 @@ import java.util.List;
  * I hope you had as much fun solving them as I had making them for you.
  * I'd love to hear about your adventure; you can get in touch with me via
  * contact info on my website or through Twitter or Mastodon.
- * <p>
+ *
  */
 public class Day25 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day25() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_25-01.txt";
@@ -113,6 +120,12 @@ public class Day25 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the next code.
+     *
+     * @param generator The code generator to use.
+     * @return The next code.
+     */
     public long getNextCode(CodeGenerator generator) {
         return generator.calculateCode();
     }

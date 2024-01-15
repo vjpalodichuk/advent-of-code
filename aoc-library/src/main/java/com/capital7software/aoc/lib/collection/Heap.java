@@ -48,7 +48,7 @@ public interface Heap<T> extends Cloneable {
     Heap<T> clone();
 
     /**
-     *
+     * Returns true if this Heap contains no elements.
      * @return True if this Heap contains no elements.
      */
     boolean isEmpty();
@@ -74,7 +74,7 @@ public interface Heap<T> extends Cloneable {
     T remove();
 
     /**
-     *
+     * Returns the number of elements in this Heap.
      * @return The number of elements in this Heap.
      */
     int size();

@@ -146,9 +146,16 @@ import java.util.List;
  * but with the four corners always in the on state, how many lights are on after 100 steps?
  * <p>
  * Your puzzle answer was 886.
- * <p>
+ *
  */
 public class Day18 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day18() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_18-01.txt";
@@ -174,6 +181,14 @@ public class Day18 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the number of lights still on after animating them for the specified number of steps.
+     *
+     * @param steps The number os steps to animate the lights for.
+     * @param input The initial lighting layout.
+     * @param cornersOn If true, the corner lights are always on.
+     * @return The number of lights still on after animating them for the specified number of steps.
+     */
     public Pair<Long, ChristmasLights> animateLights(int steps, List<String> input, boolean cornersOn) {
         var lights = ChristmasLights.buildFromLightingLayout(input, cornersOn);
 

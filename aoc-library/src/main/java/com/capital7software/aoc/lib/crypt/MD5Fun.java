@@ -19,7 +19,7 @@ public record MD5Fun() {
      * zeroes (000001dbbfa...), and it is the lowest such number to do so.
      * If your secret key is pqrstuv, the lowest number it combines with to make an MD5 hash starting with five
      * zeroes is 1048970; that is, the MD5 hash of pqrstuv1048970 looks like 000006136ef....
-     * <p>
+     *
      * @param secret The secret text to find a number to join with to produce a hash with the required number of
      *               leading zeros.
      * @param leadingZeros The number of leading zeros the MD5 hash must have.

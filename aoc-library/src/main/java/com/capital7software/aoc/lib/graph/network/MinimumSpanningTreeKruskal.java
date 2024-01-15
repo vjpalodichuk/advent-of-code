@@ -15,8 +15,16 @@ import java.util.Collection;
  * @param <E> The type of the weight held by Edges in the graph.
  */
 public class MinimumSpanningTreeKruskal<T extends Comparable<T>, E extends Comparable<E>> extends AbstractSpanningTreeKruskal<T, E> {
+    /**
+     * Instantiates a new and empty spanning tree builder instance.
+     *
+     */
+    public MinimumSpanningTreeKruskal() {
+        super();
+    }
+
     @Override
-    public @NotNull Collection<Edge<T, E>> build(@NotNull Graph<T, E> graph) {
+    public @NotNull Collection<Edge<E>> build(@NotNull Graph<T, E> graph) {
         return buildSpanningTree(graph, false);
     }
 }

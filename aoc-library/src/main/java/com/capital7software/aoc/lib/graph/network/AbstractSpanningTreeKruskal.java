@@ -35,6 +35,13 @@ public abstract class AbstractSpanningTreeKruskal<T extends Comparable<T>, E ext
         implements SpanningTree<T, E> {
 
     /**
+     * Instantiates an empty MST builder.
+     */
+    public AbstractSpanningTreeKruskal() {
+
+    }
+
+    /**
      * The workhorse of the algorithm. It builds the SpanningTree one Edge at a time. The returned
      * SpanningTree with either be a Minimum or Maximum distance SpanningTree depending on the value
      * passed in for maximum.
@@ -44,9 +51,9 @@ public abstract class AbstractSpanningTreeKruskal<T extends Comparable<T>, E ext
      * @return THe SpanningTree of the specified graph.
      */
     @NotNull
-    protected Collection<Edge<T, E>> buildSpanningTree(@NotNull Graph<T, E> graph, boolean maximum) {
+    protected Collection<Edge<E>> buildSpanningTree(@NotNull Graph<T, E> graph, boolean maximum) {
         var edges = Objects.requireNonNull(graph).getEdges();
-        List<Edge<T, E>> edgeList;
+        List<Edge<E>> edgeList;
 
         if (maximum) {
             edgeList = edges.stream()
@@ -67,10 +74,10 @@ public abstract class AbstractSpanningTreeKruskal<T extends Comparable<T>, E ext
         int edgeCount = 0;
 
         var spanningTree = new Graph<T, E>("kruskal-spanning-tree-" + graph.getName());
-        final var result = new ArrayList<Edge<T, E>>(vertexIds.size());
+        final var result = new ArrayList<Edge<E>>(vertexIds.size());
 
         for (var edge : edgeList) {
-            if (detector.detect(edge.getSource().getId(), edge.getTarget().getId())) {
+            if (detector.detect(edge.getSource(), edge.getTarget())) {
                 continue;
             }
             spanningTree.addAsNew(edge);

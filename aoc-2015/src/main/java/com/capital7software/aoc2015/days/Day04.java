@@ -31,11 +31,16 @@ import java.util.List;
  * Your puzzle answer was 9962624.
  */
 public class Day04 implements AdventOfCodeSolution {
-    private static final String defaultFilename = "inputs/input_day_04-01.txt";
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day04() {
+
+    }
 
     @Override
     public String getDefaultInputFilename() {
-        return defaultFilename;
+        return "inputs/input_day_04-01.txt";
     }
 
     @Override
@@ -68,6 +73,15 @@ public class Day04 implements AdventOfCodeSolution {
         }
     }
 
+    /**
+     * Returns the lowest positive number to combine with the secret to generate a
+     * MD5 Hash with the specified number of leading zeros.
+     *
+     * @param secret The secret to combine with the number we are looking for.
+     * @param leadingZeros How many leading zeros the hash must have.
+     * @return The lowest positive number to combine with the secret to generate a
+     * MD5 Hash with the specified number of leading zeros.
+     */
     public long lowestPositiveNumber(String secret, int leadingZeros) {
         return MD5Fun.lowestPositiveNumberWithLeadingZeros(secret, leadingZeros);
     }

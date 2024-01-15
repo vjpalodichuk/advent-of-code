@@ -28,9 +28,15 @@ import java.util.Optional;
  * Then the returned Graph will contain two vertices, one for each reindeer and the
  * value of each vertex will be a DistanceOverTimeWithRest instance that describes
  * the rate, duration, and rest needed by the reindeer.
- * <p>
+ *
  */
 public class Day14Parser implements GraphParser<DistanceOverTimeWithRest, Integer> {
+    /**
+     * Instantiates a new empty Day14Parser instance.
+     */
+    public Day14Parser() {
+
+    }
     @Override
     public @NotNull Optional<Graph<DistanceOverTimeWithRest, Integer>> parse(
             @NotNull List<String> input,

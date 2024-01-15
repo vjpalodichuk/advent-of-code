@@ -12,15 +12,15 @@ import java.util.List;
  * <p>
  * He begins by delivering a present to the house at his starting location, and then an elf at the North Pole
  * calls him via radio and tells him where to move next. Moves are always exactly one house to the north (^),
- * south (v), east (>), or west (<). After each move, he delivers another present to the house at his new location.
+ * south (v), east (&#62;), or west (&#60;). After each move, he delivers another present to the house at his new location.
  * <p>
  * However, the elf back at the North Pole has had a little too much eggnog, and so his directions are a little
  * off, and Santa ends up visiting some houses more than once. How many houses receive at least one present?
  * <p>
  * For example:
  * <p>
- * > delivers presents to 2 houses: one at the starting location, and one to the east.
- * ^>v< delivers presents to 4 houses in a square, including twice to the house at his starting/ending location.
+ * &#62; delivers presents to 2 houses: one at the starting location, and one to the east.
+ * ^&#62;v&#60; delivers presents to 4 houses in a square, including twice to the house at his starting/ending location.
  * ^v^v^v^v^v delivers a bunch of presents to some very lucky children at only 2 houses.
  * <p>
  * This year, how many houses receive at least one present?
@@ -40,19 +40,24 @@ import java.util.List;
  * For example:
  * <p>
  * ^v delivers presents to 3 houses, because Santa goes north, and then Robo-Santa goes south.
- * ^>v< now delivers presents to 3 houses, and Santa and Robo-Santa end up back where they started.
+ * ^&#62;v&#60; now delivers presents to 3 houses, and Santa and Robo-Santa end up back where they started.
  * ^v^v^v^v^v now delivers presents to 11 houses, with Santa going one direction and Robo-Santa going the other.
  * <p>
  * Your puzzle answer was 2341
  */
 public class Day03 implements AdventOfCodeSolution {
-    private static final String defaultFilename = "inputs/input_day_03-01.txt";
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day03() {
+
+    }
 
     private final Sleigh sleigh = new Sleigh();
 
     @Override
     public String getDefaultInputFilename() {
-        return defaultFilename;
+        return "inputs/input_day_03-01.txt";
     }
 
     @Override
@@ -83,14 +88,34 @@ public class Day03 implements AdventOfCodeSolution {
         }
     }
 
+    /**
+     * Delivers the gifts using Santa's Sleigh by following the specified route.
+     * Returns the ID of the route.
+     *
+     * @param route The delivery route to follow.
+     * @return The ID of the route.
+     */
     public int deliverGifts(String route) {
         return sleigh.deliverGifts(route);
     }
 
+    /**
+     * Delivers the gifts using Santa's Sleigh and Robo Santa by following the specified route.
+     * Returns the ID of the route.
+     *
+     * @param route The delivery route to follow.
+     * @return The ID of the route.
+     */
     public int deliverGiftsWithRoboSanta(String route) {
         return sleigh.deliverGiftsWithRoboSanta(route);
     }
 
+    /**
+     * Returns the unique number of houses delivered gifts for the specified route.
+     *
+     * @param routeId The route to retrieve the unique number of houses for.
+     * @return The unique number of houses delivered gifts for the specified route.
+     */
     public long getUniqueHouseCount(int routeId) {
         return sleigh.getUniqueHouseCount(routeId);
     }

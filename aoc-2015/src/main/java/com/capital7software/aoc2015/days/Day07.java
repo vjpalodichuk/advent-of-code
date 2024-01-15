@@ -65,6 +65,13 @@ import java.util.Optional;
  *     Your puzzle answer was 14710.
  */
 public class Day07 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day07() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_07-01.txt";
@@ -96,10 +103,25 @@ public class Day07 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns a CircuitBoardInteger with the specified ID and loaded with the
+     * specified setup.
+     *
+     * @param id The ID of the board to create.
+     * @param input The layout of the gates and wires.
+     * @return A CircuitBoardInteger with the specified ID and loaded with the
+     * specified setup.
+     */
     public CircuitBoardInteger loadCircuitBoard(String id, List<String> input) {
         return CircuitBoardInteger.parse(id, input);
     }
 
+    /**
+     * Returns the values of the wires in the specified board.
+     *
+     * @param board The board to retrieve the wires from.
+     * @return The values of the wires in the specified board.
+     */
     public Map<String, Integer> getWireValues(CircuitBoardInteger board) {
         var results = new HashMap<String, Integer>();
         board.wires().values().forEach(wire -> wire.supply().flatMap(Signal::signal).ifPresent(signal -> results.put(wire.id(), signal)));
@@ -107,10 +129,23 @@ public class Day07 implements AdventOfCodeSolution {
         return results;
     }
 
+    /**
+     * Overrides the signal from wireA to wireB on the specified board.
+     *
+     * @param board The board that contains the wires.
+     * @param wireA The source wire
+     * @param wireB The destination wire to override the signal of.
+     * @return The value of the Signal that was stored in wireB.
+     */
     public Optional<Integer> override(CircuitBoardInteger board, String wireA, String wireB) {
         return board.override(wireA, wireB);
     }
 
+    /**
+     * Clears the Signals from all the wires of the specified board.
+     *
+     * @param board The board to reset.
+     */
     public void resetWires(CircuitBoardInteger board) {
         board.resetWires();
     }

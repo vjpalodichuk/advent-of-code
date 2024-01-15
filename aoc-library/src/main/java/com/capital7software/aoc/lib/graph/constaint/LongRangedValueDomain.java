@@ -34,6 +34,7 @@ public class LongRangedValueDomain implements ValueDomain<Long>{
      *
      * @param minimum The inclusive minimum value.
      * @param maximum The inclusive maximum value.
+     * @param seed The seed for the Random generator.
      */
     public LongRangedValueDomain(long minimum, long maximum, long seed) {
         this.minimum = minimum;
@@ -60,6 +61,7 @@ public class LongRangedValueDomain implements ValueDomain<Long>{
     }
 
     /**
+     * Returns the inclusive minimum value produced by this domain.
      *
      * @return The inclusive minimum value produced by this domain.
      */
@@ -68,6 +70,7 @@ public class LongRangedValueDomain implements ValueDomain<Long>{
     }
 
     /**
+     * Returns the inclusive maximum value produced by this domain.
      *
      * @return The inclusive maximum value produced by this domain.
      */

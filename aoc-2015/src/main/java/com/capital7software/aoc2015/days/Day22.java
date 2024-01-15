@@ -148,9 +148,16 @@ import java.util.List;
  * what is the least amount of mana you can spend and still win the fight?
  * <p>
  * Your puzzle answer was 1289.
- * <p>
+ *
  */
 public class Day22 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day22() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_22-01.txt";
@@ -174,6 +181,13 @@ public class Day22 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns the least amount of Mana the Mage can spend and still win the game.
+     *
+     * @param input The available Spells and the Mage and Boos stats.
+     * @param hard If true, the Mage loses one hit-point at the start of their turns.
+     * @return The least amount of Mana the Mage can spend and still win the game.
+     */
     public int leastAmountOfManaAndStillWin(List<String> input, boolean hard) {
         var game = AStarAndWizards.buildSimulator(input);
 

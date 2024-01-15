@@ -28,7 +28,6 @@ import java.util.function.Function;
  * This class has three Properties that can be set: Props.DETECT_CYCLES, Props.STARTING_VERTICES,
  * and Props.SUM_PATH.
  * <p>
- * <p>
  * DETECT_CYCLES: Set to Boolean.TRUE if Hamiltonian Cycles instead of Paths should be built.
  * <p>
  * STARTING_VERTICES: Accepts a List of Vertices to build paths for. Please note that the
@@ -43,9 +42,30 @@ import java.util.function.Function;
  */
 public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable<E>>
         implements PathFinder<PathFinderResult<T, E>, T, E> {
+
+    /**
+     * Instantiates a new and empty path builder instance.
+     *
+     */
+    public HamiltonianPathFinder() {
+
+    }
+
+    /**
+     * The properties that this pathfinder instance accepts.
+     */
     public enum Props {
+        /**
+         * Set to true to only return paths that make a cycle.
+         */
         DETECT_CYCLES,
+        /**
+         * Set the vertices to find paths for.
+         */
         STARTING_VERTICES,
+        /**
+         * Set to true to have this pathfinder sum the weights of the paths it finds.
+         */
         SUM_PATH
     }
 
@@ -74,7 +94,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
         for(var vertex : startingVertices) {
             var vertices = new ArrayList<>(vertexMap.values().stream().filter(it -> !it.getId().equals(vertex.getId())).toList());
             var pathSoFar = new ArrayList<Vertex<T, E>>(size);
-            var edgesSoFar = new ArrayList<Edge<T, E>>(size - 1);
+            var edgesSoFar = new ArrayList<Edge<E>>(size - 1);
             var idsSoFar = new HashSet<String>(size);
 
             pathSoFar.add(vertex); // Add the starting Vertex to the path.
@@ -211,7 +231,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
             boolean cycleRequired,
             boolean sumRequired,
             List<Vertex<T, E>> path,
-            List<Edge<T, E>> edges,
+            List<Edge<E>> edges,
             Set<String> visitedIds,
             @NotNull Function<PathFinderResult<T, E>, PathFinderStatus> validCallback,
             Function<PathFinderResult<T, E>, PathFinderStatus> invalidCallback) {
@@ -283,7 +303,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
     @NotNull
     private PathFinderResult<T, E> buildPathResult(
             @NotNull List<Vertex<T, E>> path,
-            @NotNull List<Edge<T, E>> edges,
+            @NotNull List<Edge<E>> edges,
             int pathId
     ) {
         return buildPathResult(path, edges, pathId, false, false);
@@ -292,7 +312,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
     @NotNull
     private PathFinderResult<T, E> buildPathResult(
             @NotNull List<Vertex<T, E>> path,
-            @NotNull List<Edge<T, E>> edges,
+            @NotNull List<Edge<E>> edges,
             int pathId,
             boolean cycleRequired,
             boolean sumRequired
@@ -313,7 +333,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
     }
 
     @SuppressWarnings("unchecked")
-    private E calculateSumOfEdges(List<Vertex<T, E>> path, List<Edge<T, E>> edges, boolean cycleRequired) {
+    private E calculateSumOfEdges(List<Vertex<T, E>> path, List<Edge<E>> edges, boolean cycleRequired) {
         var size = path.size();
         var weights = new ArrayList<E>(size);
 

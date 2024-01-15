@@ -23,10 +23,19 @@ import java.util.List;
  * @param instructions The list of instructions to follow.
  */
 public record ApartmentBuilding(@NotNull List<String> instructions) {
+    /**
+     * Helper constructor to ensure that the specified instructions are copied to this instance.
+     *
+     * @param instructions The instructions to follow.
+     */
     public ApartmentBuilding(@NotNull List<String> instructions) {
         this.instructions = new ArrayList<>(instructions);
     }
 
+    /**
+     * Returns an unmodifiable List of the instructions for this instance.
+     * @return An unmodifiable List of the instructions for this instance.
+     */
     @Override
     public @NotNull List<String> instructions() {
         return Collections.unmodifiableList(instructions);

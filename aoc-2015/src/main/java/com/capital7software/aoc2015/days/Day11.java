@@ -22,7 +22,6 @@ import java.util.List;
  * <p>
  * Unfortunately for Santa, a new Security-Elf recently started, and he
  * has imposed some additional password requirements:
- * <p>
  *     <ul>
  *         <li>
  *             Passwords must include one increasing straight of at least three letters,
@@ -56,9 +55,15 @@ import java.util.List;
  * Santa's password expired again. What's the next one?
  * <p>
  * Your puzzle answer was cqkaabcc.
- * <p>
+ *
  */
 public class Day11 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day11() {
+
+    }
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_11-01.txt";
@@ -86,10 +91,21 @@ public class Day11 implements AdventOfCodeSolution {
         }
     }
 
+    /**
+     * Returns true if the password passes the validation requirements.
+     *
+     * @param input The password to check.
+     * @return True if the password passes the validation requirements.
+     */
     public boolean isValidPassword(String input) {
         return PasswordPolicy.isValidPassword(input);
     }
 
+    /**
+     * Returns the next possible password from the specified current password.
+     * @param input The current password.
+     * @return The next possible password from the specified current password.
+     */
     @NotNull
     public String suggestNextPassword(@NotNull String input) {
         return PasswordPolicy.suggestNextPassword(input);

@@ -49,9 +49,16 @@ import java.util.List;
  * How many strings are nice under these new rules?
  * <p>
  *     Your puzzle answer was 55.
- * <p>
+ *
  */
 public class Day05 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day05() {
+
+    }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_05-01.txt";
@@ -89,10 +96,22 @@ public class Day05 implements AdventOfCodeSolution {
         printTiming(start, end);
     }
 
+    /**
+     * Returns true if the specified String is a Nice String.
+     *
+     * @param line The String to determine if it is Nice or not.
+     * @return True if the specified String is a Nice String.
+     */
     public boolean isNice(String line) {
         return NaughtyOrNice.isNice(line);
     }
 
+    /**
+     * Returns true if the specified String is a Nice String using the new rules.
+     *
+     * @param line The String to determine if it is Nice or not.
+     * @return True if the specified String is a Nice String using the new rules.
+     */
     public boolean isNewNice(String line) {
         return NaughtyOrNice.isNewNice(line);
     }

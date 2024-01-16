@@ -1,46 +1,23 @@
 plugins {
-    java
+    id("capital7software.library-conventions")
 }
 
-group = "com.capital7software.aoc"
 version = "1.0-SNAPSHOT"
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    implementation("org.jetbrains:annotations:24.0.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+    implementation(project(":aoc-library"))
 }
 
 tasks.withType<JavaExec>().configureEach {
-    dependsOn(":assemble")
     jvmArgs = listOf("-Xss4m")
-    group = "aoc-2023"
-    description = "Advent of Code 2023 Puzzles"
+    group = "aoc"
+    description = "Advent of Code 2015 Puzzles"
     classpath = sourceSets["main"].runtimeClasspath
+    mainClass = "com.capital7software.aoc.aoc2023.AdventOfCode2015Runner"
 }
 
-tasks.register("day01", JavaExec::class) {
-    mainClass = "com.capital7software.aoc2023.days.Day01"
-}
-tasks.register("day02", JavaExec::class) {
-    mainClass = "com.capital7software.aoc2023.days.Day02"
-}
-tasks.register("day03", JavaExec::class) {
-    mainClass = "com.capital7software.aoc2023.days.Day03"
-}
+tasks.register("run2023", JavaExec::class)
+
 tasks.register("day04", JavaExec::class) {
     mainClass = "com.capital7software.aoc2023.days.Day04"
 }

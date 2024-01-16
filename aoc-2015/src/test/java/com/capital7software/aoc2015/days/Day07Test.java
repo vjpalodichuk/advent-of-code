@@ -1,5 +1,6 @@
 package com.capital7software.aoc2015.days;
 
+import com.capital7software.aoc.aoc2015.days.Day07;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

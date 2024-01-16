@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Utility class for running Advent of Code Solutions.
  */
-public class AdventOfCodeRunner {
+public abstract class AdventOfCodeRunner {
     private static Path path;
 
     /**
@@ -24,17 +24,28 @@ public class AdventOfCodeRunner {
     }
 
     /**
-     * The main method that is called by the JVM.
-     *
-     * @param args The command-line arguments passed to the JVM.
+     * Prints out usage information is invalid command line args are passed.
      */
-    public static void main(String @NotNull [] args) {
+    protected static void printUsage() {
+        System.out.println("The first required argument is the name of the puzzle class to run.");
+        System.out.println("Only the class name (and not the package) should be provided.");
+        System.out.println("The second optional argument is the full path to a file to load as the input.");
+        System.out.println("If you do not pass a file name the default input file will be used for that puzzle.");
+    }
+
+    /**
+     * Run an AdventOfCodeSolution Class.
+     *
+     * @param packageName THe package name that contains the solution classes.
+     * @param args The command-line arguments.
+     */
+    protected static void runSolution(@NotNull String packageName, String[] args) {
         if (args.length == 0 || args[0] == null || args[0].trim().isBlank()) {
             printUsage();
             return;
         }
 
-        var className = "com.capital7software.aoc2015.days." + args[0].trim();
+        var className = packageName + args[0].trim();
 
         try {
             var clazz = Class.forName(className);
@@ -61,11 +72,14 @@ public class AdventOfCodeRunner {
                         assert url != null;
                         path = Paths.get(url.toURI());
                     }
+
                     System.out.println("Loading input data from: " + path);
                     List<String> inputLines = Files.readAllLines(path);
+
                     // Part 1
                     System.out.println("Part 1: Start!");
                     solution.runPart1(inputLines);
+                    // Part 2
                     System.out.println("Part 2: Start!");
                     solution.runPart2(inputLines);
                 } catch (URISyntaxException | IOException e) {
@@ -76,12 +90,5 @@ public class AdventOfCodeRunner {
                  InvocationTargetException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static void printUsage() {
-        System.out.println("The first required argument is the name of the puzzle class to run.");
-        System.out.println("Only the class name (and not the package) should be provided.");
-        System.out.println("The second optional argument is the full path to a file to load as the input.");
-        System.out.println("If you do not pass a file name the default input file will be used for that puzzle.");
     }
 }

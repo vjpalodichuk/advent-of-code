@@ -9,12 +9,11 @@ dependencies {
 }
 
 tasks.withType<JavaExec>().configureEach {
-    dependsOn(":assemble")
     jvmArgs = listOf("-Xss4m")
-    group = "aoc-2015"
+    group = "aoc"
     description = "Advent of Code 2015 Puzzles"
     classpath = sourceSets["main"].runtimeClasspath
-    mainClass = "com.capital7software.aoc.lib.AdventOfCodeRunner"
+    mainClass = "com.capital7software.aoc.aoc2015.AdventOfCode2015Runner"
 }
 
-tasks.register("run", JavaExec::class)
+tasks.register("run2015", JavaExec::class)

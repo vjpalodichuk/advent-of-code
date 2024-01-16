@@ -67,11 +67,6 @@ tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-tasks.withType<JavaExec>().configureEach {
-    dependsOn(":assemble")
-    jvmArgs = listOf("-Xss4m")
-}
-
 // Enable deprecation messages when compiling Java code
 tasks.withType<JavaCompile>().configureEach {
     options.compilerArgs.add("-Xlint:deprecation")

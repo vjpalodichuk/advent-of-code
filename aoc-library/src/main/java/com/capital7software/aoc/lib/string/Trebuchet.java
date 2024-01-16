@@ -92,7 +92,7 @@ public record Trebuchet(@NotNull List<String> input) {
      * Returns an unmodifiable List of the input for this instance.
      * @return An unmodifiable List of the input for this instance.
      */
-    public List<String> input() {
+    public @NotNull List<String> input() {
         return Collections.unmodifiableList(input);
     }
 
@@ -106,7 +106,7 @@ public record Trebuchet(@NotNull List<String> input) {
         return input.stream().map(it -> extractTwoDigitNumber(it, real)).toList();
     }
 
-    private static Integer extractTwoDigitNumber(String input, boolean real) {
+    private static @NotNull Integer extractTwoDigitNumber(String input, boolean real) {
         if (input == null || input.isEmpty()) {
             return ZERO;
         }
@@ -117,7 +117,7 @@ public record Trebuchet(@NotNull List<String> input) {
         return Integer.parseInt("" + first + last);
     }
 
-    private static List<Character> extractDigits(String input, boolean real) {
+    private static @NotNull List<Character> extractDigits(@NotNull String input, boolean real) {
         var results = new ArrayList<Character>();
         var chars = input.toCharArray();
         var keys = DIGITS_MAP.keySet().stream().toList();
@@ -134,8 +134,6 @@ public record Trebuchet(@NotNull List<String> input) {
                 }
             }
         }
-
         return results;
     }
-
 }

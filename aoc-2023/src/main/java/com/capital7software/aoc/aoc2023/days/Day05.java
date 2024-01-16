@@ -1,499 +1,253 @@
 package com.capital7software.aoc.aoc2023.days;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class Day05 {
-    private static class Seed {
-        private final Long id;
-        private Long soilId;
-        private Long fertilizerId;
-        private Long waterId;
-        private Long lightId;
-        private Long temperatureId;
-        private Long humidityId;
-        private Long locationId;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.analysis.SeedMapping;
+import org.jetbrains.annotations.NotNull;
 
-        public Seed(Long id) {
-            this.id = id;
-        }
+import java.time.Instant;
+import java.util.List;
 
-        public Long getId() {
-            return id;
-        }
+/**
+ * --- Day 5: If You Give A Seed A Fertilizer ---<br>
+ * You take the boat and find the gardener right where you were told he would be: managing a giant
+ * "garden" that looks more to you like a farm.
+ * <p><br>
+ * "A water source? Island Island is the water source!" You point out that Snow Island isn't
+ * receiving any water.
+ * <p><br>
+ * "Oh, we had to stop the water because we ran out of sand to filter it with! Can't make
+ * snow with dirty water. Don't worry, I'm sure we'll get more sand soon; we only turned
+ * off the water a few days... weeks... oh no." His face sinks into a look of horrified realization.
+ * <p><br>
+ * "I've been so busy making sure everyone here has food that I completely forgot to check
+ * why we stopped getting more sand! There's a ferry leaving soon that is headed over in that
+ * direction - it's much faster than your boat. Could you please go check it out?"
+ * <p><br>
+ * You barely have time to agree to this request when he brings up another. "While you wait
+ * for the ferry, maybe you can help us with our food production problem. The latest
+ * Island Island Almanac just arrived, and we're having trouble making sense of it."
+ * <p><br>
+ * The almanac (your puzzle input) lists all the seeds that need to be planted. It
+ * also lists what type of soil to use with each kind of seed, what type of fertilizer
+ * to use with each kind of soil, what type of water to use with each kind of fertilizer,
+ * and so on. Every type of seed, soil, fertilizer and so on is identified with a number,
+ * but numbers are reused by each category - that is, soil 123 and fertilizer 123 aren't
+ * necessarily related to each other.
+ * <p><br>
+ * For example:
+ * <p><br>
+ * <code>
+ * seeds: 79 14 55 13<br>
+ * </code>
+ * <p><br>
+ * <code>
+ * seed-to-soil map:<br>
+ * 50 98 2<br>
+ * 52 50 48<br>
+ * </code>
+ * <p><br>
+ * <code>
+ * soil-to-fertilizer map:<br>
+ * 0 15 37<br>
+ * 37 52 2<br>
+ * 39 0 15<br>
+ * </code>
+ * <p><br>
+ * <code>
+ * fertilizer-to-water map:<br>
+ * 49 53 8<br>
+ * 0 11 42<br>
+ * 42 0 7<br>
+ * 57 7 4<br>
+ * </code>
+ * <p><br>
+ * <code>
+ * water-to-light map:<br>
+ * 88 18 7<br>
+ * 18 25 70<br>
+ * </code>
+ * <p><br>
+ * <code>
+ * light-to-temperature map:<br>
+ * 45 77 23<br>
+ * 81 45 19<br>
+ * 68 64 13<br>
+ * </code>
+ * <p><br>
+ * <code>
+ * temperature-to-humidity map:<br>
+ * 0 69 1<br>
+ * 1 0 69<br>
+ * </code>
+ * <p><br>
+ * <code>
+ * humidity-to-location map:<br>
+ * 60 56 37<br>
+ * 56 93 4<br>
+ * </code>
+ * <p><br>
+ * The almanac starts by listing which seeds need to be planted:<br>
+ * seeds 79, 14, 55, and 13.
+ * <p><br>
+ * The rest of the almanac contains a list of maps which describe how to convert numbers from a
+ * source category into numbers in a destination category. That is, the section that starts with
+ * seed-to-soil map: describes how to convert a seed number (the source) to a soil number
+ * (the destination). This lets the gardener and his team know which soil to use with which seeds,
+ * which water to use with which fertilizer, and so on.
+ * <p><br>
+ * Rather than list every source number and its corresponding destination number one by one, the
+ * maps describe entire ranges of numbers that can be converted. Each line within a map contains
+ * three numbers: the destination range start, the source range start, and the range length.
+ * <p><br>
+ * Consider again the example seed-to-soil map:
+ * <p><br>
+ * <code>
+ * 50 98 2<br>
+ * 52 50 48<br>
+ * </code>
+ * <p><br>
+ * The first line has a destination range start of 50, a source range start of 98, and a range length of 2.
+ * This line means that the source range starts at 98 and contains two values: 98 and 99.
+ * The destination range is the same length, but it starts at 50, so its two values are 50 and 51.
+ * With this information, you know that seed number 98 corresponds to soil number 50 and that
+ * seed number 99 corresponds to soil number 51.
+ * <p><br>
+ * The second line means that the source range starts at 50 and contains 48 values: 50, 51, ..., 96, 97.
+ * This corresponds to a destination range starting at 52 and also containing 48 values: 52, 53, ..., 98, 99.
+ * So, seed number 53 corresponds to soil number 55.
+ * <p><br>
+ * Any source numbers that aren't mapped correspond to the same destination number.
+ * So, seed number 10 corresponds to soil number 10.
+ * <p><br>
+ * So, the entire list of seed numbers and their corresponding soil numbers looks like this:
+ * <p><br>
+ * <code>
+ * seed  soil<br>
+ * 0     0<br>
+ * 1     1<br>
+ * ...   ...<br>
+ * 48    48<br>
+ * 49    49<br>
+ * 50    52<br>
+ * 51    53<br>
+ * ...   ...<br>
+ * 96    98<br>
+ * 97    99<br>
+ * 98    50<br>
+ * 99    51<br>
+ * </code>
+ * <p><br>
+ * With this map, you can look up the soil number required for each initial seed number:
+ * <p><br>
+ * Seed number 79 corresponds to soil number 81.<br>
+ * Seed number 14 corresponds to soil number 14.<br>
+ * Seed number 55 corresponds to soil number 57.<br>
+ * Seed number 13 corresponds to soil number 13.<br>
+ * <p><br>
+ * The gardener and his team want to get started as soon as possible, so they'd like to know the closest
+ * location that needs a seed. Using these maps, find the lowest location number that corresponds to any
+ * of the initial seeds. To do this, you'll need to convert each seed number through other categories
+ * until you can find its corresponding location number. In this example, the corresponding types are:
+ * <p><br>
+ * Seed 79, soil 81, fertilizer 81, water 81, light 74, temperature 78, humidity 78, location 82.<br>
+ * Seed 14, soil 14, fertilizer 53, water 49, light 42, temperature 42, humidity 43, location 43.<br>
+ * Seed 55, soil 57, fertilizer 57, water 53, light 46, temperature 82, humidity 82, location 86.<br>
+ * Seed 13, soil 13, fertilizer 52, water 41, light 34, temperature 34, humidity 35, location 35.<br>
+ * <p><br>
+ * So, the lowest location number in this example is 35.
+ * <p><br>
+ * What is the lowest location number that corresponds to any of the initial seed numbers?
+ * <p><br>
+ * Your puzzle answer was 1181555926.
+ * <p><br>
+ * --- Part Two ---<br>
+ * Everyone will starve if you only plant such a small number of seeds. Re-reading the almanac, it looks
+ * like the seeds: line actually describes ranges of seed numbers.
+ * <p><br>
+ * The values on the initial seeds: line come in pairs. Within each pair, the first value is the start
+ * of the range and the second value is the length of the range. So, in the first line of the example above:
+ * <p><br>
+ * seeds: 79 14 55 13<br>
+ * This line describes two ranges of seed numbers to be planted in the garden. The first range starts
+ * with seed number 79 and contains 14 values: 79, 80, ..., 91, 92. The second range starts with seed
+ * number 55 and contains 13 values: 55, 56, ..., 66, 67.
+ * <p><br>
+ * Now, rather than considering four seed numbers, you need to consider a total of 27 seed numbers.
+ * <p><br>
+ * In the above example, the lowest location number can be obtained from seed number 82, which
+ * corresponds to soil 84, fertilizer 84, water 84, light 77, temperature 45, humidity 46, and
+ * location 46. So, the lowest location number is 46.
+ * <p><br>
+ * Consider all the initial seed numbers listed in the ranges on the first line of the almanac.
+ * What is the lowest location number that corresponds to any of the initial seed numbers?
+ * <p><br>
+ * Your puzzle answer was 37806486.
+ */
+public class Day05 implements AdventOfCodeSolution {
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day05() {
 
-        public Long getSoilId() {
-            return soilId;
-        }
-
-        public void setSoilId(Long soilId) {
-            this.soilId = soilId;
-        }
-
-        public Long getFertilizerId() {
-            return fertilizerId;
-        }
-
-        public void setFertilizerId(Long fertilizerId) {
-            this.fertilizerId = fertilizerId;
-        }
-
-        public Long getWaterId() {
-            return waterId;
-        }
-
-        public void setWaterId(Long waterId) {
-            this.waterId = waterId;
-        }
-
-        public Long getLightId() {
-            return lightId;
-        }
-
-        public void setLightId(Long lightId) {
-            this.lightId = lightId;
-        }
-
-        public Long getTemperatureId() {
-            return temperatureId;
-        }
-
-        public void setTemperatureId(Long temperatureId) {
-            this.temperatureId = temperatureId;
-        }
-
-        public Long getHumidityId() {
-            return humidityId;
-        }
-
-        public void setHumidityId(Long humidityId) {
-            this.humidityId = humidityId;
-        }
-
-        public Long getLocationId() {
-            return locationId;
-        }
-
-        public void setLocationId(Long locationId) {
-            this.locationId = locationId;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Seed seed = (Seed) o;
-            return getId().equals(seed.getId());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(getId());
-        }
-
-        @Override
-        public String toString() {
-            return "Seed{" +
-                    "id=" + id +
-                    ", soilId=" + soilId +
-                    ", fertilizerId=" + fertilizerId +
-                    ", waterId=" + waterId +
-                    ", lightId=" + lightId +
-                    ", temperatureId=" + temperatureId +
-                    ", humidityId=" + humidityId +
-                    ", locationId=" + locationId +
-                    '}';
-        }
     }
 
-    private record LongRange(
-            long start,
-            long extent
-    ) {
-        public boolean contains(long value) {
-            return value >= start && value < start + extent;
-        }
-
-        public long difference(long value) {
-            if (!contains(value)) {
-                throw new RuntimeException("The specified value must be contained within this range!");
-            }
-
-            return value - start;
-        }
-
-        /**
-         *
-         * @return The exclusive end of the range.
-         */
-        public long getEnd() {
-            return start + extent;
-        }
-
-        /**
-         *
-         * @param start The inclusive starting value; must be less than or equal to ending value
-         * @param end The exclusive ending value
-         * @return A new LongRange
-         */
-        public static LongRange from(long start, long end) {
-            return new LongRange(start, end - start);
-        }
-
-        public boolean isNotEmpty() {
-            return getEnd() > start();
-        }
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            LongRange longRange = (LongRange) o;
-            return start == longRange.start && extent == longRange.extent;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(start, extent);
-        }
-
-        @Override
-        public String toString() {
-            return "IntRange{" +
-                    "start=" + start +
-                    ", end=" + getEnd() +
-                    ", extent=" + extent +
-                    '}';
-        }
+    @Override
+    public String getDefaultInputFilename() {
+        return "inputs/input_day_05-01.txt";
     }
 
-    private static class LongRangeMap {
-        private static class Entry {
-            private final LongRange destination;
-            private final LongRange source;
+    @Override
+    public void runPart1(List<String> input) {
+        var start = Instant.now();
+        var answer = getLowestLocationNumber(input);
+        var end = Instant.now();
 
-            public Entry(long destinationStart, long sourceStart, long extent) {
-                this.destination = new LongRange(destinationStart, extent);
-                this.source = new LongRange(sourceStart, extent);
-            }
-
-            public long get(long sourceKey) {
-                var diff = source.difference(sourceKey);
-                return destination.start() + diff;
-            }
-
-            public boolean containsKey(long sourceKey) {
-                return source.contains(sourceKey);
-            }
-
-            @Override
-            public boolean equals(Object o) {
-                if (this == o) return true;
-                if (o == null || getClass() != o.getClass()) return false;
-                Entry entry = (Entry) o;
-                return destination.equals(entry.destination) && source.equals(entry.source);
-            }
-
-            @Override
-            public int hashCode() {
-                return Objects.hash(destination, source);
-            }
-
-            @Override
-            public String toString() {
-                return "Entry{" +
-                        "destination=" + destination +
-                        ", source=" + source +
-                        '}';
-            }
-        }
-
-        private final String id;
-        private final List<Entry> ranges = new ArrayList<>();
-
-        private LongRangeMap(String id) {
-            this.id = id;
-        }
-
-        public void addRange(long destinationStart, long sourceStart, long extent) {
-            ranges.add(new Entry(destinationStart, sourceStart, extent));
-        }
-
-        public long get(long sourceKey) {
-            Optional<Entry> optional = ranges.stream().filter(it -> it.containsKey(sourceKey)).findFirst();
-
-            // If no specific mapping then the source and destination keys are the same
-            return optional.map(entry -> entry.get(sourceKey)).orElse(sourceKey);
-        }
-
-        /**
-         *
-         * @param sourceRanges The list of source ranges to process
-         * @return A (possibly empty) List of LongRange destination ranges that satisfy the source input ranges.
-         */
-        public List<LongRange> get(List<LongRange> sourceRanges) {
-            var results = new ArrayList<LongRange>();
-            var sources = new ArrayList<>(sourceRanges);
-
-            for (var entry : ranges) {
-                var tempSources = new ArrayList<LongRange>();
-                var entryDestStart = entry.destination.start();
-                var entrySourceStart = entry.source.start();
-                var entrySourceEnd = entry.source.getEnd();
-
-                while (!sources.isEmpty()) {
-                    var sourceRange = sources.remove(0);
-                    var sourceStart = sourceRange.start();
-                    var sourceEnd = sourceRange.getEnd();
-
-                    // Calculate a before, intersection, and after range. Please note that these ranges are not
-                    // mutually exclusive and therefore may overlap!
-                    var beforeRange = LongRange.from(sourceStart, Math.min(entrySourceStart, sourceEnd));
-                    var intersectionRange = LongRange.from(Math.max(sourceStart, entrySourceStart), Math.min(entrySourceEnd, sourceEnd));
-                    var afterRange = LongRange.from(Math.max(entrySourceEnd, sourceStart), sourceEnd);
-
-                    // If the beforeRange is not empty, then we need to ensure that we
-                    // keep it when processing the next range
-                    if (beforeRange.isNotEmpty()) {
-                        tempSources.add(beforeRange);
-                    }
-                    // If the intersectionRange is not empty, then we will calculate and add the
-                    // corresponding destination range to the results
-                    if (intersectionRange.isNotEmpty()) {
-                        results.add(LongRange.from(
-                                intersectionRange.start() - entrySourceStart + entryDestStart,
-                                intersectionRange.getEnd() - entrySourceStart + entryDestStart
-                        ));
-                    }
-                    // If the afterRange is not empty, then we need to ensure that we keep it when processing the
-                    // next range
-                    if (afterRange.isNotEmpty()) {
-                        tempSources.add(afterRange);
-                    }
-                }
-                sources = tempSources;
-            }
-            results.addAll(sources);
-            return results;
-        }
-
-        @Override
-        public String toString() {
-            return "IntRangeMap{" +
-                    "id='" + id + '\'' +
-                    ", ranges=" + ranges +
-                    '}';
-        }
-    }
-    private static final String inputFilename = "inputs/input_day_05-01.txt";
-
-    private static final String SEEDS_SPLIT = ": ";
-    private static final String VALUES_SPLIT = " ";
-    private static final String SEEDS_START = "seeds:";
-    private static final String SEED_TO_SOIL_MAP_START = "seed-to-soil map:";
-    private static final String SOIL_TO_FERTILIZER_MAP_START = "soil-to-fertilizer map:";
-    private static final String FERTILIZER_TO_WATER_MAP_START = "fertilizer-to-water map:";
-    private static final String WATER_TO_LIGHT_MAP_START = "water-to-light map:";
-    private static final String LIGHT_TO_TEMPERATURE_MAP_START = "light-to-temperature map:";
-    private static final String TEMPERATURE_TO_HUMIDITY_MAP_START = "temperature-to-humidity map:";
-    private static final String HUMIDITY_TO_LOCATION_MAP_START = "humidity-to-location map:";
-
-    public static void main(String[] args) throws URISyntaxException {
-        var seeds = new ArrayList<Seed>();
-        var seedToSoilMap = new LongRangeMap(SEED_TO_SOIL_MAP_START);
-        var soilToFertilizerMap = new LongRangeMap(SOIL_TO_FERTILIZER_MAP_START);
-        var fertilizerToWaterMap = new LongRangeMap(FERTILIZER_TO_WATER_MAP_START);
-        var waterToLightMap = new LongRangeMap(WATER_TO_LIGHT_MAP_START);
-        var lightToTemperatureMap = new LongRangeMap(LIGHT_TO_TEMPERATURE_MAP_START);
-        var temperatureToHumidityMap = new LongRangeMap(TEMPERATURE_TO_HUMIDITY_MAP_START);
-        var humidityToLocationMap = new LongRangeMap(HUMIDITY_TO_LOCATION_MAP_START);
-        var processing = new AtomicReference<>("");
-
-        var maps = new ArrayList<LongRangeMap>();
-        maps.add(seedToSoilMap);
-        maps.add(soilToFertilizerMap);
-        maps.add(fertilizerToWaterMap);
-        maps.add(waterToLightMap);
-        maps.add(lightToTemperatureMap);
-        maps.add(temperatureToHumidityMap);
-        maps.add(humidityToLocationMap);
-
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        var url = classloader.getResource(inputFilename);
-        assert url != null;
-        var path = Paths.get(url.toURI());
-
-        try (var stream = Files.lines(path)) {
-            System.out.println("Loading seeds to plant and associated maps...");
-
-            stream.forEach(it -> {
-                // Process the line of input
-                if (it.startsWith(SEEDS_START)) {
-                    processing.set(SEEDS_START);
-                    parseSeeds(it, seeds);
-                } else if (it.startsWith(SEED_TO_SOIL_MAP_START) || processing.get().startsWith(SEED_TO_SOIL_MAP_START)) {
-                    processing.set(SEED_TO_SOIL_MAP_START);
-                    if (it.isEmpty()) {
-                        processing.set("");
-                    } else {
-                        parseMapLine(it, seedToSoilMap);
-                    }
-                } else if (it.startsWith(SOIL_TO_FERTILIZER_MAP_START) || processing.get().startsWith(SOIL_TO_FERTILIZER_MAP_START)) {
-                    processing.set(SOIL_TO_FERTILIZER_MAP_START);
-                    if (it.isEmpty()) {
-                        processing.set("");
-                    } else {
-                        parseMapLine(it, soilToFertilizerMap);
-                    }
-                } else if (it.startsWith(FERTILIZER_TO_WATER_MAP_START) || processing.get().startsWith(FERTILIZER_TO_WATER_MAP_START)) {
-                    processing.set(FERTILIZER_TO_WATER_MAP_START);
-                    if (it.isEmpty()) {
-                        processing.set("");
-                    } else {
-                        parseMapLine(it, fertilizerToWaterMap);
-                    }
-                } else if (it.startsWith(WATER_TO_LIGHT_MAP_START) || processing.get().startsWith(WATER_TO_LIGHT_MAP_START)) {
-                    processing.set(WATER_TO_LIGHT_MAP_START);
-                    if (it.isEmpty()) {
-                        processing.set("");
-                    } else {
-                        parseMapLine(it, waterToLightMap);
-                    }
-                } else if (it.startsWith(LIGHT_TO_TEMPERATURE_MAP_START) || processing.get().startsWith(LIGHT_TO_TEMPERATURE_MAP_START)) {
-                    processing.set(LIGHT_TO_TEMPERATURE_MAP_START);
-                    if (it.isEmpty()) {
-                        processing.set("");
-                    } else {
-                        parseMapLine(it, lightToTemperatureMap);
-                    }
-                } else if (it.startsWith(TEMPERATURE_TO_HUMIDITY_MAP_START) || processing.get().startsWith(TEMPERATURE_TO_HUMIDITY_MAP_START)) {
-                    processing.set(TEMPERATURE_TO_HUMIDITY_MAP_START);
-                    if (it.isEmpty()) {
-                        processing.set("");
-                    } else {
-                        parseMapLine(it, temperatureToHumidityMap);
-                    }
-                } else if (it.startsWith(HUMIDITY_TO_LOCATION_MAP_START) || processing.get().startsWith(HUMIDITY_TO_LOCATION_MAP_START)) {
-                    processing.set(HUMIDITY_TO_LOCATION_MAP_START);
-                    if (it.isEmpty()) {
-                        processing.set("");
-                    } else {
-                        parseMapLine(it, humidityToLocationMap);
-                    }
-                }
-            });
-            processing.set("");
-
-            System.out.println("Processing seeds...");
-
-            seeds.forEach(seed -> populateSeedFromMaps(
-                    maps,
-                    seed
-            ));
-
-            System.out.println("Processed " + seeds.size() + " seeds!");
-            System.out.println("Calculating the lowest location number...");
-
-            // Part 1: Each Seed is its own!
-            var minimumLocation = seeds
-                    .stream()
-                    .mapToLong(Seed::getLocationId)
-                    .min();
-
-            if (minimumLocation.isPresent()) {
-                System.out.println("The lowest location number is: " + minimumLocation.getAsLong());
-            } else {
-                System.out.println("Unable to determine the lowest location number :-(");
-            }
-
-            // Part 2: Each even Seed is the start of a range and each odd Seed is the extent of the range
-            System.out.println("Recalculating Seeds and determining the lowest location using ranges...");
-
-            var minimumSeed = calculateSeedsAndFindMinimumRanges(
-                    seeds,
-                    maps
-            );
-
-            if (minimumSeed.isPresent()) {
-                System.out.println("The lowest location number is: " + minimumSeed.get().locationId);
-            } else {
-                System.out.println("Unable to determine the lowest location number :-(");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.printf("The lowest location number is: %d%n", answer);
+        printTiming(start, end);
     }
 
-    private static Optional<Seed> calculateSeedsAndFindMinimumRanges(
-            List<Seed> seeds,
-            List<LongRangeMap> maps
-    ) {
-        var seedRanges = new ArrayList<LongRange>();
+    @Override
+    public void runPart2(List<String> input) {
+        var start = Instant.now();
+        var answer = getLowestLocationNumberForAnyInitialSeed(input);
+        var end = Instant.now();
 
-        for (int i = 0; i + 1 < seeds.size(); i += 2) {
-            var first = seeds.get(i);
-            var second = seeds.get(i + 1);
-            seedRanges.add(new LongRange(first.getId(), second.getId()));
-        }
-
-        List<LongRange> minimumRanges = new ArrayList<>();
-
-        for (var seedRange : seedRanges) {
-            List<LongRange> ranges = new ArrayList<>();
-            ranges.add(seedRange);
-            for (var map : maps) {
-                ranges = map.get(ranges);
-            }
-            var optional = ranges.stream().min(Comparator.comparing(LongRange::start));
-
-            optional.ifPresent(minimumRanges::add);
-        }
-
-        var optional = minimumRanges.stream().min(Comparator.comparing(LongRange::start));
-
-        if (optional.isPresent()) {
-            var minimumSeed = new Seed(-1L);
-            minimumSeed.setLocationId(optional.get().start());
-            return Optional.of(minimumSeed);
-        } else {
-            return Optional.empty();
-        }
+        System.out.printf("The lowest location number using RangeMaps is: %d%n", answer);
+        printTiming(start, end);
     }
 
-    private static void populateSeedFromMaps(
-            List<LongRangeMap> maps,
-            Seed seed
-    ) {
-        seed.setSoilId(maps.get(0).get(seed.getId()));
-        seed.setFertilizerId(maps.get(1).get(seed.getSoilId()));
-        seed.setWaterId(maps.get(2).get(seed.getFertilizerId()));
-        seed.setLightId(maps.get(3).get(seed.getWaterId()));
-        seed.setTemperatureId(maps.get(4).get(seed.getLightId()));
-        seed.setHumidityId(maps.get(5).get(seed.getTemperatureId()));
-        seed.setLocationId(maps.get(6).get(seed.getHumidityId()));
+
+    /**
+     * Returns the location ID of the seed with the lowest location ID based on the seeds.
+     *
+     * @param input The seeds and mappings to parse.
+     * @return The location ID of the seed with the lowest location ID based on the seeds.
+     */
+    public long getLowestLocationNumber(@NotNull List<String> input) {
+        var instance = SeedMapping.buildSeedMapping(input);
+
+        return instance.getSeeds()
+                .stream()
+                .mapToLong(SeedMapping.Seed::getLocationId)
+                .min()
+                .orElse(-1L);
     }
 
-    private static void parseSeeds(String input, List<Seed> seeds) {
-        if (input == null || input.isEmpty()) {
-            return;
+    /**
+     * Returns the location ID of the seed with the lowest location ID based on ranges.
+     *
+     * @param input The seeds and mappings to parse.
+     * @return The location ID of the seed with the lowest location ID based on ranges.
+     */
+    public long getLowestLocationNumberForAnyInitialSeed(@NotNull List<String> input) {
+        var instance = SeedMapping.buildSeedMapping(input);
+        var seed = instance.calculateMinimumSeedLocation();
+        var answer = -1L;
+
+        if (seed.isPresent()) {
+            answer = seed.get().getLocationId();
         }
 
-        String split = input.split(SEEDS_SPLIT)[1];
-        String[] values = split.split(VALUES_SPLIT);
-
-        Arrays.stream(values)
-                .map(it -> new Seed(Long.parseLong(it.trim())))
-                .forEach(seeds::add);
-    }
-
-    private static void parseMapLine(String input, LongRangeMap rangeMap) {
-        if (input == null || input.isEmpty() || input.startsWith(rangeMap.id)) {
-            return;
-        }
-
-        String[] values = input.split(VALUES_SPLIT);
-        rangeMap.addRange(Long.parseLong(values[0]), Long.parseLong(values[1]), Long.parseLong(values[2]));
+        return answer;
     }
 }

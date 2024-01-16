@@ -156,7 +156,7 @@ public record CubeConundrum() {
          *
          * @return An unmodifiable copy of the Reveals of this GameResult.
          */
-        public List<Reveal> reveals() {
+        public @NotNull List<Reveal> reveals() {
             return Collections.unmodifiableList(reveals);
         }
 
@@ -174,7 +174,7 @@ public record CubeConundrum() {
          *
          * @param reveal The Reveal to add to this result.
          */
-        public void addReveal(Reveal reveal) {
+        public void addReveal(@NotNull Reveal reveal) {
             reveals.add(reveal);
         }
 
@@ -245,7 +245,7 @@ public record CubeConundrum() {
      * @param input The String version of the game input.
      * @return A List of GameResult for the input.
      */
-    public List<GameResult> getGameResults(@NotNull List<String> input) {
+    public @NotNull List<GameResult> getGameResults(@NotNull List<String> input) {
         return input.stream().map(this::processGameInput).filter(Objects::nonNull).toList();
     }
 

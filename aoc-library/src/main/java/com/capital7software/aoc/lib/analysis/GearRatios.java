@@ -107,7 +107,7 @@ public record GearRatios() {
         private final int lineNumber;
         private PartNumber partNumber;
 
-        public NumberEntry(int offset, String id, int lineNumber) {
+        public NumberEntry(int offset, @NotNull String id, int lineNumber) {
             this.offset = offset;
             this.id = id;
             this.lineNumber = lineNumber;
@@ -117,7 +117,7 @@ public record GearRatios() {
             return offset;
         }
 
-        public String getId() {
+        public @NotNull String getId() {
             return id;
         }
 
@@ -164,7 +164,7 @@ public record GearRatios() {
      *                  number of characters.
      * @return A list of all part numbers found in the schematic.
      */
-    public List<PartNumber> findAllPartNumbers(List<String> schematic) {
+    public @NotNull List<PartNumber> findAllPartNumbers(@NotNull List<String> schematic) {
         var partNumbers = new ArrayList<NumberEntry>();
 
         // When we encounter a number in the current line, and it is not adjacent to a non-period symbol, we then check
@@ -207,7 +207,7 @@ public record GearRatios() {
      * @param partNumbers The PartNumbers to get the gear ratios for.
      * @return A list of all gear ratios from the specified List of PartNumbers.
      */
-    public List<Long> findAllGearRatios(@NotNull List<PartNumber> partNumbers) {
+    public @NotNull List<Long> findAllGearRatios(@NotNull List<PartNumber> partNumbers) {
         var potentialGears = new HashMap<PotentialGear, List<PartNumber>>();
 
         partNumbers.forEach(it -> {
@@ -228,9 +228,9 @@ public record GearRatios() {
     }
 
     private PartNumber getPartNumber(
-            NumberEntry numberEntry,
-            List<String> schematic,
-            char[] currentLine,
+            @NotNull NumberEntry numberEntry,
+            @NotNull List<String> schematic,
+            char @NotNull [] currentLine,
             int currentLineIndex
     ) {
         PartNumber valid;
@@ -247,8 +247,8 @@ public record GearRatios() {
     }
 
     private PartNumber getVerticallyOrDiagonallyAdjacent(
-            NumberEntry numberEntry,
-            List<String> schematic,
+            @NotNull NumberEntry numberEntry,
+            @NotNull List<String> schematic,
             int currentLineIndex
     ) {
         var beforeOffset = numberEntry.getOffset() - 1;
@@ -282,8 +282,8 @@ public record GearRatios() {
     }
 
     private PartNumber getHorizontallyAdjacent(
-            NumberEntry numberEntry,
-            char[] currentLine
+            @NotNull NumberEntry numberEntry,
+            char @NotNull [] currentLine
     ) {
         var beforeOffset = numberEntry.getOffset() - 1;
         var afterOffset = numberEntry.getOffset() + numberEntry.getId().length();
@@ -312,7 +312,13 @@ public record GearRatios() {
         return null;
     }
 
-    private PartNumber getLineWithSymbol(NumberEntry numberEntry, int startOffset, int endOffset, char[] line, int lineNumber) {
+    private PartNumber getLineWithSymbol(
+            @NotNull NumberEntry numberEntry,
+            int startOffset,
+            int endOffset,
+            char @NotNull [] line,
+            int lineNumber
+    ) {
         // Ensure the offsets fall within the valid bounds of the line!
         if (startOffset < 0) {
             startOffset = 0;

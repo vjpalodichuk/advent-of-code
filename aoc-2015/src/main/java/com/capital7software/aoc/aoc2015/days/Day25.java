@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.grid.CodeGenerator;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 25: Let It Snow ---<br>
@@ -30,14 +31,14 @@ import java.util.List;
  * the codes are filled in diagonally up and to the right. This process repeats until
  * the infinite paper is covered. So, the first few codes are filled in in this order:
  * <p><br>
- *    | 1   2   3   4   5   6  <br>
+ * | 1   2   3   4   5   6  <br>
  * ---+---+---+---+---+---+---+
- *  1 |  1   3   6  10  15  21<br>
- *  2 |  2   5   9  14  20<br>
- *  3 |  4   8  13  19<br>
- *  4 |  7  12  18<br>
- *  5 | 11  17<br>
- *  6 | 16<br>
+ * 1 |  1   3   6  10  15  21<br>
+ * 2 |  2   5   9  14  20<br>
+ * 3 |  4   8  13  19<br>
+ * 4 |  7  12  18<br>
+ * 5 | 11  17<br>
+ * 6 | 16<br>
  * For capital7software, the 12th code would be written to row 4, column 2; the 15th code would be written to row 1, column 5.
  * <p><br>
  * The voice on the other end of the phone continues with how the codes are actually generated.
@@ -51,15 +52,15 @@ import java.util.List;
  * "Oh!", says the voice. "It looks like we missed a scrap from one of the manuals.
  * Let me read it to you." You write down his numbers:
  * <p><br>
- *    |    1         2         3         4         5         6<br>
+ * |    1         2         3         4         5         6<br>
  * ---+---------+---------+---------+---------+---------+---------+<br>
- *  1 | 20151125  18749137  17289845  30943339  10071777  33511524<br>
- *  2 | 31916031  21629792  16929656   7726640  15514188   4041754<br>
- *  3 | 16080970   8057251   1601130   7981243  11661866  16474243<br>
- *  4 | 24592653  32451966  21345942   9380097  10600672  31527494<br>
- *  5 |    77061  17552253  28094349   6899651   9250759  31663883<br>
- *  6 | 33071741   6796745  25397450  24659492   1534922  27995004<br>
- *  <p><br>
+ * 1 | 20151125  18749137  17289845  30943339  10071777  33511524<br>
+ * 2 | 31916031  21629792  16929656   7726640  15514188   4041754<br>
+ * 3 | 16080970   8057251   1601130   7981243  11661866  16474243<br>
+ * 4 | 24592653  32451966  21345942   9380097  10600672  31527494<br>
+ * 5 |    77061  17552253  28094349   6899651   9250759  31663883<br>
+ * 6 | 33071741   6796745  25397450  24659492   1534922  27995004<br>
+ * <p><br>
  * "Now remember", the voice continues, "that's not even all the first few numbers;
  * for capital7software, you're missing the one at 7,1 that would come before 6,2.
  * But, it should be enough to let your-- oh, it's time for lunch! Bye!" The call disconnects.
@@ -86,9 +87,10 @@ import java.util.List;
  * I hope you had as much fun solving them as I had making them for you.
  * I'd love to hear about your adventure; you can get in touch with me via
  * contact info on my website or through Twitter or Mastodon.
- *
  */
 public class Day25 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day25.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -107,17 +109,17 @@ public class Day25 implements AdventOfCodeSolution {
         var generator = CodeGenerator.buildGenerator(input.getFirst());
         var lowest = getNextCode(generator);
         var end = Instant.now();
-        System.out.printf("The code found at row %d and column %d is: %d%n",
-                generator.targetRow(), generator.targetColumn(), lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("The code found at row %d and column %d is: %d%n",
+                generator.targetRow(), generator.targetColumn(), lowest));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
     public void runPart2(List<String> input) {
         var start = Instant.now();
         var end = Instant.now();
-        System.out.printf("Happy Advent of Code 2015!!%n");
-        printTiming(start, end);
+        LOGGER.info(String.format("Happy Advent of Code 2015!!%n"));
+        logTimings(LOGGER, start, end);
     }
 
     /**

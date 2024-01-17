@@ -5,9 +5,12 @@ import com.capital7software.aoc.lib.AdventOfCodeTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.logging.Logger;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day01Test extends AdventOfCodeTestBase {
+    private static final Logger LOGGER = Logger.getLogger(Day01Test.class.getName());
 
     @BeforeEach
     void setUp() {
@@ -29,5 +32,10 @@ class Day01Test extends AdventOfCodeTestBase {
         var actual = instance.getFirstBasementFloorPosition(lines);
 
         assertEquals(1, actual);
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return LOGGER;
     }
 }

@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * --- Day 13: Knights of the Dinner Table ---
@@ -94,9 +95,10 @@ import java.util.Properties;
  * What is the total change in happiness for the optimal seating arrangement that actually includes yourself?
  * <p>
  * Your puzzle answer was 601.
- *
  */
 public class Day13 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day13.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -114,8 +116,8 @@ public class Day13 implements AdventOfCodeSolution {
         var start = Instant.now();
         var sum = greatestChangeInHappiness(input);
         var end = Instant.now();
-        System.out.printf("The greatest change in happiness is: %d%n", sum);
-        printTiming(start, end);
+        LOGGER.info(String.format("The greatest change in happiness is: %d%n", sum));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -130,8 +132,8 @@ public class Day13 implements AdventOfCodeSolution {
             var start = Instant.now();
             var sum = greatestChangeInHappiness(inputLines);
             var end = Instant.now();
-            System.out.printf("The greatest change in happiness with me included is: %d%n", sum);
-            printTiming(start, end);
+            LOGGER.info(String.format("The greatest change in happiness with me included is: %d%n", sum));
+            logTimings(LOGGER, start, end);
         } catch (URISyntaxException | IOException e) {
             throw new RuntimeException(e);
         }

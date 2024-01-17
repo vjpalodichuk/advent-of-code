@@ -64,7 +64,7 @@ public class Day11 {
         }
 
         private void expandUniverse(int rowCount, int columnCount) {
-            System.out.println("Expanding the Universe...");
+            LOGGER.info(String.format("Expanding the Universe...");
 
             var startTime = Instant.now();
 
@@ -74,7 +74,7 @@ public class Day11 {
 
             var endTime = Instant.now();
 
-            System.out.println("Expanded the universe in " + Duration.between(startTime, endTime).toNanos() + " ns");
+            LOGGER.info(String.format("Expanded the universe in " + Duration.between(startTime, endTime).toNanos() + " ns");
         }
 
         private void populateGapCountMap(int count, Map<Integer, Integer> galaxyCountMap, Map<Integer, Map<Integer, Integer>> gapCountMap) {
@@ -122,7 +122,7 @@ public class Day11 {
         }
 
         public long calculateDistances(long gapFactor) {
-            System.out.println("Calculating distances for all of the galaxy pairs...");
+            LOGGER.info(String.format("Calculating distances for all of the galaxy pairs...");
 
             var startTime = Instant.now();
             // We calculate the distances for all pairs a, b where a != b && a.id < b.id
@@ -144,7 +144,7 @@ public class Day11 {
 
             var endTime = Instant.now();
 
-            System.out.println("Calculated the distances where each gap counts as " + (gapFactor + 1) + " in "
+            LOGGER.info(String.format("Calculated the distances where each gap counts as " + (gapFactor + 1) + " in "
                     + Duration.between(startTime, endTime).toNanos() + " ns");
 
             return galaxyDistances
@@ -185,7 +185,7 @@ public class Day11 {
         }
 
         public long calculateOptimizedDistances(long gapFactor) {
-            System.out.println("Greedy calculation of distances for all galaxy pairs...");
+            LOGGER.info(String.format("Greedy calculation of distances for all galaxy pairs...");
 
             var startTime = Instant.now();
 
@@ -197,7 +197,7 @@ public class Day11 {
 
             var endTime = Instant.now();
 
-            System.out.println("Calculated the distances where each gap counts as " + (gapFactor + 1) + " in "
+            LOGGER.info(String.format("Calculated the distances where each gap counts as " + (gapFactor + 1) + " in "
                     + Duration.between(startTime, endTime).toNanos() + " ns");
 
             return totalSum;
@@ -237,27 +237,27 @@ public class Day11 {
         Universe universe;
 
         try (var stream = Files.lines(path)) {
-            System.out.println("Loading the Universe...");
+            LOGGER.info(String.format("Loading the Universe...");
             universe = Universe.loadUniverse(stream);
-            System.out.println("Loaded " + universe.getGalaxyCount() + " galaxies in the universe!");
+            LOGGER.info(String.format("Loaded " + universe.getGalaxyCount() + " galaxies in the universe!");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         // Part 1
-        System.out.println("Part 1: Start!");
+        LOGGER.info(String.format("Part 1: Start!");
         long sum = universe.calculateDistances();
-        System.out.println("The sum of all distances is: " + sum);
+        LOGGER.info(String.format("The sum of all distances is: " + sum);
         sum = universe.calculateDistances();
-        System.out.println("The sum of all distances is: " + sum);
+        LOGGER.info(String.format("The sum of all distances is: " + sum);
         sum = universe.calculateOptimizedDistances();
-        System.out.println("The sum of all distances is: " + sum);
+        LOGGER.info(String.format("The sum of all distances is: " + sum);
 
         // Part 2
-        System.out.println("Part 2: Start!");
+        LOGGER.info(String.format("Part 2: Start!");
         sum = universe.calculateDistances(999_999);
-        System.out.println("The sum of all distances is: " + sum);
+        LOGGER.info(String.format("The sum of all distances is: " + sum);
         sum = universe.calculateOptimizedDistances(999_999);
-        System.out.println("The sum of all distances is: " + sum);
+        LOGGER.info(String.format("The sum of all distances is: " + sum);
     }
 }

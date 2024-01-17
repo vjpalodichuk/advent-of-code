@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * --- Day 9: All in a Single Night ---
@@ -53,6 +54,8 @@ import java.util.Properties;
  *
  */
 public class Day09 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day09.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -70,8 +73,8 @@ public class Day09 implements AdventOfCodeSolution {
         var start = Instant.now();
         var shortestDistance = distanceOfShortestRouteVisitingEachNodeOnce(input);
         var end = Instant.now();
-        System.out.printf("The distance of the shortest route is: %d%n", shortestDistance);
-        printTiming(start, end);
+        LOGGER.info(String.format("The distance of the shortest route is: %d%n", shortestDistance));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -79,8 +82,8 @@ public class Day09 implements AdventOfCodeSolution {
         var start = Instant.now();
         var longestDistance = distanceOfLongestRouteVisitingEachNodeOnce(input);
         var end = Instant.now();
-        System.out.printf("The distance of the longest route is: %d%n", longestDistance);
-        printTiming(start, end);
+        LOGGER.info(String.format("The distance of the longest route is: %d%n", longestDistance));
+        logTimings(LOGGER, start, end);
     }
 
     /**
@@ -107,7 +110,12 @@ public class Day09 implements AdventOfCodeSolution {
 
         return results
                 .stream()
-                .mapToInt(it -> it.edges().stream().filter(edge -> edge.getWeight().isPresent()).mapToInt(edge -> edge.getWeight().get()).sum())
+                .mapToInt(it -> it.edges()
+                        .stream()
+                        .filter(edge -> edge.getWeight().isPresent())
+                        .mapToInt(edge -> edge.getWeight().get())
+                        .sum()
+                )
                 .min()
                 .orElse(0);
     }
@@ -136,7 +144,12 @@ public class Day09 implements AdventOfCodeSolution {
 
         return results
                 .stream()
-                .mapToInt(it -> it.edges().stream().filter(edge -> edge.getWeight().isPresent()).mapToInt(edge -> edge.getWeight().get()).sum())
+                .mapToInt(it -> it.edges()
+                        .stream()
+                        .filter(edge -> edge.getWeight().isPresent())
+                        .mapToInt(edge -> edge.getWeight().get())
+                        .sum()
+                )
                 .max()
                 .orElse(0);
     }

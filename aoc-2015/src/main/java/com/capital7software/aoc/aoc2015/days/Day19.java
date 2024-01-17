@@ -7,6 +7,7 @@ import com.capital7software.aoc.lib.util.Pair;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * --- Day 19: Medicine for Rudolph ---<br>
@@ -75,9 +76,10 @@ import java.util.Set;
  * medicine molecule in your puzzle input, what is the fewest number of steps to go from e to the medicine molecule?
  * <p>
  * Your puzzle answer was 212.
- *
  */
 public class Day19 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day19.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -95,8 +97,8 @@ public class Day19 implements AdventOfCodeSolution {
         var start = Instant.now();
         var distinct = calibrate(input).first();
         var end = Instant.now();
-        System.out.printf("The number of distinct molecules is: %d%n", distinct);
-        printTiming(start, end);
+        LOGGER.info(String.format("The number of distinct molecules is: %d%n", distinct));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -104,8 +106,9 @@ public class Day19 implements AdventOfCodeSolution {
         var start = Instant.now();
         var distinct = fabricate(input).first();
         var end = Instant.now();
-        System.out.printf("The fewest number of steps to go from e to the medicine molecule is: %d%n", distinct);
-        printTiming(start, end);
+        LOGGER.info(String.format("The fewest number of steps to go from e to the medicine molecule is: %d%n",
+                distinct));
+        logTimings(LOGGER, start, end);
     }
 
     /**

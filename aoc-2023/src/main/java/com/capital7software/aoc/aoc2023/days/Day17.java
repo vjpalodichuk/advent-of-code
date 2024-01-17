@@ -328,14 +328,14 @@ public class Day17 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var grid = Grid.parse(stream);
             var crucible = new Crucible(grid, 1, 3);
             IntStream.range(0, 5).forEach(it -> {
                 var start = Instant.now();
                 var sum = crucible.calculateMinimumHeatLoss();
                 var end = Instant.now();
-                System.out.println("Minimum heat loss: " + sum + " in " +
+                LOGGER.info(String.format("Minimum heat loss: " + sum + " in " +
                         Duration.between(start, end).toNanos() + " ns");
             });
         } catch (IOException e) {
@@ -346,14 +346,14 @@ public class Day17 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var grid = Grid.parse(stream);
             var crucible = new Crucible(grid, 4, 10);
             IntStream.range(0, 5).forEach(it -> {
                 var start = Instant.now();
                 var sum = crucible.calculateMinimumHeatLoss();
                 var end = Instant.now();
-                System.out.println("Minimum heat loss: " + sum + " in " +
+                LOGGER.info(String.format("Minimum heat loss: " + sum + " in " +
                         Duration.between(start, end).toNanos() + " ns");
             });
         } catch (IOException e) {

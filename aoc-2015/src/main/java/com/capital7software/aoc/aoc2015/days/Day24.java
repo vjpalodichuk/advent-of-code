@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.math.QuantumEntanglement;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 24: It Hangs in the Balance ---<br>
@@ -84,9 +85,10 @@ import java.util.List;
  * Now, what is the quantum entanglement of the first group of packages in the ideal configuration?
  * <p>
  * Your puzzle answer was 74850409.
- *
  */
 public class Day24 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day24.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -104,8 +106,8 @@ public class Day24 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = getLowestQEScore(input, 3);
         var end = Instant.now();
-        System.out.printf("The lowest QE Score with 3 partitions is: %d%n", lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("The lowest QE Score with 3 partitions is: %d%n", lowest));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -113,15 +115,15 @@ public class Day24 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = getLowestQEScore(input, 4);
         var end = Instant.now();
-        System.out.printf("The lowest QE Score with 4 partitions is: %d%n", lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("The lowest QE Score with 4 partitions is: %d%n", lowest));
+        logTimings(LOGGER, start, end);
     }
 
     /**
      * Returns the lowest Quantum Entanglement Score for the specified number of
      * gifts and the number of equal partitions to break them up into.
      *
-     * @param input The gifts to put in to equal weight sets.
+     * @param input      The gifts to put in to equal weight sets.
      * @param partitions The number of sets to put the gifts in.
      * @return the lowest Quantum Entanglement Score.
      */

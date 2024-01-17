@@ -7,6 +7,7 @@ import com.capital7software.aoc.lib.util.Pair;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 17: No Such Thing as Too Much ---
@@ -36,9 +37,10 @@ import java.util.List;
  * There were three ways to use that many containers, and so the answer there would be 3.
  * <p>
  * Your puzzle answer was 18.
- *
  */
 public class Day17 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day17.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -56,8 +58,8 @@ public class Day17 implements AdventOfCodeSolution {
         var start = Instant.now();
         var combinations = combinationsOfContainersToHoldEggNog(150, input);
         var end = Instant.now();
-        System.out.printf("The number of the Sue that got me the gift is: %d%n", combinations.first());
-        printTiming(start, end);
+        LOGGER.info(String.format("The number of the Sue that got me the gift is: %d%n", combinations.first()));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -67,15 +69,18 @@ public class Day17 implements AdventOfCodeSolution {
         var min = combinations.second().stream().map(List::size).min(Comparator.naturalOrder()).orElse(-1);
         var minCount = combinations.second().stream().filter(it -> it.size() == min).count();
         var end = Instant.now();
-        System.out.printf("The minimum number of containers needed is %d and there are %d of those containers on hand%n", min, minCount);
-        printTiming(start, end);
+        LOGGER.info(String.format(
+                "The minimum number of containers needed is %d and there are %d of those containers on hand%n",
+                min, minCount
+        ));
+        logTimings(LOGGER, start, end);
     }
 
     /**
      * Returns the minimum number of containers to hold the specified amount of EggNog.
      *
      * @param liters The amount of EggNog needing to be stored.
-     * @param input The available containers to store EggNog.
+     * @param input  The available containers to store EggNog.
      * @return The minimum number of containers to hold the specified amount of EggNog.
      */
     public Pair<Integer, List<List<Long>>> combinationsOfContainersToHoldEggNog(int liters, List<String> input) {

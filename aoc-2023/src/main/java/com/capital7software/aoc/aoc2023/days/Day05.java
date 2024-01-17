@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 5: If You Give A Seed A Fertilizer ---<br>
@@ -184,6 +185,8 @@ import java.util.List;
  * Your puzzle answer was 37806486.
  */
 public class Day05 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day05.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -202,8 +205,8 @@ public class Day05 implements AdventOfCodeSolution {
         var answer = getLowestLocationNumber(input);
         var end = Instant.now();
 
-        System.out.printf("The lowest location number is: %d%n", answer);
-        printTiming(start, end);
+        LOGGER.info(String.format("The lowest location number is: %d%n", answer));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -212,8 +215,8 @@ public class Day05 implements AdventOfCodeSolution {
         var answer = getLowestLocationNumberForAnyInitialSeed(input);
         var end = Instant.now();
 
-        System.out.printf("The lowest location number using RangeMaps is: %d%n", answer);
-        printTiming(start, end);
+        LOGGER.info(String.format("The lowest location number using RangeMaps is: %d%n", answer));
+        logTimings(LOGGER, start, end);
     }
 
 

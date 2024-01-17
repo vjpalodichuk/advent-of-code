@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.geometry.Present;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 2: I Was Told There Would Be No Math ---<br>
@@ -57,6 +58,8 @@ import java.util.List;
  * Your puzzle answer was 3842356.
  */
 public class Day02 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day02.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -76,8 +79,8 @@ public class Day02 implements AdventOfCodeSolution {
         var total = howMuchTotalWrappingPaper(presents);
         var end = Instant.now();
 
-        System.out.printf("The elves' need to order %d square feet of wrapping paper!%n", total);
-        printTiming(start, end);
+        LOGGER.info(String.format("The elves' need to order %d square feet of wrapping paper!%n", total));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -87,8 +90,8 @@ public class Day02 implements AdventOfCodeSolution {
         var total = howMuchTotalRibbon(presents);
         var end = Instant.now();
 
-        System.out.printf("The elves' need to order %d square feet of ribbon!%n", total);
-        printTiming(start, end);
+        LOGGER.info(String.format("The elves' need to order %d square feet of ribbon!%n", total));
+        logTimings(LOGGER, start, end);
     }
 
     /**

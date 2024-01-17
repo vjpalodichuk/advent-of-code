@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 10: Elves Look, Elves Say ---
@@ -34,9 +35,10 @@ import java.util.List;
  * Now, starting again with the digits in your puzzle input, apply this process 50 times. What is the length of the new result?
  * <p>
  * Your puzzle answer was 5103798.
- *
  */
 public class Day10 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day10.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -61,8 +63,8 @@ public class Day10 implements AdventOfCodeSolution {
 
             var length = result.length();
             var end = Instant.now();
-            System.out.printf("The length of the result is: %d%n", length);
-            printTiming(start, end);
+            LOGGER.info(String.format("The length of the result is: %d%n", length));
+            logTimings(LOGGER, start, end);
         }
     }
 
@@ -78,13 +80,14 @@ public class Day10 implements AdventOfCodeSolution {
 
             var length = result.length();
             var end = Instant.now();
-            System.out.printf("The length of the result is: %d%n", length);
-            printTiming(start, end);
+            LOGGER.info(String.format("The length of the result is: %d%n", length));
+            logTimings(LOGGER, start, end);
         }
     }
 
     /**
      * Encodes and returns the new Run Length Encoded String.
+     *
      * @param line The String to encode.
      * @return The new Run Length Encoded String.
      */

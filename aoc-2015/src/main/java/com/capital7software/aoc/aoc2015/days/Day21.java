@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.graph.constaint.SwordsAndStuff;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 21: RPG Simulator 20XX ---<br>
@@ -67,16 +68,17 @@ import java.util.List;
  * <p>
  * Your puzzle answer was 91.
  * <p>
- *     --- Part Two ---<br>
+ * --- Part Two ---<br>
  * Turns out the shopkeeper is working with the boss, and can persuade you to buy whatever items he wants.
  * The other rules still apply, and he still only has one of each item.
  * <p>
  * What is the most amount of gold you can spend and still lose the fight?
  * <p>
  * Your puzzle answer was 158.
- *
  */
 public class Day21 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day21.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -94,8 +96,8 @@ public class Day21 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = leastAmountOfGoldAndStillWin(input);
         var end = Instant.now();
-        System.out.printf("The least amount of gold spent and still win is: %d%n", lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("The least amount of gold spent and still win is: %d%n", lowest));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -103,8 +105,8 @@ public class Day21 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = mostAmountOfGoldAndStillLose(input);
         var end = Instant.now();
-        System.out.printf("The most amount of gold spent and still lose is: %d%n", lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("The most amount of gold spent and still lose is: %d%n", lowest));
+        logTimings(LOGGER, start, end);
     }
 
     /**

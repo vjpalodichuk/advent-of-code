@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.computer.SimpleComputer;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 23: Opening the Turing Lock ---<br>
@@ -63,9 +64,10 @@ import java.util.List;
  * finished executing if register a starts as 1 instead?
  * <p>
  * Your puzzle answer was 231.
- *
  */
 public class Day23 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day23.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -83,24 +85,29 @@ public class Day23 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = runProgramAndGetValueInRegister(input, "b");
         var end = Instant.now();
-        System.out.printf("The value in register b is: %d%n", lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("The value in register b is: %d%n", lowest));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
     public void runPart2(List<String> input) {
         var start = Instant.now();
-        var lowest = runProgramWithStartingRegisterAndValueAndGetValueInRegister(input, "a", 1L, "b");
+        var lowest = runProgramWithStartingRegisterAndValueAndGetValueInRegister(
+                input,
+                "a",
+                1L,
+                "b"
+        );
         var end = Instant.now();
-        System.out.printf("The value in register b is: %d%n", lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("The value in register b is: %d%n", lowest));
+        logTimings(LOGGER, start, end);
     }
 
     /**
      * Runs the specified program and returns the value in the specified register after the
      * program completes.
      *
-     * @param input The program to run.
+     * @param input    The program to run.
      * @param register The register to retrieve the value of after the program runs.
      * @return The value in the specified register after the program completes.
      */
@@ -115,9 +122,9 @@ public class Day23 implements AdventOfCodeSolution {
      * Runs the specified program and returns the value in the specified register after the
      * program completes. Prior to execution, the put register is updated with the specified value.
      *
-     * @param input The program to run.
+     * @param input       The program to run.
      * @param registerPut The register to set the value of before running the program.
-     * @param value The value to put in the register.
+     * @param value       The value to put in the register.
      * @param registerGet The register to retrieve the value of after the program runs.
      * @return The value in the specified register after the program completes.
      */

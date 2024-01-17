@@ -217,13 +217,13 @@ public class Day13 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var patterns = loadPatterns(stream, false);
-            System.out.println("Summarizing patterns...");
+            LOGGER.info(String.format("Summarizing patterns...");
             var start = Instant.now();
             var sum = summarizeNotes(patterns, 0);
             var end = Instant.now();
-            System.out.println("Sum of all patterns is: " + sum + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Sum of all patterns is: " + sum + " in " + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -232,13 +232,13 @@ public class Day13 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var patterns = loadPatterns(stream, false);
-            System.out.println("Summarizing patterns...");
+            LOGGER.info(String.format("Summarizing patterns...");
             var start = Instant.now();
             var sum = summarizeNotes(patterns, 1);
             var end = Instant.now();
-            System.out.println("Sum of all patterns is: " + sum + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Sum of all patterns is: " + sum + " in " + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -246,9 +246,9 @@ public class Day13 {
 
     private static List<Pattern> loadPatterns(Stream<String> stream, boolean print) {
         List<Pattern> patterns = Pattern.parse(stream);
-        System.out.println("Loaded " + patterns.size() + " patterns.");
+        LOGGER.info(String.format("Loaded " + patterns.size() + " patterns.");
         if (print) {
-            System.out.println("Patterns:");
+            LOGGER.info(String.format("Patterns:");
             patterns.forEach(System.out::println);
         }
 

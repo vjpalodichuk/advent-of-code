@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.math.InfiniteHouses;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 20: Infinite Elves and Infinite Houses ---<br>
@@ -49,9 +50,10 @@ import java.util.List;
  * at least as many presents as the number in your puzzle input?
  * <p>
  * Your puzzle answer was 786240.
- *
  */
 public class Day20 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day20.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -70,8 +72,9 @@ public class Day20 implements AdventOfCodeSolution {
         int deliveredPresents = Integer.parseInt(input.getFirst());
         var lowest = lowestHouseNumber(deliveredPresents);
         var end = Instant.now();
-        System.out.printf("The lowest house number to be delivered %d presents is: %d%n", deliveredPresents, lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("The lowest house number to be delivered %d presents is: %d%n",
+                deliveredPresents, lowest));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -80,9 +83,9 @@ public class Day20 implements AdventOfCodeSolution {
         int deliveredPresents = Integer.parseInt(input.getFirst());
         var lowest = lowestHouseNumberNewRules(deliveredPresents);
         var end = Instant.now();
-        System.out.printf("Using the new rules, the lowest house number to be " +
-                "delivered %d presents is: %d%n", deliveredPresents, lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("Using the new rules, the lowest house number to be delivered %d presents is: %d%n",
+                deliveredPresents, lowest));
+        logTimings(LOGGER, start, end);
     }
 
     /**

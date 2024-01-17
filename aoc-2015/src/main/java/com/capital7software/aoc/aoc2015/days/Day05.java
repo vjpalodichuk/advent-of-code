@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.string.NaughtyOrNice;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 5: Doesn't He Have Intern-Elves For This? ---
@@ -26,7 +27,7 @@ import java.util.List;
  * dvszwmarrgswjxmb is naughty because it contains only one vowel.
  * How many strings are nice?
  * <p>
- *     Your puzzle answer was 255.
+ * Your puzzle answer was 255.
  * --- Part Two ---
  * Realizing the error of his ways, Santa has switched to a better model of determining whether a string
  * is naughty or nice. None of the old rules apply, as they are all clearly ridiculous.
@@ -48,10 +49,11 @@ import java.util.List;
  * but no pair that appears twice.
  * How many strings are nice under these new rules?
  * <p>
- *     Your puzzle answer was 55.
- *
+ * Your puzzle answer was 55.
  */
 public class Day05 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day05.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -75,9 +77,9 @@ public class Day05 implements AdventOfCodeSolution {
             }
         }
         var end = Instant.now();
-        System.out.printf(
-                "There are %d nice strings!%n", total);
-        printTiming(start, end);
+        LOGGER.info(String.format(
+                "There are %d nice strings!%n", total));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -91,9 +93,9 @@ public class Day05 implements AdventOfCodeSolution {
             }
         }
         var end = Instant.now();
-        System.out.printf(
-                "There are %d new nice strings!%n", total);
-        printTiming(start, end);
+        LOGGER.info(String.format(
+                "There are %d new nice strings!%n", total));
+        logTimings(LOGGER, start, end);
     }
 
     /**

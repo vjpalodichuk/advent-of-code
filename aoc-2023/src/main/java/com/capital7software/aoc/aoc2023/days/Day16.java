@@ -354,14 +354,14 @@ public class Day16 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var grid = Grid.parse(stream);
             var beam = Beam.create(grid);
             IntStream.range(0, 5).forEach(it -> {
                 var start = Instant.now();
                 var sum = beam.energize();
                 var end = Instant.now();
-                System.out.println("Total number of energized tiles: " + sum + " in " +
+                LOGGER.info(String.format("Total number of energized tiles: " + sum + " in " +
                         Duration.between(start, end).toNanos() + " ns");
             });
 
@@ -369,7 +369,7 @@ public class Day16 {
                 var start = Instant.now();
                 var sum = beam.energizeRecursive();
                 var end = Instant.now();
-                System.out.println("Total number of recursive energized tiles: " + sum + " in " +
+                LOGGER.info(String.format("Total number of recursive energized tiles: " + sum + " in " +
                         Duration.between(start, end).toNanos() + " ns");
             });
         } catch (IOException e) {
@@ -380,15 +380,15 @@ public class Day16 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var grid = Grid.parse(stream);
             var beam = Beam.create(grid);
-//            System.out.println(grid);
+//            LOGGER.info(String.format(grid);
             IntStream.range(0, 5).forEach(it -> {
                 var start = Instant.now();
                 var sum = beam.maxEnergized();
                 var end = Instant.now();
-                System.out.println("Total number of energized tiles: " + sum + " in " +
+                LOGGER.info(String.format("Total number of energized tiles: " + sum + " in " +
                         Duration.between(start, end).toNanos() + " ns");
             });
         } catch (IOException e) {

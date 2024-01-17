@@ -383,15 +383,15 @@ public class Day19 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var manager = WorkflowManager.build(stream);
             var start = Instant.now();
             manager.run("in");
             var acceptedSum = manager.sumAccepted();
             var rejectedSum = manager.sumRejected();
             var end = Instant.now();
-            System.out.println("Sum of rejected parts: " + rejectedSum);
-            System.out.println("Sum of accepted parts: " + acceptedSum + " in " +
+            LOGGER.info(String.format("Sum of rejected parts: " + rejectedSum);
+            LOGGER.info(String.format("Sum of accepted parts: " + acceptedSum + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -401,12 +401,12 @@ public class Day19 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var manager = WorkflowManager.build(stream);
             var start = Instant.now();
             var combinations = manager.calculateCombinations("in");
             var end = Instant.now();
-            System.out.println("Total possible combinations: " + combinations + " in " +
+            LOGGER.info(String.format("Total possible combinations: " + combinations + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);

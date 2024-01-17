@@ -4,8 +4,11 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class Day09 {
+    private static final Logger LOGGER = Logger.getLogger(Day09.class.getName());
+
 
     private static class History {
         public static final Long HISTORY_KEY = 0L;
@@ -33,13 +36,13 @@ public class Day09 {
             var size = sequenceMap.size();
 
             if (size == 1) {
-                System.out.println("Building sequence map...");
+                LOGGER.info("Building sequence map...");
                 buildSequenceMap();
                 size = sequenceMap.size();
             }
-            System.out.println("Calculating the next value in the history sequence...");
+            LOGGER.info("Calculating the next value in the history sequence...");
             Long nextValue = calculateNextValue((long) (size - 1));
-            System.out.println("Next predicted value is: " + nextValue);
+            LOGGER.info(String.format("Next predicted value is: " + nextValue));
             return nextValue;
         }
 
@@ -47,13 +50,13 @@ public class Day09 {
             var size = sequenceMap.size();
 
             if (size == 1) {
-                System.out.println("Building previous sequence map...");
+                LOGGER.info("Building previous sequence map...");
                 buildSequenceMap();
                 size = sequenceMap.size();
             }
-            System.out.println("Calculating the previous value in the history sequence...");
+            LOGGER.info("Calculating the previous value in the history sequence...");
             Long previousValue = calculatePreviousValue((long) (size - 1));
-            System.out.println("Previous predicted value is: " + previousValue);
+            LOGGER.info(String.format("Previous predicted value is: %d", previousValue));
             return previousValue;
         }
 
@@ -89,7 +92,7 @@ public class Day09 {
             // stopping condition
             if (currentKey < 0 || size == 1) {
                 // We are done, so simply return the last value from the HISTORY_KEY
-                System.out.println("Next value has been calculated!");
+                LOGGER.info("Next value has been calculated!");
                 return sequenceMap.get(HISTORY_KEY).getLast();
             }
             // size - 1 is the key in the map for the zeros sequence
@@ -112,7 +115,7 @@ public class Day09 {
             // stopping condition
             if (currentKey < 0 || size == 1) {
                 // We are done, so simply return the first value from the HISTORY_KEY
-                System.out.println("Previous value has been calculated!");
+                LOGGER.info("Previous value has been calculated!");
                 return sequenceMap.get(HISTORY_KEY).getFirst();
             }
             // size - 1 is the key in the map for the zeros sequence
@@ -140,23 +143,23 @@ public class Day09 {
         var path = Paths.get(url.toURI());
         List<History> histories = new ArrayList<>();
         try (var stream = Files.lines(path)) {
-            System.out.println("Loading histories...");
+            LOGGER.info("Loading histories...");
             stream.forEach(line -> histories.add(new History(line)));
-            System.out.println("Done loading histories!");
+            LOGGER.info("Done loading histories!");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         // Part 1
-        System.out.println("Part 1: Start!");
-        System.out.println("Predicting the next values for " + histories.size() + " histories...");
+        LOGGER.info("Part 1: Start!");
+        LOGGER.info(String.format("Predicting the next values for %d histories...", histories.size()));
         var sumOfNextPredictions = histories.stream().mapToLong(History::predictNextValue).sum();
-        System.out.println("The sum of the predicted values is: " + sumOfNextPredictions);
+        LOGGER.info(String.format("The sum of the predicted values is: %d", sumOfNextPredictions));
 
         // Part 2
-        System.out.println("Part 2: Start!");
-        System.out.println("Predicting the previous values for " + histories.size() + " histories...");
+        LOGGER.info("Part 2: Start!");
+        LOGGER.info(String.format("Predicting the previous values for %d histories...", histories.size()));
         var sumOfPreviousPredictions = histories.stream().mapToLong(History::predictPreviousValue).sum();
-        System.out.println("The sum of the predicted values is: " + sumOfPreviousPredictions);
+        LOGGER.info(String.format("The sum of the predicted values is: %d", sumOfPreviousPredictions));
     }
 }

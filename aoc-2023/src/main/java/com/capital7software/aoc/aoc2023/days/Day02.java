@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.analysis.CubeConundrum;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 2: Cube Conundrum ---<br>
@@ -115,9 +116,10 @@ import java.util.List;
  * For each game, find the minimum set of cubes that must have been present. What is the sum of the power of these sets?
  * <p><br>
  * Your puzzle answer was 58269.
- *
  */
 public class Day02 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day02.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -136,8 +138,8 @@ public class Day02 implements AdventOfCodeSolution {
         var sum = getSumOfGameResultIds(input);
         var end = Instant.now();
 
-        System.out.printf("The sum of the possible Game IDs is: %d%n", sum);
-        printTiming(start, end);
+        LOGGER.info(String.format("The sum of the possible Game IDs is: %d%n", sum));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -146,8 +148,8 @@ public class Day02 implements AdventOfCodeSolution {
         var sum = getSumOfGameResultPower(input);
         var end = Instant.now();
 
-        System.out.printf("The sum of the Game Powers is: %d%n", sum);
-        printTiming(start, end);
+        LOGGER.info(String.format("The sum of the Game Powers is: %d%n", sum));
+        logTimings(LOGGER, start, end);
     }
 
     /**

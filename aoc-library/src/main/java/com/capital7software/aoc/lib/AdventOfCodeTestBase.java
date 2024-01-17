@@ -7,11 +7,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * A simple class that can be used in testing to ease the loading of input files.
  */
-public class AdventOfCodeTestBase {
+public abstract class AdventOfCodeTestBase {
     /**
      * Contains the loaded lines of text.
      */
@@ -45,8 +46,14 @@ public class AdventOfCodeTestBase {
             path = Paths.get(url.toURI());
             lines = Files.readAllLines(path);
         } catch (URISyntaxException | IOException e) {
-            System.out.printf("Unable to load input data from: %s%n", path);
+            getLogger().severe(String.format("Unable to load input data from: %s%n", path));
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Returns the Logger instance to use.
+     * @return The Logger instance to use.
+     */
+    protected abstract Logger getLogger();
 }

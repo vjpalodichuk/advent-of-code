@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.graph.path.AStarAndWizards;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 22: Wizard Simulator 20XX ---<br>
@@ -148,9 +149,10 @@ import java.util.List;
  * what is the least amount of mana you can spend and still win the fight?
  * <p>
  * Your puzzle answer was 1289.
- *
  */
 public class Day22 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day22.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -168,8 +170,8 @@ public class Day22 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = leastAmountOfManaAndStillWin(input, false);
         var end = Instant.now();
-        System.out.printf("The least amount of mana spent and still win is: %d%n", lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("The least amount of mana spent and still win is: %d%n", lowest));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -177,15 +179,15 @@ public class Day22 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = leastAmountOfManaAndStillWin(input, true);
         var end = Instant.now();
-        System.out.printf("The least amount of mana spent and still win on hard mode is: %d%n", lowest);
-        printTiming(start, end);
+        LOGGER.info(String.format("The least amount of mana spent and still win on hard mode is: %d%n", lowest));
+        logTimings(LOGGER, start, end);
     }
 
     /**
      * Returns the least amount of Mana the Mage can spend and still win the game.
      *
      * @param input The available Spells and the Mage and Boos stats.
-     * @param hard If true, the Mage loses one hit-point at the start of their turns.
+     * @param hard  If true, the Mage loses one hit-point at the start of their turns.
      * @return The least amount of Mana the Mage can spend and still win the game.
      */
     public int leastAmountOfManaAndStillWin(List<String> input, boolean hard) {

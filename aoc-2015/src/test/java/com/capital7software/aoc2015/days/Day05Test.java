@@ -6,10 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day05Test extends AdventOfCodeTestBase {
+    private static final Logger LOGGER = Logger.getLogger(Day05Test.class.getName());
+
     @BeforeEach
     void setUp() {
         var instance = new Day05();
@@ -49,5 +52,10 @@ class Day05Test extends AdventOfCodeTestBase {
             assertEquals(expected.get(i), actual, "Test input: " + lines.get(i));
         }
         assertEquals(expectedCount, actualCount);
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return LOGGER;
     }
 }

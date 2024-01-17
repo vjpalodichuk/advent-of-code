@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.crypt.MD5Fun;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 4: The Ideal Stocking Stuffer ---
@@ -31,6 +32,8 @@ import java.util.List;
  * Your puzzle answer was 9962624.
  */
 public class Day04 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day04.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -51,10 +54,10 @@ public class Day04 implements AdventOfCodeSolution {
             var total = lowestPositiveNumber(secret, 5);
             var end = Instant.now();
 
-            System.out.printf(
+            LOGGER.info(String.format(
                     "Lowest positive number to concatenate with %s to produce a MD5 hash with 5 leading zeros is: %d%n",
-                    secret, total);
-            printTiming(start, end);
+                    secret, total));
+            logTimings(LOGGER, start, end);
         }
     }
 
@@ -66,10 +69,10 @@ public class Day04 implements AdventOfCodeSolution {
             var total = lowestPositiveNumber(secret, 6);
             var end = Instant.now();
 
-            System.out.printf(
+            LOGGER.info(String.format(
                     "Lowest positive number to concatenate with %s to produce a MD5 hash with 6 leading zeros is: %d%n",
-                    secret, total);
-            printTiming(start, end);
+                    secret, total));
+            logTimings(LOGGER, start, end);
         }
     }
 
@@ -77,7 +80,7 @@ public class Day04 implements AdventOfCodeSolution {
      * Returns the lowest positive number to combine with the secret to generate a
      * MD5 Hash with the specified number of leading zeros.
      *
-     * @param secret The secret to combine with the number we are looking for.
+     * @param secret       The secret to combine with the number we are looking for.
      * @param leadingZeros How many leading zeros the hash must have.
      * @return The lowest positive number to combine with the secret to generate a
      * MD5 Hash with the specified number of leading zeros.

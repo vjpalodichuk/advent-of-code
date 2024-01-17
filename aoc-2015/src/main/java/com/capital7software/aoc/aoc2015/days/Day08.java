@@ -6,6 +6,7 @@ import com.capital7software.aoc.lib.string.EncodingFun;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 /**
  * --- Day 8: Matchsticks ---
@@ -38,7 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * code (2 + 5 + 10 + 6 = 23) minus the total number of characters in memory for string
  * values (0 + 3 + 7 + 1 = 11) is 23 - 11 = 12.
  * <p>
- *     Your puzzle answer was 1350.
+ * Your puzzle answer was 1350.
  * <p>
  * --- Part Two ---
  * Now, let's go the other way. In addition to finding the number of characters of code, you should now encode
@@ -56,10 +57,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * the total encoded length (6 + 9 + 16 + 11 = 42) minus the characters in the original code
  * representation (23, just like in the first part of this puzzle) is 42 - 23 = 19.
  * <p>
- *     Your puzzle answer was 1350.
- *
+ * Your puzzle answer was 1350.
  */
 public class Day08 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day02.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -86,10 +88,10 @@ public class Day08 implements AdventOfCodeSolution {
 
         var total = code.get() - memory.get();
         var end = Instant.now();
-        System.out.printf(
+        LOGGER.info(String.format(
                 "The number of characters of code: %d minus the number of characters" +
-                        " in memory %d in the whole file is: %d%n", code.get(), memory.get(), total);
-        printTiming(start, end);
+                        " in memory %d in the whole file is: %d%n", code.get(), memory.get(), total));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -106,10 +108,10 @@ public class Day08 implements AdventOfCodeSolution {
 
         var total = newCode.get() - code.get();
         var end = Instant.now();
-        System.out.printf(
+        LOGGER.info(String.format(
                 "The number of characters in new string: %d minus the number of characters" +
-                        " of code in old string %d in the whole file is: %d%n", newCode.get(), code.get(), total);
-        printTiming(start, end);
+                        " of code in old string %d in the whole file is: %d%n", newCode.get(), code.get(), total));
+        logTimings(LOGGER, start, end);
     }
 
     /**

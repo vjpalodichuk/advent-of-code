@@ -1,6 +1,5 @@
 package com.capital7software.aoc.lib.collection;
 
-
 /**
  * Represents a node in a BinaryTree.
  * 

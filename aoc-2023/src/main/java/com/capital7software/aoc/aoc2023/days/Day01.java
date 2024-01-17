@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.string.Trebuchet;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 1: Trebuchet?! ---<br>
@@ -89,9 +90,10 @@ import java.util.List;
  * What is the sum of all the calibration values?
  * <p><br>
  * Your puzzle answer was 53389.
- *
  */
 public class Day01 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day01.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -110,8 +112,8 @@ public class Day01 implements AdventOfCodeSolution {
         var sum = getSumOfCalibrationValues(input, false);
         var end = Instant.now();
 
-        System.out.printf("The sum of the calibration values is: %d%n", sum);
-        printTiming(start, end);
+        LOGGER.info(String.format("The sum of the calibration values is: %d%n", sum));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -120,15 +122,15 @@ public class Day01 implements AdventOfCodeSolution {
         var sum = getSumOfCalibrationValues(input, true);
         var end = Instant.now();
 
-        System.out.printf("The sum of the real calibration values is: %d%n", sum);
-        printTiming(start, end);
+        LOGGER.info(String.format("The sum of the real calibration values is: %d%n", sum));
+        logTimings(LOGGER, start, end);
     }
 
     /**
      * Returns the sum of the calibration values specified in the List of input Strings.
      *
      * @param input The List of String calibration values.
-     * @param real If true, then words that spell digits will be interpreted as digits.
+     * @param real  If true, then words that spell digits will be interpreted as digits.
      * @return The sum of the calibration values specified in the List of input Strings.
      */
     public int getSumOfCalibrationValues(List<String> input, boolean real) {

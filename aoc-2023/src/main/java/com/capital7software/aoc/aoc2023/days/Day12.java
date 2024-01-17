@@ -100,7 +100,7 @@ public class Day12 {
              */
             public long validSequences() {
                 var cache = new HashMap<SpringRecord, Long>();
-                //            System.out.println("Valid sequences for this SpringRecord: " + count);
+                //            LOGGER.info(String.format("Valid sequences for this SpringRecord: " + count);
                 return validSequences(cache);
             }
 
@@ -195,14 +195,14 @@ public class Day12 {
         try (var stream = Files.lines(path)) {
             List<SpringRecord> springRecords = stream.map(SpringRecord::parse).toList();
 
-            System.out.println("Loaded " + springRecords.size() + " spring records:");
+            LOGGER.info(String.format("Loaded " + springRecords.size() + " spring records:");
 //            springRecords.forEach(System.out::println);
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var start = Instant.now();
             var sumOfSequences = solve(springRecords);
             var end = Instant.now();
-            System.out.println("Sum of valid sequences: " + sumOfSequences + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Sum of valid sequences: " + sumOfSequences + " in " + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -212,14 +212,14 @@ public class Day12 {
         try (var stream = Files.lines(path)) {
             List<SpringRecord> springRecords = stream.map(it -> SpringRecord.parse(it, true)).toList();
 
-            System.out.println("Loaded " + springRecords.size() + " spring records:");
+            LOGGER.info(String.format("Loaded " + springRecords.size() + " spring records:");
 //            springRecords.forEach(System.out::println);
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var start = Instant.now();
             var sumOfSequences = solve(springRecords);
             var end = Instant.now();
-            System.out.println("Sum of valid sequences: " + sumOfSequences + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Sum of valid sequences: " + sumOfSequences + " in " + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

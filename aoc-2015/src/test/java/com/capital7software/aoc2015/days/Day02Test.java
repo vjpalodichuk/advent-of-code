@@ -5,9 +5,13 @@ import com.capital7software.aoc.lib.AdventOfCodeTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.logging.Logger;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day02Test extends AdventOfCodeTestBase {
+    private static final Logger LOGGER = Logger.getLogger(Day02Test.class.getName());
+
     @BeforeEach
     void setUp() {
         var instance = new Day02();
@@ -28,5 +32,10 @@ class Day02Test extends AdventOfCodeTestBase {
         var actual = instance.howMuchTotalRibbon(instance.loadPresents(lines));
 
         assertEquals(48, actual);
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return LOGGER;
     }
 }

@@ -3,9 +3,13 @@ package com.capital7software.aoc.aoc2023.days;
 import com.capital7software.aoc.lib.AdventOfCodeTestBase;
 import org.junit.jupiter.api.Test;
 
+import java.util.logging.Logger;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day01Test extends AdventOfCodeTestBase {
+    private static final Logger LOGGER = Logger.getLogger(Day01Test.class.getName());
+
     @Test
     void getSumOfCalibrationValues() {
         var instance = new Day01();
@@ -24,5 +28,10 @@ class Day01Test extends AdventOfCodeTestBase {
         var actual = instance.getSumOfCalibrationValues(lines, true);
         assertEquals(expected, actual, "The sum of real calibration values " +
                 "is not what was expected: " + expected);
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return LOGGER;
     }
 }

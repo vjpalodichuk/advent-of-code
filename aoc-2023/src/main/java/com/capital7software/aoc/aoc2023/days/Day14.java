@@ -192,7 +192,7 @@ public class Day14 {
             var predicate = getLoopPredicate(direction);
             var loopStart = getLoopStart(direction);
             if (print) {
-                System.out.println("Tilting platform " + direction + "...");
+                LOGGER.info(String.format("Tilting platform " + direction + "...");
             }
 
             // Go through each row / column depending on the direction
@@ -203,8 +203,8 @@ public class Day14 {
             }
 
             if (print) {
-                System.out.println("New layout");
-                System.out.println(this);
+                LOGGER.info(String.format("New layout");
+                LOGGER.info(String.format(this);
             }
         }
 
@@ -326,7 +326,7 @@ public class Day14 {
             var loadCalculator = getLoadCalculator(direction);
 
             if (print) {
-                System.out.println("Calculating the load on the " + direction + " support beams...");
+                LOGGER.info(String.format("Calculating the load on the " + direction + " support beams...");
             }
 
             supportLoad = tiles.stream()
@@ -335,8 +335,8 @@ public class Day14 {
                     .sum();
 
             if (print) {
-                System.out.println("Calculated load: ");
-                System.out.println(supportLoad);
+                LOGGER.info(String.format("Calculated load: ");
+                LOGGER.info(String.format(supportLoad);
             }
 
             return supportLoad;
@@ -388,7 +388,7 @@ public class Day14 {
          */
         public void spinCycle(long cyclesToPerform, boolean print) {
             if (print) {
-                System.out.println("Performing " + cyclesToPerform + " spin cycle(s)...");
+                LOGGER.info(String.format("Performing " + cyclesToPerform + " spin cycle(s)...");
             }
             var gridCache = new ArrayList<List<Tile>>();
             var detectedCycleIndex = 0L;
@@ -402,8 +402,8 @@ public class Day14 {
                 currentTiles = cycle();
                 cycleCount++;
                 if (print) {
-                    System.out.println("After " + cycleCount + " spin cyclesToPerform the layout is:");
-                    System.out.println(this);
+                    LOGGER.info(String.format("After " + cycleCount + " spin cyclesToPerform the layout is:");
+                    LOGGER.info(String.format(this);
                 }
                 var index = gridCache.indexOf(currentTiles);
 
@@ -425,17 +425,17 @@ public class Day14 {
                 calculatedIndex = detectedCycleIndex +
                         ((cyclesToPerform - detectedCycleIndex) % (cycleCount - detectedCycleIndex));
                 if (print) {
-                    System.out.println("Duplicate Cycle detected after " + cycleCount + " cycle(s) and the spin cycle has been stopped!");
-                    System.out.println("The duplicate Cycle was found at iteration " + detectedCycleIndex + "!");
-                    System.out.println("The platform is in the state after " + calculatedIndex + " cycle(s) have been performed!");
-                    System.out.println("This is a state equal if all " + cyclesToPerform + " cycle(s) had been performed!");
+                    LOGGER.info(String.format("Duplicate Cycle detected after " + cycleCount + " cycle(s) and the spin cycle has been stopped!");
+                    LOGGER.info(String.format("The duplicate Cycle was found at iteration " + detectedCycleIndex + "!");
+                    LOGGER.info(String.format("The platform is in the state after " + calculatedIndex + " cycle(s) have been performed!");
+                    LOGGER.info(String.format("This is a state equal if all " + cyclesToPerform + " cycle(s) had been performed!");
                 }
                 tiles.clear();
                 tiles.addAll(gridCache.get((int) calculatedIndex));
             }
 
             if (print) {
-                System.out.println("Performed " + cycleCount + " spin cycle(s)");
+                LOGGER.info(String.format("Performed " + cycleCount + " spin cycle(s)");
             }
         }
 
@@ -472,15 +472,15 @@ public class Day14 {
     private static void part1(Path path, boolean print) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var platform = loadPlatform(stream, print);
             var start = Instant.now();
-//            System.out.println("Tilting platform North...");
+//            LOGGER.info(String.format("Tilting platform North...");
             platform.tilt(Direction.NORTH, print);
-//            System.out.println("Calculating load on the North support beams...");
+//            LOGGER.info(String.format("Calculating load on the North support beams...");
             var totalLoad = platform.calculateLoad(Direction.NORTH, print);
             var end = Instant.now();
-            System.out.println("Total load on the North support beams is: " + totalLoad + " in " +
+            LOGGER.info(String.format("Total load on the North support beams is: " + totalLoad + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -490,16 +490,16 @@ public class Day14 {
     private static void part2(Path path, boolean print) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var platform = loadPlatform(stream, print);
             var spinCount = 1_000_000_000;
             var start = Instant.now();
-//            System.out.println("Performing " + spinCount + " spin cycle(s)...");
+//            LOGGER.info(String.format("Performing " + spinCount + " spin cycle(s)...");
             platform.spinCycle(spinCount, print);
-//            System.out.println("Calculating load on the North support beams...");
+//            LOGGER.info(String.format("Calculating load on the North support beams...");
             var totalLoad = platform.calculateLoad(Direction.NORTH, print);
             var end = Instant.now();
-            System.out.println("Total load on the North support beams is: " + totalLoad + " in " +
+            LOGGER.info(String.format("Total load on the North support beams is: " + totalLoad + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -510,8 +510,8 @@ public class Day14 {
         var platform = Platform.parse(stream);
 
         if (print) {
-            System.out.println("Platform contains " + platform.tiles().size() + " tiles!");
-            System.out.println(platform);
+            LOGGER.info(String.format("Platform contains " + platform.tiles().size() + " tiles!");
+            LOGGER.info(String.format(platform);
         }
         return platform;
     }

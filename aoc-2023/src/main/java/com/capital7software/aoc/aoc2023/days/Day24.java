@@ -229,7 +229,7 @@ public class Day24 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var start = Instant.now();
             var hailStorm = HailStorm.build(stream);
             var count = hailStorm.testHailStones(200_000_000_000_000L, 400_000_000_000_000L)
@@ -237,7 +237,7 @@ public class Day24 {
                     .filter(HailStoneTestResult::passes)
                     .count();
             var end = Instant.now();
-            System.out.println("There are : " + count + " hailstones in this storm that pass the test in " +
+            LOGGER.info(String.format("There are : " + count + " hailstones in this storm that pass the test in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -247,13 +247,13 @@ public class Day24 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var start = Instant.now();
             var hailStorm = HailStorm.build(stream);
             var rock = hailStorm.testFindRock();
             var end = Instant.now();
-            System.out.println("The Rock: " + rock );
-            System.out.println(" was found and the sum of its parts is: " +
+            LOGGER.info(String.format("The Rock: " + rock );
+            LOGGER.info(String.format(" was found and the sum of its parts is: " +
                     BigDecimal.valueOf(rock.sumAtTime0()).toPlainString() + " in "
                     + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {

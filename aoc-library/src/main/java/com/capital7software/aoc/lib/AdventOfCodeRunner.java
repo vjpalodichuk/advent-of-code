@@ -9,11 +9,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Utility class for running Advent of Code Solutions.
  */
 public abstract class AdventOfCodeRunner {
+    private static final Logger LOGGER = Logger.getLogger(AdventOfCodeRunner.class.getName());
+
     private static Path path;
 
     /**
@@ -27,10 +30,10 @@ public abstract class AdventOfCodeRunner {
      * Prints out usage information is invalid command line args are passed.
      */
     protected static void printUsage() {
-        System.out.println("The first required argument is the name of the puzzle class to run.");
-        System.out.println("Only the class name (and not the package) should be provided.");
-        System.out.println("The second optional argument is the full path to a file to load as the input.");
-        System.out.println("If you do not pass a file name the default input file will be used for that puzzle.");
+        LOGGER.info("The first required argument is the name of the puzzle class to run.");
+        LOGGER.info("Only the class name (and not the package) should be provided.");
+        LOGGER.info("The second optional argument is the full path to a file to load as the input.");
+        LOGGER.info("If you do not pass a file name the default input file will be used for that puzzle.");
     }
 
     /**
@@ -59,7 +62,7 @@ public abstract class AdventOfCodeRunner {
                     String inputFilename;
                     if (args.length > 1 && args[1] != null && !args[1].trim().isBlank()) {
                         if (!Files.exists(Paths.get(args[1].trim()))) {
-                            System.out.println(args[1] + " cannot be found!");
+                            LOGGER.info(String.format("%s cannot be found!", args[1]));
                             printUsage();
                         } else {
                             inputFilename = args[1].trim();
@@ -73,14 +76,14 @@ public abstract class AdventOfCodeRunner {
                         path = Paths.get(url.toURI());
                     }
 
-                    System.out.println("Loading input data from: " + path);
+                    LOGGER.info(String.format("Loading input data from: %s", path));
                     List<String> inputLines = Files.readAllLines(path);
 
                     // Part 1
-                    System.out.println("Part 1: Start!");
+                    LOGGER.info("Part 1: Start!");
                     solution.runPart1(inputLines);
                     // Part 2
-                    System.out.println("Part 2: Start!");
+                    LOGGER.info("Part 2: Start!");
                     solution.runPart2(inputLines);
                 } catch (URISyntaxException | IOException e) {
                     throw new RuntimeException(e);

@@ -1,12 +1,13 @@
 package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
-import com.capital7software.aoc.lib.analysis.AuntSueIdentifier.AuntSue;
 import com.capital7software.aoc.lib.analysis.AuntSueIdentifier;
+import com.capital7software.aoc.lib.analysis.AuntSueIdentifier.AuntSue;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 /**
  * --- Day 16: Aunt Sue ---
@@ -63,9 +64,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * What is the number of the real Aunt Sue?
  * <p>
  * Your puzzle answer was 241.
- *
  */
 public class Day16 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day16.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -83,8 +85,8 @@ public class Day16 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = identifyAuntSue(input);
         var end = Instant.now();
-        System.out.printf("The number of the Sue that got me the gift is: %d%n", max);
-        printTiming(start, end);
+        LOGGER.info(String.format("The number of the Sue that got me the gift is: %d%n", max));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -92,8 +94,8 @@ public class Day16 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = identifyRealAuntSue(input);
         var end = Instant.now();
-        System.out.printf("The number of the real Sue that got me the gift is: %d%n", max);
-        printTiming(start, end);
+        LOGGER.info(String.format("The number of the real Sue that got me the gift is: %d%n", max));
+        logTimings(LOGGER, start, end);
     }
 
     /**
@@ -104,7 +106,19 @@ public class Day16 implements AdventOfCodeSolution {
      */
     public long identifyAuntSue(List<String> input) {
         var identifier = AuntSueIdentifier.parse(input);
-        var target = new AuntSue(0, 3, 7, 2, 3, 0, 0, 5, 3, 2, 1);
+        var target = new AuntSue(
+                0,
+                3,
+                7,
+                2,
+                3,
+                0,
+                0,
+                5,
+                3,
+                2,
+                1
+        );
 
         var suspects = identifier.identifySoftSuspects(target);
         AtomicInteger answer = new AtomicInteger(0);
@@ -122,7 +136,19 @@ public class Day16 implements AdventOfCodeSolution {
      */
     public long identifyRealAuntSue(List<String> input) {
         var identifier = AuntSueIdentifier.parse(input);
-        var target = new AuntSue(0, 3, 7, 2, 3, 0, 0, 5, 3, 2, 1);
+        var target = new AuntSue(
+                0,
+                3,
+                7,
+                2,
+                3,
+                0,
+                0,
+                5,
+                3,
+                2,
+                1
+        );
 
         var suspects = identifier.identifyHardSuspects(target);
         AtomicInteger answer = new AtomicInteger(0);

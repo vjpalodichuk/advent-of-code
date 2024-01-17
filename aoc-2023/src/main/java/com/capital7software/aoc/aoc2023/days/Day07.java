@@ -1,366 +1,178 @@
 package com.capital7software.aoc.aoc2023.days;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-public class Day07 {
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.math.CamelCards;
 
-    public enum Card {
-        ACE('A', 13),
-        KING('K', 12),
-        QUEEN('Q', 11),
-        JACK('J', 10),
-        TEN('T', 9),
-        NINE('9', 8),
-        EIGHT('8', 7),
-        SEVEN('7', 6),
-        SIX('6', 5),
-        FIVE('5', 4),
-        FOUR('4', 3),
-        THREE('3', 2),
-        TWO('2', 1),
-        JOKER('J', 0);
+import java.time.Instant;
+import java.util.List;
+import java.util.logging.Logger;
 
-        private final char label;
-        private final int value;
+/**
+ * --- Day 7: Camel Cards ---<br>
+ * Your all-expenses-paid trip turns out to be a one-way, five-minute ride in an airship. (At least
+ * it's a cool airship!) It drops you off at the edge of a vast desert and descends back to Island Island.
+ * <p><br>
+ * "Did you bring the parts?"
+ * <p><br>
+ * You turn around to see an Elf completely covered in white clothing, wearing goggles, and riding a large camel.
+ * <p><br>
+ * "Did you bring the parts?" she asks again, louder this time. You aren't sure what parts
+ * she's looking for; you're here to figure out why the sand stopped.
+ * <p><br>
+ * "The parts! For the sand, yes! Come with me; I will show you." She beckons you onto the camel.
+ * <p><br>
+ * After riding a bit across the sands of Desert Island, you can see what look like very large
+ * rocks covering half of the horizon. The Elf explains that the rocks are all along the part
+ * of Desert Island that is directly above Island Island, making it hard to even get there.
+ * Normally, they use big machines to move the rocks and filter the sand, but the machines have
+ * broken down because Desert Island recently stopped receiving the parts they need to fix the machines.
+ * <p><br>
+ * You've already assumed it'll be your job to figure out why the parts stopped when she asks
+ * if you can help. You agree automatically.
+ * <p><br>
+ * Because the journey will take a few days, she offers to teach you the game of Camel Cards.
+ * Camel Cards is sort of similar to poker except it's designed to be easier to play while riding a camel.
+ * <p><br>
+ * In Camel Cards, you get a list of hands, and your goal is to order them based on the
+ * strength of each hand. A hand consists of five cards labeled one of A, K, Q, J, T, 9, 8, 7, 6, 5, 4, 3, or 2.
+ * The relative strength of each card follows this order, where A is the highest and 2 is the lowest.
+ * <p><br>
+ * Every hand is exactly one type. From strongest to weakest, they are:<br>
+ * <p><br>
+ * <b>Five of a kind</b>, where all five cards have the same label: AAAAA<br>
+ * <b>Four of a kind</b>, where four cards have the same label and one card has a
+ * different label: AA8AA<br>
+ * <b>Full house</b>, where three cards have the same label, and the remaining two
+ * cards share a different label: 23332<br>
+ * <b>Three of a kind</b>, where three cards have the same label, and the remaining
+ * two cards are each different from any other card in the hand: TTT98<br>
+ * <b>Two pair</b>, where two cards share one label, two other cards share a second
+ * label, and the remaining card has a third label: 23432<br>
+ * <b>One pair</b>, where two cards share one label, and the other three cards have
+ * a different label from the pair and each other: A23A4<br>
+ * <b>High card</b>, where all cards' labels are distinct: 23456<br>
+ * <p><br>
+ * Hands are primarily ordered based on type; for example, every full house is stronger than any three of a kind.
+ * <p><br>
+ * If two hands have the same type, a second ordering rule takes effect. Start by comparing
+ * the first card in each hand. If these cards are different, the hand with the stronger
+ * first card is considered stronger. If the first card in each hand have the same label,
+ * however, then move on to considering the second card in each hand. If they differ, the
+ * hand with the higher second card wins; otherwise, continue with the third card in each
+ * hand, then the fourth, then the fifth.
+ * <p><br>
+ * So, 33332 and 2AAAA are both four of a kind hands, but 33332 is stronger because its
+ * first card is stronger. Similarly, 77888 and 77788 are both a full house, but 77888
+ * is stronger because its third card is stronger (and both hands have the same first and second card).
+ * <p><br>
+ * To play Camel Cards, you are given a list of hands and their corresponding bid (your puzzle input). For example:
+ * <p><br>
+ * <code>
+ * 32T3K 765<br>
+ * T55J5 684<br>
+ * KK677 28<br>
+ * KTJJT 220<br>
+ * QQQJA 483<br>
+ * </code>
+ * <p><br>
+ * This example shows five hands; each hand is followed by its bid amount. Each hand wins an
+ * amount equal to its bid multiplied by its rank, where the weakest hand gets rank 1, the
+ * second-weakest hand gets rank 2, and so on up to the strongest hand. Because there are
+ * five hands in this example, the strongest hand will have rank 5 and its bid will be multiplied by 5.
+ * <p><br>
+ * So, the first step is to put the hands in order of strength:
+ * <p><br>
+ * 32T3K is the only one pair and the other hands are all a stronger type, so it gets rank 1.<br>
+ * KK677 and KTJJT are both two pair. Their first cards both have the same label, but the second
+ * card of KK677 is stronger (K vs T), so KTJJT gets rank 2 and KK677 gets rank 3.<br>
+ * T55J5 and QQQJA are both three of a kind. QQQJA has a stronger first card, so it gets
+ * rank 5 and T55J5 gets rank 4.<br>
+ * Now, you can determine the total winnings of this set of hands by adding up the result
+ * of multiplying each hand's bid with its rank (765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5).
+ * So the total winnings in this example are 6440.<br>
+ * <p><br>
+ * Find the rank of every hand in your set. What are the total winnings?
+ * <p><br>
+ * Your puzzle answer was 251287184.
+ * <p><br>
+ * --- Part Two ---
+ * To make things a little more interesting, the Elf introduces one additional rule. Now, J cards
+ * are jokers - wildcards that can act like whatever card would make the hand the strongest type possible.
+ * <p><br>
+ * To balance this, J cards are now the weakest individual cards, weaker even than 2. The
+ * other cards stay in the same order: A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J.
+ * <p><br>
+ * J cards can pretend to be whatever card is best for the purpose of determining hand type;
+ * for example, QJJQ2 is now considered four of a kind. However, for the purpose of breaking
+ * ties between two hands of the same type, J is always treated as J, not the card it's pretending
+ * to be: JKKK2 is weaker than QQQQ2 because J is weaker than Q.
+ * <p><br>
+ * Now, the above example goes very differently:
+ * <p><br>
+ * <code>
+ * 32T3K 765<br>
+ * T55J5 684<br>
+ * KK677 28<br>
+ * KTJJT 220<br>
+ * QQQJA 483<br>
+ * </code>
+ * 32T3K is still the only one pair; it doesn't contain any jokers, so its strength doesn't increase.<br>
+ * KK677 is now the only two pair, making it the second-weakest hand.<br>
+ * T55J5, KTJJT, and QQQJA are now all four of a kind! T55J5 gets rank 3, QQQJA gets rank 4,
+ * and KTJJT gets rank 5.<br>
+ * <p><br>
+ * With the new joker rule, the total winnings in this example are 5905.<br>
+ * <p><br>
+ * Using the new joker rule, find the rank of every hand in your set. What are the new total winnings?
+ * <p><br>
+ * Your puzzle answer was 250757288.
+ *
+ */
+public class Day07 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day07.class.getName());
 
-        Card(char label, int value) {
-            this.label = label;
-            this.value = value;
-        }
+    /**
+     * Instantiates the solution instance.
+     */
+    public Day07() {
 
-        public char getLabel() {
-            return label;
-        }
-
-        public int getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return "Card{" +
-                    "name=" + name() +
-                    ", label=" + label +
-                    ", value=" + value +
-                    '}';
-        }
-
-        public static Card fromLabel(char label) {
-            return Arrays
-                    .stream(values())
-                    .filter(it -> it.label == label)
-                    .findFirst()
-                    .orElse(null);
-        }
-
-        public static Card fromLabel(char label, boolean joker) {
-            if (joker) {
-                return Arrays
-                        .stream(values())
-                        .filter(it -> !it.name().equals("JACK"))
-                        .filter(it -> it.label == label)
-                        .findFirst()
-                        .orElse(null);
-            }
-            return fromLabel(label);
-        }
     }
 
-    public enum HandType {
-        FIVE_OF_A_KIND(7) {
-            @Override
-            public boolean isHandType(Map<Integer, Integer> frequencyMap) {
-                return frequencyMap.containsKey(5);
-            }
-        },
-        FOUR_OF_A_KIND(6) {
-            @Override
-            public boolean isHandType(Map<Integer, Integer> frequencyMap) {
-                return frequencyMap.containsKey(4);
-            }
-        },
-        FULL_HOUSE(5) {
-            @Override
-            public boolean isHandType(Map<Integer, Integer> frequencyMap) {
-                return frequencyMap.containsKey(3) && frequencyMap.containsKey(2);
-            }
-        },
-        THREE_OF_A_KIND(4) {
-            @Override
-            public boolean isHandType(Map<Integer, Integer> frequencyMap) {
-                return frequencyMap.containsKey(3) && !frequencyMap.containsKey(2);
-            }
-        },
-        TWO_PAIR(3) {
-            @Override
-            public boolean isHandType(Map<Integer, Integer> frequencyMap) {
-                return frequencyMap.getOrDefault(2, 0) == 2;
-            }
-        },
-        ONE_PAIR(2) {
-            @Override
-            public boolean isHandType(Map<Integer, Integer> frequencyMap) {
-                return frequencyMap.getOrDefault(2, 0) == 1 && frequencyMap.getOrDefault(3, 0) == 0;
-            }
-        },
-        HIGH_CARD(1) {
-            @Override
-            public boolean isHandType(Map<Integer, Integer> frequencyMap) {
-                return frequencyMap.getOrDefault(1, 0) == 5;
-            }
-        };
-
-        private final int strength;
-
-        HandType(int strength) {
-            this.strength = strength;
-        }
-
-        public static HandType calculateHandType(List<Card> cards) {
-            return calculateHandType(cards, false);
-        }
-
-        public static HandType calculateHandType(List<Card> cards, boolean joker) {
-            var cardMap = buildCardMap(cards);
-
-            if (joker && cardMap.containsKey(Card.JOKER)) {
-                // If we are playing with Jokers, then we remove the Jokers from the map and add their count to
-                // the highest frequency card in the map!
-                var jokerCount = cardMap.get(Card.JOKER);
-
-                cardMap.remove(Card.JOKER);
-                Card maxCard = Card.JOKER;
-                int maxCount = 0;
-
-                for (var card : cardMap.keySet()) {
-                    var count = cardMap.get(card);
-                    if (count > maxCount || (count == maxCount && card.getValue() > maxCard.getValue())) {
-                        maxCount = count;
-                        maxCard = card;
-                    }
-                }
-
-                cardMap.put(maxCard, maxCount + jokerCount);
-            }
-
-            var map = buildFrequencyMap(cardMap);
-            for (var value : values()) {
-                if (value.isHandType(map)) {
-                    return value;
-                }
-            }
-
-            return null;
-        }
-
-        public static Map<Card, Integer> buildCardMap(List<Card> cards) {
-            return cards.stream()
-                    .distinct()
-                    .collect(Collectors.toMap(
-                            Function.identity(),
-                            it -> Collections.frequency(cards, it)
-                    ));
-        }
-
-        public static Map<Integer, Integer> buildFrequencyMap(Map<Card, Integer> cardMap) {
-            var frequencies = cardMap.values();
-            return frequencies.stream()
-                    .distinct()
-                    .collect(Collectors.toMap(
-                            Function.identity(),
-                            it -> Collections.frequency(frequencies, it)
-                    ));
-        }
-
-        public boolean isHandType(Map<Integer, Integer> frequencyMap) { return false; }
-
-        public int getStrength() {
-            return strength;
-        }
-
-        @Override
-        public String toString() {
-            return "HandType{" +
-                    "name=" + name() +
-                    ", strength=" + strength +
-                    '}';
-        }
+    @Override
+    public String getDefaultInputFilename() {
+        return "inputs/input_day_07-01.txt";
     }
 
-    private static class Hand implements Comparable<Hand> {
-        private final List<Card> cards;
-        private final int bid;
+    @Override
+    public void runPart1(List<String> input) {
+        var start = Instant.now();
+        var answer = calculateTotalWinnings(input, false);
+        var end = Instant.now();
 
-        private final HandType handType;
-
-        private final boolean joker;
-
-        public Hand(List<Card> cards, int bid) {
-            this(cards, bid, false);
-        }
-
-        public Hand(List<Card> cards, int bid, boolean joker) {
-            this.cards = cards;
-            this.bid = bid;
-            this.joker = joker;
-            this.handType = HandType.calculateHandType(this.cards, this.joker);
-        }
-
-        public List<Card> getCards() {
-            return cards;
-        }
-
-        public int getBid() {
-            return bid;
-        }
-
-        public boolean getJoker() {
-            return joker;
-        }
-
-        public HandType getHandType() {
-            return handType;
-        }
-
-        @Override
-        public int compareTo(Hand o) {
-            var result = 0;
-
-            if (handType.getStrength() > o.handType.getStrength()) {
-                result = 1;
-            } else if (handType.getStrength() < o.handType.getStrength()) {
-                result = -1;
-            } else {
-                // Must compare the individual cards!
-                for (int i = 0; i < cards.size(); i++) {
-                    if (cards.get(i).getValue() > o.cards.get(i).getValue()) {
-                        result = 1;
-                        break;
-                    } else if (cards.get(i).getValue() < o.cards.get(i).getValue()) {
-                        result = -1;
-                        break;
-                    }
-                }
-            }
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "Hand{" +
-                    "cards=" + cards +
-                    ", bid=" + bid +
-                    ", joker=" + joker +
-                    ", handType=" + handType +
-                    '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Hand hand = (Hand) o;
-            return getBid() == hand.getBid() && getJoker() == hand.getJoker() && Objects.equals(getCards(), hand.getCards()) && getHandType() == hand.getHandType();
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(getCards(), getBid(), getJoker(), getHandType());
-        }
-
-        public static Hand from(String handWithBid) {
-            return from(handWithBid, false);
-        }
-
-        public static Hand from(String handWithBid, boolean joker) {
-            if (handWithBid == null || handWithBid.isBlank()) {
-                throw new RuntimeException("Invalid handWithBid String: " + handWithBid);
-            }
-
-            var split = handWithBid.split(VALUE_SPLIT);
-
-            return new Hand(parseCards(split[0], joker), Integer.parseInt(split[1]), joker);
-        }
-
-        public static List<Card> parseCards(String cards, boolean joker) {
-            if (joker) {
-                return cards
-                        .chars()
-                        .mapToObj(it -> Card.fromLabel((char)it, joker))
-                        .filter(Objects::nonNull)
-                        .toList();
-            }
-            return cards
-                    .chars()
-                    .mapToObj(it -> Card.fromLabel((char)it))
-                    .filter(Objects::nonNull)
-                    .toList();
-        }
+        LOGGER.info(String.format("The total winnings using Jacks is: %d%n", answer));
+        logTimings(LOGGER, start, end);
     }
 
-    private static class CamelCards {
-        private final Queue<Hand> hands = new PriorityQueue<>();
+    @Override
+    public void runPart2(List<String> input) {
+        var start = Instant.now();
+        var answer = calculateTotalWinnings(input, true);
+        var end = Instant.now();
 
-        public void addHand(Hand hand) {
-            hands.add(hand);
-        }
-
-        public long calculateTotalWinnings() {
-            long sum = 0;
-            int currentRank = 1;
-            while (hands.peek() != null) {
-                var hand = hands.poll();
-                sum += ((long) currentRank * hand.getBid());
-                currentRank++;
-            }
-            return sum;
-        }
-
-        public int getHandCount() {
-            return hands.size();
-        }
+        LOGGER.info(String.format("The total winnings using Jokers is: %d%n", answer));
+        logTimings(LOGGER, start, end);
     }
 
-    private static final String inputFilename = "inputs/input_day_07-01.txt";
-    private static final String VALUE_SPLIT = " ";
-
-    public static void main(String[] args) throws URISyntaxException {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        var url = classloader.getResource(inputFilename);
-        assert url != null;
-        var path = Paths.get(url.toURI());
-        var camelCards = new CamelCards();
-
-        try (var stream = Files.lines(path)) {
-            stream.forEach(it -> {
-                camelCards.addHand(Hand.from(it));
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println("Played with a total of " + camelCards.getHandCount() + " hands");
-        System.out.println("Total winnings: " + camelCards.calculateTotalWinnings());
-
-        // Part 2
-        var camelCardsWithJoker = new CamelCards();
-
-        try (var stream = Files.lines(path)) {
-            stream.forEach(it -> {
-                camelCardsWithJoker.addHand(Hand.from(it, true));
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println("Played with a total of " + camelCardsWithJoker.getHandCount() + " hands");
-        System.out.println("Total winnings: " + camelCardsWithJoker.calculateTotalWinnings());
-
+    /**
+     * Calculates and returns the total winnings of the Hands specified in the List of Strings.
+     * If joker is true, then Jacks are replaced with Jokers.
+     *
+     * @param input The List of Strings to parse.
+     * @param joker If true, then Jacks are replaced with Jokers.
+     * @return The total winnings of the Hands in this set.
+     */
+    public long calculateTotalWinnings(List<String> input, boolean joker) {
+        var instance = CamelCards.buildCamelCards(input, joker);
+        return instance.calculateTotalWinnings();
     }
 }

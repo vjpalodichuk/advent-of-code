@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.string.JSONFun;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 12: JSAbacusFramework.io ---
@@ -39,9 +40,10 @@ import java.util.List;
  * [1,"red",5] has a sum of 6, because "red" in an array has no effect.
  * <p>
  * Your puzzle answer was 96852.
- *
  */
 public class Day12 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day12.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -60,8 +62,8 @@ public class Day12 implements AdventOfCodeSolution {
             var start = Instant.now();
             var sum = sumNumbersInString(line);
             var end = Instant.now();
-            System.out.printf("The sum of all numbers in the JSON string is: %d%n", sum);
-            printTiming(start, end);
+            LOGGER.info(String.format("The sum of all numbers in the JSON string is: %d%n", sum));
+            logTimings(LOGGER, start, end);
         }
     }
 
@@ -71,8 +73,8 @@ public class Day12 implements AdventOfCodeSolution {
             var start = Instant.now();
             var sum = sumNumbersInStringSkippingRedObjects(line);
             var end = Instant.now();
-            System.out.printf("The sum of all numbers in the JSON string skipping red objects is: %d%n", sum);
-            printTiming(start, end);
+            LOGGER.info(String.format("The sum of all numbers in the JSON string skipping red objects is: %d%n", sum));
+            logTimings(LOGGER, start, end);
         }
     }
 

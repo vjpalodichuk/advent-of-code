@@ -3,6 +3,7 @@ package com.capital7software.aoc.lib;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Interface that the AdventOfCodeRunner expects the Day classes
@@ -34,10 +35,11 @@ public interface AdventOfCodeSolution {
     /**
      * A helper method for printing out the timing of the solutions.
      *
+     * @param logger The Logger instance to use to log the messages.
      * @param start The Instant the solution was started.
      * @param end The Instant the solution finished.
      */
-    default void printTiming(Instant start, Instant end) {
-        System.out.printf("Calculated in %d ns%n", Duration.between(start, end).toNanos());
+    default void logTimings(Logger logger, Instant start, Instant end) {
+        logger.info(String.format("Calculated in %d ns%n", Duration.between(start, end).toNanos()));
     }
 }

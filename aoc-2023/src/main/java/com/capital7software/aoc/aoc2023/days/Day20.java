@@ -1,5 +1,7 @@
 package com.capital7software.aoc.aoc2023.days;
 
+import com.capital7software.aoc.lib.math.MathOperations;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -557,14 +559,14 @@ public class Day20 {
                     .stream()
                     .filter(it -> doneSources.contains(it.getKey()))
                     .map(Map.Entry::getValue)
-                    .map(it -> it.values().stream().reduce(Day08::leastCommonMultiple).orElse(0L))
+                    .map(it -> it.values().stream().reduce(MathOperations::lcm).orElse(0L))
                     .filter(it -> it > 0L)
                     .sorted()
                     .limit(requiredSouceCount)
                     .toList();
 
             if (lcms.size() > 1) {
-                result = lcms.stream().reduce(Day08::leastCommonMultiple).orElse(0L);
+                result = lcms.stream().reduce(MathOperations::lcm).orElse(0L);
             } else if (lcms.size() == 1){
                 result = lcms.get(0);
             }
@@ -645,13 +647,13 @@ public class Day20 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var headquarters = Headquarters.parse(stream);
             var start = Instant.now();
             headquarters.pushButton(1_000);
             var pulseProduct = headquarters.getLowPulseCount() * headquarters.getHighPulseCount();
             var end = Instant.now();
-            System.out.println("Product of pulse types sent: " + pulseProduct + " in " +
+            LOGGER.info(String.format("Product of pulse types sent: " + pulseProduct + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -661,12 +663,12 @@ public class Day20 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var headquarters = Headquarters.parse(stream);
             var start = Instant.now();
             var requiredPresses = headquarters.buttonPressesNeededToSendLowPulseToModule("rx", 1, 10_000);
             var end = Instant.now();
-            System.out.println("Number of button presses needed to activate rx module: " + requiredPresses + " in " +
+            LOGGER.info(String.format("Number of button presses needed to activate rx module: " + requiredPresses + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);

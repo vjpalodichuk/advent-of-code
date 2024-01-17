@@ -313,49 +313,49 @@ public class Day10 {
         var path = Paths.get(url.toURI());
         var maze = new ArrayList<List<MazeTile>>();
         try (var stream = Files.lines(path)) {
-            System.out.println("Loading pipe maze...");
+            LOGGER.info(String.format("Loading pipe maze...");
             loadMaze(stream, maze);
-            System.out.println("Done loading pipe maze!");
+            LOGGER.info(String.format("Done loading pipe maze!");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         // Part 1
-        System.out.println("Part 1: Start!");
-        System.out.println("Finding the starting tile");
+        LOGGER.info(String.format("Part 1: Start!");
+        LOGGER.info(String.format("Finding the starting tile");
         final var startTile = findStartingTile(maze);
-        System.out.println("Starting tile found at: " + startTile);
-        System.out.println("Determining starting tile's pipe...");
+        LOGGER.info(String.format("Starting tile found at: " + startTile);
+        LOGGER.info(String.format("Determining starting tile's pipe...");
         final var startPipeTile = determineStartingTileType(startTile, maze);
-        System.out.println("Is starting tile: " + startPipeTile.isStartTile());
-        System.out.println("Starting tile is: " + startPipeTile);
-        System.out.println("Updating maze with updated starting tile...");
+        LOGGER.info(String.format("Is starting tile: " + startPipeTile.isStartTile());
+        LOGGER.info(String.format("Starting tile is: " + startPipeTile);
+        LOGGER.info(String.format("Updating maze with updated starting tile...");
         maze.get(startPipeTile.getY()).set(startPipeTile.getX(), startPipeTile);
-        System.out.println("Maze has been updated.");
-        System.out.println(("Calculating distances using BFS..."));
+        LOGGER.info(String.format("Maze has been updated.");
+        LOGGER.info(String.format(("Calculating distances using BFS..."));
         final var bfsStart = Instant.now();
         final var distances = calculateDistancesBFS(startPipeTile, maze);
         final var bfsStop = Instant.now();
-        System.out.println("Maximum distance: " +
+        LOGGER.info(String.format("Maximum distance: " +
                 distances.values().stream().mapToInt(it -> it).max().orElse(0) + " in " +
                 Duration.between(bfsStart, bfsStop).toMillis() + " ms");
 
-        System.out.println(("Calculating distances using DFS..."));
+        LOGGER.info(String.format(("Calculating distances using DFS..."));
         final var dfsDistances = new HashMap<MazeTile, Integer>();
         final var dfsStart = Instant.now();
         calculateDistancesDFS(startPipeTile, 0, dfsDistances, maze);
         final var dfsStop = Instant.now();
-        System.out.println("Maximum distance: " +
+        LOGGER.info(String.format("Maximum distance: " +
                 (dfsDistances.values().stream().mapToInt(it -> it).max().orElse(0)) + " in " +
                 Duration.between(dfsStart, dfsStop).toMillis() + " ms");
 
         // Part 2
-        System.out.println("Part 2: Start!");
-        System.out.println(("Calculating the number of tiles inside the polygon formed by the loop..."));
+        LOGGER.info(String.format("Part 2: Start!");
+        LOGGER.info(String.format(("Calculating the number of tiles inside the polygon formed by the loop..."));
         final var polyStart = Instant.now();
         final var tilesInLoop = calculateTilesInLoop(distances, maze);
         final var polyStop = Instant.now();
-        System.out.println("Tiles enclosed in the loop: " + tilesInLoop + " in " +
+        LOGGER.info(String.format("Tiles enclosed in the loop: " + tilesInLoop + " in " +
                 Duration.between(polyStart, polyStop).toMillis() + " ms");
     }
 

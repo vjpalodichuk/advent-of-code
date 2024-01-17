@@ -332,12 +332,12 @@ public class Day18 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var lagoon = Lagoon.build(new Point2D(0, 0), stream);
             var start = Instant.now();
             var totalArea = lagoon.calculateArea();
             var end = Instant.now();
-            System.out.println("Total area: " + (long) totalArea + " in " +
+            LOGGER.info(String.format("Total area: " + (long) totalArea + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -347,12 +347,12 @@ public class Day18 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var lagoon = Lagoon.build(new Point2D(0, 0), stream, true);
             var start = Instant.now();
             var totalArea = lagoon.calculateArea();
             var end = Instant.now();
-            System.out.println("Total area: " + (long) totalArea + " in " +
+            LOGGER.info(String.format("Total area: " + (long) totalArea + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -361,7 +361,7 @@ public class Day18 {
 
     private static void part3() {
         // Part 3
-        System.out.println("Part 3: Start!");
+        LOGGER.info(String.format("Part 3: Start!");
         var line1 = new LineSegment(new Point2D(1, 1), new Point2D(1, 10));
         var line2 = new LineSegment(new Point2D(1, -2), new Point2D(1, 12));
         var line3 = new LineSegment(new Point2D(1, 2), new Point2D(1, 12));
@@ -369,41 +369,41 @@ public class Day18 {
         var line5 = new LineSegment(new Point2D(1.1, 0.5), new Point2D(1.1, 10.1));
         var line6 = new LineSegment(new Point2D(0.9, 0.5), new Point2D(0.9, 10.1));
 
-        System.out.println("Line 1: " + line1);
-        System.out.println("Line 2: " + line2);
-        System.out.println("Line 3: " + line3);
-        System.out.println("Line 4: " + line4);
-        System.out.println("Line 5: " + line5);
-        System.out.println("Line 6: " + line6);
+        LOGGER.info(String.format("Line 1: " + line1);
+        LOGGER.info(String.format("Line 2: " + line2);
+        LOGGER.info(String.format("Line 3: " + line3);
+        LOGGER.info(String.format("Line 4: " + line4);
+        LOGGER.info(String.format("Line 5: " + line5);
+        LOGGER.info(String.format("Line 6: " + line6);
 
         var start = Instant.now();
         var intersectionPoint = line1.intersect(line3);
         var end = Instant.now();
-        System.out.println("Test Condition 1: Line 1 and Line 3 intersect at point: " + intersectionPoint + " in " +
+        LOGGER.info(String.format("Test Condition 1: Line 1 and Line 3 intersect at point: " + intersectionPoint + " in " +
                 Duration.between(start, end).toNanos() + " ns");
 
         start = Instant.now();
         intersectionPoint = line1.intersect(line4);
         end = Instant.now();
-        System.out.println("Test Condition 2: Line 1 and Line 4 intersect at point: " + intersectionPoint + " in " +
+        LOGGER.info(String.format("Test Condition 2: Line 1 and Line 4 intersect at point: " + intersectionPoint + " in " +
                 Duration.between(start, end).toNanos() + " ns");
 
         start = Instant.now();
         intersectionPoint = line1.intersect(line2);
         end = Instant.now();
-        System.out.println("Test Condition 3: Line 1 and Line 2 intersect at point: " + intersectionPoint + " in " +
+        LOGGER.info(String.format("Test Condition 3: Line 1 and Line 2 intersect at point: " + intersectionPoint + " in " +
                 Duration.between(start, end).toNanos() + " ns");
 
         start = Instant.now();
         intersectionPoint = line1.intersect(line5);
         end = Instant.now();
-        System.out.println("Test Condition 4: Line 1 and Line 5 intersect at point: " + intersectionPoint + " in " +
+        LOGGER.info(String.format("Test Condition 4: Line 1 and Line 5 intersect at point: " + intersectionPoint + " in " +
                 Duration.between(start, end).toNanos() + " ns");
 
         start = Instant.now();
         intersectionPoint = line1.intersect(line6);
         end = Instant.now();
-        System.out.println("Test Condition 5: Line 1 and Line 6 intersect at point: " + intersectionPoint + " in " +
+        LOGGER.info(String.format("Test Condition 5: Line 1 and Line 6 intersect at point: " + intersectionPoint + " in " +
                 Duration.between(start, end).toNanos() + " ns");
     }
 }

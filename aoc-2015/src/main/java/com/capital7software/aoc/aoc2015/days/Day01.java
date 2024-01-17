@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.string.ApartmentBuilding;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 1: Not Quite Lisp ---<br>
@@ -54,9 +55,10 @@ import java.util.List;
  * What is the position of the character that causes Santa to first enter the basement?
  * <p><br>
  * Your puzzle answer was 1797.
- *
  */
 public class Day01 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day01.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -75,8 +77,8 @@ public class Day01 implements AdventOfCodeSolution {
         long floor = getFloor(input);
         var end = Instant.now();
 
-        System.out.printf("Santa is on the %d floor!%n", floor);
-        printTiming(start, end);
+        LOGGER.info(String.format("Santa is on the %d floor!%n", floor));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -85,8 +87,8 @@ public class Day01 implements AdventOfCodeSolution {
         long floor = getFirstBasementFloorPosition(input);
         var end = Instant.now();
 
-        System.out.printf("Position %d causes Santa to enter the basement for the first time!%n", floor);
-        printTiming(start, end);
+        LOGGER.info(String.format("Position %d causes Santa to enter the basement for the first time!%n", floor));
+        logTimings(LOGGER, start, end);
     }
 
     /**

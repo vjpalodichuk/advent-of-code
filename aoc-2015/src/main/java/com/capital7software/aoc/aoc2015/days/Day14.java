@@ -1,12 +1,13 @@
 package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
-import com.capital7software.aoc.lib.math.ReindeerOlympics;
 import com.capital7software.aoc.lib.graph.parser.Day14Parser;
+import com.capital7software.aoc.lib.math.ReindeerOlympics;
 
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 14: Reindeer Olympics ---
@@ -54,9 +55,10 @@ import java.util.List;
  * how many points does the winning reindeer have?
  * <p>
  * Your puzzle answer was 1256.
- *
  */
 public class Day14 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day14.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -74,8 +76,8 @@ public class Day14 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = whatDistanceHasTheWinnerTraveled(input, 2_503);
         var end = Instant.now();
-        System.out.printf("The distance traveled by the winning reindeer at 2,503 seconds is: %s%n", max);
-        printTiming(start, end);
+        LOGGER.info(String.format("The distance traveled by the winning reindeer at 2,503 seconds is: %s%n", max));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -83,8 +85,8 @@ public class Day14 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = howManyPointsDoesTheWinnerHave(input, 2_503);
         var end = Instant.now();
-        System.out.printf("The total points by the winning reindeer after 2,503 seconds is: %s%n", max);
-        printTiming(start, end);
+        LOGGER.info(String.format("The total points by the winning reindeer after 2,503 seconds is: %s%n", max));
+        logTimings(LOGGER, start, end);
     }
 
     /**
@@ -92,7 +94,7 @@ public class Day14 implements AdventOfCodeSolution {
      * winning reindeer has after the specified time has elapsed in the race.
      *
      * @param input The horses and their stats, which is the Graph input.
-     * @param time The amount of time to run the race for.
+     * @param time  The amount of time to run the race for.
      * @return The number of points the winning reindeer has after the specified time.
      */
     public double howManyPointsDoesTheWinnerHave(List<String> input, long time) {
@@ -115,7 +117,7 @@ public class Day14 implements AdventOfCodeSolution {
      * winning reindeer traveled has after the specified time has elapsed in the race.
      *
      * @param input The horses and their stats, which is the Graph input.
-     * @param time The amount of time to run the race for.
+     * @param time  The amount of time to run the race for.
      * @return The distance the winning reindeer has traveled after the specified time.
      */
     public double whatDistanceHasTheWinnerTraveled(List<String> input, long time) {

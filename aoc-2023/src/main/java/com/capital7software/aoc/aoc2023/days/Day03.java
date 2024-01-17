@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.analysis.GearRatios;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 3: Gear Ratios ---<br>
@@ -96,6 +97,8 @@ import java.util.List;
  *
  */
 public class Day03 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day03.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -114,8 +117,8 @@ public class Day03 implements AdventOfCodeSolution {
         var sum = getSumOfAllPartNumbersInSchematic(input);
         var end = Instant.now();
 
-        System.out.printf("The sum of all part numbers in the schematic is: %d%n", sum);
-        printTiming(start, end);
+        LOGGER.info(String.format("The sum of all part numbers in the schematic is: %d%n", sum));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -124,8 +127,8 @@ public class Day03 implements AdventOfCodeSolution {
         var sum = getSumOfAllGearRatiosInSchematic(input);
         var end = Instant.now();
 
-        System.out.printf("The sum of all gear ratios in the schematic is: %d%n", sum);
-        printTiming(start, end);
+        LOGGER.info(String.format("The sum of all gear ratios in the schematic is: %d%n", sum));
+        logTimings(LOGGER, start, end);
     }
 
     /**

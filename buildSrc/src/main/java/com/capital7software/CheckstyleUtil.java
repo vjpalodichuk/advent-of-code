@@ -15,6 +15,7 @@ public abstract class CheckstyleUtil {
         InputStream in = CheckstyleUtil.class.getResourceAsStream(resourcePath);
 
         StringBuilder sb = new StringBuilder();
+        assert in != null;
         try (Reader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
             int c;
             while ((c = reader.read()) != -1) {

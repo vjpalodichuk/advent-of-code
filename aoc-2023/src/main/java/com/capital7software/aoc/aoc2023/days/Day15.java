@@ -178,12 +178,12 @@ public class Day15 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var strings = HashString.parse(stream);
             var start = Instant.now();
             var sum = strings.stream().mapToInt(HashString::hashAscii).sum();
             var end = Instant.now();
-            System.out.println("Total sum of ASCII initialization sequence hashes: " + sum + " in " +
+            LOGGER.info(String.format("Total sum of ASCII initialization sequence hashes: " + sum + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -193,12 +193,12 @@ public class Day15 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var start = Instant.now();
             var library = LensLibrary.parse(stream);
             var focusingPower = library.focusingPower();
             var end = Instant.now();
-            System.out.println("Total focusing power of the library is: " + focusingPower + " in " +
+            LOGGER.info(String.format("Total focusing power of the library is: " + focusingPower + " in " +
                     Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.graph.constaint.CookieRecipe;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 15: Science for Hungry People ---
@@ -76,9 +77,10 @@ import java.util.List;
  * cookie you can make with a calorie total of 500?
  * <p>
  * Your puzzle answer was 117936.
- *
  */
 public class Day15 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day15.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -96,8 +98,8 @@ public class Day15 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = whatIsTheTotalScoreOfTheHighestScoringCookie(input, CookieRecipe.MAX_ITERATIONS);
         var end = Instant.now();
-        System.out.printf("Total score of the highest scoring cookie is: %d%n", max);
-        printTiming(start, end);
+        LOGGER.info(String.format("Total score of the highest scoring cookie is: %d%n", max));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -105,15 +107,15 @@ public class Day15 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(input, CookieRecipe.MAX_ITERATIONS);
         var end = Instant.now();
-        System.out.printf("Total score of the highest scoring calorie restricted cookie is: %d%n", max);
-        printTiming(start, end);
+        LOGGER.info(String.format("Total score of the highest scoring calorie restricted cookie is: %d%n", max));
+        logTimings(LOGGER, start, end);
     }
 
     /**
      * The CookieRecipe uses the Solver to determine the best mix of ingredients to get the
      * highest score. Returns the total score of the highest scoring cookie.
      *
-     * @param input The available ingredients for the recipe.
+     * @param input      The available ingredients for the recipe.
      * @param iterations How many iterations to let the Solver run to find the best mix.
      * @return The total score of the highest scoring cookie.
      */
@@ -129,7 +131,7 @@ public class Day15 implements AdventOfCodeSolution {
      * The CookieRecipe uses the Solver to determine the best mix of ingredients to get the
      * highest score for a 500 calorie cookie. Returns the total score of the highest scoring 500 calorie cookie.
      *
-     * @param input The available ingredients for the recipe.
+     * @param input      The available ingredients for the recipe.
      * @param iterations How many iterations to let the Solver run to find the best mix.
      * @return The total score of the highest scoring 500 calorie cookie.
      */

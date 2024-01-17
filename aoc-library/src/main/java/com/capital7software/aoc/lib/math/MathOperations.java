@@ -35,17 +35,27 @@ public class MathOperations {
      * @throws IllegalArgumentException If first and second are not of a supported type.
      */
     public static <T extends Number & Comparable<T>> @NotNull T add(@NotNull T first, @NotNull T second) {
-        T result = switch (first) {
-            case Integer a when second instanceof Integer b -> (T) ((Integer) (a + b));
-            case Long a when second instanceof Long b -> (T) ((Long) (a + b));
-            case Double a when second instanceof Double b -> (T) ((Double) (a + b));
-            case Float a when second instanceof Float b -> (T) ((Float) (a + b));
-            case BigInteger a when second instanceof BigInteger b -> (T) a.add(b);
-            case BigDecimal a when second instanceof BigDecimal b -> (T) a.add(b);
-            case AtomicInteger a when second instanceof AtomicInteger b -> (T) (new AtomicInteger(a.get() + b.get()));
-            case AtomicLong a when second instanceof AtomicLong b -> (T) (new AtomicLong(a.get() + b.get()));
-            default -> throw new IllegalArgumentException("first and second are of an unsupported type!");
-        };
+        T result;
+
+        if (first instanceof Integer a && second instanceof Integer b) {
+            result = (T) ((Integer) (a + b));
+        } else if (first instanceof Long a && second instanceof Long b) {
+            result = (T) ((Long) (a + b));
+        } else if (first instanceof Double a && second instanceof Double b) {
+            result = (T) ((Double) (a + b));
+        } else if (first instanceof Float a && second instanceof Float b) {
+            result = (T) ((Float) (a + b));
+        } else if (first instanceof BigInteger a && second instanceof BigInteger b) {
+            result = (T) a.add(b);
+        } else if (first instanceof BigDecimal a && second instanceof BigDecimal b) {
+            result = (T) a.add(b);
+        } else if (first instanceof AtomicInteger a && second instanceof AtomicInteger b) {
+            result = (T) (new AtomicInteger(a.get() + b.get()));
+        } else if (first instanceof AtomicLong a && second instanceof AtomicLong b) {
+            result = (T) (new AtomicLong(a.get() + b.get()));
+        } else {
+            throw new IllegalArgumentException("first and second are of an unsupported type!");
+        }
 
         return result;
     }
@@ -203,4 +213,81 @@ public class MathOperations {
         return result;
     }
 
+    /**
+     * Calculates and returns the Greatest Common Divisor of two generics of the same type and
+     * returns the result.<br>
+     * The general formula is: <br><br>
+     * if (first == 0)
+     *    return second
+     * else
+     *    gcd(second mod first, first)<br><br>
+     * <b>Please note that for BigDecimal the result may be negative.</b>
+     *
+     * @param first  The first Number.
+     * @param second The second Number.
+     * @param <T>    The type of the parameters. See the class comments on
+     *               supported types.
+     * @return The Greatest Common Divisor.
+     * @throws IllegalArgumentException If first and second are not of a supported type.
+     */
+    public static <T extends Number & Comparable<T>> @NotNull T gcd(@NotNull T first, @NotNull T second) {
+        if (first instanceof Integer a && second instanceof Integer) {
+            if (a == 0) {
+                return second;
+            }
+            return gcd(mod(second, first), first);
+        } else if (first instanceof Long a && second instanceof Long) {
+            if (a == 0L) {
+                return second;
+            }
+            return gcd(mod(second, first), first);
+        } else if (first instanceof Double a && second instanceof Double) {
+            if (a == 0) {
+                return second;
+            }
+            return gcd(mod(second, first), first);
+        } else if (first instanceof Float a && second instanceof Float) {
+            if (a == 0) {
+                return second;
+            }
+            return gcd(mod(second, first), first);
+        } else if (first instanceof BigInteger a && second instanceof BigInteger b) {
+            return (T) a.gcd(b);
+        } else if (first instanceof BigDecimal a && second instanceof BigDecimal) {
+            if (a.equals(BigDecimal.ZERO)) {
+                return second;
+            }
+            return gcd(mod(second, first), first);
+        } else if (first instanceof AtomicInteger a && second instanceof AtomicInteger) {
+            if (a.get() == 0) {
+                return second;
+            }
+            return gcd(mod(second, first), first);
+        } else if (first instanceof AtomicLong a && second instanceof AtomicLong) {
+            if (a.get() == 0L) {
+                return second;
+            }
+            return gcd(mod(second, first), first);
+        } else {
+            throw new IllegalArgumentException("first and second are of an unsupported type!");
+        }
+    }
+
+    /**
+     * Calculates and returns the Least Common Multiple of two generics of the same type and
+     * returns the result.<br>
+     * The general formula is: <br><br>
+     * (first * second) / gcd(first, second)<br><br>
+     * <b>Please note that for BigDecimal the result may be negative.</b>
+     *
+     * @param first  The first Number.
+     * @param second The second Number.
+     * @param <T>    The type of the parameters. See the class comments on
+     *               supported types.
+     * @return The Least Common Multiple.
+     * @throws IllegalArgumentException If first and second are not of a supported type.
+     */
+    public static <T extends Number & Comparable<T>> @NotNull T lcm(@NotNull T first, @NotNull T second) {
+        return divide(multiply(first, second), gcd(first, second));
+    }
 }

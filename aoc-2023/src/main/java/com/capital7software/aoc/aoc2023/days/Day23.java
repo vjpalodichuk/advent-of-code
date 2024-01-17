@@ -1069,13 +1069,13 @@ public class Day23 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var start = Instant.now();
             var hikingTrails = HikingTrails.build(stream, false, true);
             var longestPath =  hikingTrails.getTrails().stream().max(Comparator.comparing(it -> it.length)).orElse(null);
 
             var end = Instant.now();
-            System.out.println("The longest path from start to finish is: "
+            LOGGER.info(String.format("The longest path from start to finish is: "
                     + (longestPath != null ? longestPath.getLength() : null) + " in " + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -1085,12 +1085,12 @@ public class Day23 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var start = Instant.now();
             var hikingTrails = HikingTrails.build(stream, true, true);
             var longestPath =  hikingTrails.getTrails().stream().max(Comparator.comparing(it -> it.length)).orElse(null);
             var end = Instant.now();
-            System.out.println("The longest path from start to finish (ignoring slopes) is: "
+            LOGGER.info(String.format("The longest path from start to finish (ignoring slopes) is: "
                     + (longestPath != null ? longestPath.getLength() : null) + " in " + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);

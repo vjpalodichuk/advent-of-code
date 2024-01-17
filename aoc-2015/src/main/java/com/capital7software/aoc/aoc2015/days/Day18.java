@@ -6,6 +6,7 @@ import com.capital7software.aoc.lib.util.Pair;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 18: Like a GIF For Your Yard ---<br>
@@ -146,9 +147,10 @@ import java.util.List;
  * but with the four corners always in the on state, how many lights are on after 100 steps?
  * <p>
  * Your puzzle answer was 886.
- *
  */
 public class Day18 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day18.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -167,8 +169,8 @@ public class Day18 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lights = animateLights(steps, input, false);
         var end = Instant.now();
-        System.out.printf("The number of lights on after %d steps is: %d%n", steps, lights.first());
-        printTiming(start, end);
+        LOGGER.info(String.format("The number of lights on after %d steps is: %d%n", steps, lights.first()));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -177,15 +179,16 @@ public class Day18 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lights = animateLights(steps, input, true);
         var end = Instant.now();
-        System.out.printf("The number of lights on (corners always on) after %d steps is: %d%n", steps, lights.first());
-        printTiming(start, end);
+        LOGGER.info(String.format("The number of lights on (corners always on) after %d steps is: %d%n",
+                steps, lights.first()));
+        logTimings(LOGGER, start, end);
     }
 
     /**
      * Returns the number of lights still on after animating them for the specified number of steps.
      *
-     * @param steps The number os steps to animate the lights for.
-     * @param input The initial lighting layout.
+     * @param steps     The number os steps to animate the lights for.
+     * @param input     The initial lighting layout.
      * @param cornersOn If true, the corner lights are always on.
      * @return The number of lights still on after animating them for the specified number of steps.
      */

@@ -5,6 +5,7 @@ import com.capital7software.aoc.lib.grid.Sleigh;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 3: Perfectly Spherical Houses in a Vacuum ---<br>
@@ -60,6 +61,8 @@ import java.util.List;
  *
  */
 public class Day03 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day03.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -83,8 +86,8 @@ public class Day03 implements AdventOfCodeSolution {
             var total = getUniqueHouseCount(routeId);
             var end = Instant.now();
 
-            System.out.printf("Santa delivered at least one gift to %d houses!%n", total);
-            printTiming(start, end);
+            LOGGER.info(String.format("Santa delivered at least one gift to %d houses!%n", total));
+            logTimings(LOGGER, start, end);
         }
     }
 
@@ -97,8 +100,8 @@ public class Day03 implements AdventOfCodeSolution {
             var total = getUniqueHouseCount(routeId);
             var end = Instant.now();
 
-            System.out.printf("Santa and Robo Santa delivered at least one gift to %d houses!%n", total);
-            printTiming(start, end);
+            LOGGER.info(String.format("Santa and Robo Santa delivered at least one gift to %d houses!%n", total));
+            logTimings(LOGGER, start, end);
         }
     }
 

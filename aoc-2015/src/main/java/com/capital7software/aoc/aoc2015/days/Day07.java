@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * --- Day 7: Some Assembly Required ---
@@ -65,6 +66,8 @@ import java.util.Optional;
  *     Your puzzle answer was 14710.
  */
 public class Day07 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day07.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
@@ -83,9 +86,9 @@ public class Day07 implements AdventOfCodeSolution {
         var board = loadCircuitBoard("0", input);
         var total = getWireValues(board).get("a");
         var end = Instant.now();
-        System.out.printf(
-                "%d is provided to wire a!%n", total);
-        printTiming(start, end);
+        LOGGER.info(String.format(
+                "%d is provided to wire a!%n", total));
+        logTimings(LOGGER, start, end);
     }
 
     @Override
@@ -98,9 +101,9 @@ public class Day07 implements AdventOfCodeSolution {
         wires = getWireValues(board);
         var total = wires.get("a");
         var end = Instant.now();
-        System.out.printf(
-                "%d is wire b's old value, %d is provided to wire a!%n", oldB.orElse(null), total);
-        printTiming(start, end);
+        LOGGER.info(String.format(
+                "%d is wire b's old value, %d is provided to wire a!%n", oldB.orElse(null), total));
+        logTimings(LOGGER, start, end);
     }
 
     /**
@@ -124,7 +127,13 @@ public class Day07 implements AdventOfCodeSolution {
      */
     public Map<String, Integer> getWireValues(CircuitBoardInteger board) {
         var results = new HashMap<String, Integer>();
-        board.wires().values().forEach(wire -> wire.supply().flatMap(Signal::signal).ifPresent(signal -> results.put(wire.id(), signal)));
+        board.wires()
+                .values()
+                .forEach(
+                        wire -> wire.supply()
+                                .flatMap(Signal::signal)
+                                .ifPresent(signal -> results.put(wire.id(), signal))
+                );
 
         return results;
     }

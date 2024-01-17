@@ -4,9 +4,13 @@ import com.capital7software.aoc.lib.AdventOfCodeTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.logging.Logger;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day03Test extends AdventOfCodeTestBase {
+    private static final Logger LOGGER = Logger.getLogger(Day03Test.class.getName());
+
     @BeforeEach
     void setUp() {
         var instance = new Day03();
@@ -29,5 +33,10 @@ class Day03Test extends AdventOfCodeTestBase {
         var actual = instance.getSumOfAllGearRatiosInSchematic(lines);
         assertEquals(expected, actual, "The sum of all gear ratios " +
                 "is not what was expected: " + expected);
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return LOGGER;
     }
 }

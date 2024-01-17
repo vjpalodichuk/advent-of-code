@@ -406,13 +406,13 @@ public class Day21 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            System.out.println("Part 1: Start!");
+            LOGGER.info(String.format("Part 1: Start!");
             var garden = Garden.build(stream);
             var stepsToTake = 64;
             var start = Instant.now();
             var plotCount = garden.walk(stepsToTake, false);
             var end = Instant.now();
-            System.out.println("Total number of plots the Elf can reach in " + stepsToTake + " steps: "
+            LOGGER.info(String.format("Total number of plots the Elf can reach in " + stepsToTake + " steps: "
                     + plotCount + " in " + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -422,13 +422,13 @@ public class Day21 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            System.out.println("Part 2: Start!");
+            LOGGER.info(String.format("Part 2: Start!");
             var garden = Garden.build(stream);
             var stepsToTake = 26501365;
             var start = Instant.now();
             var plotCount = garden.walk(stepsToTake, true);
             var end = Instant.now();
-            System.out.println("Total number of plots the Elf can reach in " + stepsToTake + " steps: "
+            LOGGER.info(String.format("Total number of plots the Elf can reach in " + stepsToTake + " steps: "
                     + plotCount + " in " + Duration.between(start, end).toNanos() + " ns");
         } catch (IOException e) {
             throw new RuntimeException(e);

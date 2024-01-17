@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * --- Day 11: Corporate Policy ---
@@ -55,15 +56,17 @@ import java.util.List;
  * Santa's password expired again. What's the next one?
  * <p>
  * Your puzzle answer was cqkaabcc.
- *
  */
 public class Day11 implements AdventOfCodeSolution {
+    private static final Logger LOGGER = Logger.getLogger(Day11.class.getName());
+
     /**
      * Instantiates the solution instance.
      */
     public Day11() {
 
     }
+
     @Override
     public String getDefaultInputFilename() {
         return "inputs/input_day_11-01.txt";
@@ -75,8 +78,8 @@ public class Day11 implements AdventOfCodeSolution {
             var start = Instant.now();
             var next = suggestNextPassword(line);
             var end = Instant.now();
-            System.out.printf("The next valid password is: %s%n", next);
-            printTiming(start, end);
+            LOGGER.info(String.format("The next valid password is: %s%n", next));
+            logTimings(LOGGER, start, end);
         }
     }
 
@@ -86,8 +89,8 @@ public class Day11 implements AdventOfCodeSolution {
             var start = Instant.now();
             var next = suggestNextPassword(suggestNextPassword(line));
             var end = Instant.now();
-            System.out.printf("The next valid password is: %s%n", next);
-            printTiming(start, end);
+            LOGGER.info(String.format("The next valid password is: %s%n", next));
+            logTimings(LOGGER, start, end);
         }
     }
 
@@ -103,6 +106,7 @@ public class Day11 implements AdventOfCodeSolution {
 
     /**
      * Returns the next possible password from the specified current password.
+     *
      * @param input The current password.
      * @return The next possible password from the specified current password.
      */

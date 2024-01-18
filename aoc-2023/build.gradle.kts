@@ -11,19 +11,13 @@ dependencies {
 tasks.withType<JavaExec>().configureEach {
     jvmArgs = listOf("-Xss4m")
     group = "aoc"
-    description = "Advent of Code 2015 Puzzles"
+    description = "Advent of Code 2023 Puzzles"
     classpath = sourceSets["main"].runtimeClasspath
-    mainClass = "com.capital7software.aoc.aoc2023.AdventOfCode2015Runner"
+    mainClass = "com.capital7software.aoc.aoc2023.AdventOfCode2023Runner"
 }
 
 tasks.register("run2023", JavaExec::class)
 
-tasks.register("day12", JavaExec::class) {
-    mainClass = "com.capital7software.aoc.aoc2023.days.Day12"
-}
-tasks.register("day13", JavaExec::class) {
-    mainClass = "com.capital7software.aoc.aoc2023.days.Day13"
-}
 tasks.register("day14", JavaExec::class) {
     mainClass = "com.capital7software.aoc.aoc2023.days.Day14"
 }

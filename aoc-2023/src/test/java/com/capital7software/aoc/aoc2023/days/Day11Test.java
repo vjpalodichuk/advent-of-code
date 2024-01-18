@@ -18,9 +18,9 @@ class Day11Test extends AdventOfCodeTestBase {
     }
 
     @Test
-    void sumOfAllPairsShortestPathSmallFactorNormal() {
+    void sumOfAllPossibleSpringConditionArrangements() {
         var instance = new Day11();
-        int expected = 374;
+        int expected = 21;
         var actual = instance.sumOfAllPairsShortestPath(lines, 1, false);
         assertEquals(expected, actual, "The sum of the shortest paths " +
                 "is not what was expected: " + expected);
@@ -31,7 +31,7 @@ class Day11Test extends AdventOfCodeTestBase {
         var instance = new Day11();
         int expected = 374;
         var actual = instance.sumOfAllPairsShortestPath(lines, 1, true);
-        assertEquals(expected, actual, "he sum of the shortest paths " +
+        assertEquals(expected, actual, "The sum of the shortest paths " +
                 "is not what was expected: " + expected);
     }
 
@@ -49,7 +49,7 @@ class Day11Test extends AdventOfCodeTestBase {
         var instance = new Day11();
         int expected = 1030;
         var actual = instance.sumOfAllPairsShortestPath(lines, 9, true);
-        assertEquals(expected, actual, "he sum of the shortest paths " +
+        assertEquals(expected, actual, "The sum of the shortest paths " +
                 "is not what was expected: " + expected);
     }
 
@@ -67,7 +67,7 @@ class Day11Test extends AdventOfCodeTestBase {
         var instance = new Day11();
         int expected = 8410;
         var actual = instance.sumOfAllPairsShortestPath(lines, 99, true);
-        assertEquals(expected, actual, "he sum of the shortest paths " +
+        assertEquals(expected, actual, "The sum of the shortest paths " +
                 "is not what was expected: " + expected);
     }
 

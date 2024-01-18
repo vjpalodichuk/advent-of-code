@@ -196,6 +196,15 @@ public class Day11 implements AdventOfCodeSolution {
         logTimings(LOGGER, start, end);
     }
 
+    /**
+     * Calculates and returns the sum of the shortest paths between all pairs of Galaxies!
+     *
+     * @param input     The List of Strings that contain the Galaxies to parse.
+     * @param gapFactor The number of additional spaces to count for each gap encountered.
+     * @param optimized If true, uses a time and space efficient algorithm to calculate the
+     *                  distances.
+     * @return The sum of the shortest paths between all pairs of Galaxies!
+     */
     public long sumOfAllPairsShortestPath(List<String> input, int gapFactor, boolean optimized) {
         var cosmos = CosmicExpansion.buildUniverse(input);
 

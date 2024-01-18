@@ -143,11 +143,27 @@ public class Day08 implements AdventOfCodeSolution {
         logTimings(LOGGER, start, end);
     }
 
+    /**
+     * Calculates and returns the number of steps to traverse the network from a single starting node to
+     * a single destination node.
+     *
+     * @param input The List of Strings that contain the nodes to parse.
+     * @return The number of steps to traverse the network from a single starting node to
+     * a single destination node.
+     */
     public long calculateStepsToTraverseWastelandSingleNode(List<String> input) {
         var network = HauntedWasteland.buildHauntedWasteland(input);
         return network.traverse("AAA", "ZZZ"::equals);
     }
 
+    /**
+     * Calculates and returns the number of steps to traverse the network from multiple starting nodes to
+     * multiple destination nodes.
+     *
+     * @param input The List of Strings that contain the nodes to parse.
+     * @return The number of steps to traverse the network from multiple starting nodes to
+     * multiple destination nodes.
+     */
     public long calculateStepsToTraverseWastelandMultipleNodes(List<String> input) {
         var network = HauntedWasteland.buildHauntedWasteland(input);
         var startingNodes = network

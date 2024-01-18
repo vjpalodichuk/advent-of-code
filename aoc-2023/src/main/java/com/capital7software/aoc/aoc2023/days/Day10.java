@@ -328,11 +328,28 @@ public class Day10 implements AdventOfCodeSolution {
         logTimings(LOGGER, start, end);
     }
 
+    /**
+     * Calculates and returns the maximum steps to reach the further point from the starting tile.
+     *
+     * @param input The List of Strings to parse into a PipeMaze.
+     * @param bfs   If true, then a Breadth First Search is performed. If false, a recursive Depth
+     *              First Search is performed.
+     * @return The maximum steps to reach the further point from the starting tile.
+     */
     public long calculateMaximumDistance(List<String> input, boolean bfs) {
         var maze = PipeMaze.buildPipeMaze(input);
         return maze.calculateDistances(bfs).values().stream().mapToInt(it -> it).max().orElse(0);
     }
 
+    /**
+     * Calculates and returns the number of tiles that are enclosed by the main loop of the PipeMaze.
+     * The main loop is the cycle that starts and stops at the starting tile.
+     *
+     * @param input The List of Strings to parse into a PipeMaze.
+     * @param bfs   If true, then a Breadth First Search is performed. If false, a recursive Depth
+     *              First Search is performed.
+     * @return The number of tiles that are enclosed by the main loop of the PipeMaze.
+     */
     public long countTilesEnclosedInMainLoop(List<String> input, boolean bfs) {
         var maze = PipeMaze.buildPipeMaze(input);
         var distances = maze.calculateDistances(bfs);

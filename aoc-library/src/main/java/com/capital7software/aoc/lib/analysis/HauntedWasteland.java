@@ -205,7 +205,7 @@ public record HauntedWasteland(
     public long traverse(@NotNull String startNode, @NotNull Predicate<String> atEndNode) {
         long stepCount = 0;
 
-        LOGGER.info("Traversing the network of Nodes starting at " + startNode +
+        LOGGER.fine("Traversing the network of Nodes starting at " + startNode +
                 " Node");
 
         var currentNode = nodeMap.get(startNode);
@@ -221,10 +221,10 @@ public record HauntedWasteland(
         } while (currentNode != null && !atEndNode.test(currentNode.getValue()));
 
         if (currentNode != null) {
-            LOGGER.info("Traversed the network of nodes starting at " +
+            LOGGER.fine("Traversed the network of nodes starting at " +
                     startNode + " and ended at " + currentNode.getValue() + " in " + stepCount + " steps!");
         } else {
-            LOGGER.info("Something went wrong after taking " + stepCount +
+            LOGGER.warning("Something went wrong after taking " + stepCount +
                     " steps when starting at " + startNode + " as we didn't end at the correct node!");
         }
         return stepCount;

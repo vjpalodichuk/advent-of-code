@@ -12,9 +12,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Day13 {
+    private static final Logger LOGGER = Logger.getLogger(Day13.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day13() {
+
+    }
+
 
     private enum Ground {
         ASH('.'),
@@ -47,10 +57,10 @@ public class Day13 {
         VERTICAL
     }
 
-    private record Reflection(Axis axis, long low, long high) {
+    public record Reflection(Axis axis, long low, long high) {
     }
 
-    private record Pattern(List<Ground> grounds, int columns, int rows) {
+    public record Pattern(List<Ground> grounds, int columns, int rows) {
 
         public static List<Pattern> parse(Stream<String> stream) {
             var result = new ArrayList<Pattern>();
@@ -158,7 +168,7 @@ public class Day13 {
         /**
          * Gets a row or column as a List that then can be easily compared
          *
-         * @param axis The x or y axis
+         * @param axis  The x or y axis
          * @param index The axis index
          * @return A list of Ground tiles that can be easily looped over.
          */
@@ -170,7 +180,7 @@ public class Day13 {
 
                 var list = new ArrayList<Ground>(rows);
                 for (int i = 0; i < rows; i++) {
-                    list.add(grounds.get( index + (i * columns)));
+                    list.add(grounds.get(index + (i * columns)));
                 }
                 return list;
             } else if (axis == Axis.HORIZONTAL) {
@@ -180,7 +190,7 @@ public class Day13 {
 
                 var list = new ArrayList<Ground>(columns);
                 for (int i = 0; i < columns; i++) {
-                    list.add(grounds.get( i + (index * columns)));
+                    list.add(grounds.get(i + (index * columns)));
                 }
                 return list;
             } else {
@@ -217,13 +227,14 @@ public class Day13 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var patterns = loadPatterns(stream, false);
-            LOGGER.info(String.format("Summarizing patterns...");
+            LOGGER.info("Summarizing patterns...");
             var start = Instant.now();
             var sum = summarizeNotes(patterns, 0);
             var end = Instant.now();
-            LOGGER.info(String.format("Sum of all patterns is: " + sum + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Sum of all patterns is: %d in %d ns",
+                    sum, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -232,13 +243,14 @@ public class Day13 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var patterns = loadPatterns(stream, false);
-            LOGGER.info(String.format("Summarizing patterns...");
+            LOGGER.info("Summarizing patterns...");
             var start = Instant.now();
             var sum = summarizeNotes(patterns, 1);
             var end = Instant.now();
-            LOGGER.info(String.format("Sum of all patterns is: " + sum + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Sum of all patterns is: %d in %d ns",
+                    sum, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -246,9 +258,9 @@ public class Day13 {
 
     private static List<Pattern> loadPatterns(Stream<String> stream, boolean print) {
         List<Pattern> patterns = Pattern.parse(stream);
-        LOGGER.info(String.format("Loaded " + patterns.size() + " patterns.");
+        LOGGER.info(String.format("Loaded %d patterns.", patterns.size()));
         if (print) {
-            LOGGER.info(String.format("Patterns:");
+            LOGGER.info("Patterns:");
             patterns.forEach(System.out::println);
         }
 

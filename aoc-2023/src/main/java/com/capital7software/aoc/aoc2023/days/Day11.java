@@ -9,9 +9,19 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Day11 {
+    private static final Logger LOGGER = Logger.getLogger(Day11.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day11() {
+
+    }
+
     private record Galaxy(int id, int x, int y) {
 
         @Override
@@ -64,7 +74,7 @@ public class Day11 {
         }
 
         private void expandUniverse(int rowCount, int columnCount) {
-            LOGGER.info(String.format("Expanding the Universe...");
+            LOGGER.info("Expanding the Universe...");
 
             var startTime = Instant.now();
 
@@ -74,7 +84,7 @@ public class Day11 {
 
             var endTime = Instant.now();
 
-            LOGGER.info(String.format("Expanded the universe in " + Duration.between(startTime, endTime).toNanos() + " ns");
+            LOGGER.info(String.format("Expanded the universe in %d ns", Duration.between(startTime, endTime).toNanos()));
         }
 
         private void populateGapCountMap(int count, Map<Integer, Integer> galaxyCountMap, Map<Integer, Map<Integer, Integer>> gapCountMap) {
@@ -122,7 +132,7 @@ public class Day11 {
         }
 
         public long calculateDistances(long gapFactor) {
-            LOGGER.info(String.format("Calculating distances for all of the galaxy pairs...");
+            LOGGER.info("Calculating distances for all of the galaxy pairs...");
 
             var startTime = Instant.now();
             // We calculate the distances for all pairs a, b where a != b && a.id < b.id
@@ -133,7 +143,7 @@ public class Day11 {
                     .sorted(Comparator.comparing(Galaxy::id)).toList();
 
             // start with the first galaxy encountered
-            var currentGalaxy = galaxies.get(0);
+            var currentGalaxy = galaxies.getFirst();
 
             do {
                 for (int i = currentGalaxy.id() + 1; i < galaxies.size(); i++) {
@@ -144,8 +154,8 @@ public class Day11 {
 
             var endTime = Instant.now();
 
-            LOGGER.info(String.format("Calculated the distances where each gap counts as " + (gapFactor + 1) + " in "
-                    + Duration.between(startTime, endTime).toNanos() + " ns");
+            LOGGER.info(String.format("Calculated the distances where each gap counts as %d in %d ns", (gapFactor + 1),
+                    Duration.between(startTime, endTime).toNanos()));
 
             return galaxyDistances
                     .values()
@@ -185,7 +195,7 @@ public class Day11 {
         }
 
         public long calculateOptimizedDistances(long gapFactor) {
-            LOGGER.info(String.format("Greedy calculation of distances for all galaxy pairs...");
+            LOGGER.info("Greedy calculation of distances for all galaxy pairs...");
 
             var startTime = Instant.now();
 
@@ -197,8 +207,8 @@ public class Day11 {
 
             var endTime = Instant.now();
 
-            LOGGER.info(String.format("Calculated the distances where each gap counts as " + (gapFactor + 1) + " in "
-                    + Duration.between(startTime, endTime).toNanos() + " ns");
+            LOGGER.info(String.format("Calculated the distances where each gap counts as %d in %d ns", (gapFactor + 1),
+                    + Duration.between(startTime, endTime).toNanos()));
 
             return totalSum;
         }
@@ -208,7 +218,7 @@ public class Day11 {
             List<Galaxy> sorted = galaxies.stream().sorted(Comparator.comparing(keyExtractor)).toList();
             long total = 0, sum = 0, gap = 0;
             // Used for looking up gaps
-            int prevCoord = keyExtractor.apply(sorted.get(0));
+            int prevCoord = keyExtractor.apply(sorted.getFirst());
 
             for (int i = 0; i < galaxies.size(); i++) {
                 var currentCoord = keyExtractor.apply(sorted.get(i));
@@ -237,27 +247,27 @@ public class Day11 {
         Universe universe;
 
         try (var stream = Files.lines(path)) {
-            LOGGER.info(String.format("Loading the Universe...");
+            LOGGER.info("Loading the Universe...");
             universe = Universe.loadUniverse(stream);
-            LOGGER.info(String.format("Loaded " + universe.getGalaxyCount() + " galaxies in the universe!");
+            LOGGER.info(String.format("Loaded %d galaxies in the universe", universe.getGalaxyCount()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         // Part 1
-        LOGGER.info(String.format("Part 1: Start!");
+        LOGGER.info("Part 1: Start!");
         long sum = universe.calculateDistances();
-        LOGGER.info(String.format("The sum of all distances is: " + sum);
+        LOGGER.info(String.format("The sum of all distances is: %d", sum));
         sum = universe.calculateDistances();
-        LOGGER.info(String.format("The sum of all distances is: " + sum);
+        LOGGER.info(String.format("The sum of all distances is: %d", sum));
         sum = universe.calculateOptimizedDistances();
-        LOGGER.info(String.format("The sum of all distances is: " + sum);
+        LOGGER.info(String.format("The sum of all distances is: %d", sum));
 
         // Part 2
-        LOGGER.info(String.format("Part 2: Start!");
+        LOGGER.info("Part 2: Start!");
         sum = universe.calculateDistances(999_999);
-        LOGGER.info(String.format("The sum of all distances is: " + sum);
+        LOGGER.info(String.format("The sum of all distances is: %d", sum));
         sum = universe.calculateOptimizedDistances(999_999);
-        LOGGER.info(String.format("The sum of all distances is: " + sum);
+        LOGGER.info(String.format("The sum of all distances is: %d", sum));
     }
 }

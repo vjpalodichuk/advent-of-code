@@ -10,16 +10,27 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Day24 {
+    private static final Logger LOGGER = Logger.getLogger(Day24.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day24() {
+
+    }
+
     public record Plane(Day22.Point3DDouble point, double dotProduct) {
         public double sumAtTime0() {
             return (point.x() + point().y() + point.z()) / dotProduct;
         }
     }
 
-    public record HailStone(Day22.Point3DDouble position, Day22.Point3DDouble velocity, double slope, double intercept) {
+    public record HailStone(Day22.Point3DDouble position, Day22.Point3DDouble velocity, double slope,
+                            double intercept) {
         public HailStone(double x, double y, double z, double vx, double vy, double vz) {
             this(new Day22.Point3DDouble(x, y, z), new Day22.Point3DDouble(vx, vy, vz), vy / vx, y - x * (vy / vx));
         }
@@ -38,7 +49,7 @@ public class Day24 {
             var vx = Long.parseLong(velocities[0].trim());
             var vy = Long.parseLong(velocities[1].trim());
             var vz = Long.parseLong(velocities[2].trim());
-            
+
             return new HailStone(x, y, z, vx, vy, vz);
         }
 
@@ -70,7 +81,7 @@ public class Day24 {
 
         public Plane testFindRock() {
             // Grab a starting hailstone
-            var stone1 = hailStones.get(0);
+            var stone1 = hailStones.getFirst();
             HailStone stone2 = null;
             HailStone stone3 = null;
             int i = 0;
@@ -189,7 +200,7 @@ public class Day24 {
                     resultType = HailStoneTestResultType.CROSSED_IN_THE_PAST_BOTH;
                 } else if (timeA < 0 && timeB >= 0) {
                     resultType = HailStoneTestResultType.CROSSED_IN_THE_PAST_A;
-                } else if (timeA >=0 && timeB < 0) {
+                } else if (timeA >= 0 && timeB < 0) {
                     resultType = HailStoneTestResultType.CROSSED_IN_THE_PAST_B;
                 } else if (timeA >= 0 && timeB >= 0) {
                     if (lowerBound <= newX && newX <= upperBound && lowerBound <= newY && newY <= upperBound) {
@@ -229,7 +240,7 @@ public class Day24 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var start = Instant.now();
             var hailStorm = HailStorm.build(stream);
             var count = hailStorm.testHailStones(200_000_000_000_000L, 400_000_000_000_000L)
@@ -237,8 +248,8 @@ public class Day24 {
                     .filter(HailStoneTestResult::passes)
                     .count();
             var end = Instant.now();
-            LOGGER.info(String.format("There are : " + count + " hailstones in this storm that pass the test in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("There are %d hailstones in this storm that pass the test in %d ns",
+                    count, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -247,15 +258,14 @@ public class Day24 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var start = Instant.now();
             var hailStorm = HailStorm.build(stream);
             var rock = hailStorm.testFindRock();
             var end = Instant.now();
-            LOGGER.info(String.format("The Rock: " + rock );
-            LOGGER.info(String.format(" was found and the sum of its parts is: " +
-                    BigDecimal.valueOf(rock.sumAtTime0()).toPlainString() + " in "
-                    + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("The Rock: %s was found the sum of its parts is: %s in %d ns",
+                    rock, BigDecimal.valueOf(rock.sumAtTime0()).toPlainString(),
+                    Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

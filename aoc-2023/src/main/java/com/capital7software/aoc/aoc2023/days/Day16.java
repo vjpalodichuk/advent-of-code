@@ -7,14 +7,35 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Day16 {
+    private static final Logger LOGGER = Logger.getLogger(Day16.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day16() {
+
+    }
+
     private enum Direction {
         NORTH(0, -1),
         SOUTH(0, 1),
@@ -167,8 +188,12 @@ public class Day16 {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Tile tile)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Tile tile)) {
+                return false;
+            }
             return column == tile.column && row == tile.row && entity == tile.entity;
         }
 
@@ -218,7 +243,7 @@ public class Day16 {
                 rowTiles.add(Tile.from(chars[column], column, row));
             }
 
-            return rowTiles.size() > 0;
+            return !rowTiles.isEmpty();
         }
 
         public Tile get(int column, int row) {
@@ -230,12 +255,12 @@ public class Day16 {
             var result = new ArrayList<Map.Entry<Tile, Direction>>(directions.size());
 
             directions.forEach(direction -> {
-                        var nextColumn = tile.column() + direction.columnOffset;
-                        var nextRow = tile.row() + direction.rowOffset;
-                        if (nextColumn >= 0 && nextColumn < columns() && nextRow >= 0 && nextRow < rows()) {
-                            result.add(new AbstractMap.SimpleEntry<>(get(nextColumn, nextRow), direction));
-                        }
-                    });
+                var nextColumn = tile.column() + direction.columnOffset;
+                var nextRow = tile.row() + direction.rowOffset;
+                if (nextColumn >= 0 && nextColumn < columns() && nextRow >= 0 && nextRow < rows()) {
+                    result.add(new AbstractMap.SimpleEntry<>(get(nextColumn, nextRow), direction));
+                }
+            });
 
             return result;
         }
@@ -249,8 +274,7 @@ public class Day16 {
 
         public int maxEnergized() {
             final Set<Integer> max = ConcurrentHashMap.newKeySet();
-            try  {
-                ForkJoinPool pool = new ForkJoinPool(32);
+            try (var pool = new ForkJoinPool(32)) {
                 var tasks = new ArrayList<ForkJoinTask<Integer>>(4 * (grid().columns * grid().rows()));
 
                 for (int i = 0; i < grid.columns(); i++) {
@@ -354,23 +378,23 @@ public class Day16 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var grid = Grid.parse(stream);
             var beam = Beam.create(grid);
             IntStream.range(0, 5).forEach(it -> {
                 var start = Instant.now();
                 var sum = beam.energize();
                 var end = Instant.now();
-                LOGGER.info(String.format("Total number of energized tiles: " + sum + " in " +
-                        Duration.between(start, end).toNanos() + " ns");
+                LOGGER.info(String.format("Total number of energized tiles: %d in %d ns",
+                        sum, Duration.between(start, end).toNanos()));
             });
 
             IntStream.range(0, 5).forEach(it -> {
                 var start = Instant.now();
                 var sum = beam.energizeRecursive();
                 var end = Instant.now();
-                LOGGER.info(String.format("Total number of recursive energized tiles: " + sum + " in " +
-                        Duration.between(start, end).toNanos() + " ns");
+                LOGGER.info(String.format("Total number of recursive energized tiles: %d in %d ns",
+                        sum, Duration.between(start, end).toNanos()));
             });
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -380,7 +404,7 @@ public class Day16 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var grid = Grid.parse(stream);
             var beam = Beam.create(grid);
 //            LOGGER.info(String.format(grid);
@@ -388,8 +412,8 @@ public class Day16 {
                 var start = Instant.now();
                 var sum = beam.maxEnergized();
                 var end = Instant.now();
-                LOGGER.info(String.format("Total number of energized tiles: " + sum + " in " +
-                        Duration.between(start, end).toNanos() + " ns");
+                LOGGER.info(String.format("Total number of energized tiles: %d in %d ns",
+                        sum, Duration.between(start, end).toNanos()));
             });
         } catch (IOException e) {
             throw new RuntimeException(e);

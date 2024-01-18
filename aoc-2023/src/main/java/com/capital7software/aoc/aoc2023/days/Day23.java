@@ -9,13 +9,34 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Day23 {
+    private static final Logger LOGGER = Logger.getLogger(Day23.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day23() {
+
+    }
+
 
     public enum TrailType {
         PATH('.', true, false) {
@@ -176,8 +197,12 @@ public class Day23 {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof TrailNode trailNode)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof TrailNode trailNode)) {
+                return false;
+            }
             return tile.equals(trailNode.tile);
         }
 
@@ -315,8 +340,12 @@ public class Day23 {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof HikingSegment that)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof HikingSegment that)) {
+                return false;
+            }
             return id == that.id;
         }
 
@@ -382,8 +411,12 @@ public class Day23 {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof HikingTrail that)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof HikingTrail that)) {
+                return false;
+            }
             return pathSet.equals(that.pathSet);
         }
 
@@ -459,7 +492,7 @@ public class Day23 {
                     head = null;
                     tail = null;
                 } else {
-                    tail = pathSegments.get(pathSegments.size() -1).getSecond();
+                    tail = pathSegments.getLast().getSecond();
 
                     if (toRemove.isFinish()) {
                         leadsToExit = false;
@@ -1069,14 +1102,14 @@ public class Day23 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var start = Instant.now();
             var hikingTrails = HikingTrails.build(stream, false, true);
-            var longestPath =  hikingTrails.getTrails().stream().max(Comparator.comparing(it -> it.length)).orElse(null);
+            var longestPath = hikingTrails.getTrails().stream().max(Comparator.comparing(it -> it.length)).orElse(null);
 
             var end = Instant.now();
-            LOGGER.info(String.format("The longest path from start to finish is: "
-                    + (longestPath != null ? longestPath.getLength() : null) + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("The longest path from start to finish is: %d in %d ns",
+                    (longestPath != null ? longestPath.getLength() : -1), Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -1085,13 +1118,13 @@ public class Day23 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var start = Instant.now();
             var hikingTrails = HikingTrails.build(stream, true, true);
-            var longestPath =  hikingTrails.getTrails().stream().max(Comparator.comparing(it -> it.length)).orElse(null);
+            var longestPath = hikingTrails.getTrails().stream().max(Comparator.comparing(it -> it.length)).orElse(null);
             var end = Instant.now();
-            LOGGER.info(String.format("The longest path from start to finish (ignoring slopes) is: "
-                    + (longestPath != null ? longestPath.getLength() : null) + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("The longest path from start to finish (ignoring slopes) is: %d in %d ns",
+                    (longestPath != null ? longestPath.getLength() : -1), Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

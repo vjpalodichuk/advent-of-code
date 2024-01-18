@@ -1,5 +1,7 @@
 package com.capital7software.aoc.aoc2023.days;
 
+import com.capital7software.aoc.lib.util.Range;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -7,14 +9,33 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Day22 {
+    private static final Logger LOGGER = Logger.getLogger(Day22.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day22() {
+
+    }
+
     public record Point3DDouble(double x, double y, double z) implements Day21.Point {
         public Point3DDouble minus(Point3DDouble other) {
             double newX = Math.abs(x - other.x);
@@ -53,6 +74,7 @@ public class Day22 {
         /**
          * Returns the dot-product between this point and the other point.
          * A long is returned to avoid any overflow.
+         *
          * @param other The point to calculate the dot-product with.
          * @return A long that represents the dot-product.
          */
@@ -112,14 +134,14 @@ public class Day22 {
          * returned; otherwise false is returned.
          */
         public boolean isBelow(LineSegment3D other) {
-            var otherX = new Day10.Range((long) other.start.x(), (long)other.end.x() + 1);
-            var otherY = new Day10.Range((long)other.start.y(), (long)other.end.y() + 1);
-            var xRange = new Day10.Range((long)start.x(), (long)end.x() + 1);
-            var yRange = new Day10.Range((long)start.y(), (long)end.y() + 1);
-            var xInOther = otherX.contains((long)start.x()) || otherX.contains((long)end.x());
-            var yInOther = otherY.contains((long)start.y()) || otherY.contains((long)end.y());
-            var otherInX = xRange.contains((long)other.start.x()) || xRange.contains((long)other.end.x());
-            var otherInY = yRange.contains((long)other.start.y()) || yRange.contains((long)other.end.y());
+            var otherX = new Range<>((long) other.start.x(), (long) other.end.x() + 1);
+            var otherY = new Range<>((long) other.start.y(), (long) other.end.y() + 1);
+            var xRange = new Range<>((long) start.x(), (long) end.x() + 1);
+            var yRange = new Range<>((long) start.y(), (long) end.y() + 1);
+            var xInOther = otherX.contains((long) start.x()) || otherX.contains((long) end.x());
+            var yInOther = otherY.contains((long) start.y()) || otherY.contains((long) end.y());
+            var otherInX = xRange.contains((long) other.start.x()) || xRange.contains((long) other.end.x());
+            var otherInY = yRange.contains((long) other.start.y()) || yRange.contains((long) other.end.y());
 
             return (xInOther || otherInX) && (yInOther || otherInY);
         }
@@ -135,7 +157,7 @@ public class Day22 {
         }
 
         long cubeCount() {
-            return (long)lineSegment.length() + 1;
+            return (long) lineSegment.length() + 1;
         }
 
         Orientation3D orientation() {
@@ -153,8 +175,8 @@ public class Day22 {
         @Override
         public int compareTo(Brick o) {
             return Long.compare(
-                    Math.min((long)lineSegment.start().z(), (long)lineSegment.end().z()),
-                    Math.min((long)o.lineSegment.start().z(), (long)o.lineSegment.end().z()));
+                    Math.min((long) lineSegment.start().z(), (long) lineSegment.end().z()),
+                    Math.min((long) o.lineSegment.start().z(), (long) o.lineSegment.end().z()));
         }
 
         public int getId() {
@@ -194,8 +216,12 @@ public class Day22 {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Brick brick)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Brick brick)) {
+                return false;
+            }
             return getId() == brick.getId();
         }
 
@@ -325,7 +351,7 @@ public class Day22 {
             for (var brick : sorted) {
                 // Check if we are already at ground level!
                 if (brick.lineSegment.start().z() == 1) {
-                    zBricks.computeIfAbsent((long)brick.lineSegment.end().z(), it -> new HashSet<>()).add(brick);
+                    zBricks.computeIfAbsent((long) brick.lineSegment.end().z(), it -> new HashSet<>()).add(brick);
                     continue;
                 }
                 // Okay, we are above ground level, so we have to check and see if we can drop this
@@ -337,17 +363,17 @@ public class Day22 {
                 }
 
                 // Now add this to the Z-Brick list!
-                zBricks.computeIfAbsent((long)brick.lineSegment.end().z(), it -> new HashSet<>()).add(brick);
+                zBricks.computeIfAbsent((long) brick.lineSegment.end().z(), it -> new HashSet<>()).add(brick);
             }
         }
 
         private long calculateDropDistance(Brick brick, Set<Brick> dependents) {
-            var distanceToMove = (long)brick.lineSegment.start().z() - 1;
+            var distanceToMove = (long) brick.lineSegment.start().z() - 1;
 
             if (!dependents.isEmpty()) {
-                distanceToMove -= dependents
+                distanceToMove -= (long) dependents
                         .stream()
-                        .max(Comparator.comparingLong(a -> (long)a.lineSegment.end().z()))
+                        .max(Comparator.comparingLong(a -> (long) a.lineSegment.end().z()))
                         .get()
                         .lineSegment
                         .end()
@@ -473,14 +499,14 @@ public class Day22 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var start = Instant.now();
             var board = BrickBoard.load(stream);
             board.fallDownward();
             var disintegratedCount = board.safeToDisintegrate().size();
             var end = Instant.now();
-            LOGGER.info(String.format("Total number of bricks that can be safely disintegrated: "
-                    + disintegratedCount + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total number of bricks that can be safely disintegrated: %d in %d ns",
+                    disintegratedCount, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -489,14 +515,14 @@ public class Day22 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var start = Instant.now();
             var board = BrickBoard.load(stream);
             board.fallDownward();
             var chainReactionCount = board.chainReaction().values().stream().mapToLong(Set::size).sum();
             var end = Instant.now();
-            LOGGER.info(String.format("Total number of bricks that will fall in a chain reaction: "
-                    + chainReactionCount + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total number of bricks that will fall in a chain reaction: %d in %d ns",
+                    chainReactionCount, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -505,7 +531,7 @@ public class Day22 {
     private static void part3(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 3 (1 & 2): Start!");
+            LOGGER.info("Part 3 (1 & 2): Start!");
             var start = Instant.now();
             var board = BrickBoard.load(stream);
             board.fallDownward();
@@ -519,11 +545,12 @@ public class Day22 {
             var idealBrick = idealBrickEntry != null ? idealBrickEntry.getKey() : null;
             var chainCount = idealBrickEntry != null ? idealBrickEntry.getValue().size() : 0;
             var chainReactionCount = chain.values().stream().mapToLong(Set::size).sum();
-            LOGGER.info(String.format("Total number of bricks that can be safely disintegrated: " + disintegratedCount);
-            LOGGER.info(String.format("Best brick to disintegrate to create a chain of " + chainCount + " falling bricks is: ");
-            LOGGER.info(String.format(idealBrick);
-            LOGGER.info(String.format("And total number of bricks that will fall in a chain reaction is: "
-                    + chainReactionCount + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total number of bricks that can be safely disintegrated: %d",
+                    disintegratedCount));
+            LOGGER.info(String.format("Best brick to disintegrate to create a chain of %d falling bricks is: %s",
+                    chainCount, idealBrick));
+            LOGGER.info(String.format("And total number of bricks that will fall in a chain reaction is: %d in %d ns",
+                    chainReactionCount, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

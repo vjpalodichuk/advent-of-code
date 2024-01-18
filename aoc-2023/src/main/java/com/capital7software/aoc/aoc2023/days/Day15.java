@@ -8,45 +8,64 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Day15 {
-    private record HashString(String string) {
+    private static final Logger LOGGER = Logger.getLogger(Day15.class.getName());
 
-        public int hashAscii() {
-                var characters = string.getBytes(StandardCharsets.US_ASCII);
-
-                var hash = 0L;
-
-                for (var character : characters) {
-                    hash += character;
-                    hash *= 17;
-                    hash %= 256;
-                }
-
-                return (int) hash;
-            }
-
-            public static List<HashString> parse(Stream<String> stream) {
-                var builder = new StringBuilder();
-
-                stream.forEach(builder::append);
-
-                var temp = builder.toString().replace("\n", "");
-                return Arrays.stream(temp.split(",")).map(HashString::new).toList();
-            }
-
-            @Override
-            public boolean equals(Object o) {
-                if (this == o) return true;
-                if (!(o instanceof HashString that)) return false;
-                return string.equals(that.string);
-            }
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day15() {
 
     }
 
-    private static class Lens{
+    private record HashString(String string) {
+
+        public int hashAscii() {
+            var characters = string.getBytes(StandardCharsets.US_ASCII);
+
+            var hash = 0L;
+
+            for (var character : characters) {
+                hash += character;
+                hash *= 17;
+                hash %= 256;
+            }
+
+            return (int) hash;
+        }
+
+        public static List<HashString> parse(Stream<String> stream) {
+            var builder = new StringBuilder();
+
+            stream.forEach(builder::append);
+
+            var temp = builder.toString().replace("\n", "");
+            return Arrays.stream(temp.split(",")).map(HashString::new).toList();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof HashString that)) {
+                return false;
+            }
+            return string.equals(that.string);
+        }
+
+    }
+
+    private static class Lens {
         private final HashString label;
         private int focalLength;
 
@@ -69,8 +88,12 @@ public class Day15 {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Lens lens)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Lens lens)) {
+                return false;
+            }
             return label.equals(lens.label);
         }
 
@@ -178,13 +201,13 @@ public class Day15 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var strings = HashString.parse(stream);
             var start = Instant.now();
             var sum = strings.stream().mapToInt(HashString::hashAscii).sum();
             var end = Instant.now();
-            LOGGER.info(String.format("Total sum of ASCII initialization sequence hashes: " + sum + " in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total sum of ASCII initialization sequence hashes: %d in %d ns",
+                    sum, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -193,13 +216,13 @@ public class Day15 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var start = Instant.now();
             var library = LensLibrary.parse(stream);
             var focusingPower = library.focusingPower();
             var end = Instant.now();
-            LOGGER.info(String.format("Total focusing power of the library is: " + focusingPower + " in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total focusing power of the library is: %d in %d ns",
+                    focusingPower, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

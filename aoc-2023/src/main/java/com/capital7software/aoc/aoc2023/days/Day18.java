@@ -10,9 +10,19 @@ import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Day18 {
+    private static final Logger LOGGER = Logger.getLogger(Day18.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day18() {
+
+    }
+
 
     public record Point2D(double x, double y) {
         public static final double EPSILON = 0.00000001;
@@ -72,6 +82,7 @@ public class Day18 {
 
         /**
          * Assumes that other is collinear to this LineSegment and checks if other falls on this LineSegment
+         *
          * @param other The other point to test
          * @return If other is on this LineSegment then true; else false.
          */
@@ -87,6 +98,7 @@ public class Day18 {
         /**
          * Assumes that other is collinear to this LineSegment and checks if other falls completely
          * within this LineSegment
+         *
          * @param other The other segment to test
          * @return If other is fully within this LineSegment then true; else false.
          */
@@ -103,6 +115,7 @@ public class Day18 {
 
         /**
          * Returns true if the start and end point of the other LineSegment is collinear to this LineSegment.
+         *
          * @param other The LineSegment to test against.
          * @return If the other LineSegment is collinear to this LineSegment.
          */
@@ -113,12 +126,13 @@ public class Day18 {
 
         /**
          * Returns the Orientation of other as it relates to this LineSegment.
+         *
          * @param other The point the orientation is calculated in relation to
          * @return The Orientation
          */
         public Orientation orientation(Point2D other) {
             double orientation = (end.y - start.y) * (other.x - end.x) -
-                    (end.x - start .x) * (other.y - end.y);
+                    (end.x - start.x) * (other.y - end.y);
 
             if (Math.abs(orientation) >= 0 && orientation < Point2D.EPSILON) {
                 return Orientation.COLLINEAR;
@@ -171,7 +185,7 @@ public class Day18 {
             var perimeter = 0L;
 
             for (int i = 0; i < vertices.size(); i++) {
-                perimeter += getSegment(i).length();
+                perimeter += (long) getSegment(i).length();
             }
             return perimeter;
         }
@@ -240,8 +254,12 @@ public class Day18 {
     public record VertexInfo(Direction direction, int length, String color) {
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof VertexInfo that)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof VertexInfo that)) {
+                return false;
+            }
             return length == that.length && direction == that.direction && color.equals(that.color);
         }
 
@@ -332,13 +350,13 @@ public class Day18 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var lagoon = Lagoon.build(new Point2D(0, 0), stream);
             var start = Instant.now();
             var totalArea = lagoon.calculateArea();
             var end = Instant.now();
-            LOGGER.info(String.format("Total area: " + (long) totalArea + " in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total area: %d in %d ns",
+                    (long) totalArea, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -347,13 +365,13 @@ public class Day18 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var lagoon = Lagoon.build(new Point2D(0, 0), stream, true);
             var start = Instant.now();
             var totalArea = lagoon.calculateArea();
             var end = Instant.now();
-            LOGGER.info(String.format("Total area: " + (long) totalArea + " in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total area: %d in %d ns",
+                    (long) totalArea, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -361,7 +379,7 @@ public class Day18 {
 
     private static void part3() {
         // Part 3
-        LOGGER.info(String.format("Part 3: Start!");
+        LOGGER.info("Part 3: Start!");
         var line1 = new LineSegment(new Point2D(1, 1), new Point2D(1, 10));
         var line2 = new LineSegment(new Point2D(1, -2), new Point2D(1, 12));
         var line3 = new LineSegment(new Point2D(1, 2), new Point2D(1, 12));
@@ -369,41 +387,41 @@ public class Day18 {
         var line5 = new LineSegment(new Point2D(1.1, 0.5), new Point2D(1.1, 10.1));
         var line6 = new LineSegment(new Point2D(0.9, 0.5), new Point2D(0.9, 10.1));
 
-        LOGGER.info(String.format("Line 1: " + line1);
-        LOGGER.info(String.format("Line 2: " + line2);
-        LOGGER.info(String.format("Line 3: " + line3);
-        LOGGER.info(String.format("Line 4: " + line4);
-        LOGGER.info(String.format("Line 5: " + line5);
-        LOGGER.info(String.format("Line 6: " + line6);
+        LOGGER.info(String.format("Line 1: %s", line1));
+        LOGGER.info(String.format("Line 2: %s", line2));
+        LOGGER.info(String.format("Line 3: %s", line3));
+        LOGGER.info(String.format("Line 4: %s", line4));
+        LOGGER.info(String.format("Line 5: %s", line5));
+        LOGGER.info(String.format("Line 6: %s", line6));
 
         var start = Instant.now();
         var intersectionPoint = line1.intersect(line3);
         var end = Instant.now();
-        LOGGER.info(String.format("Test Condition 1: Line 1 and Line 3 intersect at point: " + intersectionPoint + " in " +
-                Duration.between(start, end).toNanos() + " ns");
+        LOGGER.info(String.format("Test Condition 1: Line 1 and Line 3 intersect at point: %s in %d ns",
+                intersectionPoint, Duration.between(start, end).toNanos()));
 
         start = Instant.now();
         intersectionPoint = line1.intersect(line4);
         end = Instant.now();
-        LOGGER.info(String.format("Test Condition 2: Line 1 and Line 4 intersect at point: " + intersectionPoint + " in " +
-                Duration.between(start, end).toNanos() + " ns");
+        LOGGER.info(String.format("Test Condition 2: Line 1 and Line 4 intersect at point: %s in %d ns",
+                intersectionPoint, Duration.between(start, end).toNanos()));
 
         start = Instant.now();
         intersectionPoint = line1.intersect(line2);
         end = Instant.now();
-        LOGGER.info(String.format("Test Condition 3: Line 1 and Line 2 intersect at point: " + intersectionPoint + " in " +
-                Duration.between(start, end).toNanos() + " ns");
+        LOGGER.info(String.format("Test Condition 3: Line 1 and Line 2 intersect at point: %s in %d ns",
+                intersectionPoint, Duration.between(start, end).toNanos()));
 
         start = Instant.now();
         intersectionPoint = line1.intersect(line5);
         end = Instant.now();
-        LOGGER.info(String.format("Test Condition 4: Line 1 and Line 5 intersect at point: " + intersectionPoint + " in " +
-                Duration.between(start, end).toNanos() + " ns");
+        LOGGER.info(String.format("Test Condition 4: Line 1 and Line 5 intersect at point: %s in %d ns",
+                intersectionPoint, Duration.between(start, end).toNanos()));
 
         start = Instant.now();
         intersectionPoint = line1.intersect(line6);
         end = Instant.now();
-        LOGGER.info(String.format("Test Condition 5: Line 1 and Line 6 intersect at point: " + intersectionPoint + " in " +
-                Duration.between(start, end).toNanos() + " ns");
+        LOGGER.info(String.format("Test Condition 5: Line 1 and Line 6 intersect at point: %s in %d ns",
+                intersectionPoint, Duration.between(start, end).toNanos()));
     }
 }

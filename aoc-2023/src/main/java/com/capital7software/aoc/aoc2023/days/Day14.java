@@ -15,9 +15,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Day14 {
+    private static final Logger LOGGER = Logger.getLogger(Day14.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day14() {
+
+    }
+
 
     private enum Rock {
         ROUNDED_ROCK('O'),
@@ -96,8 +106,12 @@ public class Day14 {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Tile tile)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Tile tile)) {
+                return false;
+            }
             return getColumn() == tile.getColumn() && getRow() == tile.getRow() && getRock() == tile.getRock();
         }
 
@@ -192,7 +206,7 @@ public class Day14 {
             var predicate = getLoopPredicate(direction);
             var loopStart = getLoopStart(direction);
             if (print) {
-                LOGGER.info(String.format("Tilting platform " + direction + "...");
+                LOGGER.info(String.format("Tilting platform %s...", direction));
             }
 
             // Go through each row / column depending on the direction
@@ -203,8 +217,8 @@ public class Day14 {
             }
 
             if (print) {
-                LOGGER.info(String.format("New layout");
-                LOGGER.info(String.format(this);
+                LOGGER.info("New layout");
+                LOGGER.info(String.format("%s", this));
             }
         }
 
@@ -326,17 +340,17 @@ public class Day14 {
             var loadCalculator = getLoadCalculator(direction);
 
             if (print) {
-                LOGGER.info(String.format("Calculating the load on the " + direction + " support beams...");
+                LOGGER.info(String.format("Calculating the load on the %s support beams...", direction));
             }
 
             supportLoad = tiles.stream()
                     .filter(it -> it.getRock() == Rock.ROUNDED_ROCK)
-                    .mapToLong(it -> (long)loadCalculator.apply(it))
+                    .mapToLong(it -> (long) loadCalculator.apply(it))
                     .sum();
 
             if (print) {
-                LOGGER.info(String.format("Calculated load: ");
-                LOGGER.info(String.format(supportLoad);
+                LOGGER.info("Calculated load: ");
+                LOGGER.info(String.format("%s", supportLoad));
             }
 
             return supportLoad;
@@ -384,11 +398,11 @@ public class Day14 {
          * number of times.
          *
          * @param cyclesToPerform The requested number of times to cycle the platform.
-         * @param print If true, prints some output to the console.
+         * @param print           If true, prints some output to the console.
          */
         public void spinCycle(long cyclesToPerform, boolean print) {
             if (print) {
-                LOGGER.info(String.format("Performing " + cyclesToPerform + " spin cycle(s)...");
+                LOGGER.info(String.format("Performing %d spin cycles(s)...", cyclesToPerform));
             }
             var gridCache = new ArrayList<List<Tile>>();
             var detectedCycleIndex = 0L;
@@ -402,8 +416,8 @@ public class Day14 {
                 currentTiles = cycle();
                 cycleCount++;
                 if (print) {
-                    LOGGER.info(String.format("After " + cycleCount + " spin cyclesToPerform the layout is:");
-                    LOGGER.info(String.format(this);
+                    LOGGER.info(String.format("After %d spin cyclesToPerform the layout is:", cycleCount));
+                    LOGGER.info(String.format("%s", this));
                 }
                 var index = gridCache.indexOf(currentTiles);
 
@@ -425,17 +439,20 @@ public class Day14 {
                 calculatedIndex = detectedCycleIndex +
                         ((cyclesToPerform - detectedCycleIndex) % (cycleCount - detectedCycleIndex));
                 if (print) {
-                    LOGGER.info(String.format("Duplicate Cycle detected after " + cycleCount + " cycle(s) and the spin cycle has been stopped!");
-                    LOGGER.info(String.format("The duplicate Cycle was found at iteration " + detectedCycleIndex + "!");
-                    LOGGER.info(String.format("The platform is in the state after " + calculatedIndex + " cycle(s) have been performed!");
-                    LOGGER.info(String.format("This is a state equal if all " + cyclesToPerform + " cycle(s) had been performed!");
+                    LOGGER.info(String.format("Duplicate Cycle detected after %d cycle(s) and the spin cycle has been stopped!",
+                            cycleCount));
+                    LOGGER.info(String.format("The duplicate Cycle was found at iteration %d!", detectedCycleIndex));
+                    LOGGER.info(String.format("The platform is in the state after %d cycle(s) have been performed!",
+                            calculatedIndex));
+                    LOGGER.info(String.format("This is a state equal if all %d cycle(s) had been performed!",
+                            cyclesToPerform));
                 }
                 tiles.clear();
                 tiles.addAll(gridCache.get((int) calculatedIndex));
             }
 
             if (print) {
-                LOGGER.info(String.format("Performed " + cycleCount + " spin cycle(s)");
+                LOGGER.info(String.format("Performed %d spin cycle(s)!", cycleCount));
             }
         }
 
@@ -472,7 +489,7 @@ public class Day14 {
     private static void part1(Path path, boolean print) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var platform = loadPlatform(stream, print);
             var start = Instant.now();
 //            LOGGER.info(String.format("Tilting platform North...");
@@ -480,8 +497,8 @@ public class Day14 {
 //            LOGGER.info(String.format("Calculating load on the North support beams...");
             var totalLoad = platform.calculateLoad(Direction.NORTH, print);
             var end = Instant.now();
-            LOGGER.info(String.format("Total load on the North support beams is: " + totalLoad + " in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total load on the North support beams is: %d in %d ns ",
+                    totalLoad, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -490,7 +507,7 @@ public class Day14 {
     private static void part2(Path path, boolean print) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var platform = loadPlatform(stream, print);
             var spinCount = 1_000_000_000;
             var start = Instant.now();
@@ -499,8 +516,8 @@ public class Day14 {
 //            LOGGER.info(String.format("Calculating load on the North support beams...");
             var totalLoad = platform.calculateLoad(Direction.NORTH, print);
             var end = Instant.now();
-            LOGGER.info(String.format("Total load on the North support beams is: " + totalLoad + " in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total load on the North support beams is: %d in %d ns",
+                    totalLoad, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -510,8 +527,8 @@ public class Day14 {
         var platform = Platform.parse(stream);
 
         if (print) {
-            LOGGER.info(String.format("Platform contains " + platform.tiles().size() + " tiles!");
-            LOGGER.info(String.format(platform);
+            LOGGER.info(String.format("Platform contains %d tiles!", platform.tiles().size()));
+            LOGGER.info(String.format("%s", platform));
         }
         return platform;
     }

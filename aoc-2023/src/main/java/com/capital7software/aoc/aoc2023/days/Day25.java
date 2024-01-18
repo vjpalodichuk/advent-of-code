@@ -8,9 +8,19 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Day25 {
+    private static final Logger LOGGER = Logger.getLogger(Day25.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day25() {
+
+    }
+
     public static class Pair<T> {
         private T first;
         private T second;
@@ -195,11 +205,11 @@ public class Day25 {
                 // Should only have two nodes left
                 keys = nodes.keySet().stream().toList();
 
-                if (nodes.get(keys.get(0)).size() <= cuts) {
+                if (nodes.get(keys.getFirst()).size() <= cuts) {
                     break;
                 }
             }
-            return nodeSizes.get(keys.get(0)) * nodeSizes.get(keys.get(1));
+            return nodeSizes.get(keys.getFirst()) * nodeSizes.get(keys.get(1));
         }
 
         public static WeatherStation build(Stream<String> stream) {
@@ -248,13 +258,13 @@ public class Day25 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var start = Instant.now();
             var station = WeatherStation.build(stream);
-            var sum = WeatherStation.findMinimumCut(station, 3);
+            var product = WeatherStation.findMinimumCut(station, 3);
             var end = Instant.now();
-            LOGGER.info(String.format("The product of the two groups of components is: "
-                    + sum + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("The product of the two groups of components is: %d in %d ns",
+                    product, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -262,7 +272,7 @@ public class Day25 {
 
     private static void part2() {
         // Part 2
-        LOGGER.info(String.format("Part 2: Start!");
-        LOGGER.info(String.format("Merry Christmas! Push the BIG RED button to continue!");
+        LOGGER.info("Part 2: Start!");
+        LOGGER.info("Merry Christmas! Push the BIG RED button to continue!");
     }
 }

@@ -7,13 +7,28 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Day17 {
+    private static final Logger LOGGER = Logger.getLogger(Day17.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day17() {
+
+    }
+
     private record Point(int column, int row) {
         public Point pointInDirection(Direction direction) {
             return new Point(column() + direction.columnOffset, row() + direction.rowOffset);
@@ -113,20 +128,25 @@ public class Day17 {
                 rowTiles.add(new Tile(Integer.parseInt(String.valueOf(chars[column])), new Point(column, row)));
             }
 
-            return rowTiles.size() > 0;
+            return !rowTiles.isEmpty();
         }
 
         public Tile get(int column, int row) {
             return tiles.get(column + (row * columns));
         }
 
-        public Tile get(Point point) { return get(point.column(), point.row());}
+        public Tile get(Point point) {
+            return get(point.column(), point.row());
+        }
 
         public boolean isOnGrid(int column, int row) {
             return column >= 0 && column < columns() && row >= 0 && row < rows();
         }
 
-        public boolean isOnGrid(Point point) { return isOnGrid(point.column(), point.row()); }
+        public boolean isOnGrid(Point point) {
+            return isOnGrid(point.column(), point.row());
+        }
+
         public Tile getFirst() {
             return get(0, 0);
         }
@@ -140,8 +160,12 @@ public class Day17 {
         private record Path(Tile tile, Direction direction, int steps) {
             @Override
             public boolean equals(Object o) {
-                if (this == o) return true;
-                if (!(o instanceof Path path)) return false;
+                if (this == o) {
+                    return true;
+                }
+                if (!(o instanceof Path path)) {
+                    return false;
+                }
                 return steps == path.steps && tile.equals(path.tile) && direction == path.direction;
             }
 
@@ -152,14 +176,22 @@ public class Day17 {
         }
 
         private record PathCost(Crucible.Path path, long cost, long distanceToGoal) implements Comparable<PathCost> {
-            public long pathCost() { return cost; }
+            public long pathCost() {
+                return cost;
+            }
 
-            public long stepsInDirection() { return path.steps(); }
+            public long stepsInDirection() {
+                return path.steps();
+            }
 
             @Override
             public boolean equals(Object o) {
-                if (this == o) return true;
-                if (!(o instanceof PathCost pathCost)) return false;
+                if (this == o) {
+                    return true;
+                }
+                if (!(o instanceof PathCost pathCost)) {
+                    return false;
+                }
                 return cost == pathCost.cost && distanceToGoal == pathCost.distanceToGoal && path.equals(pathCost.path);
             }
 
@@ -328,15 +360,15 @@ public class Day17 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var grid = Grid.parse(stream);
             var crucible = new Crucible(grid, 1, 3);
             IntStream.range(0, 5).forEach(it -> {
                 var start = Instant.now();
                 var sum = crucible.calculateMinimumHeatLoss();
                 var end = Instant.now();
-                LOGGER.info(String.format("Minimum heat loss: " + sum + " in " +
-                        Duration.between(start, end).toNanos() + " ns");
+                LOGGER.info(String.format("Minimum heat loss: %d in %d ns",
+                        sum, Duration.between(start, end).toNanos()));
             });
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -346,15 +378,15 @@ public class Day17 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var grid = Grid.parse(stream);
             var crucible = new Crucible(grid, 4, 10);
             IntStream.range(0, 5).forEach(it -> {
                 var start = Instant.now();
                 var sum = crucible.calculateMinimumHeatLoss();
                 var end = Instant.now();
-                LOGGER.info(String.format("Minimum heat loss: " + sum + " in " +
-                        Duration.between(start, end).toNanos() + " ns");
+                LOGGER.info(String.format("Minimum heat loss: %d in %d ns",
+                        sum, Duration.between(start, end).toNanos()));
             });
         } catch (IOException e) {
             throw new RuntimeException(e);

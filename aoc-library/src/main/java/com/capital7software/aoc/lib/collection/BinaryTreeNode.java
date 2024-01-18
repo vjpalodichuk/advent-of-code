@@ -310,10 +310,8 @@ public class BinaryTreeNode<T extends Comparable<T>> implements TreeNode<T>, Com
      *              children,...,n for the nth child).
      */
     public void print(int depth) {
-        int i;
-
         // Print the indentation and the data from the current node:
-        LOGGER.info(INDENT.repeat(depth - 1));
+        LOGGER.info(INDENT.repeat(depth));
 
         LOGGER.info(Objects.toString(value));
 
@@ -321,7 +319,7 @@ public class BinaryTreeNode<T extends Comparable<T>> implements TreeNode<T>, Com
         if (left != null) {
             left.print(depth + 1);
         } else if (right != null) {
-            LOGGER.info(INDENT.repeat(depth - 1));
+            LOGGER.info(INDENT.repeat(depth));
             LOGGER.info(DASH);
         }
 
@@ -329,7 +327,7 @@ public class BinaryTreeNode<T extends Comparable<T>> implements TreeNode<T>, Com
         if (right != null) {
             right.print(depth + 1);
         } else if (left != null) {
-            LOGGER.info(INDENT.repeat(depth - 1));
+            LOGGER.info(INDENT.repeat(depth));
 
             LOGGER.info(DASH);
         }
@@ -435,7 +433,7 @@ public class BinaryTreeNode<T extends Comparable<T>> implements TreeNode<T>, Com
         } else {
             leftCopy = treeCopy(source.left);
             rightCopy = treeCopy(source.right);
-            return new BinaryTreeNode<T>(source.value, leftCopy, rightCopy);
+            return new BinaryTreeNode<>(source.value, leftCopy, rightCopy);
         }
     }
 

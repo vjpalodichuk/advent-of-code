@@ -9,13 +9,34 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class Day20 {
+    private static final Logger LOGGER = Logger.getLogger(Day20.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day20() {
+
+    }
+
     public enum PulseType {
         HIGH,
         LOW
@@ -150,8 +171,12 @@ public class Day20 {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof BaseModule that)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof BaseModule that)) {
+                return false;
+            }
             return getId().equals(that.getId());
         }
 
@@ -490,11 +515,10 @@ public class Day20 {
         }
 
         /**
-         *
-         * @param id The ID of the module we want to send a low pulse to.
+         * @param id                 The ID of the module we want to send a low pulse to.
          * @param requiredSouceCount If the specified ID has more than one source, then how many of them have to
          *                           send a low pulse to the destination?
-         * @param maxButtonPresses The maximum number of button presses to perform.
+         * @param maxButtonPresses   The maximum number of button presses to perform.
          * @return The minimum number of button presses needed to send a low pulse to the specified module.
          * Or -1 if the maximum number of button presses was reached before a low pulse would be sent to the
          * specified module.
@@ -567,8 +591,8 @@ public class Day20 {
 
             if (lcms.size() > 1) {
                 result = lcms.stream().reduce(MathOperations::lcm).orElse(0L);
-            } else if (lcms.size() == 1){
-                result = lcms.get(0);
+            } else if (lcms.size() == 1) {
+                result = lcms.getFirst();
             }
 
             return result;
@@ -647,14 +671,14 @@ public class Day20 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var headquarters = Headquarters.parse(stream);
             var start = Instant.now();
             headquarters.pushButton(1_000);
             var pulseProduct = headquarters.getLowPulseCount() * headquarters.getHighPulseCount();
             var end = Instant.now();
-            LOGGER.info(String.format("Product of pulse types sent: " + pulseProduct + " in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Product of pulse types sent: %d in %d ns",
+                    pulseProduct, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -663,13 +687,13 @@ public class Day20 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var headquarters = Headquarters.parse(stream);
             var start = Instant.now();
             var requiredPresses = headquarters.buttonPressesNeededToSendLowPulseToModule("rx", 1, 10_000);
             var end = Instant.now();
-            LOGGER.info(String.format("Number of button presses needed to activate rx module: " + requiredPresses + " in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Number of button presses needed to activate rx module: %d in %d ns",
+                    requiredPresses, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

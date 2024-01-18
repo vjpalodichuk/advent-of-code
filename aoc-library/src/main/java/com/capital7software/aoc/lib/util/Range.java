@@ -57,6 +57,24 @@ public record Range<T extends Number & Comparable<T>>(@NotNull T start, @NotNull
     }
 
     /**
+     * The size of this Range is the end - start. This means that the value returned is the exclusive size.
+     *
+     * @return The exclusive size of this Range.
+     */
+    public long size() {
+        return MathOperations.subtract(end, start).longValue();
+    }
+
+    /**
+     * The inclusive size of this Range is the size + 1.
+     *
+     * @return The inclusive size of this Range.
+     */
+    public long sizeInclusive() {
+        return size() + 1L;
+    }
+
+    /**
      * Creates a new Range with the inclusive start and the exclusive end is
      * the start plus the specified extent.
      *

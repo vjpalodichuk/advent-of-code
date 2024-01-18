@@ -1,5 +1,7 @@
 package com.capital7software.aoc.aoc2023.days;
 
+import com.capital7software.aoc.lib.util.Range;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -13,9 +15,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Day19 {
+    private static final Logger LOGGER = Logger.getLogger(Day19.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day19() {
+
+    }
+
     private record Part(int x, int m, int a, int s) {
         public long sum() {
             return x + m + a + s;
@@ -238,11 +250,11 @@ public class Day19 {
         }
 
         public long calculateCombinations(String startingWorkflow) {
-            var xRange = new Day10.Range(1, 4000);
-            var mRange = new Day10.Range(1, 4000);
-            var sRange = new Day10.Range(1, 4000);
-            var aRange = new Day10.Range(1, 4000);
-            var workMap = new HashMap<String, Day10.Range>();
+            var xRange = new Range<>(1L, 4_000L);
+            var mRange = new Range<>(1L, 4_000L);
+            var sRange = new Range<>(1L, 4_000L);
+            var aRange = new Range<>(1L, 4_000L);
+            var workMap = new HashMap<String, Range<Long>>();
             workMap.put("x", xRange);
             workMap.put("m", mRange);
             workMap.put("s", sRange);
@@ -253,7 +265,7 @@ public class Day19 {
             // We sum up the products of the ranges!
             return uniqueRanges.stream()
                     .mapToLong(map -> map.values().stream()
-                            .mapToLong(Day10.Range::count)
+                            .mapToLong(Range::sizeInclusive)
                             .reduce(1L, (product, sum) -> product * sum))
                     .sum();
         }
@@ -270,28 +282,28 @@ public class Day19 {
          * @param high Pass true to split on the high end, else the low end.
          * @return A list with two new ranges.
          */
-        public List<Day10.Range> split(Day10.Range range, int splitPoint, boolean high) {
-            var result = new LinkedList<Day10.Range>();
+        public List<Range<Long>> split(Range<Long> range, int splitPoint, boolean high) {
+            var result = new LinkedList<Range<Long>>();
             var toSplit = high ? splitPoint + 1 : splitPoint;
 
-            result.add(Day10.Range.of(range.low(), Math.min(toSplit - 1, range.high())));
-            result.add(Day10.Range.of(Math.max(range.low(), toSplit), range.high()));
+            result.add(new Range<>(range.start(), Math.min(toSplit - 1, range.end())));
+            result.add(new Range<>(Math.max(range.start(), toSplit), range.end()));
             return result;
         }
 
-        private LinkedList<Map<String, Day10.Range>> calculateCombinations(
-                Map<String, Day10.Range> ranges,
+        private LinkedList<Map<String, Range<Long>>> calculateCombinations(
+                Map<String, Range<Long>> ranges,
                 String idOrDestination
         ) {
             // Search until we hit a node that ends at A
             // Adjust the ranges as we go
             // If we hit A, we add that range to the list and return from that path
             // We continue until we have checked everything.
-            var result = new LinkedList<Map<String, Day10.Range>>();
+            var result = new LinkedList<Map<String, Range<Long>>>();
 
             // Stopping conditions
             // If any of the ranges are empty, we stop!
-            if (ranges.values().stream().anyMatch(Day10.Range::isEmpty)) {
+            if (ranges.values().stream().anyMatch(Range::isEmpty)) {
                 return result;
             } else if (idOrDestination.equals("A")) {
                 // Just accept it!
@@ -310,8 +322,8 @@ public class Day19 {
                     var currentRange = currentRanges.get(predicate.propertyCode);
 
                     // Need to split the range!
-                    List<Day10.Range> split = split(currentRange, predicate.predicateValue, false);
-                    currentRanges.put(predicate.propertyCode, split.get(0)); // low
+                    List<Range<Long>> split = split(currentRange, predicate.predicateValue, false);
+                    currentRanges.put(predicate.propertyCode, split.getFirst()); // low
                     // Continue to recursively process the low half!
                     result.addAll(calculateCombinations(currentRanges, predicate.output));
                     // Continue processing rules with the high half!
@@ -321,13 +333,13 @@ public class Day19 {
                     var currentRanges = new HashMap<>(ranges);
                     var currentRange = currentRanges.get(predicate.propertyCode);
                     // Pretty much the same as above but we add one to the predicateValue to ensure a proper split!
-                    List<Day10.Range> split = split(currentRange, predicate.predicateValue, true);
+                    List<Range<Long>> split = split(currentRange, predicate.predicateValue, true);
                     currentRanges.put(predicate.propertyCode, split.get(1)); // high
                     // Continue to recursively process the high half!
                     result.addAll(calculateCombinations(currentRanges, predicate.output));
                     // Continue processing rules with the low half!
                     ranges = new HashMap<>(ranges);
-                    ranges.put(predicate.propertyCode, split.get(0)); // low
+                    ranges.put(predicate.propertyCode, split.getFirst()); // low
                 } else {
                     // Moving to a new workflow
                     result.addAll(calculateCombinations(ranges, predicate.output));
@@ -383,16 +395,16 @@ public class Day19 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var manager = WorkflowManager.build(stream);
             var start = Instant.now();
             manager.run("in");
             var acceptedSum = manager.sumAccepted();
             var rejectedSum = manager.sumRejected();
             var end = Instant.now();
-            LOGGER.info(String.format("Sum of rejected parts: " + rejectedSum);
-            LOGGER.info(String.format("Sum of accepted parts: " + acceptedSum + " in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Sum of rejected parts: %d", rejectedSum));
+            LOGGER.info(String.format("Sum of accepted parts: %d in %d ns",
+                    acceptedSum, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -401,13 +413,13 @@ public class Day19 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var manager = WorkflowManager.build(stream);
             var start = Instant.now();
             var combinations = manager.calculateCombinations("in");
             var end = Instant.now();
-            LOGGER.info(String.format("Total possible combinations: " + combinations + " in " +
-                    Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total possible combinations: %d in %d ns",
+                    combinations, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -7,13 +7,28 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Day21 {
+    private static final Logger LOGGER = Logger.getLogger(Day21.class.getName());
+
+    /**
+     * Instantiates this Solution instance.
+     */
+    public Day21() {
+
+    }
+
 
     public enum Direction {
         NORTH(0, -1) {
@@ -80,9 +95,13 @@ public class Day21 {
             return rowOffset;
         }
 
-        public Direction opposite() { return null; }
+        public Direction opposite() {
+            return null;
+        }
 
-        public Set<Direction> getPerpendicular() { return Collections.emptySet(); }
+        public Set<Direction> getPerpendicular() {
+            return Collections.emptySet();
+        }
     }
 
     public interface Point {
@@ -134,8 +153,8 @@ public class Day21 {
         }
     }
 
-    public record GardenGrid<T extends Tile> (List<T> tiles, long rows,
-                              long columns) implements Grid<T, Point2DInt> {
+    public record GardenGrid<T extends Tile>(List<T> tiles, long rows,
+                                             long columns) implements Grid<T, Point2DInt> {
         @Override
         public T get(Point2DInt point) {
             return tiles.get((int) (point.x() + (columns * point.y())));
@@ -159,6 +178,7 @@ public class Day21 {
 
     private record Garden(GardenGrid<GardenTile> grid, Point2DInt initialPosition) {
         public static final Long LONG_WALK_THRESHOLD = 100L;
+
         public static Garden build(Stream<String> stream) {
             var columns = new AtomicInteger(0);
             var rows = new AtomicInteger(0);
@@ -308,9 +328,9 @@ public class Day21 {
             double x3 = pointsToConsider.get(2).x();
             double y3 = pointsToConsider.get(2).y();
 
-            return (long) (((x-x2) * (x-x3)) / ((x1-x2) * (x1-x3)) * y1 +
-                    ((x-x1) * (x-x3)) / ((x2-x1) * (x2-x3)) * y2 +
-                    ((x-x1) * (x-x2)) / ((x3-x1) * (x3-x2)) * y3);
+            return (long) (((x - x2) * (x - x3)) / ((x1 - x2) * (x1 - x3)) * y1 +
+                    ((x - x1) * (x - x3)) / ((x2 - x1) * (x2 - x3)) * y2 +
+                    ((x - x1) * (x - x2)) / ((x3 - x1) * (x3 - x2)) * y3);
         }
 
         private void walkAndTrackPlots(
@@ -406,14 +426,14 @@ public class Day21 {
     private static void part1(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 1
-            LOGGER.info(String.format("Part 1: Start!");
+            LOGGER.info("Part 1: Start!");
             var garden = Garden.build(stream);
             var stepsToTake = 64;
             var start = Instant.now();
             var plotCount = garden.walk(stepsToTake, false);
             var end = Instant.now();
-            LOGGER.info(String.format("Total number of plots the Elf can reach in " + stepsToTake + " steps: "
-                    + plotCount + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total number of plots the Elf can reach in %d steps: %d in %d ns",
+                    stepsToTake, plotCount, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -422,14 +442,14 @@ public class Day21 {
     private static void part2(Path path) {
         try (var stream = Files.lines(path)) {
             // Part 2
-            LOGGER.info(String.format("Part 2: Start!");
+            LOGGER.info("Part 2: Start!");
             var garden = Garden.build(stream);
             var stepsToTake = 26501365;
             var start = Instant.now();
             var plotCount = garden.walk(stepsToTake, true);
             var end = Instant.now();
-            LOGGER.info(String.format("Total number of plots the Elf can reach in " + stepsToTake + " steps: "
-                    + plotCount + " in " + Duration.between(start, end).toNanos() + " ns");
+            LOGGER.info(String.format("Total number of plots the Elf can reach in %d steps: %d in %d ns",
+                    stepsToTake, plotCount, Duration.between(start, end).toNanos()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

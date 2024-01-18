@@ -62,7 +62,7 @@ public abstract class AdventOfCodeRunner {
                     String inputFilename;
                     if (args.length > 1 && args[1] != null && !args[1].trim().isBlank()) {
                         if (!Files.exists(Paths.get(args[1].trim()))) {
-                            LOGGER.info(String.format("%s cannot be found!", args[1]));
+                            LOGGER.severe(String.format("%s cannot be found!", args[1]));
                             printUsage();
                         } else {
                             inputFilename = args[1].trim();

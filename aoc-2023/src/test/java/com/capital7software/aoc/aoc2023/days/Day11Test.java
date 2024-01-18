@@ -20,7 +20,7 @@ class Day11Test extends AdventOfCodeTestBase {
     @Test
     void sumOfAllPossibleSpringConditionArrangements() {
         var instance = new Day11();
-        int expected = 21;
+        int expected = 374;
         var actual = instance.sumOfAllPairsShortestPath(lines, 1, false);
         assertEquals(expected, actual, "The sum of the shortest paths " +
                 "is not what was expected: " + expected);

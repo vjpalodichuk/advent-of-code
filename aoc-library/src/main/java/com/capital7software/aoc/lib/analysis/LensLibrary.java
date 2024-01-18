@@ -1,39 +1,16 @@
-package com.capital7software.aoc.aoc2023.days;
+package com.capital7software.aoc.lib.analysis;
 
-import com.capital7software.aoc.lib.AdventOfCodeSolution;
-import com.capital7software.aoc.lib.analysis.LensLibrary;
 import com.capital7software.aoc.lib.string.HashString;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Map;
+import java.util.Objects;
 
 /**
- * --- Day 15: Lens Library ---<br><br>
- * The newly-focused parabolic reflector dish is sending all the collected light to a point on the
- * side of yet another mountain - the largest mountain on Lava Island. As you approach the mountain,
- * you find that the light is being collected by the wall of a large facility embedded in the mountainside.
- * <p><br>
- * You find a door under a large sign that says "Lava Production Facility" and next to a smaller sign
- * that says "Danger - Personal Protective Equipment required beyond this point".
- * <p><br>
- * As you step inside, you are immediately greeted by a somewhat panicked reindeer wearing goggles and
- * a loose-fitting hard hat. The reindeer leads you to a shelf of goggles and hard hats (you quickly
- * find some that fit) and then further into the facility. At one point, you pass a button with a faint
- * snout mark and the label "PUSH FOR HELP". No wonder you were loaded into that trebuchet so quickly!
- * <p><br>
- * You pass through a final set of doors surrounded with even more warning signs and into what must be
- * the room that collects all the light from outside. As you admire the large assortment of lenses
- * available to further focus the light, the reindeer brings you a book titled "Initialization Manual".
- * <p><br>
- * "Hello!", the book cheerfully begins, apparently unaware of the concerned reindeer reading over your
- * shoulder. "This procedure will let you bring the Lava Production Facility online - all without
- * burning or melting anything unintended!"
- * <p><br>
- * "Before you begin, please be prepared to use the Holiday ASCII String Helper algorithm (appendix 1A)."
- * You turn to appendix 1A. The reindeer leans closer with interest.
- * <p><br>
  * The HASH algorithm is a way to turn any string of characters into a single number in the range 0 to 255.
  * To run the HASH algorithm on a string, start with a current value of 0. Then, for each character in
  * the string starting from the beginning:
@@ -108,9 +85,6 @@ import java.util.logging.Logger;
  * Run the HASH algorithm on each step in the initialization sequence. What is the sum of the results?
  * (The initialization sequence is one long line; be careful when copy-pasting it.)
  * <p><br>
- * Your puzzle answer was 521434.
- * <p><br>
- * --- Part Two ---<br><br>
  * You convince the reindeer to bring you the page; the page confirms that your HASH algorithm is working.
  * <p><br>
  * The book goes on to describe a series of 256 boxes numbered 0 through 255. The boxes are arranged
@@ -230,65 +204,151 @@ import java.util.logging.Logger;
  * <p><br>
  * With the help of an over-enthusiastic reindeer in a hard hat, follow the initialization sequence.
  * What is the focusing power of the resulting lens configuration?
- * <p><br>
- * Your puzzle answer was 248279.
  */
-public class Day15 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day15.class.getName());
+public class LensLibrary {
+    private static class Lens {
+        private final HashString label;
+        private int focalLength;
+
+        public Lens(HashString label, int focalLength) {
+            this.label = label;
+            this.focalLength = focalLength;
+        }
+
+        public Lens(String label) {
+            this(new HashString(label), -1);
+        }
+
+        public void setFocalLength(int focalLength) {
+            this.focalLength = focalLength;
+        }
+
+        public int hashAscii() {
+            return label.hashAscii();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Lens lens)) {
+                return false;
+            }
+            return label.equals(lens.label);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(label);
+        }
+    }
+
+    private static class LensBox {
+        private final int id;
+        private final LinkedList<Lens> lenses;
+
+        public LensBox(int id, LinkedList<Lens> lenses) {
+            this.id = id;
+            this.lenses = lenses;
+        }
+
+        public LensBox(int id) {
+            this(id, new LinkedList<>());
+        }
+
+        public long focusingPower() {
+            if (lenses.isEmpty()) {
+                return 0;
+            }
+
+            var power = 0L;
+            int count = 1;
+            for (var lens : lenses) {
+                power += (long) (id + 1) * count * lens.focalLength;
+                count++;
+            }
+
+            return power;
+        }
+
+        public void remove(Lens lens) {
+            lenses.remove(lens);
+        }
+
+        public void addOrReplace(Lens lens) {
+            int index = lenses.indexOf(lens);
+
+            if (index == -1) {
+                lenses.add(lens);
+            } else {
+                lenses.set(index, lens);
+            }
+        }
+    }
+
+    private static final String SPLIT_REGEX = "[-=]";
+    private final Map<Integer, LensBox> library;
+
+    private LensLibrary(@NotNull Map<Integer, LensBox> library) {
+        this.library = new HashMap<>(library);
+    }
+
+    private void processLensString(String lensString) {
+        var split = lensString.split(SPLIT_REGEX);
+        var lens = new Lens(split[0]);
+        var boxId = lens.hashAscii();
+        var box = library.computeIfAbsent(boxId, LensBox::new);
+
+        if (split.length == 1) {
+            // Remove an existing lens from the box.
+            box.remove(lens);
+        } else if (split.length == 2) {
+            lens.setFocalLength(Integer.parseInt(split[1]));
+            box.addOrReplace(lens);
+        } else {
+            throw new RuntimeException("Unable to process lensString: " + lensString);
+        }
+    }
 
     /**
-     * Instantiates this Solution instance.
-     */
-    public Day15() {
-
-    }
-
-    @Override
-    public String getDefaultInputFilename() {
-        return "inputs/input_day_15-01.txt";
-    }
-
-    @Override
-    public void runPart1(List<String> input) {
-        var start = Instant.now();
-        var answer = sumOfLensHashes(input);
-        var end = Instant.now();
-
-        LOGGER.info(String.format("The total sum of the lens hashes is: %d",
-                answer));
-        logTimings(LOGGER, start, end);
-    }
-
-    @Override
-    public void runPart2(List<String> input) {
-        var start = Instant.now();
-        var answer = focusingPowerOfLensConfiguration(input);
-        var end = Instant.now();
-
-        LOGGER.info(String.format("The total focusing power of the lens configuration is: %d",
-                answer));
-        logTimings(LOGGER, start, end);
-    }
-
-    /**
-     * Calculates and returns the total sum of all the Strings in the initialization sequence.
+     * Builds and returns a new LensLibrary loaded with the lenses from the specified List of input Strings.
      *
-     * @param input The lens configuration to parse.
-     * @return The total sum of all the Strings in the initialization sequence.
+     * @param input The List of input Strings to parse the lenses from.
+     * @return Aa new LensLibrary loaded with the lenses from the specified List of input Strings.
      */
-    public long sumOfLensHashes(@NotNull List<String> input) {
-        var strings = HashString.parse(input);
-        return strings.stream().mapToInt(HashString::hashAscii).sum();
+    public static LensLibrary buildLensLibrary(List<String> input) {
+        var library = new LensLibrary(new HashMap<>());
+
+        var builder = new StringBuilder();
+
+        input.forEach(builder::append);
+
+        var temp = builder.toString().replace("\n", "");
+        Arrays.stream(temp.split(","))
+                .map(String::new)
+                .forEach(library::processLensString);
+
+        return library;
     }
 
     /**
-     * Calculates and returns the total focusin power of the lens configuration.
+     * The focusing power of a single lens is the result of multiplying together:
+     * <ol>
+     *     <li>
+     *         One plus the box number of the lens in question.
+     *     </li>
+     *     <li>
+     *         The slot number of the lens within the box: 1 for the first lens, 2 for the second lens, and so on.
+     *     </li>
+     *     <li>
+     *         The focal length of the lens.
+     *     </li>
+     * </ol>
      *
-     * @param input The lens configuration to parse.
-     * @return The total focusin power of the lens configuration.
+     * @return The focusing power of all lenses in this library.
      */
-    public long focusingPowerOfLensConfiguration(@NotNull List<String> input) {
-        var library = LensLibrary.buildLensLibrary(input);
-        return library.focusingPower();
+    public long focusingPower() {
+        return library.values().stream().mapToLong(LensBox::focusingPower).sum();
     }
 }

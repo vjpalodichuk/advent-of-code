@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * --- Day 7: Camel Cards ---<br>
+ * --- Day 7: Camel Cards ---<br><br>
  * Your all-expenses-paid trip turns out to be a one-way, five-minute ride in an airship. (At least
  * it's a cool airship!) It drops you off at the edge of a vast desert and descends back to Island Island.
  * <p><br>
@@ -95,7 +95,7 @@ import java.util.logging.Logger;
  * <p><br>
  * Your puzzle answer was 251287184.
  * <p><br>
- * --- Part Two ---
+ * --- Part Two ---<br><br>
  * To make things a little more interesting, the Elf introduces one additional rule. Now, J cards
  * are jokers - wildcards that can act like whatever card would make the hand the strongest type possible.
  * <p><br>
@@ -116,6 +116,7 @@ import java.util.logging.Logger;
  * KTJJT 220<br>
  * QQQJA 483<br>
  * </code>
+ * <p><br>
  * 32T3K is still the only one pair; it doesn't contain any jokers, so its strength doesn't increase.<br>
  * KK677 is now the only two pair, making it the second-weakest hand.<br>
  * T55J5, KTJJT, and QQQJA are now all four of a kind! T55J5 gets rank 3, QQQJA gets rank 4,

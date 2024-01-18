@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * --- Day 2: Cube Conundrum ---<br>
+ * --- Day 2: Cube Conundrum ---<br><br>
  * You're launched high into the atmosphere! The apex of your trajectory just barely reaches the
  * surface of a large island floating in the sky. You gently land in a fluffy pile of leaves.
  * It's quite cold, but you don't see much snow. An Elf runs over to greet you.
@@ -65,7 +65,7 @@ import java.util.logging.Logger;
  * <p><br>
  * Your puzzle answer was 2101.
  * <p><br>
- * --- Part Two ---<br>
+ * --- Part Two ---<br><br>
  * The Elf says they've stopped producing snow because they aren't getting any water!
  * He isn't sure why the water stopped; however, he can show you how to get to the water
  * source to check it out for yourself. It's just up ahead!

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * --- Day 1: Trebuchet?! ---<br>
+ * --- Day 1: Trebuchet?! ---<br><br>
  * Something is wrong with global snow production, and you've been selected to take a look.
  * The Elves have even given you a map; on it, they've used stars to mark the top fifty locations
  * that are likely to be having problems.
@@ -55,7 +55,7 @@ import java.util.logging.Logger;
  * <p><br>
  * Your puzzle answer was 54338.
  * <p><br>
- * --- Part Two ---<br>
+ * --- Part Two ---<br><br>
  * Your calculation isn't quite right. It looks like some of the digits are actually spelled out w
  * ith letters: one, two, three, four, five, six, seven, eight, and nine also count as valid "digits".
  * <p><br>

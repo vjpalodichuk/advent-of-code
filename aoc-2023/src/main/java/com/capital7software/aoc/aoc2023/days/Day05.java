@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * --- Day 5: If You Give A Seed A Fertilizer ---<br>
+ * --- Day 5: If You Give A Seed A Fertilizer ---<br><br>
  * You take the boat and find the gardener right where you were told he would be: managing a giant
  * "garden" that looks more to you like a farm.
  * <p><br>
@@ -161,7 +161,7 @@ import java.util.logging.Logger;
  * <p><br>
  * Your puzzle answer was 1181555926.
  * <p><br>
- * --- Part Two ---<br>
+ * --- Part Two ---<br><br>
  * Everyone will starve if you only plant such a small number of seeds. Re-reading the almanac, it looks
  * like the seeds: line actually describes ranges of seed numbers.
  * <p><br>

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * --- Day 9: Mirage Maintenance ---<br>
+ * --- Day 9: Mirage Maintenance ---<br><br>
  * You ride the camel through the sandstorm and stop where the ghost's maps told you to stop.
  * The sandstorm subsequently subsides, somehow seeing you standing at an oasis!
  * <p><br>
@@ -123,7 +123,7 @@ import java.util.logging.Logger;
  * <p><br>
  * Your puzzle answer was 1901217887.
  * <p><br>
- * --- Part Two ---<br>
+ * --- Part Two ---<br><br>
  * Of course, it would be nice to have even more history included in your report. Surely it's safe
  * to just extrapolate backwards as well, right?
  * <p><br>

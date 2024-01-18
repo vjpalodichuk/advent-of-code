@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * --- Day 8: Haunted Wasteland ---<br>
+ * --- Day 8: Haunted Wasteland ---<br><br>
  * You're still riding a camel across Desert Island when you spot a sandstorm quickly approaching.
  * When you turn to warn the Elf, she disappears before your eyes! To be fair, she had just finished
  * warning you about ghosts a few minutes ago.
@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
  * <p><br>
  * Your puzzle answer was 13939.
  * <p><br>
- * --- Part Two ---<br>
+ * --- Part Two ---<br><br>
  * The sandstorm is upon you, and you aren't any closer to escaping the wasteland.
  * You had the camel follow the instructions, but you've barely left your starting position.
  * It's going to take significantly more steps to escape!

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * --- Day 4: Scratchcards ---<br>
+ * --- Day 4: Scratchcards ---<br><br>
  * The gondola takes you up. Strangely, though, the ground doesn't seem to be coming with you;
  * you're not climbing a mountain. As the circle of Snow Island recedes below you, an entire
  * new landmass suddenly appears above you! The gondola carries you to the surface of the new
@@ -70,7 +70,7 @@ import java.util.logging.Logger;
  * <p><br>
  * Your puzzle answer was 20117.
  * <p><br>
- * --- Part Two ---<br>
+ * --- Part Two ---<br><br>
  * Just as you're about to report your findings to the Elf, one of you realizes that the
  * rules have actually been printed on the back of every card this whole time.
  * <p><br>

@@ -76,6 +76,24 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
     }
 
     /**
+     * Returns the value in the first cell of this Grid2D.
+     *
+     * @return The value in the first cell of this Grid2D.
+     */
+    public T getFirst() {
+        return items[0];
+    }
+
+    /**
+     * Returns the value in the last cell of this Grid2D.
+     *
+     * @return The value in the last cell of this Grid2D.
+     */
+    public T getLast() {
+        return items[size() - 1];
+    }
+
+    /**
      * Sets the value at the specified space to the specified value, which may be null.
      *
      * @param x     The column of the space.
@@ -332,9 +350,10 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
 
     /**
      * Returns the size of this Grid2D. The size is calculated by multiplying columns * rows.
+     *
      * @return The size of this Grid2D.
      */
-    public long size() {
-        return rows * (long) columns;
+    public int size() {
+        return rows * columns;
     }
 }

@@ -1,25 +1,151 @@
 package com.capital7software.aoc.aoc2023.days;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import com.capital7software.aoc.lib.AdventOfCodeSolution;
+import com.capital7software.aoc.lib.grid.ClumsyCrucible;
 
-public class Day17 {
+import java.time.Instant;
+import java.util.List;
+import java.util.logging.Logger;
+
+/**
+ * --- Day 17: Clumsy Crucible ---<br><br>
+ * The lava starts flowing rapidly once the Lava Production Facility is operational. As you leave, the
+ * reindeer offers you a parachute, allowing you to quickly reach Gear Island.
+ * <p><br>
+ * As you descend, your bird's-eye view of Gear Island reveals why you had trouble finding anyone on
+ * your way up: half of Gear Island is empty, but the half below you is a giant factory city!
+ * <p><br>
+ * You land near the gradually-filling pool of lava at the base of your new lavafall. Lavaducts will
+ * eventually carry the lava throughout the city, but to make use of it immediately, Elves are loading
+ * it into large crucibles on wheels.
+ * <p><br>
+ * The crucibles are top-heavy and pushed by hand. Unfortunately, the crucibles become very difficult
+ * to steer at high speeds, and so it can be hard to go in a straight line for very long.
+ * <p><br>
+ * To get Desert Island the machine parts it needs as soon as possible, you'll need to find the best
+ * way to get the crucible from the lava pool to the machine parts factory. To do this, you need to
+ * minimize heat loss while choosing a route that doesn't require the crucible to go in a straight
+ * line for too long.
+ * <p><br>
+ * Fortunately, the Elves here have a map (your puzzle input) that uses traffic patterns, ambient
+ * temperature, and hundreds of other parameters to calculate exactly how much heat loss can be
+ * expected for a crucible entering any particular city block.
+ * <p><br>
+ * For example:
+ * <p><br>
+ * <code>
+ * 2413432311323<br>
+ * 3215453535623<br>
+ * 3255245654254<br>
+ * 3446585845452<br>
+ * 4546657867536<br>
+ * 1438598798454<br>
+ * 4457876987766<br>
+ * 3637877979653<br>
+ * 4654967986887<br>
+ * 4564679986453<br>
+ * 1224686865563<br>
+ * 2546548887735<br>
+ * 4322674655533<br>
+ * </code>
+ * <p><br>
+ * Each city block is marked by a single digit that represents the amount of heat loss if the
+ * crucible enters that block. The starting point, the lava pool, is the top-left city block;
+ * the destination, the machine parts factory, is the bottom-right city block. (Because you already
+ * start in the top-left block, you don't incur that block's heat loss unless you leave that block
+ * and then return to it.)
+ * <p><br>
+ * Because it is difficult to keep the top-heavy crucible going in a straight line for very long,
+ * it can move at most three blocks in a single direction before it must turn 90 degrees left or
+ * right. The crucible also can't reverse direction; after entering each city block, it may only
+ * turn left, continue straight, or turn right.
+ * <p><br>
+ * One way to minimize heat loss is this path:
+ * <p><br>
+ * <code>
+ * 2&#62;&#62;34^&#62;&#62;&#62;1323<br>
+ * 32v&#62;&#62;&#62;35v5623<br>
+ * 32552456v&#62;&#62;54<br>
+ * 3446585845v52<br>
+ * 4546657867v&#62;6<br>
+ * 14385987984v4<br>
+ * 44578769877v6<br>
+ * 36378779796v><br>
+ * 465496798688v<br>
+ * 456467998645v<br>
+ * 12246868655&#60;v<br>
+ * 25465488877v5<br>
+ * 43226746555v&#62;<br>
+ * </code>
+ * <p><br>
+ * This path never moves more than three consecutive blocks in the same direction and incurs a
+ * heat loss of only 102.
+ * <p><br>
+ * Directing the crucible from the lava pool to the machine parts factory, but not moving more
+ * than three consecutive blocks in the same direction, what is the least heat loss it can incur?
+ * <p><br>
+ * Your puzzle answer was 956.
+ * <p><br>
+ * --- Part Two ---<br><br>
+ * The crucibles of lava simply aren't large enough to provide an adequate supply of lava to the
+ * machine parts factory. Instead, the Elves are going to upgrade to ultra crucibles.
+ * <p><br>
+ * Ultra crucibles are even more difficult to steer than normal crucibles. Not only do they have
+ * trouble going in a straight line, but they also have trouble turning!
+ * <p><br>
+ * Once an ultra crucible starts moving in a direction, it needs to move a minimum of four blocks
+ * in that direction before it can turn (or even before it can stop at the end). However, it will
+ * eventually start to get wobbly: an ultra crucible can move a maximum of ten consecutive blocks
+ * without turning.
+ * <p><br>
+ * In the above example, an ultra crucible could follow this path to minimize heat loss:
+ * <p><br>
+ * <code>
+ * 2&#62;&#62;&#62;&#62;&#62;&#62;&#62;&#62;1323<br>
+ * 32154535v5623<br>
+ * 32552456v4254<br>
+ * 34465858v5452<br>
+ * 45466578v&#62;&#62;&#62;&#62;<br>
+ * 143859879845v<br>
+ * 445787698776v<br>
+ * 363787797965v<br>
+ * 465496798688v<br>
+ * 456467998645v<br>
+ * 122468686556v<br>
+ * 254654888773v<br>
+ * 432267465553v<br>
+ * </code>
+ * <p><br>
+ * In the above example, an ultra crucible would incur the minimum possible heat loss of 94.
+ * <p><br>
+ * Here's another example:
+ * <p><br>
+ * <code>
+ * 111111111111<br>
+ * 999999999991<br>
+ * 999999999991<br>
+ * 999999999991<br>
+ * 999999999991<br>
+ * </code>
+ * <p><br>
+ * Sadly, an ultra crucible would need to take an unfortunate path like this one:
+ * <p><br>
+ * <code>
+ * 1&#62;&#62;&#62;&#62;&#62;&#62;&#62;1111<br>
+ * 9999999v9991<br>
+ * 9999999v9991<br>
+ * 9999999v9991<br>
+ * 9999999v&#62;&#62;&#62;&#62;<br>
+ * </code>
+ * <p><br>
+ * This route causes the ultra crucible to incur the minimum possible heat loss of 71.
+ * <p><br>
+ * Directing the ultra crucible from the lava pool to the machine parts factory, what is the
+ * least heat loss it can incur?
+ * <p><br>
+ * Your puzzle answer was 1106.
+ */
+public class Day17 implements AdventOfCodeSolution {
     private static final Logger LOGGER = Logger.getLogger(Day17.class.getName());
 
     /**
@@ -29,367 +155,42 @@ public class Day17 {
 
     }
 
-    private record Point(int column, int row) {
-        public Point pointInDirection(Direction direction) {
-            return new Point(column() + direction.columnOffset, row() + direction.rowOffset);
-        }
+    @Override
+    public String getDefaultInputFilename() {
+        return "inputs/input_day_17-01.txt";
     }
 
-    private enum Direction {
-        NORTH(0, -1) {
-            public Direction getLeft() {
-                return WEST;
-            }
+    @Override
+    public void runPart1(List<String> input) {
+        var start = Instant.now();
+        var answer = calculateMinimumHeatLoss(input, 1, 3);
+        var end = Instant.now();
 
-            public Direction getRight() {
-                return EAST;
-            }
-        },
-        SOUTH(0, 1) {
-            public Direction getLeft() {
-                return EAST;
-            }
-
-            public Direction getRight() {
-                return WEST;
-            }
-        },
-        EAST(1, 0) {
-            public Direction getLeft() {
-                return NORTH;
-            }
-
-            public Direction getRight() {
-                return SOUTH;
-            }
-        },
-        WEST(-1, 0) {
-            public Direction getLeft() {
-                return SOUTH;
-            }
-
-            public Direction getRight() {
-                return NORTH;
-            }
-        };
-
-        private final int columnOffset;
-        private final int rowOffset;
-
-        Direction(int columnOffset, int rowOffset) {
-            this.columnOffset = columnOffset;
-            this.rowOffset = rowOffset;
-        }
-
-        public Direction getLeft() {
-            return null;
-        }
-
-        public Direction getRight() {
-            return null;
-        }
+        LOGGER.info(String.format("The minimum heat loss with minSteps 1 and maxSteps 2 is: %d",
+                answer));
+        logTimings(LOGGER, start, end);
     }
 
-    private record Tile(int heat, Point point) {
+    @Override
+    public void runPart2(List<String> input) {
+        var start = Instant.now();
+        var answer = calculateMinimumHeatLoss(input, 4, 10);
+        var end = Instant.now();
+
+        LOGGER.info(String.format("The minimum heat loss with minSteps 4 and maxSteps 10 is: %d",
+                answer));
+        logTimings(LOGGER, start, end);
     }
 
-    private record Grid(List<Tile> tiles, int columns, int rows) {
-
-        public static Grid parse(Stream<String> stream) {
-            var tiles = new ArrayList<Tile>();
-            var columns = new AtomicInteger(0);
-            var rows = new AtomicInteger(0);
-            var first = new AtomicBoolean(true);
-
-            stream.forEach(line -> {
-                if (first.get()) {
-                    columns.set(line.length());
-                    first.set(false);
-                }
-                var rowTiles = new ArrayList<Tile>(line.length());
-
-                if (parseRow(line, rowTiles, rows.get())) {
-                    rows.incrementAndGet();
-                    tiles.addAll(rowTiles);
-                    rowTiles.clear();
-                }
-            });
-            return new Grid(tiles, columns.get(), rows.get());
-        }
-
-        private static boolean parseRow(String line, ArrayList<Tile> rowTiles, int row) {
-            if (line == null || line.isBlank()) {
-                return false;
-            }
-
-            var chars = line.toCharArray();
-
-            for (int column = 0; column < chars.length; column++) {
-                rowTiles.add(new Tile(Integer.parseInt(String.valueOf(chars[column])), new Point(column, row)));
-            }
-
-            return !rowTiles.isEmpty();
-        }
-
-        public Tile get(int column, int row) {
-            return tiles.get(column + (row * columns));
-        }
-
-        public Tile get(Point point) {
-            return get(point.column(), point.row());
-        }
-
-        public boolean isOnGrid(int column, int row) {
-            return column >= 0 && column < columns() && row >= 0 && row < rows();
-        }
-
-        public boolean isOnGrid(Point point) {
-            return isOnGrid(point.column(), point.row());
-        }
-
-        public Tile getFirst() {
-            return get(0, 0);
-        }
-
-        public Tile getLast() {
-            return get(columns() - 1, rows() - 1);
-        }
-    }
-
-    private static class Crucible {
-        private record Path(Tile tile, Direction direction, int steps) {
-            @Override
-            public boolean equals(Object o) {
-                if (this == o) {
-                    return true;
-                }
-                if (!(o instanceof Path path)) {
-                    return false;
-                }
-                return steps == path.steps && tile.equals(path.tile) && direction == path.direction;
-            }
-
-            @Override
-            public int hashCode() {
-                return Objects.hash(tile, steps, direction);
-            }
-        }
-
-        private record PathCost(Crucible.Path path, long cost, long distanceToGoal) implements Comparable<PathCost> {
-            public long pathCost() {
-                return cost;
-            }
-
-            public long stepsInDirection() {
-                return path.steps();
-            }
-
-            @Override
-            public boolean equals(Object o) {
-                if (this == o) {
-                    return true;
-                }
-                if (!(o instanceof PathCost pathCost)) {
-                    return false;
-                }
-                return cost == pathCost.cost && distanceToGoal == pathCost.distanceToGoal && path.equals(pathCost.path);
-            }
-
-            @Override
-            public int hashCode() {
-                return Objects.hash(path, cost, distanceToGoal);
-            }
-
-            @Override
-            public int compareTo(PathCost o) {
-                return Long.compare(pathCost(), o.pathCost());
-            }
-        }
-
-        private final Grid grid;
-        private final Tile start;
-        private final Tile end;
-
-        private final int minSteps;
-        private final int maxSteps;
-
-        public Crucible(Grid grid, Tile start, Tile end, int minSteps, int maxSteps) {
-            this.grid = grid;
-            this.start = start;
-            this.end = end;
-            this.minSteps = minSteps;
-            this.maxSteps = maxSteps;
-        }
-
-        public Crucible(Grid grid, int minSteps, int maxSteps) {
-            this(grid, grid.getFirst(), grid.getLast(), minSteps, maxSteps);
-        }
-
-        public long calculateMinimumHeatLoss() {
-            var visited = new HashSet<Path>();
-
-            var costs = new HashMap<Path, Long>();
-
-            var queue = new PriorityQueue<PathCost>();
-
-            queue.offer(new PathCost(new Path(start, Direction.EAST, 0), 0, grid.rows() + grid.columns()));
-            queue.offer(new PathCost(new Path(start, Direction.SOUTH, 0), 0, grid.rows() + grid.columns()));
-
-            while (!queue.isEmpty()) {
-                var pathCost = queue.poll();
-
-                // Stopping conditions
-                if (pathCost.path().tile().equals(end) && pathCost.stepsInDirection() >= minSteps) {
-                    // We are at the end!
-                    return pathCost.cost();
-                }
-
-                if (visited.contains(pathCost.path())) {
-                    // We already have been here!
-                    continue;
-                }
-
-                visited.add(pathCost.path());
-
-                // Get our neighbors!
-                for (var neighbor : getNeighbors(pathCost)) {
-                    // Track how much of a heat loss the path will increase by
-                    var newCost = pathCost.cost() + neighbor.tile().heat();
-
-                    if (costs.computeIfAbsent(neighbor, it -> Long.MAX_VALUE) <= newCost) {
-                        continue; // New heat is greater than the existing heat for this path!!
-                    }
-                    costs.put(neighbor, newCost);
-                    var distanceToEnd = (end.point().column() - neighbor.tile().point().column()) +
-                            (end.point().row() - neighbor.tile().point().row());
-                    // Add this path back to the queue!
-                    queue.offer(new PathCost(neighbor, newCost, distanceToEnd));
-                }
-            }
-
-            return costs.keySet().stream().filter(it -> it.tile().equals(end))
-                    .mapToLong(costs::get)
-                    .min()
-                    .orElse(Long.MAX_VALUE);
-        }
-
-        private List<Path> getNeighbors(PathCost pathCost) {
-            var neighbors = new ArrayList<Path>(Direction.values().length);
-
-            if (pathCost.stepsInDirection() < minSteps) {
-                var neighbor = takeStepForward(pathCost.path());
-                if (neighbor != null) {
-                    neighbors.add(neighbor);
-                }
-            } else if (pathCost.stepsInDirection() < maxSteps) {
-                var neighbor = takeStepForward(pathCost.path());
-                if (neighbor != null) {
-                    neighbors.add(neighbor);
-                }
-                neighbor = takeStepRight(pathCost.path());
-                if (neighbor != null) {
-                    neighbors.add(neighbor);
-                }
-                neighbor = takeStepLeft(pathCost.path());
-                if (neighbor != null) {
-                    neighbors.add(neighbor);
-                }
-            } else {
-                var neighbor = takeStepRight(pathCost.path());
-                if (neighbor != null) {
-                    neighbors.add(neighbor);
-                }
-                neighbor = takeStepLeft(pathCost.path());
-                if (neighbor != null) {
-                    neighbors.add(neighbor);
-                }
-            }
-
-            return neighbors;
-        }
-
-        private Path takeStepForward(Path path) {
-            Point point = path.tile().point();
-            Direction direction = path.direction();
-            var newPoint = point.pointInDirection(direction);
-            if (grid.isOnGrid(newPoint)) {
-                var newTile = grid.get(newPoint);
-                return new Path(newTile, direction, path.steps() + 1);
-            }
-
-            return null;
-        }
-
-        private Path takeStepLeft(Path path) {
-            Point point = path.tile().point();
-            Direction direction = path.direction().getLeft();
-            var newPoint = point.pointInDirection(direction);
-            if (grid.isOnGrid(newPoint)) {
-                var newTile = grid.get(newPoint);
-                return new Path(newTile, direction, 1);
-            }
-
-            return null;
-        }
-
-        private Path takeStepRight(Path path) {
-            Point point = path.tile().point();
-            Direction direction = path.direction().getRight();
-            var newPoint = point.pointInDirection(direction);
-            if (grid.isOnGrid(newPoint)) {
-                var newTile = grid.get(newPoint);
-                return new Path(newTile, direction, 1);
-            }
-
-            return null;
-        }
-    }
-
-    private static final String inputFilename = "inputs/input_day_17-01.txt";
-
-    public static void main(String[] args) throws URISyntaxException {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        var url = classloader.getResource(inputFilename);
-        assert url != null;
-        var path = Paths.get(url.toURI());
-
-        part1(path);
-        part2(path);
-    }
-
-    private static void part1(Path path) {
-        try (var stream = Files.lines(path)) {
-            // Part 1
-            LOGGER.info("Part 1: Start!");
-            var grid = Grid.parse(stream);
-            var crucible = new Crucible(grid, 1, 3);
-            IntStream.range(0, 5).forEach(it -> {
-                var start = Instant.now();
-                var sum = crucible.calculateMinimumHeatLoss();
-                var end = Instant.now();
-                LOGGER.info(String.format("Minimum heat loss: %d in %d ns",
-                        sum, Duration.between(start, end).toNanos()));
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static void part2(Path path) {
-        try (var stream = Files.lines(path)) {
-            // Part 2
-            LOGGER.info("Part 2: Start!");
-            var grid = Grid.parse(stream);
-            var crucible = new Crucible(grid, 4, 10);
-            IntStream.range(0, 5).forEach(it -> {
-                var start = Instant.now();
-                var sum = crucible.calculateMinimumHeatLoss();
-                var end = Instant.now();
-                LOGGER.info(String.format("Minimum heat loss: %d in %d ns",
-                        sum, Duration.between(start, end).toNanos()));
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    /**
+     * Calculates and returns the heat loss of the path with the minimum heat loss.
+     * @param input The List of Strings to parse that contains the map of the grid.
+     * @param minSteps The number of steps in the same direction the crucible must travel before it can turn.
+     * @param maxSteps The number of steps in the same direction the crucible can travel before it must turn.
+     * @return The heat loss of the path with the minimum heat loss.
+     */
+    public long calculateMinimumHeatLoss(List<String> input, int minSteps, int maxSteps) {
+        var crucible = ClumsyCrucible.buildClumsyCrucible(input, minSteps, maxSteps);
+        return crucible.calculateMinimumHeatLoss();
     }
 }

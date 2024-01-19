@@ -1,34 +1,22 @@
 package com.capital7software.aoc2015.days;
 
+import com.capital7software.aoc.aoc2015.days.Day03;
+import com.capital7software.aoc.lib.AdventOfCodeTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class Day03Test {
-    List<String> lines;
-    Path path;
+class Day03Test extends AdventOfCodeTestBase {
+    private static final Logger LOGGER = Logger.getLogger(Day03Test.class.getName());
 
     @BeforeEach
     void setUp() {
         var instance = new Day03();
-        try {
-            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-            var url = classloader.getResource(instance.getDefaultInputFilename());
-            assert url != null;
-            path = Paths.get(url.toURI());
-            lines = Files.readAllLines(path);
-        } catch (URISyntaxException | IOException e) {
-            System.out.printf("Unable to load input data from: %s%n", path);
-            throw new RuntimeException(e);
-        }
+        setupFromFile(instance.getDefaultInputFilename());
     }
 
     @Test
@@ -53,5 +41,10 @@ class Day03Test {
 
             assertEquals(expected.get(i), actual);
         }
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return LOGGER;
     }
 }

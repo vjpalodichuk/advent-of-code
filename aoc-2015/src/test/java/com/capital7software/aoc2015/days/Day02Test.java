@@ -1,34 +1,21 @@
 package com.capital7software.aoc2015.days;
 
+import com.capital7software.aoc.aoc2015.days.Day02;
+import com.capital7software.aoc.lib.AdventOfCodeTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
+import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class Day02Test {
-    List<String> lines;
-    Path path;
+class Day02Test extends AdventOfCodeTestBase {
+    private static final Logger LOGGER = Logger.getLogger(Day02Test.class.getName());
 
     @BeforeEach
     void setUp() {
         var instance = new Day02();
-        try {
-            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-            var url = classloader.getResource(instance.getDefaultInputFilename());
-            assert url != null;
-            path = Paths.get(url.toURI());
-            lines = Files.readAllLines(path);
-        } catch (URISyntaxException | IOException e) {
-            System.out.printf("Unable to load input data from: %s%n", path);
-            throw new RuntimeException(e);
-        }
+        setupFromFile(instance.getDefaultInputFilename());
     }
 
     @Test
@@ -45,5 +32,10 @@ class Day02Test {
         var actual = instance.howMuchTotalRibbon(instance.loadPresents(lines));
 
         assertEquals(48, actual);
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return LOGGER;
     }
 }

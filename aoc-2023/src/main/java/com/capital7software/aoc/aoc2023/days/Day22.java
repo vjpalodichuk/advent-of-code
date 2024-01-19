@@ -36,7 +36,7 @@ public class Day22 {
 
     }
 
-    public record Point3DDouble(double x, double y, double z) implements Day21.Point {
+    public record Point3DDouble(double x, double y, double z) {
         public Point3DDouble minus(Point3DDouble other) {
             double newX = Math.abs(x - other.x);
             double newY = Math.abs(y - other.y);

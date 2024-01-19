@@ -55,11 +55,11 @@ import java.util.stream.LongStream;
  * its destination modules. For example:
  * <p><br>
  * <code>
- * broadcaster -> a, b, c
- * %a -> b
- * %b -> c
- * %c -> inv
- * &#38;inv -> a
+ * broadcaster -> a, b, c<br>
+ * %a -> b<br>
+ * %b -> c<br>
+ * %c -> inv<br>
+ * &#38;inv -> a<br>
  * </code>
  * <p><br>
  * In this module configuration, the broadcaster has three destination modules named a, b, and c.
@@ -71,18 +71,18 @@ import java.util.stream.LongStream;
  * By pushing the button once, the following pulses are sent:
  * <p><br>
  * <code>
- * button -low-> broadcaster
- * broadcaster -low-> a
- * broadcaster -low-> b
- * broadcaster -low-> c
- * a -high-> b
- * b -high-> c
- * c -high-> inv
- * inv -low-> a
- * a -low-> b
- * b -low-> c
- * c -low-> inv
- * inv -high-> a
+ * button -low-> broadcaster<br>
+ * broadcaster -low-> a<br>
+ * broadcaster -low-> b<br>
+ * broadcaster -low-> c<br>
+ * a -high-> b<br>
+ * b -high-> c<br>
+ * c -high-> inv<br>
+ * inv -low-> a<br>
+ * a -low-> b<br>
+ * b -low-> c<br>
+ * c -low-> inv<br>
+ * inv -high-> a<br>
  * </code>
  * <p><br>
  * After this sequence, the flip-flop modules all end up off, so pushing the button again repeats
@@ -91,11 +91,11 @@ import java.util.stream.LongStream;
  * Here's a more interesting example:
  * <p><br>
  * <code>
- * broadcaster -> a
- * %a -> inv, con
- * &#38;inv -> b
- * %b -> con
- * &#38;con -> output
+ * broadcaster -> a<br>
+ * %a -> inv, con<br>
+ * &#38;inv -> b<br>
+ * %b -> con<br>
+ * &#38;con -> output<br>
  * </code>
  * <p><br>
  * This module configuration includes the broadcaster, two flip-flops (named a and b), a single-input
@@ -106,14 +106,14 @@ import java.util.stream.LongStream;
  * Here's what happens if you push the button once:
  * <p><br>
  * <code>
- * button -low-> broadcaster
- * broadcaster -low-> a
- * a -high-> inv
- * a -high-> con
- * inv -low-> b
- * con -high-> output
- * b -high-> con
- * con -low-> output
+ * button -low-> broadcaster<br>
+ * broadcaster -low-> a<br>
+ * a -high-> inv<br>
+ * a -high-> con<br>
+ * inv -low-> b<br>
+ * con -high-> output<br>
+ * b -high-> con<br>
+ * con -low-> output<br>
  * </code>
  * <p><br>
  * Both flip-flops turn on and a low pulse is sent to output! However, now that both flip-flops
@@ -121,12 +121,12 @@ import java.util.stream.LongStream;
  * time does something different:
  * <p><br>
  * <code>
- * button -low-> broadcaster
- * broadcaster -low-> a
- * a -low-> inv
- * a -low-> con
- * inv -high-> b
- * con -high-> output
+ * button -low-> broadcaster<br>
+ * broadcaster -low-> a<br>
+ * a -low-> inv<br>
+ * a -low-> con<br>
+ * inv -high-> b<br>
+ * con -high-> output<br>
  * </code>
  * <p><br>
  * Flip-flop a turns off! Now, con remembers a low pulse from module a, and so it sends only a
@@ -135,14 +135,14 @@ import java.util.stream.LongStream;
  * Push the button a third time:
  * <p><br>
  * <code>
- * button -low-> broadcaster
- * broadcaster -low-> a
- * a -high-> inv
- * a -high-> con
- * inv -low-> b
- * con -low-> output
- * b -low-> con
- * con -high-> output
+ * button -low-> broadcaster<br>
+ * broadcaster -low-> a<br>
+ * a -high-> inv<br>
+ * a -high-> con<br>
+ * inv -low-> b<br>
+ * con -low-> output<br>
+ * b -low-> con<br>
+ * con -high-> output<br>
  * </code>
  * <p><br>
  * This time, flip-flop a turns on, then flip-flop b turns off. However, before b can turn off, the
@@ -153,12 +153,12 @@ import java.util.stream.LongStream;
  * Finally, with a on and b off, push the button a fourth time:
  * <p><br>
  * <code>
- * button -low-> broadcaster
- * broadcaster -low-> a
- * a -low-> inv
- * a -low-> con
- * inv -high-> b
- * con -high-> output
+ * button -low-> broadcaster<br>
+ * broadcaster -low-> a<br>
+ * a -low-> inv<br>
+ * a -low-> con<br>
+ * inv -high-> b<br>
+ * con -high-> output<br>
  * </code>
  * <p><br>
  * This completes the cycle: a turns off, causing con to remember only low pulses and restoring all

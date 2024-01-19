@@ -287,7 +287,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
      * @param direction The direction of the new point from the specified point.
      * @return A new Point2D that is in the direction from the specified point.
      */
-    public @NotNull Point2D<Integer> pointInDirection(int x, int y, Direction direction) {
+    public static @NotNull Point2D<Integer> pointInDirection(int x, int y, Direction direction) {
         return new Point2D<>(x + direction.dx(), y + direction.dy());
     }
 
@@ -298,8 +298,21 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
      * @param direction The direction of the new point from the specified point.
      * @return A new Point2D that is in the direction from the specified point.
      */
-    public @NotNull Point2D<Integer> pointInDirection(Point2D<Integer> point, Direction direction) {
+    public static @NotNull Point2D<Integer> pointInDirection(Point2D<Integer> point, Direction direction) {
         return pointInDirection(point.x(), point.y(), direction);
+    }
+
+    /**
+     * Translates the specified point into a point that exists on this Grid2D and returns it.
+     *
+     * @param point The point to translate.
+     * @return A new point that exists on this Grid2D.
+     */
+    public Point2D<Integer> virtualToReal(Point2D<Integer> point) {
+        var x = ((point.x() % columns) + columns) % columns;
+        var y = ((point.y() % rows) + rows) % rows;
+
+        return new Point2D<>(x, y);
     }
 
     /**

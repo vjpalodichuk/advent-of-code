@@ -2,6 +2,9 @@ package com.capital7software.aoc.lib.geometry;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.Set;
+
 /**
  * An enum to assist with calculating new points in 2D space.
  */
@@ -19,6 +22,16 @@ public enum Direction {
         public Direction getRight() {
             return EAST;
         }
+
+        @Override
+        public Direction opposite() {
+            return SOUTH;
+        }
+
+        @Override
+        public Set<Direction> getPerpendicular() {
+            return EAST_AND_WEST;
+        }
     },
     /**
      * North-East Direction
@@ -32,6 +45,16 @@ public enum Direction {
         @Override
         public Direction getRight() {
             return SOUTH_EAST;
+        }
+
+        @Override
+        public Direction opposite() {
+            return SOUTH_WEST;
+        }
+
+        @Override
+        public Set<Direction> getPerpendicular() {
+            return NORTH_WEST_AND_SOUTH_EAST;
         }
     },
     /**
@@ -47,6 +70,16 @@ public enum Direction {
         public Direction getRight() {
             return SOUTH;
         }
+
+        @Override
+        public Direction opposite() {
+            return WEST;
+        }
+
+        @Override
+        public Set<Direction> getPerpendicular() {
+            return NORTH_AND_SOUTH;
+        }
     },
     /**
      * South-East Direction
@@ -60,6 +93,16 @@ public enum Direction {
         @Override
         public Direction getRight() {
             return SOUTH_WEST;
+        }
+
+        @Override
+        public Direction opposite() {
+            return NORTH_WEST;
+        }
+
+        @Override
+        public Set<Direction> getPerpendicular() {
+            return NORTH_EAST_AND_SOUTH_WEST;
         }
     },
     /**
@@ -75,6 +118,16 @@ public enum Direction {
         public Direction getRight() {
             return WEST;
         }
+
+        @Override
+        public Direction opposite() {
+            return NORTH;
+        }
+
+        @Override
+        public Set<Direction> getPerpendicular() {
+            return EAST_AND_WEST;
+        }
     },
     /**
      * South-West Direction
@@ -88,6 +141,16 @@ public enum Direction {
         @Override
         public Direction getRight() {
             return NORTH_WEST;
+        }
+
+        @Override
+        public Direction opposite() {
+            return NORTH_EAST;
+        }
+
+        @Override
+        public Set<Direction> getPerpendicular() {
+            return NORTH_WEST_AND_SOUTH_EAST;
         }
     },
     /**
@@ -103,6 +166,17 @@ public enum Direction {
         public Direction getRight() {
             return NORTH;
         }
+
+        @Override
+        public Direction opposite() {
+            return EAST;
+        }
+
+        @Override
+        public Set<Direction> getPerpendicular() {
+            return NORTH_AND_SOUTH;
+        }
+
     },
     /**
      * North-West Direction
@@ -117,7 +191,27 @@ public enum Direction {
         public Direction getRight() {
             return NORTH_EAST;
         }
+
+        @Override
+        public Direction opposite() {
+            return SOUTH_EAST;
+        }
+
+        @Override
+        public Set<Direction> getPerpendicular() {
+            return NORTH_EAST_AND_SOUTH_WEST;
+        }
     };
+
+    private static final Set<Direction> NORTH_AND_SOUTH = Set.of(NORTH, SOUTH);
+    private static final Set<Direction> EAST_AND_WEST = Set.of(EAST, WEST);
+    private static final Set<Direction> NORTH_EAST_AND_SOUTH_WEST = Set.of(NORTH_EAST, SOUTH_WEST);
+    private static final Set<Direction> NORTH_WEST_AND_SOUTH_EAST = Set.of(NORTH_WEST, SOUTH_EAST);
+
+    /**
+     * The four cardinal directions of North, South, East, and West!
+     */
+    public static final Set<Direction> CARDINAL_DIRECTIONS = Set.of(NORTH, SOUTH, EAST, WEST);
 
     private final Point2D<Integer> delta;
 
@@ -174,6 +268,23 @@ public enum Direction {
      */
     public Direction getRight() {
         return null;
+    }
+
+    /**
+     * Returns the Direction that is 180 degrees from this Direction.
+     *
+     * @return The Direction that is 180 degrees from this Direction.
+     */
+    public Direction opposite() {
+        return null;
+    }
+
+    /**
+     * Returns the Set of Directions that are perpendicular (90 degrees) from this Direction.
+     * @return The Set of Directions that are perpendicular (90 degrees) from this Direction.
+     */
+    public Set<Direction> getPerpendicular() {
+        return Collections.emptySet();
     }
 
     /**

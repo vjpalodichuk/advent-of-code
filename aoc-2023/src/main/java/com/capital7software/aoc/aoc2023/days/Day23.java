@@ -1,6 +1,8 @@
 package com.capital7software.aoc.aoc2023.days;
 
-import com.capital7software.aoc.aoc2023.days.Day21.Direction;
+import com.capital7software.aoc.lib.geometry.Direction;
+import com.capital7software.aoc.lib.geometry.Point2D;
+import com.capital7software.aoc.lib.grid.Grid2D;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -161,7 +163,7 @@ public class Day23 {
         }
     }
 
-    private record TrailTile(TrailType trailType, Day21.Point2DInt point) implements Day21.Tile {
+    private record TrailTile(TrailType trailType, Point2D<Integer> point) {
         public boolean isWalkable() {
             return trailType().isWalkable();
         }
@@ -178,8 +180,8 @@ public class Day23 {
             return trailType().canWalkInDirection(direction, ignoreSlopes);
         }
 
-        public Day21.Point2DInt pointInDirection(Direction direction) {
-            return point.pointInDirection(direction);
+        public Point2D<Integer> pointInDirection(Direction direction) {
+            return Grid2D.pointInDirection(point, direction);
         }
     }
 
@@ -503,8 +505,11 @@ public class Day23 {
         }
     }
 
+    private record RowResults(List<TrailTile> tiles, Point2D<Integer> initialPosition) {
+    }
+
     private record HikingTrails(
-            Day21.GardenGrid<TrailTile> grid,
+            Grid2D<TrailTile> grid,
             Map<TrailTile, TrailNode> nodeMap,
             List<TrailNode> trailNodes,
             Map<TrailNode, Set<HikingSegment>> segmentMap,
@@ -520,7 +525,7 @@ public class Day23 {
             nodeMap.clear();
             trailNodes.clear();
 
-            var graph = new ArrayList<TrailNode>(grid.tiles().size());
+            var graph = new ArrayList<TrailNode>(grid.size());
 
             var queue = new LinkedList<TrailTile>();
 
@@ -917,12 +922,12 @@ public class Day23 {
             return newTrails;
         }
 
-        public Day21.Point2DInt pointInDirection(TrailTile tile, Direction direction) {
+        public Point2D<Integer> pointInDirection(TrailTile tile, Direction direction) {
             return virtualGrid ? grid.virtualToReal(tile.pointInDirection(direction)) :
                     tile.pointInDirection(direction);
         }
 
-        public TrailTile get(Day21.Point2DInt point) {
+        public TrailTile get(Point2D<Integer> point) {
             return grid.get(point);
         }
 
@@ -1004,7 +1009,7 @@ public class Day23 {
             return get(point);
         }
 
-        public boolean isOnGrid(Day21.Point2DInt point) {
+        public boolean isOnGrid(Point2D<Integer> point) {
             return grid.isOnGrid(point);
         }
 
@@ -1014,7 +1019,7 @@ public class Day23 {
             var first = new AtomicBoolean(true);
             var startTile = new AtomicReference<TrailTile>();
             var finishTile = new AtomicReference<TrailTile>();
-            var rowResults = new LinkedList<Day21.RowResults<TrailTile>>();
+            var rowResults = new LinkedList<RowResults>();
 
             stream.forEach(line -> {
                 if (first.get()) {
@@ -1026,7 +1031,7 @@ public class Day23 {
             });
 
             var tiles = new ArrayList<TrailTile>(rows.get() * columns.get() + columns.get());
-            rowResults.stream().map(Day21.RowResults::tiles).forEach(tiles::addAll);
+            rowResults.stream().map(RowResults::tiles).forEach(tiles::addAll);
 
             for (int i = 0; i < columns.get() * rows.get(); i++) {
                 if (tiles.get(i).trailType() == TrailType.PATH) {
@@ -1043,7 +1048,7 @@ public class Day23 {
             }
 
             var hikingTrails = new HikingTrails(
-                    new Day21.GardenGrid<>(tiles, rows.get(), columns.get()),
+                    new Grid2D<>(rows.get(), columns.get(), tiles.toArray(new TrailTile[rows.get() * columns.get()])),
                     new HashMap<>(),
                     new ArrayList<>(),
                     new HashMap<>(),
@@ -1063,7 +1068,7 @@ public class Day23 {
             return hikingTrails;
         }
 
-        private static Day21.RowResults<TrailTile> parseLine(String line, int row) {
+        private static RowResults parseLine(String line, int row) {
             if (line == null || line.isBlank()) {
                 return null;
             }
@@ -1074,12 +1079,12 @@ public class Day23 {
             for (int i = 0; i < columns; i++) {
                 char element = line.charAt(i);
                 TrailTile tile;
-                var point = new Day21.Point2DInt(i, row);
+                var point = new Point2D<Integer>(i, row);
                 tile = new TrailTile(TrailType.from(element), point);
                 tiles.add(tile);
             }
 
-            return new Day21.RowResults<>(tiles, null);
+            return new RowResults(tiles, null);
         }
 
         public List<HikingTrail> getTrails() {

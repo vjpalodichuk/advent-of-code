@@ -1,5 +1,7 @@
 package com.capital7software.aoc.lib.geometry;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * A 2D point where the axis values are of the specified type.
  *
@@ -7,7 +9,7 @@ package com.capital7software.aoc.lib.geometry;
  * @param y   The Y-Axis value.
  * @param <T> The type of the Axis values.
  */
-public record Point2D<T extends Number & Comparable<T>>(T x, T y) {
+public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T y) {
     /**
      * If the type is Double or Float, then EPSILON can be used when
      * checking for equality.

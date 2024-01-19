@@ -1,5 +1,7 @@
 package com.capital7software.aoc.aoc2023.days;
 
+import com.capital7software.aoc.lib.geometry.Point3D;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
@@ -23,16 +25,16 @@ public class Day24 {
 
     }
 
-    public record Plane(Day22.Point3DDouble point, double dotProduct) {
+    public record Plane(Point3D<Double> point, double dotProduct) {
         public double sumAtTime0() {
             return (point.x() + point().y() + point.z()) / dotProduct;
         }
     }
 
-    public record HailStone(Day22.Point3DDouble position, Day22.Point3DDouble velocity, double slope,
+    public record HailStone(Point3D<Double> position, Point3D<Double> velocity, double slope,
                             double intercept) {
         public HailStone(double x, double y, double z, double vx, double vy, double vz) {
-            this(new Day22.Point3DDouble(x, y, z), new Day22.Point3DDouble(vx, vy, vz), vy / vx, y - x * (vy / vx));
+            this(new Point3D<>(x, y, z), new Point3D<>(vx, vy, vz), vy / vx, y - x * (vy / vx));
         }
 
         public static HailStone parse(String line) {
@@ -112,7 +114,7 @@ public class Day24 {
             var b1 = plane3.point().cross(plane1.point());
             var c1 = plane1.point().cross(plane2.point());
 
-            var w = Day22.Point3DDouble.linearize(
+            var w = Point3D.linearize(
                     plane1.dotProduct(),
                     a1,
                     plane2.dotProduct(),
@@ -123,10 +125,10 @@ public class Day24 {
 
             var t = plane1.point().dot(plane2.point().cross(plane3.point()));
 
-            w = new Day22.Point3DDouble(
-                    Math.round(w.x() / t),
-                    Math.round(w.y() / t),
-                    Math.round(w.z() / t)
+            w = new Point3D<>(
+                    (double) Math.round(w.x() / t),
+                    (double) Math.round(w.y() / t),
+                    (double) Math.round(w.z() / t)
             );
 
             var w1 = first.velocity.subtract(w);
@@ -138,7 +140,7 @@ public class Day24 {
             var g = first.position.dot(ww);
             var s = ww.dot(ww);
 
-            var rock = Day22.Point3DDouble.linearize(e, w1, -f, w2, g, ww);
+            var rock = Point3D.linearize(e, w1, -f, w2, g, ww);
 
             return new Plane(rock, s);
         }

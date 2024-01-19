@@ -1,6 +1,7 @@
 package com.capital7software.aoc.lib.geometry;
 
 import com.capital7software.aoc.lib.math.MathOperations;
+import com.capital7software.aoc.lib.util.Range;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -133,17 +134,17 @@ public record LineSegment2D<T extends Number & Comparable<T>>(
      * @return If the other LineSegment2D is collinear to this LineSegment2D.
      */
     public boolean isOnSameLine(final LineSegment2D<T> other) {
-        return orientation(other.start) == Orientation.COLLINEAR &&
-                orientation(other.end) == Orientation.COLLINEAR;
+        return orientation(other.start) == Orientation2D.COLLINEAR &&
+                orientation(other.end) == Orientation2D.COLLINEAR;
     }
 
     /**
-     * Returns the Orientation of other as it relates to this LineSegment2D.
+     * Returns the Orientation2D of other as it relates to this LineSegment2D.
      *
      * @param other The point the orientation is calculated in relation to
-     * @return The Orientation
+     * @return The Orientation2D
      */
-    public Orientation orientation(Point2D<T> other) {
+    public Orientation2D orientation(Point2D<T> other) {
         double orientation = MathOperations.subtract(
                 MathOperations.multiply(
                         MathOperations.subtract(end.y(), start.y()), MathOperations.subtract(other.x(), end.x())
@@ -154,9 +155,29 @@ public record LineSegment2D<T extends Number & Comparable<T>>(
         ).doubleValue();
 
         if (Math.abs(orientation) >= 0 && orientation < Point2D.EPSILON) {
-            return Orientation.COLLINEAR;
+            return Orientation2D.COLLINEAR;
         }
 
-        return orientation > 0 ? Orientation.CLOCKWISE : Orientation.COUNTERCLOCKWISE;
+        return orientation > 0 ? Orientation2D.CLOCKWISE : Orientation2D.COUNTERCLOCKWISE;
+    }
+
+    /**
+     * Determines if this LineSegment2D is below the other LineSegment2D.
+     *
+     * @param other The LineSegment2D to compare this segment with
+     * @return If this LineSegment2D is below the other LineSegment2D, along the X-axis and Y-axis only, true is
+     * returned; otherwise false is returned.
+     */
+    public boolean isBelow(LineSegment2D<T> other) {
+        var otherX = new Range<>(other.start.x().longValue(), other.end.x().longValue() + 1);
+        var otherY = new Range<>(other.start.y().longValue(), other.end.y().longValue() + 1);
+        var xRange = new Range<>(start.x().longValue(), end.x().longValue() + 1);
+        var yRange = new Range<>(start.y().longValue(), end.y().longValue() + 1);
+        var xInOther = otherX.contains(start.x().longValue()) || otherX.contains(end.x().longValue());
+        var yInOther = otherY.contains(start.y().longValue()) || otherY.contains(end.y().longValue());
+        var otherInX = xRange.contains(other.start.x().longValue()) || xRange.contains(other.end.x().longValue());
+        var otherInY = yRange.contains(other.start.y().longValue()) || yRange.contains(other.end.y().longValue());
+
+        return (xInOther || otherInX) && (yInOther || otherInY);
     }
 }

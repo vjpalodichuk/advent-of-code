@@ -1,9 +1,9 @@
 package com.capital7software.aoc.lib.geometry;
 
 /**
- * The Orientation of vertices / points.
+ * The Orientation2D of vertices / points.
  */
-public enum Orientation {
+public enum Orientation2D {
 
     /**
      * The vertices / points have the same slope and lie on the same line!

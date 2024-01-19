@@ -1,5 +1,6 @@
 package com.capital7software.aoc.lib.math;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -214,13 +215,48 @@ public class MathOperations {
     }
 
     /**
+     * Returns the absolute value of the specified value.
+     *
+     * @param value The value to get the absolute value of.
+     * @param <T>   The type of the parameters. See the class comments on
+     *              supported types.
+     * @return The absolute value of the specified value.
+     */
+    @SuppressFBWarnings
+    public static <T extends Number & Comparable<T>> @NotNull T abs(@NotNull T value) {
+        T result;
+
+        if (value instanceof Integer a) {
+            result = (T) ((Integer) (a < 0 ? -a : a));
+        } else if (value instanceof Long a) {
+            result = (T) ((Long) (a < 0 ? -a : a));
+        } else if (value instanceof Double a) {
+            result = (T) ((Double) (Math.abs(a)));
+        } else if (value instanceof Float a) {
+            result = (T) ((Float) (Math.abs(a)));
+        } else if (value instanceof BigInteger a) {
+            result = (T) a.abs();
+        } else if (value instanceof BigDecimal a) {
+            result = (T) a.abs();
+        } else if (value instanceof AtomicInteger a) {
+            result = (T) (new AtomicInteger(Math.abs(a.get())));
+        } else if (value instanceof AtomicLong a) {
+            result = (T) (new AtomicLong(Math.abs(a.get())));
+        } else {
+            throw new IllegalArgumentException("value is of an unsupported type!");
+        }
+
+        return result;
+    }
+
+    /**
      * Calculates and returns the Greatest Common Divisor of two generics of the same type and
      * returns the result.<br>
      * The general formula is: <br><br>
      * if (first == 0)
-     *    return second
+     * return second
      * else
-     *    gcd(second mod first, first)<br><br>
+     * gcd(second mod first, first)<br><br>
      * <b>Please note that for BigDecimal the result may be negative.</b>
      *
      * @param first  The first Number.

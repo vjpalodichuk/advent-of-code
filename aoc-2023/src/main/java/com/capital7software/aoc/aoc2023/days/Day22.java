@@ -125,12 +125,12 @@ public class Day22 {
         }
 
         /**
-         * Determines if this LineSegment is below the other LineSegment. This method does not consider the Z-axis when
+         * Determines if this LineSegment2D is below the other LineSegment2D. This method does not consider the Z-axis when
          * making the determination. This is due to the fact that we are only concerned for collisions along the X-axis
          * and Y-axis.
          *
-         * @param other The LineSegment to compare this segment with
-         * @return If this LineSegment is below the other LineSegment, along the X-axis and Y-axis only, true is
+         * @param other The LineSegment2D to compare this segment with
+         * @return If this LineSegment2D is below the other LineSegment2D, along the X-axis and Y-axis only, true is
          * returned; otherwise false is returned.
          */
         public boolean isBelow(LineSegment3D other) {

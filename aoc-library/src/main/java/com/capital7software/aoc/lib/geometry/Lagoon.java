@@ -1,15 +1,11 @@
-package com.capital7software.aoc.aoc2023.days;
+package com.capital7software.aoc.lib.geometry;
 
-import com.capital7software.aoc.lib.AdventOfCodeSolution;
-import com.capital7software.aoc.lib.geometry.Lagoon;
-import com.capital7software.aoc.lib.geometry.Point2D;
+import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Objects;
 
 /**
- * --- Day 18: Lavaduct Lagoon ---<br><br>
  * Thanks to your efforts, the machine parts factory is one of the first factories up and running
  * since the lavafall came back. However, to catch up with the large backlog of parts requests,
  * the factory will also need a large supply of lava for a while; the Elves have already started
@@ -79,9 +75,6 @@ import java.util.logging.Logger;
  * The Elves are concerned the lagoon won't be large enough; if they follow their dig plan, how many
  * cubic meters of lava could it hold?
  * <p><br>
- * Your puzzle answer was 34329.
- * <p><br>
- * --- Part Two ---<br><br>
  * The Elves were right to be concerned; the planned lagoon would be much too small.
  * <p><br>
  * After a few minutes, someone realizes what happened; someone swapped the color and instruction
@@ -116,56 +109,99 @@ import java.util.logging.Logger;
  * <p><br>
  * Convert the hexadecimal color codes into the correct instructions; if the Elves follow this new
  * dig plan, how many cubic meters of lava could the lagoon hold?
- * <p><br>
- * Your puzzle answer was 42617947302920.
+ *
  */
-public class Day18 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day18.class.getName());
+public class Lagoon {
+    private record VertexInfo(@NotNull Direction direction, int length, @NotNull String color) {
+        public Point2D<Double> getPoint(Point2D<Double> start) {
+            var dxPoint = direction.delta();
+            var newX = start.x() + dxPoint.x() * length;
+            var newY = start.y() + dxPoint.y() * length;
+            return new Point2D<>(newX, newY);
+        }
+    }
+
+    private final Polygon2D<Double> polygon;
 
     /**
-     * Instantiates this Solution instance.
-     */
-    public Day18() {
-
-    }
-
-    @Override
-    public String getDefaultInputFilename() {
-        return "inputs/input_day_18-01.txt";
-    }
-
-    @Override
-    public void runPart1(List<String> input) {
-        var start = Instant.now();
-        var answer = calculateArea(input, false);
-        var end = Instant.now();
-
-        LOGGER.info(String.format("The area of the dug out Lagoon is: %f",
-                answer));
-        logTimings(LOGGER, start, end);
-    }
-
-    @Override
-    public void runPart2(List<String> input) {
-        var start = Instant.now();
-        var answer = calculateArea(input, true);
-        var end = Instant.now();
-
-        LOGGER.info(String.format("The area of the dug out Lagoon is: %f",
-                answer));
-        logTimings(LOGGER, start, end);
-    }
-
-    /**
-     * Calculates and returns the area of the Lagoon.
+     * Instantiates a new Lagoon with the specified Polygon2D.
      *
-     * @param input The List of Strings that represent the instructions for digging out the Lagoon.
-     * @param colorsAsInstructions If true, the colors will be decoded as digging instructions.
-     * @return The area of the Lagoon.
+     * @param polygon The Polygon2D that represents this Lagoon.
      */
-    public double calculateArea(List<String> input, boolean colorsAsInstructions) {
-        var lagoon = Lagoon.buildLagoon(new Point2D<>(0.0, 0.0), input, colorsAsInstructions);
+    private Lagoon(Polygon2D<Double> polygon) {
+        this.polygon = polygon;
+    }
 
-        return lagoon.calculateArea();
+    /**
+     * Builds a new Lagoon from the specified dig plan and the digging starts at the specified point. If
+     * colorsAsInstructions is true then the colors are decoded as digging instructions.
+     *
+     * @param initialVertex        The initial point to start digging.
+     * @param input                The List of Strings that contain the dig plan to parse.
+     * @param colorsAsInstructions If true, then the colors in the dig plan are decoded as instructions.
+     * @return A new Lagoon instance loaded with the specified dig plan.
+     */
+    public static @NotNull Lagoon buildLagoon(
+            @NotNull Point2D<Double> initialVertex,
+            @NotNull List<String> input,
+            boolean colorsAsInstructions
+    ) {
+        var polygon = new Polygon2D<Double>();
+
+        polygon.add(initialVertex);
+
+        var infos = input
+                .stream()
+                .map(it -> Lagoon.parseLine(it, colorsAsInstructions))
+                .filter(Objects::nonNull)
+                .toList();
+
+        var previous = initialVertex;
+
+        for (var info : infos) {
+            var point = info.getPoint(previous);
+            if (polygon.contains(point)) {
+                polygon.add(info.color());
+            } else {
+                polygon.add(point, info.color());
+            }
+            previous = point;
+        }
+
+        return new Lagoon(polygon);
+    }
+
+    private static VertexInfo parseLine(String line, boolean colorsAsInstructions) {
+        if (line == null || line.isBlank()) {
+            return null;
+        }
+
+        var split = line.split(" ");
+
+        if (!colorsAsInstructions) {
+            var direction = Direction.fromLabel(split[0]);
+            var length = Integer.parseInt(split[1]);
+            var color = split[2].substring(1, split[2].length() - 1);
+
+            return new VertexInfo(direction, length, color);
+        } else {
+            var toConvertDirectionAndLength = split[2].substring(1, split[2].length() - 1);
+            var length = Integer.decode(toConvertDirectionAndLength
+                    .substring(0, toConvertDirectionAndLength.length() - 1));
+            var direction = Direction.fromLabel(toConvertDirectionAndLength
+                    .substring(toConvertDirectionAndLength.length() - 1));
+            var color = "#" + Integer.toHexString(Integer.parseInt(split[1])) + Direction.toNumericLabel(split[0]);
+
+            return new VertexInfo(direction, length, color);
+        }
+    }
+
+    /**
+     * Calculates and returns the total area that is dug out.
+     *
+     * @return The total area that is dug out.
+     */
+    public double calculateArea() {
+        return polygon.calculateTotalArea();
     }
 }

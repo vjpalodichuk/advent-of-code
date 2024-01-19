@@ -1,5 +1,7 @@
 package com.capital7software.aoc.lib.geometry;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * An enum to assist with calculating new points in 2D space.
  */
@@ -172,5 +174,65 @@ public enum Direction {
      */
     public Direction getRight() {
         return null;
+    }
+
+    /**
+     * Returns a cardinal Direction based on the specified single character label.<br>
+     * <ul>
+     *     <li>
+     *         A label of U or 3 returns NORTH.
+     *     </li>
+     *     <li>
+     *         A label of D or 1 returns SOUTH.
+     *     </li>
+     *     <li>
+     *         A label of L or 2 returns WEST.
+     *     </li>
+     *     <li>
+     *         A label of R or 0 returns EAST.
+     *     </li>
+     * </ul>
+     *
+     * @param label The label to get a Direction from.
+     * @return A cardinal Direction based on the specified single character label.
+     */
+    public static @NotNull Direction fromLabel(@NotNull String label) {
+        return switch (label) {
+            case "U", "3" -> NORTH;
+            case "D", "1" -> SOUTH;
+            case "L", "2" -> WEST;
+            case "R", "0" -> EAST;
+            default -> throw new RuntimeException("Unknown direction: " + label);
+        };
+    }
+
+    /**
+     * Returns a numeric label from an alpha label.<br>
+     * <ul>
+     *     <li>
+     *         An alpha label of U returns 3.
+     *     </li>
+     *     <li>
+     *         An alpha label of D returns 1.
+     *     </li>
+     *     <li>
+     *         An alpha label of L returns 2.
+     *     </li>
+     *     <li>
+     *         An alpha label of R returns 0.
+     *     </li>
+     * </ul>
+     *
+     * @param alphaLabel The label to convert to a numeric label..
+     * @return A numeric label from an alpha label.
+     */
+    public static String toNumericLabel(String alphaLabel) {
+        return switch (alphaLabel) {
+            case "U" -> "3";
+            case "D" -> "1";
+            case "L" -> "2";
+            case "R" -> "0";
+            default -> throw new RuntimeException("Unknown direction: " + alphaLabel);
+        };
     }
 }

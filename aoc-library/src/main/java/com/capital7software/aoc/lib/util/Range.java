@@ -3,6 +3,9 @@ package com.capital7software.aoc.lib.util;
 import com.capital7software.aoc.lib.math.MathOperations;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a range from start (inclusive) to end (exclusive).<br><br>
  * Supports: Integer, Long, Float, Double,
@@ -80,11 +83,53 @@ public record Range<T extends Number & Comparable<T>>(@NotNull T start, @NotNull
      *
      * @param start  The inclusive start of the new Range.
      * @param extent Added to the start value to get the exclusive end of the new Range.
-     * @param <T> The type of the value in the new Range.
+     * @param <T>    The type of the value in the new Range.
      * @return A new Range with the inclusive start and the exclusive end is
      * the start plus the specified extent.
      */
     public static <T extends Number & Comparable<T>> @NotNull Range<T> from(@NotNull T start, @NotNull T extent) {
         return new Range<>(start, MathOperations.add(start, extent));
+    }
+
+    /**
+     * Splits this range in two distinct ranges based on the splitPoint.
+     * May produce an empty range if splitPoint is outside of this range.
+     * If existing range is 1 - 4000 and splitPoint is 2000 then this method will
+     * produce two new ranges: 1 - 1999, 2000 - 40000 if high is false. If high is true, then
+     * the ranges would be 1 - 2000, 2001 - 4000
+     *
+     * @param range      The range to split
+     * @param splitPoint The number to split the range on.
+     * @param high       Pass true to split on the high end, else the low end.
+     * @return A list with two new ranges.
+     */
+    public static List<Range<Long>> split(Range<Long> range, long splitPoint, boolean high) {
+        var result = new ArrayList<Range<Long>>();
+        long toSplit = high ? splitPoint + 1 : splitPoint;
+
+        result.add(new Range<>(range.start(), Math.min(toSplit - 1, range.end())));
+        result.add(new Range<>(Math.max(range.start(), toSplit), range.end()));
+        return result;
+    }
+
+    /**
+     * Splits this range in two distinct ranges based on the splitPoint.
+     * May produce an empty range if splitPoint is outside of this range.
+     * If existing range is 1 - 4000 and splitPoint is 2000 then this method will
+     * produce two new ranges: 1 - 1999, 2000 - 40000 if high is false. If high is true, then
+     * the ranges would be 1 - 2000, 2001 - 4000
+     *
+     * @param range      The range to split
+     * @param splitPoint The number to split the range on.
+     * @param high       Pass true to split on the high end, else the low end.
+     * @return A list with two new ranges.
+     */
+    public static List<Range<Integer>> split(Range<Integer> range, int splitPoint, boolean high) {
+        var result = new ArrayList<Range<Integer>>();
+        int toSplit = high ? splitPoint + 1 : splitPoint;
+
+        result.add(new Range<>(range.start(), Math.min(toSplit - 1, range.end())));
+        result.add(new Range<>(Math.max(range.start(), toSplit), range.end()));
+        return result;
     }
 }

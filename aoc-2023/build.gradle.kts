@@ -17,10 +17,3 @@ tasks.withType<JavaExec>().configureEach {
 }
 
 tasks.register("run2023", JavaExec::class)
-
-tasks.register("day24", JavaExec::class) {
-    mainClass = "com.capital7software.aoc.aoc2023.days.Day24"
-}
-tasks.register("day25", JavaExec::class) {
-    mainClass = "com.capital7software.aoc.aoc2023.days.Day25"
-}

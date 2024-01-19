@@ -1,5 +1,7 @@
 package com.capital7software.aoc.lib.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 /**
@@ -66,6 +68,15 @@ public final class Pair<T, U> {
      */
     public void second(U second) {
         this.second = second;
+    }
+
+    /**
+     * Returns a copy of this Pair.
+     *
+     * @return A copy of this Pair.
+     */
+    public @NotNull Pair<T, U> copy() {
+        return new Pair<>(first, second);
     }
 
     @Override

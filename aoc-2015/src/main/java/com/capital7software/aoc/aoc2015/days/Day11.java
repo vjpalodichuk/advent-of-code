@@ -3,62 +3,76 @@ package com.capital7software.aoc.aoc2015.days;
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.string.PasswordPolicy;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 11: Corporate Policy ---
+ * --- Day 11: Corporate Policy ---<br><br>
  * Santa's previous password expired, and he needs help choosing a new one.
- * <p>
+ * <p><br>
  * To help him remember his new password after the old one expires, Santa has devised
  * a method of coming up with a password based on the previous one. Corporate policy
  * dictates that passwords must be exactly eight lowercase letters (for security reasons),
  * so he finds his new password by incrementing his old password string repeatedly until it is valid.
- * <p>
- * Incrementing is just like counting with numbers: xx, xy, xz, ya, yb, and so on.
- * Increase the rightmost letter one step; if it was z, it wraps around to a, and
- * repeat with the next letter to the left until one doesn't wrap around.
- * <p>
+ * <ul>
+ *     <li>
+ *         Incrementing is just like counting with numbers: xx, xy, xz, ya, yb, and so on.
+ *     </li>
+ *     <li>
+ *         Increase the rightmost letter one step; if it was z, it wraps around to a, and
+ *         repeat with the next letter to the left until one doesn't wrap around.
+ *     </li>
+ * </ul>
  * Unfortunately for Santa, a new Security-Elf recently started, and he
  * has imposed some additional password requirements:
- *     <ul>
- *         <li>
- *             Passwords must include one increasing straight of at least three letters,
- *             like abc, bcd, cde, and so on, up to xyz. They cannot skip letters; abd doesn't count.
- *         </li>
- *         <li>
- *             Passwords may not contain the letters i, o, or l, as these letters can
- *             be mistaken for other characters and are therefore confusing.
- *         </li>
- *         <li>
- *             Passwords must contain at least two different, non-overlapping pairs
- *             of letters, like aa, bb, or zz.
- *         </li>
- *     </ul>
- * <p>
+ * <ul>
+ *     <li>
+ *         Passwords must include one increasing straight of at least three letters,
+ *         like abc, bcd, cde, and so on, up to xyz. They cannot skip letters; abd doesn't count.
+ *     </li>
+ *     <li>
+ *         Passwords may not contain the letters i, o, or l, as these letters can
+ *         be mistaken for other characters and are therefore confusing.
+ *     </li>
+ *     <li>
+ *         Passwords must contain at least two different, non-overlapping pairs
+ *         of letters, like aa, bb, or zz.
+ *     </li>
+ * </ul>
  * For example:
- * <p>
- * hijklmmn meets the first requirement (because it contains the straight hij)
- * but fails the second requirement (because it contains i and l).
- * abbceffg meets the third requirement (because it repeats bb and ff) but fails the first requirement.
- * abbcegjk fails the third requirement, because it only has one double letter (bb).
- * The next password after abcdefgh is abcdffaa.
- * The next password after ghijklmn is ghjaabcc, because you eventually skip
- * all the passwords that start with ghi..., since i is not allowed.
- * <p>
+ * <ul>
+ *     <li>
+ *         hijklmmn meets the first requirement (because it contains the straight hij)
+ *         but fails the second requirement (because it contains i and l).
+ *     </li>
+ *     <li>
+ *         abbceffg meets the third requirement (because it repeats bb and ff) but fails the first requirement.
+ *     </li>
+ *     <li>
+ *         abbcegjk fails the third requirement, because it only has one double letter (bb).
+ *     </li>
+ *     <li>
+ *         The next password after abcdefgh is abcdffaa.
+ *     </li>
+ *     <li>
+ *         The next password after ghijklmn is ghjaabcc, because you eventually skip
+ *         all the passwords that start with ghi..., since i is not allowed.
+ *     </li>
+ * </ul>
  * Given Santa's current password (your puzzle input), what should his next password be?
- * <p>
+ * <p><br>
  * Your puzzle answer was cqjxxyzz.
- * <p>
- * --- Part Two ---
+ * <p><br>
+ * --- Part Two ---<br><br>
  * Santa's password expired again. What's the next one?
- * <p>
+ * <p><br>
  * Your puzzle answer was cqkaabcc.
  */
 public class Day11 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day11.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day11.class);
 
     /**
      * Instantiates the solution instance.
@@ -78,7 +92,7 @@ public class Day11 implements AdventOfCodeSolution {
             var start = Instant.now();
             var next = suggestNextPassword(line);
             var end = Instant.now();
-            LOGGER.info(String.format("The next valid password is: %s%n", next));
+            LOGGER.info("The next valid password is: {}", next);
             logTimings(LOGGER, start, end);
         }
     }
@@ -89,7 +103,7 @@ public class Day11 implements AdventOfCodeSolution {
             var start = Instant.now();
             var next = suggestNextPassword(suggestNextPassword(line));
             var end = Instant.now();
-            LOGGER.info(String.format("The next valid password is: %s%n", next));
+            LOGGER.info("The next valid password is: {}", next);
             logTimings(LOGGER, start, end);
         }
     }

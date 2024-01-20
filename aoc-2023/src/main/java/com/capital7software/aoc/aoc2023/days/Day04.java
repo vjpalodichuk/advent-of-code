@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.analysis.ScratchCards;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 4: Scratchcards ---<br><br>
@@ -120,7 +121,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 13768818.
  */
 public class Day04 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day04.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day04.class);
 
     /**
      * Instantiates the solution instance.
@@ -140,7 +141,7 @@ public class Day04 implements AdventOfCodeSolution {
         var sum = getSumOfAllCardPoints(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The sum of all scratch card points is: %d%n", sum));
+        LOGGER.info("The sum of all scratch card points is: {}", sum);
         logTimings(LOGGER, start, end);
     }
 
@@ -150,7 +151,7 @@ public class Day04 implements AdventOfCodeSolution {
         var sum = getTotalNumberOfCards(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The total number of scratch card in hand is: %d%n", sum));
+        LOGGER.info("The total number of scratch card in hand is: {}", sum);
         logTimings(LOGGER, start, end);
     }
 

@@ -3,70 +3,89 @@ package com.capital7software.aoc.aoc2015.days;
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.analysis.AuntSueIdentifier;
 import com.capital7software.aoc.lib.analysis.AuntSueIdentifier.AuntSue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
 
 /**
- * --- Day 16: Aunt Sue ---
+ * --- Day 16: Aunt Sue ---<br><br>
  * Your Aunt Sue has given you a wonderful gift, and you'd like to send her a thank-you card. However,
  * there's a small problem: she signed it "From, Aunt Sue".
- * <p>
+ * <p><br>
  * You have 500 Aunts named "Sue".
- * <p>
+ * <p><br>
  * So, to avoid sending the card to the wrong person, you need to figure out which Aunt Sue
  * (which you conveniently number 1 to 500, for sanity) gave you the gift. You open the present
  * and, as luck would have it, good ol' Aunt Sue got you a My First Crime Scene Analysis Machine!
  * Just what you wanted. Or needed, as the case may be.
- * <p>
+ * <p><br>
  * The My First Crime Scene Analysis Machine (MFCSAM for short) can detect a few specific
  * compounds in a given sample, as well as how many distinct kinds of those compounds there are.
  * According to the instructions, these are what the MFCSAM can detect:
- * <p>
- * children, by human DNA age analysis.
- * cats. It doesn't differentiate individual breeds.
- * Several seemingly random breeds of dog: samoyeds, pomeranians, akitas, and vizslas.
- * goldfish. No other kinds of fish.
- * trees, all in one group.
- * cars, presumably by exhaust or gasoline or something.
- * perfumes, which is handy, since many of your Aunts Sue wear a few kinds.
+ * <ul>
+ *     <li>
+ *         children, by human DNA age analysis.
+ *     </li>
+ *     <li>
+ *         cats. It doesn't differentiate individual breeds.
+ *     </li>
+ *     <li>
+ *         Several seemingly random breeds of dog: samoyeds, pomeranians, akitas, and vizslas.
+ *     </li>
+ *     <li>
+ *         goldfish. No other kinds of fish.
+ *     </li>
+ *     <li>
+ *         trees, all in one group.
+ *     </li>
+ *     <li>
+ *         cars, presumably by exhaust or gasoline or something.
+ *     </li>
+ *     <li>
+ *         perfumes, which is handy, since many of your Aunts Sue wear a few kinds.
+ *     </li>
+ * </ul>
  * In fact, many of your Aunts Sue have many of these. You put the wrapping from the gift into the MFCSAM.
  * It beeps inquisitively at you a few times and then prints out a message on ticker tape:
- * <p>
- * children: 3
- * cats: 7
- * samoyeds: 2
- * pomeranians: 3
- * akitas: 0
- * vizslas: 0
- * goldfish: 5
- * trees: 3
- * cars: 2
- * perfumes: 1
+ * <p><br>
+ * <code>
+ * children: 3<br>
+ * cats: 7<br>
+ * samoyeds: 2<br>
+ * pomeranians: 3<br>
+ * akitas: 0<br>
+ * vizslas: 0<br>
+ * goldfish: 5<br>
+ * trees: 3<br>
+ * cars: 2<br>
+ * perfumes: 1<br>
+ * </code>
+ * <p><br>
  * You make a list of the things you can remember about each Aunt Sue.
  * Things missing from your list aren't zero - you simply don't remember the value.
- * <p>
+ * <p><br>
  * What is the number of the Sue that got you the gift?
- * <p>
+ * <p><br>
  * Your puzzle answer was 40.
- * <p>
- * --- Part Two ---
+ * <p><br>
+ * --- Part Two ---<br><br>
  * As you're about to send the thank you note, something in the MFCSAM's instructions catches your eye.
  * Apparently, it has an outdated retroencabulator, and so the output from the machine isn't
  * exact values - some of them indicate ranges.
- * <p>
+ * <p><br>
  * In particular, the cats and trees readings indicates that there are greater than that many (due to
  * the unpredictable nuclear decay of cat dander and tree pollen), while the pomeranians and goldfish
  * readings indicate that there are fewer than that many (due to the modial interaction of magnetoreluctance).
- * <p>
+ * <p><br>
  * What is the number of the real Aunt Sue?
- * <p>
+ * <p><br>
  * Your puzzle answer was 241.
  */
 public class Day16 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day16.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day16.class);
 
     /**
      * Instantiates the solution instance.
@@ -85,7 +104,7 @@ public class Day16 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = identifyAuntSue(input);
         var end = Instant.now();
-        LOGGER.info(String.format("The number of the Sue that got me the gift is: %d%n", max));
+        LOGGER.info("The number of the Sue that got me the gift is: {}", max);
         logTimings(LOGGER, start, end);
     }
 
@@ -94,7 +113,7 @@ public class Day16 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = identifyRealAuntSue(input);
         var end = Instant.now();
-        LOGGER.info(String.format("The number of the real Sue that got me the gift is: %d%n", max));
+        LOGGER.info("The number of the real Sue that got me the gift is: {}", max);
         logTimings(LOGGER, start, end);
     }
 

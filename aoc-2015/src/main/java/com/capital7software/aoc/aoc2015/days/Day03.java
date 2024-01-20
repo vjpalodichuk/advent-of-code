@@ -2,13 +2,14 @@ package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.grid.Sleigh;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 3: Perfectly Spherical Houses in a Vacuum ---<br>
+ * --- Day 3: Perfectly Spherical Houses in a Vacuum ---<br><br>
  * Santa is delivering presents to an infinite two-dimensional grid of houses.
  * <p><br>
  * He begins by delivering a present to the house at his starting location, and then an elf at the North Pole
@@ -58,10 +59,9 @@ import java.util.logging.Logger;
  *     </li>
  * </ul>
  * Your puzzle answer was 2341
- *
  */
 public class Day03 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day03.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day03.class);
 
     /**
      * Instantiates the solution instance.
@@ -86,7 +86,7 @@ public class Day03 implements AdventOfCodeSolution {
             var total = getUniqueHouseCount(routeId);
             var end = Instant.now();
 
-            LOGGER.info(String.format("Santa delivered at least one gift to %d houses!%n", total));
+            LOGGER.info("Santa delivered at least one gift to {} houses!", total);
             logTimings(LOGGER, start, end);
         }
     }
@@ -100,7 +100,7 @@ public class Day03 implements AdventOfCodeSolution {
             var total = getUniqueHouseCount(routeId);
             var end = Instant.now();
 
-            LOGGER.info(String.format("Santa and Robo Santa delivered at least one gift to %d houses!%n", total));
+            LOGGER.info("Santa and Robo Santa delivered at least one gift to {} houses!", total);
             logTimings(LOGGER, start, end);
         }
     }

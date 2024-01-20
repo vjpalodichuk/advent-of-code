@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.analysis.MirrorMirror;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 13: Point of Incidence ---<br><br>
@@ -173,7 +174,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 31947.
  */
 public class Day13 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day13.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day13.class);
 
     /**
      * Instantiates this Solution instance.
@@ -193,8 +194,7 @@ public class Day13 implements AdventOfCodeSolution {
         var answer = summarizePatternReflectionNotes(input, 0);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Summary of pattern notes is: %d",
-                answer));
+        LOGGER.info("Summary of pattern notes is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -204,8 +204,7 @@ public class Day13 implements AdventOfCodeSolution {
         var answer = summarizePatternReflectionNotes(input, 1);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Summary of pattern notes allowing for a single smudge is: %d",
-                answer));
+        LOGGER.info("Summary of pattern notes allowing for a single smudge is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

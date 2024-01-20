@@ -6,7 +6,8 @@ import com.capital7software.aoc.lib.geometry.Point2D;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 18: Lavaduct Lagoon ---<br><br>
@@ -120,7 +121,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 42617947302920.
  */
 public class Day18 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day18.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day18.class);
 
     /**
      * Instantiates this Solution instance.
@@ -140,8 +141,8 @@ public class Day18 implements AdventOfCodeSolution {
         var answer = calculateArea(input, false);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The area of the dug out Lagoon is: %f",
-                answer));
+        LOGGER.info("The area of the dug out Lagoon is: {}",
+                answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -151,8 +152,8 @@ public class Day18 implements AdventOfCodeSolution {
         var answer = calculateArea(input, true);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The area of the dug out Lagoon is: %f",
-                answer));
+        LOGGER.info("The area of the dug out Lagoon is: {}",
+                answer);
         logTimings(LOGGER, start, end);
     }
 

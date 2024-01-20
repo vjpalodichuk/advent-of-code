@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.grid.HikingTrails;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 23: A Long Walk ---<br><br>
@@ -137,7 +138,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 6734.
  */
 public class Day23 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day23.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day23.class);
 
     /**
      * Instantiates this Solution instance.
@@ -157,8 +158,7 @@ public class Day23 implements AdventOfCodeSolution {
         var answer = stepsOfLongestTrail(input, false, true);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Total number of steps of the longest trail is: %d",
-                answer));
+        LOGGER.info("Total number of steps of the longest trail is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -168,8 +168,7 @@ public class Day23 implements AdventOfCodeSolution {
         var answer = stepsOfLongestTrail(input, true, true);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Total number of steps of the longest trail ignoring slopes is: %d",
-                answer));
+        LOGGER.info("Total number of steps of the longest trail ignoring slopes is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

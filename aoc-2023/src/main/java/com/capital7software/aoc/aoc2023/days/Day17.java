@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.grid.ClumsyCrucible;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 17: Clumsy Crucible ---<br><br>
@@ -146,7 +147,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 1106.
  */
 public class Day17 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day17.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day17.class);
 
     /**
      * Instantiates this Solution instance.
@@ -166,8 +167,7 @@ public class Day17 implements AdventOfCodeSolution {
         var answer = calculateMinimumHeatLoss(input, 1, 3);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The minimum heat loss with minSteps 1 and maxSteps 2 is: %d",
-                answer));
+        LOGGER.info("The minimum heat loss with minSteps 1 and maxSteps 2 is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -177,8 +177,7 @@ public class Day17 implements AdventOfCodeSolution {
         var answer = calculateMinimumHeatLoss(input, 4, 10);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The minimum heat loss with minSteps 4 and maxSteps 10 is: %d",
-                answer));
+        LOGGER.info("The minimum heat loss with minSteps 4 and maxSteps 10 is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

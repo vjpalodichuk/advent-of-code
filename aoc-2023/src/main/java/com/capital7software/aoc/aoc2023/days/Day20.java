@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.analysis.CycleHeadquarters;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 20: Pulse Propagation ---<br><br>
@@ -186,7 +187,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 228134431501037.
  */
 public class Day20 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day20.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day20.class);
 
     /**
      * Instantiates this Solution instance.
@@ -206,8 +207,7 @@ public class Day20 implements AdventOfCodeSolution {
         var answer = getPulseProduct(input, 1_000);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The product of the low and high pulses after 1,000 button presses is: %d",
-                answer));
+        LOGGER.info("The product of the low and high pulses after 1,000 button presses is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -222,8 +222,7 @@ public class Day20 implements AdventOfCodeSolution {
         );
         var end = Instant.now();
 
-        LOGGER.info(String.format("The fewest number of button presses to deliver a low pulse to module rx is: %d",
-                answer));
+        LOGGER.info("The fewest number of button presses to deliver a low pulse to module rx is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

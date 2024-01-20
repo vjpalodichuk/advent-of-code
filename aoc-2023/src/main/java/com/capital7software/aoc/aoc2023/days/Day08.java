@@ -6,7 +6,9 @@ import com.capital7software.aoc.lib.math.MathOperations;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.stream.Collectors;
 
 /**
@@ -109,7 +111,7 @@ import java.util.stream.Collectors;
  * Your puzzle answer was 8906539031197.
  */
 public class Day08 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day08.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day08.class);
 
     /**
      * Instantiates this Solution instance.
@@ -129,7 +131,7 @@ public class Day08 implements AdventOfCodeSolution {
         var answer = calculateStepsToTraverseWastelandSingleNode(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The total number of steps taken to traverse the Wasteland is: %d%n", answer));
+        LOGGER.info("The total number of steps taken to traverse the Wasteland is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -139,7 +141,7 @@ public class Day08 implements AdventOfCodeSolution {
         var answer = calculateStepsToTraverseWastelandMultipleNodes(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The total number of steps to traverse the Wasteland is: %d%n", answer));
+        LOGGER.info("The total number of steps to traverse the Wasteland is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

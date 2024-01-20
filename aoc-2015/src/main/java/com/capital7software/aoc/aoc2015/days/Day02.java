@@ -5,10 +5,11 @@ import com.capital7software.aoc.lib.geometry.Present;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * --- Day 2: I Was Told There Would Be No Math ---<br>
+ * --- Day 2: I Was Told There Would Be No Math ---<br><br>
  * The elves are running low on wrapping paper, and so they need to submit an order for more. They have a list of
  * the dimensions (length l, width w, and height h) of each present, and only want to order exactly as much as
  * they need.
@@ -33,7 +34,7 @@ import java.util.logging.Logger;
  * <p><br>
  * Your puzzle answer was 1606483.
  * <p><br>
- * --- Part Two ---<br>
+ * --- Part Two ---<br><br>
  * The elves are also running low on ribbon. Ribbon is all the same width, so they only have to worry about
  * the length they need to order, which they would again like to be exact.
  * <p><br>
@@ -58,7 +59,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 3842356.
  */
 public class Day02 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day02.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day02.class);
 
     /**
      * Instantiates the solution instance.
@@ -79,7 +80,7 @@ public class Day02 implements AdventOfCodeSolution {
         var total = howMuchTotalWrappingPaper(presents);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The elves' need to order %d square feet of wrapping paper!%n", total));
+        LOGGER.info("The elves' need to order {} square feet of wrapping paper!", total);
         logTimings(LOGGER, start, end);
     }
 
@@ -90,7 +91,7 @@ public class Day02 implements AdventOfCodeSolution {
         var total = howMuchTotalRibbon(presents);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The elves' need to order %d square feet of ribbon!%n", total));
+        LOGGER.info("The elves' need to order {} square feet of ribbon!", total);
         logTimings(LOGGER, start, end);
     }
 

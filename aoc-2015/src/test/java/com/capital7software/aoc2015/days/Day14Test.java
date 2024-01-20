@@ -4,13 +4,13 @@ import com.capital7software.aoc.aoc2015.days.Day14;
 import com.capital7software.aoc.lib.AdventOfCodeTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day14Test extends AdventOfCodeTestBase {
-    private static final Logger LOGGER = Logger.getLogger(Day14Test.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day14Test.class);
 
     @BeforeEach
     void setUp() {

@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.graph.WeatherStation;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 25: Snowverload ---<br><br>
@@ -115,7 +116,7 @@ import java.util.logging.Logger;
  * </code>
  */
 public class Day25 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day25.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day25.class);
 
     /**
      * Instantiates this Solution instance.
@@ -135,8 +136,8 @@ public class Day25 implements AdventOfCodeSolution {
         var answer = findMinimumCut(input, 3);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The product of the sets with the maximum product is: %d",
-                answer));
+        LOGGER.info("The product of the sets with the maximum product is: {}",
+                answer);
         logTimings(LOGGER, start, end);
     }
 

@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.analysis.HotSprings;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 12: Hot Springs ---<br><br>
@@ -169,7 +170,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 1566786613613.
  */
 public class Day12 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day12.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day12.class);
 
     /**
      * Instantiates this Solution instance.
@@ -189,8 +190,7 @@ public class Day12 implements AdventOfCodeSolution {
         var answer = sumOfAllPossibleSpringArrangements(input, false);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Sum of all possible spring arrangements is: %d",
-                answer));
+        LOGGER.info("Sum of all possible spring arrangements is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -200,8 +200,7 @@ public class Day12 implements AdventOfCodeSolution {
         var answer = sumOfAllPossibleSpringArrangements(input, true);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Sum of all possible unfolded spring arrangements is: %d",
-                answer));
+        LOGGER.info("Sum of all possible unfolded spring arrangements is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

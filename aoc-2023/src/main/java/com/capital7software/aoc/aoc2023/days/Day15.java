@@ -7,7 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 15: Lens Library ---<br><br>
@@ -234,7 +235,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 248279.
  */
 public class Day15 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day15.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day15.class);
 
     /**
      * Instantiates this Solution instance.
@@ -254,8 +255,7 @@ public class Day15 implements AdventOfCodeSolution {
         var answer = sumOfLensHashes(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The total sum of the lens hashes is: %d",
-                answer));
+        LOGGER.info("The total sum of the lens hashes is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -265,8 +265,7 @@ public class Day15 implements AdventOfCodeSolution {
         var answer = focusingPowerOfLensConfiguration(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The total focusing power of the lens configuration is: %d",
-                answer));
+        LOGGER.info("The total focusing power of the lens configuration is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

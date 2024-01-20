@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.analysis.CubeConundrum;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 2: Cube Conundrum ---<br><br>
@@ -118,7 +119,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 58269.
  */
 public class Day02 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day02.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day02.class);
 
     /**
      * Instantiates the solution instance.
@@ -138,7 +139,7 @@ public class Day02 implements AdventOfCodeSolution {
         var sum = getSumOfGameResultIds(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The sum of the possible Game IDs is: %d%n", sum));
+        LOGGER.info("The sum of the possible Game IDs is: {}", sum);
         logTimings(LOGGER, start, end);
     }
 
@@ -148,7 +149,7 @@ public class Day02 implements AdventOfCodeSolution {
         var sum = getSumOfGameResultPower(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The sum of the Game Powers is: %d%n", sum));
+        LOGGER.info("The sum of the Game Powers is: {}", sum);
         logTimings(LOGGER, start, end);
     }
 

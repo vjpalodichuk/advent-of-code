@@ -4,7 +4,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * <p>
@@ -27,7 +29,7 @@ import java.util.logging.Logger;
  * @version 01/02/2024
  */
 public class BinaryTreeNode<T extends Comparable<T>> implements TreeNode<T>, Comparable<BinaryTreeNode<T>> {
-    private static final Logger LOGGER = Logger.getLogger(BinaryTreeNode.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(BinaryTreeNode.class);
     private static final String INDENT = "    ";
     private static final String DASH = "--";
     private BinaryTreeNode<T> left, right, parent;

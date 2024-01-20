@@ -14,7 +14,7 @@ import java.util.Optional;
  * <code>Name1 would gain 00 happiness units by sitting next to Name2</code><br>
  * <code>Name2 would lose 00 happiness units by sitting next to Name1</code><br>
  * <p><br>
- * For capital7software, suppose you have only four attendees planned, and you calculate their potential happiness as follows:
+ * For example, suppose you have only four attendees planned, and you calculate their potential happiness as follows:
  * <ul>
  *     <li>
  *         Alice would gain 54 happiness units by sitting next to Bob.

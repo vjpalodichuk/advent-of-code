@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.grid.LightBeam;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 16: The Floor Will Be Lava ---<br><br>
@@ -161,7 +162,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 8023.
  */
 public class Day16 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day16.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day16.class);
 
     /**
      * Instantiates this Solution instance.
@@ -181,8 +182,7 @@ public class Day16 implements AdventOfCodeSolution {
         var answer = numberOfEnergizedTilesTopLeftHeadingRight(input, false);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The number of energized tiles starting from the top-left is: %d",
-                answer));
+        LOGGER.info("The number of energized tiles starting from the top-left is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -192,8 +192,7 @@ public class Day16 implements AdventOfCodeSolution {
         var answer = maximumNumberOfEnergizedTiles(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The maximum number of energized tiles is: %d",
-                answer));
+        LOGGER.info("The maximum number of energized tiles is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

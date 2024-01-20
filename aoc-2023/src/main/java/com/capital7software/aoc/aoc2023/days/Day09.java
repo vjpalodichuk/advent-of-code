@@ -6,7 +6,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 9: Mirage Maintenance ---<br><br>
@@ -154,7 +155,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 905.
  */
 public class Day09 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day09.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day09.class);
 
     /**
      * Instantiates this Solution instance.
@@ -174,7 +175,7 @@ public class Day09 implements AdventOfCodeSolution {
         var answer = sumOfNextPredictedHistories(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The sum of the next predicted values is: %d%n", answer));
+        LOGGER.info("The sum of the next predicted values is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -184,7 +185,7 @@ public class Day09 implements AdventOfCodeSolution {
         var answer = sumOfPreviousPredictedHistories(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The sum of the previous predicted values is: %d%n", answer));
+        LOGGER.info("The sum of the previous predicted values is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

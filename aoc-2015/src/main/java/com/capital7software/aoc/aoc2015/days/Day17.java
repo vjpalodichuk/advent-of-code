@@ -3,43 +3,45 @@ package com.capital7software.aoc.aoc2015.days;
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.math.EggNog;
 import com.capital7software.aoc.lib.util.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 17: No Such Thing as Too Much ---
+ * --- Day 17: No Such Thing as Too Much ---<br><br>
  * The elves bought too much eggnog again - 150 liters this time. To fit it all into your refrigerator,
  * you'll need to move it into smaller containers. You take an inventory of the capacities of the available containers.
- * <p>
- * For capital7software, suppose you have containers of size 20, 15, 10, 5, and 5 liters. If you need to store 25 liters,
+ * <p><br>
+ * For example, suppose you have containers of size 20, 15, 10, 5, and 5 liters. If you need to store 25 liters,
  * there are four ways to do it:
- * <p>
- * 15 and 10
- * 20 and 5 (the first 5)
- * 20 and 5 (the second 5)
- * 15, 5, and 5
+ * <p><br>
+ * 15 and 10<br>
+ * 20 and 5 (the first 5)<br>
+ * 20 and 5 (the second 5)<br>
+ * 15, 5, and 5<br>
+ * <p><br>
  * Filling all containers entirely, how many different combinations of containers can exactly fit
  * all 150 liters of eggnog?
- * <p>
+ * <p><br>
  * Your puzzle answer was 1304.
- * <p>
- * --- Part Two ---
+ * <p><br>
+ * --- Part Two ---<br><br>
  * While playing with all the containers in the kitchen, another load of eggnog arrives!
  * The shipping and receiving department is requesting as many containers as you can spare.
- * <p>
+ * <p><br>
  * Find the minimum number of containers that can exactly fit all 150 liters of eggnog.
  * How many different ways can you fill that number of containers and still hold exactly 150 litres?
- * <p>
- * In the capital7software above, the minimum number of containers was two.
+ * <p><br>
+ * In the example above, the minimum number of containers was two.
  * There were three ways to use that many containers, and so the answer there would be 3.
- * <p>
+ * <p><br>
  * Your puzzle answer was 18.
  */
 public class Day17 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day17.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day17.class);
 
     /**
      * Instantiates the solution instance.
@@ -58,7 +60,7 @@ public class Day17 implements AdventOfCodeSolution {
         var start = Instant.now();
         var combinations = combinationsOfContainersToHoldEggNog(150, input);
         var end = Instant.now();
-        LOGGER.info(String.format("The number of the Sue that got me the gift is: %d%n", combinations.first()));
+        LOGGER.info("The number of the Sue that got me the gift is: {}", combinations.first());
         logTimings(LOGGER, start, end);
     }
 
@@ -69,10 +71,8 @@ public class Day17 implements AdventOfCodeSolution {
         var min = combinations.second().stream().map(List::size).min(Comparator.naturalOrder()).orElse(-1);
         var minCount = combinations.second().stream().filter(it -> it.size() == min).count();
         var end = Instant.now();
-        LOGGER.info(String.format(
-                "The minimum number of containers needed is %d and there are %d of those containers on hand%n",
-                min, minCount
-        ));
+        LOGGER.info("The minimum number of containers needed is {} and there are {} of those containers on hand",
+                min, minCount);
         logTimings(LOGGER, start, end);
     }
 

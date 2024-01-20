@@ -2,13 +2,14 @@ package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.graph.constaint.SwordsAndStuff;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 21: RPG Simulator 20XX ---<br>
+ * --- Day 21: RPG Simulator 20XX ---<br><br>
  * Little Henry Case got a new video game for Christmas. It's an RPG, and he's stuck on a boss.
  * He needs to know what equipment to buy at the shop. He hands you the controller.
  * <p><br>
@@ -28,56 +29,78 @@ import java.util.logging.Logger;
  * <p><br>
  * Here is what the item shop is selling:
  * <p><br>
- * Weapons:    Cost  Damage  Armor<br>
- * Dagger        8     4       0<br>
- * Shortsword   10     5       0<br>
- * Warhammer    25     6       0<br>
- * Longsword    40     7       0<br>
- * Greataxe     74     8       0<br>
- * <p>
- * Armor:      Cost  Damage  Armor<br>
- * Leather      13     0       1<br>
- * Chainmail    31     0       2<br>
- * Splintmail   53     0       3<br>
- * Bandedmail   75     0       4<br>
- * Platemail   102     0       5<br>
- * <p>
- * Rings:      Cost  Damage  Armor<br>
- * Damage +1    25     1       0<br>
- * Damage +2    50     2       0<br>
- * Damage +3   100     3       0<br>
- * Defense +1   20     0       1<br>
- * Defense +2   40     0       2<br>
- * Defense +3   80     0       3<br>
+ * <code>
+ * Weapons: &nbsp;&nbsp;    Cost  Damage  Armor<br>
+ * Dagger &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp; 4 &nbsp;&nbsp;&nbsp; 0<br>
+ * Shortsword &nbsp;&nbsp;10 &nbsp;&nbsp;&nbsp;5 &nbsp;&nbsp;&nbsp; 0<br>
+ * Warhammer &nbsp;&nbsp; 25 &nbsp;&nbsp;&nbsp;6 &nbsp;&nbsp;&nbsp; 0<br>
+ * Longsword &nbsp;&nbsp; 40 &nbsp;&nbsp;&nbsp;7 &nbsp;&nbsp;&nbsp; 0<br>
+ * Greataxe &nbsp;&nbsp;&nbsp; 74 &nbsp;&nbsp; 8 &nbsp;&nbsp;&nbsp; 0<br>
+ * <br><br>
+ * Armor: &nbsp;&nbsp;   Cost  Damage  Armor<br>
+ * Leather &nbsp;&nbsp;&nbsp; 13 &nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp; 1<br>
+ * Chainmail &nbsp;&nbsp;31 &nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp; 2<br>
+ * Splintmail &nbsp;53 &nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp; 3<br>
+ * Bandedmail &nbsp;75 &nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp; 4<br>
+ * Platemail &nbsp;102 &nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp; 5<br>
+ * <br><br>
+ * Rings: &nbsp;&nbsp;&nbsp;&nbsp; Cost  Damage  Armor<br>
+ * Damage +1 &nbsp;&nbsp; 25 &nbsp;&nbsp; 1 &nbsp;&nbsp;&nbsp; 0<br>
+ * Damage +2 &nbsp;&nbsp; 50 &nbsp;&nbsp; 2 &nbsp;&nbsp;&nbsp; 0<br>
+ * Damage +3 &nbsp;&nbsp;100 &nbsp;&nbsp; 3 &nbsp;&nbsp;&nbsp; 0<br>
+ * Defense +1 &nbsp;&nbsp;20 &nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp; 1<br>
+ * Defense +2 &nbsp;&nbsp;40 &nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp; 2<br>
+ * Defense +3 &nbsp;&nbsp;80 &nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp; 3<br>
+ * </code>
  * <p><br>
- * You must buy exactly one weapon; no dual-wielding. Armor is optional, but you can't use more than one. You can buy 0-2 rings (at most one for each hand). You must use any items you buy. The shop only has one of each item, so you can't buy, for capital7software, two rings of Damage +3.
+ * You must buy exactly one weapon; no dual-wielding. Armor is optional, but you can't
+ * use more than one. You can buy 0-2 rings (at most one for each hand). You must use
+ * any items you buy. The shop only has one of each item, so you can't buy, for example,
+ * two rings of Damage +3.
  * <p><br>
- * For capital7software, suppose you have 8 hit points, 5 damage, and 5 armor, and that the boss has 12 hit points, 7 damage, and 2 armor:
+ * For example, suppose you have 8 hit points, 5 damage, and 5 armor, and that the boss
+ * has 12 hit points, 7 damage, and 2 armor:
  * <p><br>
- * The mage deals 5-2 = 3 damage; the boss goes down to 9 hit points.<br>
- * The boss deals 7-5 = 2 damage; the mage goes down to 6 hit points.<br>
- * The mage deals 5-2 = 3 damage; the boss goes down to 6 hit points.<br>
- * The boss deals 7-5 = 2 damage; the mage goes down to 4 hit points.<br>
- * The mage deals 5-2 = 3 damage; the boss goes down to 3 hit points.<br>
- * The boss deals 7-5 = 2 damage; the mage goes down to 2 hit points.<br>
- * The mage deals 5-2 = 3 damage; the boss goes down to 0 hit points.<br>
- * <p><br>
+ * <ul>
+ *     <li>
+ *         The mage deals 5-2 = 3 damage; the boss goes down to 9 hit points.
+ *     </li>
+ *     <li>
+ *         The boss deals 7-5 = 2 damage; the mage goes down to 6 hit points.
+ *     </li>
+ *     <li>
+ *         The mage deals 5-2 = 3 damage; the boss goes down to 6 hit points.
+ *     </li>
+ *     <li>
+ *         The boss deals 7-5 = 2 damage; the mage goes down to 4 hit points.
+ *     </li>
+ *     <li>
+ *         The mage deals 5-2 = 3 damage; the boss goes down to 3 hit points.
+ *     </li>
+ *     <li>
+ *         The boss deals 7-5 = 2 damage; the mage goes down to 2 hit points.
+ *     </li>
+ *     <li>
+ *         The mage deals 5-2 = 3 damage; the boss goes down to 0 hit points.
+ *     </li>
+ * </ul>
  * In this scenario, the mage wins! (Barely.)
  * <p><br>
- * You have 100 hit points. The boss's actual stats are in your puzzle input. What is the least amount of gold you can spend and still win the fight?
- * <p>
+ * You have 100 hit points. The boss's actual stats are in your puzzle input. What is the
+ * least amount of gold you can spend and still win the fight?
+ * <p><br>
  * Your puzzle answer was 91.
- * <p>
- * --- Part Two ---<br>
+ * <p><br>
+ * --- Part Two ---<br><br>
  * Turns out the shopkeeper is working with the boss, and can persuade you to buy whatever items he wants.
  * The other rules still apply, and he still only has one of each item.
- * <p>
+ * <p><br>
  * What is the most amount of gold you can spend and still lose the fight?
- * <p>
+ * <p><br>
  * Your puzzle answer was 158.
  */
 public class Day21 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day21.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day21.class);
 
     /**
      * Instantiates the solution instance.
@@ -96,7 +119,7 @@ public class Day21 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = leastAmountOfGoldAndStillWin(input);
         var end = Instant.now();
-        LOGGER.info(String.format("The least amount of gold spent and still win is: %d%n", lowest));
+        LOGGER.info("The least amount of gold spent and still win is: {}", lowest);
         logTimings(LOGGER, start, end);
     }
 
@@ -105,7 +128,7 @@ public class Day21 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = mostAmountOfGoldAndStillLose(input);
         var end = Instant.now();
-        LOGGER.info(String.format("The most amount of gold spent and still lose is: %d%n", lowest));
+        LOGGER.info("The most amount of gold spent and still lose is: {}", lowest);
         logTimings(LOGGER, start, end);
     }
 

@@ -36,12 +36,12 @@ import java.util.Map;
  * The offset is always written with a prefix + or - to indicate the direction of the jump
  * (forward or backward, respectively).
  * <p><br>
- * For capital7software, jmp +1 would simply continue with the next instruction, while jmp +0 would
+ * For example, jmp +1 would simply continue with the next instruction, while jmp +0 would
  * continuously jump back to itself forever.
  * <p><br>
  * The program exits when it tries to run an instruction beyond the ones defined.
  * <p><br>
- * For capital7software, this program sets a to 2, because the jio instruction causes it to skip the tpl instruction:
+ * For example, this program sets a to 2, because the jio instruction causes it to skip the tpl instruction:
  * <p><br>
  * inc a<br>
  * jio a, +2<br>

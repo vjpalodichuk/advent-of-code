@@ -1,6 +1,7 @@
 package com.capital7software.aoc.lib.graph.constaint;
 
 import com.capital7software.aoc.lib.util.Pair;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * You can buy 0-2 rings (at most one for each hand). You must use any items you buy.
  * The shop only has one of each item, so you can't buy, for capital7software, two rings of Damage +3.
  * <p><br>
- * For capital7software, suppose you have 8 hit points, 5 damage, and 5 armor,
+ * For example, suppose you have 8 hit points, 5 damage, and 5 armor,
  * and that the boss has 12 hit points, 7 damage, and 2 armor:
  * <p><br>
  * The mage deals 5-2 = 3 damage; the boss goes down to 9 hit points.<br>
@@ -82,6 +83,7 @@ public record SwordsAndStuff(@NotNull ItemShop shop, @NotNull Player player, @No
     /**
      * The different types of Items in the game that the Player can carry and equip.
      */
+    @Getter
     public enum ItemType {
         /**
          * The Weapon type. The Player must carry exactly one of these types of Items.
@@ -96,7 +98,17 @@ public record SwordsAndStuff(@NotNull ItemShop shop, @NotNull Player player, @No
          */
         RING(0, 2);
 
+        /**
+         * -- GETTER --
+         *  Returns the minimum number of Items of this type the Player must carry at once.
+         *
+         */
         private final int minimum;
+        /**
+         * -- GETTER --
+         *  Returns the maximum number of Items of this type the Player can carry at once.
+         *
+         */
         private final int maximum;
 
         /**
@@ -110,23 +122,6 @@ public record SwordsAndStuff(@NotNull ItemShop shop, @NotNull Player player, @No
             this.maximum = maximum;
         }
 
-        /**
-         * Returns the minimum number of Items of this type the Player must carry at once.
-         *
-         * @return The minimum number of Items of this type the Player must carry at once.
-         */
-        public int getMinimum() {
-            return minimum;
-        }
-
-        /**
-         * Returns the maximum number of Items of this type the Player can carry at once.
-         *
-         * @return The maximum number of Items of this type the Player can carry at once.
-         */
-        public int getMaximum() {
-            return maximum;
-        }
     }
 
     /**

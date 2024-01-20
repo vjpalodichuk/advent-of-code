@@ -2,15 +2,16 @@ package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.computer.SimpleComputer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 23: Opening the Turing Lock ---<br>
+ * --- Day 23: Opening the Turing Lock ---<br><br>
  * Little Jane Marie just got her very first computer for Christmas from some unknown benefactor.
- * It comes with instructions and an capital7software program, but the computer itself seems to be malfunctioning.
+ * It comes with instructions and an example program, but the computer itself seems to be malfunctioning.
  * She's curious what the program does, and would like you to help her run it.
  * <p><br>
  * The manual explains that the computer supports two registers and six instructions
@@ -37,36 +38,37 @@ import java.util.logging.Logger;
  *         jio r, offset is like jmp, but only jumps if register r is 1 ("jump if one", not odd).
  *     </li>
  * </ul>
- * <p>
- * All three jump instructions work with an offset relative to that instruction.<br>
+ * All three jump instructions work with an offset relative to that instruction.<br><br>
  * The offset is always written with a prefix + or - to indicate the direction of the jump
  * (forward or backward, respectively).
  * <p><br>
- * For capital7software, jmp +1 would simply continue with the next instruction, while jmp +0 would
+ * For example, jmp +1 would simply continue with the next instruction, while jmp +0 would
  * continuously jump back to itself forever.
  * <p><br>
  * The program exits when it tries to run an instruction beyond the ones defined.
  * <p><br>
- * For capital7software, this program sets a to 2, because the jio instruction causes it to skip the tpl instruction:
+ * For example, this program sets a to 2, because the jio instruction causes it to skip the tpl instruction:
  * <p><br>
+ * <code>
  * inc a<br>
  * jio a, +2<br>
  * tpl a<br>
  * inc a<br>
+ * </code>
  * <p><br>
  * What is the value in register b when the program in your puzzle input is finished executing?
- * <p>
+ * <p><br>
  * Your puzzle answer was 184.
- * <p>
- * --- Part Two ---<br>
+ * <p><br>
+ * --- Part Two ---<br><br>
  * The unknown benefactor is very thankful for releasi-- er, helping little Jane Marie with her computer.
  * Definitely not to distract you, what is the value in register b after the program is
  * finished executing if register a starts as 1 instead?
- * <p>
+ * <p><br>
  * Your puzzle answer was 231.
  */
 public class Day23 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day23.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day23.class);
 
     /**
      * Instantiates the solution instance.
@@ -85,7 +87,7 @@ public class Day23 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = runProgramAndGetValueInRegister(input, "b");
         var end = Instant.now();
-        LOGGER.info(String.format("The value in register b is: %d%n", lowest));
+        LOGGER.info("The value in register b is: {}", lowest);
         logTimings(LOGGER, start, end);
     }
 
@@ -99,7 +101,7 @@ public class Day23 implements AdventOfCodeSolution {
                 "b"
         );
         var end = Instant.now();
-        LOGGER.info(String.format("The value in register b is: %d%n", lowest));
+        LOGGER.info("The value in register b is: {}", lowest);
         logTimings(LOGGER, start, end);
     }
 

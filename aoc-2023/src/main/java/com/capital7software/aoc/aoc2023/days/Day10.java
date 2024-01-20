@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.grid.PipeMaze;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 10: Pipe Maze ---<br><br>
@@ -278,7 +279,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 393.
  */
 public class Day10 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day10.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day10.class);
 
     /**
      * Instantiates this Solution instance.
@@ -298,16 +299,14 @@ public class Day10 implements AdventOfCodeSolution {
         var answer = calculateMaximumDistance(input, false);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Maximum steps to the furthest point from the starting point using DFS: %d",
-                answer));
+        LOGGER.info("Maximum steps to the furthest point from the starting point using DFS: {}", answer);
         logTimings(LOGGER, start, end);
 
         start = Instant.now();
         answer = calculateMaximumDistance(input, true);
         end = Instant.now();
 
-        LOGGER.info(String.format("Maximum steps to the furthest point from the starting point using BFS: %d",
-                answer));
+        LOGGER.info("Maximum steps to the furthest point from the starting point using BFS: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -317,14 +316,14 @@ public class Day10 implements AdventOfCodeSolution {
         var answer = countTilesEnclosedInMainLoop(input, false);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Tiles enclosed in the loop: %d using DFS", answer));
+        LOGGER.info("Tiles enclosed in the loop: {} using DFS", answer);
         logTimings(LOGGER, start, end);
 
         start = Instant.now();
         answer = countTilesEnclosedInMainLoop(input, true);
         end = Instant.now();
 
-        LOGGER.info(String.format("Tiles enclosed in the loop: %d using BFS", answer));
+        LOGGER.info("Tiles enclosed in the loop: {} using BFS", answer);
         logTimings(LOGGER, start, end);
     }
 

@@ -6,7 +6,8 @@ import com.capital7software.aoc.lib.geometry.Direction;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 14: Parabolic Reflector Dish ---<br><br>
@@ -154,7 +155,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 87700.
  */
 public class Day14 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day14.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day14.class);
 
     /**
      * Instantiates this Solution instance.
@@ -174,8 +175,7 @@ public class Day14 implements AdventOfCodeSolution {
         var answer = tiltAndCalculateLoadOnNorthSupports(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("After tilting the platform North, the load on the North Supports is: %d",
-                answer));
+        LOGGER.info("After tilting the platform North, the load on the North Supports is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -186,8 +186,8 @@ public class Day14 implements AdventOfCodeSolution {
         var answer = spinAndCalculateLoadOnNorthSupports(input, spinCount);
         var end = Instant.now();
 
-        LOGGER.info(String.format("After %d spin cycles the load on the North Supports is: %d",
-                spinCount, answer));
+        LOGGER.info("After {} spin cycles the load on the North Supports is: {}",
+                spinCount, answer);
         logTimings(LOGGER, start, end);
     }
 

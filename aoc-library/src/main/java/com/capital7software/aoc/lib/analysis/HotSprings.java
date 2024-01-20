@@ -232,7 +232,6 @@ public class HotSprings {
          */
         public long validSequences() {
             var cache = new HashMap<SpringRecord, Long>();
-            //            LOGGER.info(String.format("Valid sequences for this SpringRecord: " + count);
             return validSequences(cache);
         }
 

@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.grid.GardenSteps;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 21: Step Counter ---<br><br>
@@ -190,7 +191,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 620962518745459.
  */
 public class Day21 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day21.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day21.class);
 
     /**
      * Instantiates this Solution instance.
@@ -210,8 +211,7 @@ public class Day21 implements AdventOfCodeSolution {
         var answer = walk(input, 64, false);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The number of garden plots reached in 64 steps is: %d",
-                answer));
+        LOGGER.info("The number of garden plots reached in 64 steps is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -221,8 +221,7 @@ public class Day21 implements AdventOfCodeSolution {
         var answer = walk(input, 26_501_365, true);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The number of garden plots reached in 26,501,365 steps is: %d",
-                answer));
+        LOGGER.info("The number of garden plots reached in 26,501,365 steps is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

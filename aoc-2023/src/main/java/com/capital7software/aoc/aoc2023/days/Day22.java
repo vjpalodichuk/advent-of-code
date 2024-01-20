@@ -6,7 +6,8 @@ import com.capital7software.aoc.lib.geometry.BrickBoard;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 22: Sand Slabs ---<br><br>
@@ -204,7 +205,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 93292.
  */
 public class Day22 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day22.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day22.class);
 
     /**
      * Instantiates this Solution instance.
@@ -224,8 +225,7 @@ public class Day22 implements AdventOfCodeSolution {
         var answer = totalNumberOfBricksThatCanBeSafelyDisintegrated(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Total number of bricks that can be safely disintegrated is: %d",
-                answer));
+        LOGGER.info("Total number of bricks that can be safely disintegrated is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -235,8 +235,7 @@ public class Day22 implements AdventOfCodeSolution {
         var answer = sumOfFallingBricksInAChainReaction(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Total number of bricks that can be safely disintegrated is: %d",
-                answer));
+        LOGGER.info("Total number of bricks that can be safely disintegrated is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

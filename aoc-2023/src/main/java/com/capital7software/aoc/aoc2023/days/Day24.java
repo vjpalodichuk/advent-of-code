@@ -7,7 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 24: Never Tell Me The Odds ---<br><br>
@@ -185,7 +186,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 848947587263033.
  */
 public class Day24 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day24.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day24.class);
 
     /**
      * Instantiates this Solution instance.
@@ -205,8 +206,7 @@ public class Day24 implements AdventOfCodeSolution {
         var answer = testHailStones(input, 200_000_000_000_000L, 400_000_000_000_000L);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Total number of hail stones that pass the test area is: %d",
-                answer));
+        LOGGER.info("Total number of hail stones that pass the test area is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -216,8 +216,8 @@ public class Day24 implements AdventOfCodeSolution {
         var answer = testFindRock(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Total sum of the rock parts is: %s",
-                BigDecimal.valueOf(answer).toPlainString()));
+        LOGGER.info("Total sum of the rock parts is: {}",
+                BigDecimal.valueOf(answer).toPlainString());
         logTimings(LOGGER, start, end);
     }
 

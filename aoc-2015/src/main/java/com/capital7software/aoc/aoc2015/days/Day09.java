@@ -7,54 +7,62 @@ import com.capital7software.aoc.lib.graph.parser.Day09Parser;
 import com.capital7software.aoc.lib.graph.path.HamiltonianPathFinder;
 import com.capital7software.aoc.lib.graph.path.PathFinderResult;
 import com.capital7software.aoc.lib.graph.path.PathFinderStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
- * --- Day 9: All in a Single Night ---
+ * --- Day 9: All in a Single Night ---<br><br>
  * Every year, Santa manages to deliver all of his presents in a single night.
- * <p>
+ * <p><br>
  * This year, however, he has some new locations to visit; his elves have provided him the distances
  * between every pair of locations. He can start and end at any two (different) locations he wants,
  * but he must visit each location exactly once. What is the shortest distance he can travel to achieve this?
- * <p>
- * For capital7software, given the following distances:
- * <p>
- * London to Dublin = 464
- * London to Belfast = 518
- * Dublin to Belfast = 141
+ * <p><br>
+ * For example, given the following distances:
+ * <p><br>
+ * <code>
+ * London to Dublin = 464<br>
+ * London to Belfast = 518<br>
+ * Dublin to Belfast = 141<br>
+ * </code>
+ * <p><br>
  * The possible routes are therefore:
- * <p>
- * Dublin -> London -> Belfast = 982
- * London -> Dublin -> Belfast = 605
- * London -> Belfast -> Dublin = 659
- * Dublin -> Belfast -> London = 659
- * Belfast -> Dublin -> London = 605
- * Belfast -> London -> Dublin = 982
- * The shortest of these is London -> Dublin -> Belfast = 605, and so the answer is 605 in this capital7software.
- * <p>
+ * <p><br>
+ * <code>
+ * Dublin -&#62; London -&#62; Belfast = 982<br>
+ * London -&#62; Dublin -&#62; Belfast = 605<br>
+ * London -&#62; Belfast -&#62; Dublin = 659<br>
+ * Dublin -&#62; Belfast -&#62; London = 659<br>
+ * Belfast -&#62; Dublin -&#62; London = 605<br>
+ * Belfast -&#62; London -&#62; Dublin = 982<br>
+ * </code>
+ * <p><br>
+ * The shortest of these is London -&#62; Dublin -&#62; Belfast = 605, and so the answer is 605 in this example.
+ * <p><br>
  * What is the distance of the shortest route?
- * <p>
- *     Your puzzle answer was 117.
- * <p>
- * --- Part Two ---
+ * <p><br>
+ * Your puzzle answer was 117.
+ * <p><br>
+ * --- Part Two ---<br><br>
  * The next year, just to show off, Santa decides to take the route with the longest distance instead.
- * <p>
- * He can still start and end at any two (different) locations he wants, and he still must visit each location exactly once.
- * <p>
- * For capital7software, given the distances above, the longest route would be 982 via (for capital7software) Dublin -> London -> Belfast.
- * <p>
+ * <p><br>
+ * He can still start and end at any two (different) locations he wants, and he still must
+ * visit each location exactly once.
+ * <p><br>
+ * For example, given the distances above, the longest route would be 982 via
+ * (for example) Dublin -&#62; London -&#62; Belfast.
+ * <p><br>
  * What is the distance of the longest route?
- * <p>
- *     Your puzzle answer was 909
- *
+ * <p><br>
+ * Your puzzle answer was 909
  */
 public class Day09 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day09.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day09.class);
 
     /**
      * Instantiates the solution instance.
@@ -73,7 +81,7 @@ public class Day09 implements AdventOfCodeSolution {
         var start = Instant.now();
         var shortestDistance = distanceOfShortestRouteVisitingEachNodeOnce(input);
         var end = Instant.now();
-        LOGGER.info(String.format("The distance of the shortest route is: %d%n", shortestDistance));
+        LOGGER.info("The distance of the shortest route is: {}", shortestDistance);
         logTimings(LOGGER, start, end);
     }
 
@@ -82,7 +90,7 @@ public class Day09 implements AdventOfCodeSolution {
         var start = Instant.now();
         var longestDistance = distanceOfLongestRouteVisitingEachNodeOnce(input);
         var end = Instant.now();
-        LOGGER.info(String.format("The distance of the longest route is: %d%n", longestDistance));
+        LOGGER.info("The distance of the longest route is: {}", longestDistance);
         logTimings(LOGGER, start, end);
     }
 

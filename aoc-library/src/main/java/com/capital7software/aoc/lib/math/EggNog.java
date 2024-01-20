@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * To fit it all into your refrigerator, you'll need to move it into smaller containers.
  * You take an inventory of the capacities of the available containers which is specified in containers.
  * <br><br>
- * For capital7software, suppose you have containers of size 20, 15, 10, 5, and 5 liters.
+ * For example, suppose you have containers of size 20, 15, 10, 5, and 5 liters.
  * If you need to store 25 liters, there are four ways to do it:
  * <ul>
  *     <li>

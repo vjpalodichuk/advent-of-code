@@ -4,6 +4,7 @@ import com.capital7software.aoc.lib.collection.PriorityQueue;
 import com.capital7software.aoc.lib.graph.constaint.SwordsAndStuff;
 import com.capital7software.aoc.lib.util.Pair;
 import com.capital7software.aoc.lib.util.Triple;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * If this decreases the timer to zero, the effect ends. You cannot cast a spell that would start an
  * effect which is already active. However, effects can be started on the same turn they end.<br><br>
  * <p><br>
- * For capital7software, suppose the mage has 10 hit points and 250 mana, and that the boss has 13 hit points and 8 damage:
+ * For example, suppose the mage has 10 hit points and 250 mana, and that the boss has 13 hit points and 8 damage:
  * <p><br>
  * -- Mage turn --<br>
  * - Mage has 10 hit points, 0 armor, 250 mana<br>
@@ -303,7 +304,19 @@ public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player b
         private final int spentMana;
         private List<Pair<Integer, Spell>> effects;
         private final boolean hardMode;
+        /**
+         * -- GETTER --
+         *  Returns the parent GameState or null if there is no parent.
+         *
+         */
+        @Getter
         private final GameState parent;
+        /**
+         * -- GETTER --
+         *  Returns the Spell that was cast during this GameState.
+         *
+         */
+        @Getter
         private final Spell spell;
 
         /**
@@ -409,23 +422,6 @@ public record AStarAndWizards(SpellShop shop, Mage mage, SwordsAndStuff.Player b
             if (!isBossDead() && isPlayerAlive()) {
                 playerHitPoints -= Math.max(1, bossDamage - updates.armor());
             }
-        }
-
-        /**
-         * Returns the Spell that was cast during this GameState.
-         *
-         * @return The Spell that was cast during this GameState.
-         */
-        public Spell getSpell() {
-            return spell;
-        }
-
-        /**
-         * Returns the parent GameState or null if there is no parent.
-         * @return The parent GameState or null if there is no parent.
-         */
-        public GameState getParent() {
-            return parent;
         }
 
         /**

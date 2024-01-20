@@ -2,13 +2,14 @@ package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.math.QuantumEntanglement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 24: It Hangs in the Balance ---<br>
+ * --- Day 24: It Hangs in the Balance ---<br><br>
  * It's Christmas Eve, and Santa is loading up the sleigh for this year's deliveries. However,
  * there's one small problem: he can't get the sleigh to balance. If it isn't balanced,
  * he can't defy physics, and nobody gets presents this year.
@@ -33,24 +34,26 @@ import java.util.logging.Logger;
  * the value you get when you multiply their weights together. Only consider quantum entanglement
  * if the first group has the fewest possible number of packages in it and all groups weigh the same amount.
  * <p><br>
- * For capital7software, suppose you have ten packages with weights 1 through 5 and 7 through 11.
+ * For example, suppose you have ten packages with weights 1 through 5 and 7 through 11.
  * For this situation, some of the unique first groups, their quantum entanglements,
  * and a way to divide the remaining packages are as follows:
  * <p><br>
- * Group 1;             Group 2; Group 3<br>
- * 11 9       (QE= 99); 10 8 2;  7 5 4 3 1<br>
- * 10 9 1     (QE= 90); 11 7 2;  8 5 4 3<br>
- * 10 8 2     (QE=160); 11 9;    7 5 4 3 1<br>
- * 10 7 3     (QE=210); 11 9;    8 5 4 2 1<br>
- * 10 5 4 1   (QE=200); 11 9;    8 7 3 2<br>
- * 10 5 3 2   (QE=300); 11 9;    8 7 4 1<br>
- * 10 4 3 2 1 (QE=240); 11 9;    8 7 5<br>
- * 9 8 3      (QE=216); 11 7 2;  10 5 4 1<br>
- * 9 7 4      (QE=252); 11 8 1;  10 5 3 2<br>
- * 9 5 4 2    (QE=360); 11 8 1;  10 7 3<br>
- * 8 7 5      (QE=280); 11 9;    10 4 3 2 1<br>
- * 8 5 4 3    (QE=480); 11 9;    10 7 2 1<br>
- * 7 5 4 3 1  (QE=420); 11 9;    10 8 2<br>
+ * <code>
+ * Group 1; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Group 2;&nbsp;&nbsp;Group 3<br>
+ * 11 9 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (QE= 99); &nbsp;10 8 2; &nbsp;&nbsp;7 5 4 3 1<br>
+ * 10 9 1 &nbsp;&nbsp;&nbsp; (QE= 90); &nbsp;11 7 2; &nbsp;&nbsp;8 5 4 3<br>
+ * 10 8 2 &nbsp;&nbsp;&nbsp; (QE=160); &nbsp;11 9; &nbsp;&nbsp;&nbsp; 7 5 4 3 1<br>
+ * 10 7 3 &nbsp;&nbsp;&nbsp; (QE=210); &nbsp;11 9; &nbsp;&nbsp;&nbsp; 8 5 4 2 1<br>
+ * 10 5 4 1 &nbsp; (QE=200);&nbsp; 11 9; &nbsp;&nbsp;&nbsp; 8 7 3 2<br>
+ * 10 5 3 2 &nbsp; (QE=300);&nbsp; 11 9; &nbsp;&nbsp;&nbsp; 8 7 4 1<br>
+ * 10 4 3 2 1 (QE=240);&nbsp; 11 9; &nbsp;&nbsp;&nbsp; 8 7 5<br>
+ * 9 8 3 &nbsp;&nbsp;&nbsp;&nbsp; (QE=216);&nbsp; 11 7 2; &nbsp;&nbsp;10 5 4 1<br>
+ * 9 7 4 &nbsp;&nbsp;&nbsp;&nbsp; (QE=252);&nbsp; 11 8 1; &nbsp;&nbsp;10 5 3 2<br>
+ * 9 5 4 2 &nbsp;&nbsp;&nbsp;(QE=360);&nbsp; 11 8 1; &nbsp;&nbsp;10 7 3<br>
+ * 8 7 5 &nbsp;&nbsp;&nbsp;&nbsp; (QE=280);&nbsp; 11 9; &nbsp;&nbsp;&nbsp; 10 4 3 2 1<br>
+ * 8 5 4 3 &nbsp;&nbsp;&nbsp;(QE=480);&nbsp; 11 9; &nbsp;&nbsp;&nbsp; 10 7 2 1<br>
+ * 7 5 4 3 1 &nbsp;(QE=420); &nbsp;11 9; &nbsp;&nbsp;&nbsp; 10 8 2<br>
+ * </code>
  * <p><br>
  * Of these, although 10 9 1 has the smallest quantum entanglement (90), the configuration with only
  * two packages, 11 9, in the passenger compartment gives Santa the most legroom and wins. In this situation,
@@ -58,10 +61,10 @@ import java.util.logging.Logger;
  * with only two packages in the first group, the one with the smaller quantum entanglement would be chosen.
  * <p><br>
  * What is the quantum entanglement of the first group of packages in the ideal configuration?
- * <p>
+ * <p>br>
  * Your puzzle answer was 10723906903.
- * <p>
- * --- Part Two ---<br>
+ * <p>br>
+ * --- Part Two ---<br>br>
  * That's weird... the sleigh still isn't balancing.
  * <p><br>
  * "Ho ho ho", Santa muses to himself. "I forgot the trunk".
@@ -69,25 +72,28 @@ import java.util.logging.Logger;
  * Balance the sleigh again, but this time, separate the packages into four groups instead of three.
  * The other constraints still apply.
  * <p><br>
- * Given the capital7software packages above, this would be some of the new unique first groups,
+ * Given the example packages above, this would be some of the new unique first groups,
  * their quantum entanglements, and one way to divide the remaining packages:
  * <p><br>
- * 11 4    (QE=44); 10 5;   9 3 2 1; 8 7<br>
- * 10 5    (QE=50); 11 4;   9 3 2 1; 8 7<br>
- * 9 5 1   (QE=45); 11 4;   10 3 2;  8 7<br>
- * 9 4 2   (QE=72); 11 3 1; 10 5;    8 7<br>
- * 9 3 2 1 (QE=54); 11 4;   10 5;    8 7<br>
- * 8 7     (QE=56); 11 4;   10 5;    9 3 2 1<br>
+ * <code>
+ * 11 4 &nbsp;&nbsp;&nbsp;&nbsp;(QE=44); 10 5; &nbsp;&nbsp; 9 3 2 1; &nbsp;8 7<br>
+ * 10 5 &nbsp;&nbsp;&nbsp; (QE=50); 11 4; &nbsp;&nbsp; 9 3 2 1; &nbsp;8 7<br>
+ * 9 5 1 &nbsp;&nbsp; (QE=45); 11 4; &nbsp;&nbsp;10 3 2; &nbsp;&nbsp; 8 7<br>
+ * 9 4 2 &nbsp;&nbsp; (QE=72); 11 3 1; 10 5; &nbsp;&nbsp;&nbsp;&nbsp; 8 7<br>
+ * 9 3 2 1 &nbsp;(QE=54); 11 4; &nbsp;&nbsp;10 5; &nbsp;&nbsp;&nbsp;&nbsp; 8 7<br>
+ * 8 7 &nbsp;&nbsp;&nbsp;&nbsp; (QE=56); 11 4; &nbsp;&nbsp;10 5; &nbsp;&nbsp;&nbsp;&nbsp; 9 3 2 1<br>
+ * </code>
  * <p><br>
  * Of these, there are three arrangements that put the minimum (two) number of packages
- * in the first group: 11 4, 10 5, and 8 7. Of these, 11 4 has the lowest quantum entanglement, and so it is selected.
+ * in the first group: 11 4, 10 5, and 8 7. Of these, 11 4 has the lowest quantum entanglement,
+ * and so it is selected.
  * <p><br>
  * Now, what is the quantum entanglement of the first group of packages in the ideal configuration?
- * <p>
+ * <p><br>
  * Your puzzle answer was 74850409.
  */
 public class Day24 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day24.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day24.class);
 
     /**
      * Instantiates the solution instance.
@@ -106,7 +112,7 @@ public class Day24 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = getLowestQEScore(input, 3);
         var end = Instant.now();
-        LOGGER.info(String.format("The lowest QE Score with 3 partitions is: %d%n", lowest));
+        LOGGER.info("The lowest QE Score with 3 partitions is: {}", lowest);
         logTimings(LOGGER, start, end);
     }
 
@@ -115,7 +121,7 @@ public class Day24 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = getLowestQEScore(input, 4);
         var end = Instant.now();
-        LOGGER.info(String.format("The lowest QE Score with 4 partitions is: %d%n", lowest));
+        LOGGER.info("The lowest QE Score with 4 partitions is: {}", lowest);
         logTimings(LOGGER, start, end);
     }
 

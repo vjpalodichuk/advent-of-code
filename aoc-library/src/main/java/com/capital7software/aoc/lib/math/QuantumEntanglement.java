@@ -31,7 +31,7 @@ import java.util.List;
  * the value you get when you multiply their weights together. Only consider quantum entanglement
  * if the first group has the fewest possible number of packages in it and all groups weigh the same amount.
  * <p><br>
- * For capital7software, suppose you have ten packages with weights 1 through 5 and 7 through 11.
+ * For example, suppose you have ten packages with weights 1 through 5 and 7 through 11.
  * For this situation, some of the unique first groups, their quantum entanglements,
  * and a way to divide the remaining packages are as follows:
  * <p><br>

@@ -2,6 +2,8 @@ package com.capital7software.aoc.lib.analysis;
 
 import com.capital7software.aoc.lib.collection.BinaryTreeNode;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
-import java.util.logging.Logger;
 
 /**
  * It seems like you're meant to use the left/right instructions to navigate the network.
@@ -96,14 +97,14 @@ import java.util.logging.Logger;
  * Simultaneously start on every node that ends with A. How many steps does it take
  * before you're only on nodes that end with Z?
  *
- * @param steps The List of the Left and Right steps to make.
+ * @param steps   The List of the Left and Right steps to make.
  * @param nodeMap The Map of nodes in this Haunted Wasteland.
  */
 public record HauntedWasteland(
         @NotNull List<Character> steps,
         @NotNull Map<String, BinaryTreeNode<String>> nodeMap
 ) {
-    private static final Logger LOGGER = Logger.getLogger(HauntedWasteland.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(HauntedWasteland.class);
     private static final String NODE_NAME_SPLIT = " = ";
     private static final String NODE_CHILDREN_SPLIT = ", ";
     private static final char LEFT = 'L';
@@ -112,7 +113,7 @@ public record HauntedWasteland(
     /**
      * Instantiates a new HauntedWasteland with the specified list of steps and nodes.
      *
-     * @param steps The List of the Left and Right steps to make.
+     * @param steps   The List of the Left and Right steps to make.
      * @param nodeMap The Map of nodes in this Haunted Wasteland.
      */
     public HauntedWasteland(
@@ -205,8 +206,7 @@ public record HauntedWasteland(
     public long traverse(@NotNull String startNode, @NotNull Predicate<String> atEndNode) {
         long stepCount = 0;
 
-        LOGGER.fine("Traversing the network of Nodes starting at " + startNode +
-                " Node");
+        LOGGER.trace("Traversing the network of Nodes starting at {} Node", startNode);
 
         var currentNode = nodeMap.get(startNode);
 
@@ -221,11 +221,12 @@ public record HauntedWasteland(
         } while (currentNode != null && !atEndNode.test(currentNode.getValue()));
 
         if (currentNode != null) {
-            LOGGER.fine("Traversed the network of nodes starting at " +
-                    startNode + " and ended at " + currentNode.getValue() + " in " + stepCount + " steps!");
+            LOGGER.trace("Traversed the network of nodes starting at {} and ended at {} in {} steps!",
+                    startNode, currentNode.getValue(), stepCount);
         } else {
-            LOGGER.warning("Something went wrong after taking " + stepCount +
-                    " steps when starting at " + startNode + " as we didn't end at the correct node!");
+            LOGGER.warn(
+                    "Something went wrong after taking {} steps when starting at {} as we didn't end at the correct node!",
+                    stepCount, startNode);
         }
         return stepCount;
     }

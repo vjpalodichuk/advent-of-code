@@ -28,7 +28,7 @@ public record EncodingFun() {
      * (which represents a lone double-quote character), and \x plus two hexadecimal
      * characters (which represents a single character with that ASCII code).
      * <p>
-     * For capital7software, given the four strings above, the total number of characters of
+     * For example, given the four strings above, the total number of characters of
      * string code (2 + 5 + 10 + 6 = 23) minus the total number of characters in memory for
      * string values (0 + 3 + 7 + 1 = 11) is 23 - 11 = 12.
      *
@@ -45,7 +45,7 @@ public record EncodingFun() {
      * (which represents a lone double-quote character), and \x plus two hexadecimal
      * characters (which represents a single character with that ASCII code).
      * <p>
-     * For capital7software, given the four strings above, the total number of characters of
+     * For example, given the four strings above, the total number of characters of
      * string code (2 + 5 + 10 + 6 = 23) minus the total number of characters in memory for
      * string values (0 + 3 + 7 + 1 = 11) is 23 - 11 = 12.
      *
@@ -75,7 +75,7 @@ public record EncodingFun() {
                         i++; // Don't count it again!
                     } else if (aChar == 'x' && i + 3 < length) {
                         // Possible hex char
-                        var hexString = "" + chars[i + 2] + "" + chars[i + 3];
+                        var hexString = "" + chars[i + 2] + chars[i + 3];
 
                         if (pattern.matcher(hexString).matches()) {
                             // it is a hex string!
@@ -133,7 +133,7 @@ public record EncodingFun() {
                         i++; // Don't count it again!
                     } else if (aChar == 'x' && i + 3 < length) {
                         // Possible hex char
-                        var hexString = "" + chars[i + 2] + "" + chars[i + 3];
+                        var hexString = "" + chars[i + 2] + chars[i + 3];
 
                         if (pattern.matcher(hexString).matches()) {
                             // it is a hex string!

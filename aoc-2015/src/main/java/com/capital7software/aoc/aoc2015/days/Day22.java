@@ -2,13 +2,14 @@ package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.graph.path.AStarAndWizards;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 22: Wizard Simulator 20XX ---<br>
+ * --- Day 22: Wizard Simulator 20XX ---<br><br>
  * Little Henry Case decides that defeating bosses with swords and stuff is boring.
  * Now he's playing the game with a wizard. Of course, he gets stuck on another boss and needs your help again.
  * <p><br>
@@ -34,15 +35,15 @@ import java.util.logging.Logger;
  * Poison costs 173 mana. It starts an effect that lasts for 6 turns.
  * At the start of each turn while it is active, it deals the boss 3 damage.<br><br>
  * Recharge costs 229 mana. It starts an effect that lasts for 5 turns.
- * At the start of each turn while it is active, it gives you 101 new mana.<br><br>
+ * At the start of each turn while it is active, it gives you 101 new mana.<br>
  * <p><br>
  * Effects all work the same way. Effects apply at the start of both the mage's turns and the boss' turns.
  * Effects are created with a timer (the number of turns they last); at the start of each turn,
  * after they apply any effect they have, their timer is decreased by one.
  * If this decreases the timer to zero, the effect ends. You cannot cast a spell that would start an
- * effect which is already active. However, effects can be started on the same turn they end.<br><br>
+ * effect which is already active. However, effects can be started on the same turn they end.<br>
  * <p><br>
- * For capital7software, suppose the mage has 10 hit points and 250 mana, and that the boss has 13 hit points and 8 damage:
+ * For example, suppose the mage has 10 hit points and 250 mana, and that the boss has 13 hit points and 8 damage:
  * <p><br>
  * -- Mage turn --<br>
  * - Mage has 10 hit points, 0 armor, 250 mana<br>
@@ -136,10 +137,10 @@ import java.util.logging.Logger;
  * You start with 50 hit points and 500 mana points. The boss's actual stats are in your puzzle input.
  * What is the least amount of mana you can spend and still win the fight?
  * (Do not include mana recharge effects as "spending" negative mana.)
- * <p>
+ * <p><br>
  * Your puzzle answer was 953.
- * <p>
- * --- Part Two ---<br>
+ * <p><br>
+ * --- Part Two ---<br><br>
  * On the next run through the game, you increase the difficulty to hard.
  * <p><br>
  * At the start of each player turn (before any other effects apply),
@@ -151,7 +152,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 1289.
  */
 public class Day22 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day22.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day22.class);
 
     /**
      * Instantiates the solution instance.
@@ -170,7 +171,7 @@ public class Day22 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = leastAmountOfManaAndStillWin(input, false);
         var end = Instant.now();
-        LOGGER.info(String.format("The least amount of mana spent and still win is: %d%n", lowest));
+        LOGGER.info("The least amount of mana spent and still win is: {}", lowest);
         logTimings(LOGGER, start, end);
     }
 
@@ -179,7 +180,7 @@ public class Day22 implements AdventOfCodeSolution {
         var start = Instant.now();
         var lowest = leastAmountOfManaAndStillWin(input, true);
         var end = Instant.now();
-        LOGGER.info(String.format("The least amount of mana spent and still win on hard mode is: %d%n", lowest));
+        LOGGER.info("The least amount of mana spent and still win on hard mode is: {}", lowest);
         logTimings(LOGGER, start, end);
     }
 

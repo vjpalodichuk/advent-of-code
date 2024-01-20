@@ -2,13 +2,14 @@ package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.grid.ChristmasLights;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 6: Probably a Fire Hazard ---<br>
+ * --- Day 6: Probably a Fire Hazard ---<br><br>
  * Because your neighbors keep defeating you in the holiday house decorating contest year after year,
  * you've decided to deploy one million lights in a 1000x1000 grid.
  * <p><br>
@@ -25,41 +26,51 @@ import java.util.logging.Logger;
  * instructions Santa sent you in order.
  * <p><br>
  * For example:
- * <p><br>
- * turn on 0,0 through 999,999 would turn on (or leave on) every light.<br>
- * toggle 0,0 through 999,0 would toggle the first line of 1000 lights, turning off the ones
- * that were on, and turning on the ones that were off.<br>
- * turn off 499,499 through 500,500 would turn off (or leave off) the middle four lights.<br>
- * <p><br>
+ * <ul>
+ *     <li>
+ *         turn on 0,0 through 999,999 would turn on (or leave on) every light.
+ *     </li>
+ *     <li>
+ *         toggle 0,0 through 999,0 would toggle the first line of 1000 lights, turning off the ones
+ *         that were on, and turning on the ones that were off.
+ *     </li>
+ *     <li>
+ *         turn off 499,499 through 500,500 would turn off (or leave off) the middle four lights.
+ *     </li>
+ * </ul>
  * After following the instructions, how many lights are lit?
- * <p>
+ * <p><br>
  * Your puzzle answer was 377891.
- * <p>
- * --- Part Two ---<br>
+ * <p><br>
+ * --- Part Two ---<br><br>
  * You just finish implementing your winning light pattern when you realize you mistranslated Santa's
  * message from Ancient Nordic Elvish.
- * <p>
+ * <p><br>
  * The light grid you bought actually has individual brightness controls; each light can have a
  * brightness of zero or more. The lights all start at zero.
- * <p>
+ * <p><br>
  * The phrase turn on actually means that you should increase the brightness of those lights by 1.
- * <p>
+ * <p><br>
  * The phrase turn off actually means that you should decrease the brightness of those lights by 1,
  * to a minimum of zero.
- * <p>
+ * <p><br>
  * The phrase toggle actually means that you should increase the brightness of those lights by 2.
- * <p>
+ * <p><br>
  * What is the total brightness of all lights combined after following Santa's instructions?
- * <p>
+ * <p><br>
  * For example:
- * <p>
- * turn on 0,0 through 0,0 would increase the total brightness by 1.<br>
- * toggle 0,0 through 999,999 would increase the total brightness by 2000000.<br>
- * <p>
+ * <ul>
+ *     <li>
+ *         turn on 0,0 through 0,0 would increase the total brightness by 1.
+ *     </li>
+ *     <li>
+ *         toggle 0,0 through 999,999 would increase the total brightness by 2000000.
+ *     </li>
+ * </ul>
  * Your puzzle answer was 14110788.
  */
 public class Day06 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day06.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day06.class);
 
     /**
      * Instantiates the solution instance.
@@ -83,8 +94,7 @@ public class Day06 implements AdventOfCodeSolution {
         var total = getOnLightCount(lights);
 
         var end = Instant.now();
-        LOGGER.info(String.format(
-                "There are %d lights Lit!%n", total));
+        LOGGER.info("There are {} lights Lit!", total);
         logTimings(LOGGER, start, end);
     }
 
@@ -98,8 +108,7 @@ public class Day06 implements AdventOfCodeSolution {
         var total = getTotalBrightness(lights);
 
         var end = Instant.now();
-        LOGGER.info(String.format(
-                "Total brightness of the lights is: %d%n", total));
+        LOGGER.info("Total brightness of the lights is: {}", total);
         logTimings(LOGGER, start, end);
     }
 

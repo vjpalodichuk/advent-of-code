@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Determines the number of molecules that can be generated in one step from a given starting point.
  * <p>
- * For capital7software, imagine a machine that supports only the following replacements:
+ * For example, imagine a machine that supports only the following replacements:
  * <p><br>
  * H => HO<br>
  * H => OH<br>
@@ -31,12 +31,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * HOHOHO, can become 7 distinct molecules (over nine replacements: six from H, and three from O).
  * <p>
  * The machine replaces without regard for the surrounding characters.
- * For capital7software, given the string H2O, the transition H => OO would result in OO2O.
+ * For example, given the string H2O, the transition H => OO would result in OO2O.
  * <p>
  * Molecule fabrication always begins with just a single electron, e, and applying
  * replacements one at a time, just like the ones during calibration.
  * <p>
- * For capital7software, suppose you have the following replacements:
+ * For example, suppose you have the following replacements:
  * <p>
  * e => H<br>
  * e => O<br>

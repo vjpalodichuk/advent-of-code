@@ -1,6 +1,8 @@
 package com.capital7software.aoc.lib;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -9,13 +11,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Utility class for running Advent of Code Solutions.
  */
 public abstract class AdventOfCodeRunner {
-    private static final Logger LOGGER = Logger.getLogger(AdventOfCodeRunner.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdventOfCodeRunner.class);
 
     private static Path path;
 
@@ -62,7 +63,7 @@ public abstract class AdventOfCodeRunner {
                     String inputFilename;
                     if (args.length > 1 && args[1] != null && !args[1].trim().isBlank()) {
                         if (!Files.exists(Paths.get(args[1].trim()))) {
-                            LOGGER.severe(String.format("%s cannot be found!", args[1]));
+                            LOGGER.error("{} cannot be found!", args[1]);
                             printUsage();
                         } else {
                             inputFilename = args[1].trim();
@@ -76,7 +77,7 @@ public abstract class AdventOfCodeRunner {
                         path = Paths.get(url.toURI());
                     }
 
-                    LOGGER.info(String.format("Loading input data from: %s", path));
+                    LOGGER.info("Loading input data from: {}", path);
                     List<String> inputLines = Files.readAllLines(path);
 
                     // Part 1

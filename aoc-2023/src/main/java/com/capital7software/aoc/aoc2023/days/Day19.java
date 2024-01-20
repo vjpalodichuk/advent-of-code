@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.analysis.WorkflowManager;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 19: Aplenty ---<br><br>
@@ -128,7 +129,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 143760172569135.
  */
 public class Day19 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day19.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day19.class);
 
     /**
      * Instantiates this Solution instance.
@@ -148,8 +149,7 @@ public class Day19 implements AdventOfCodeSolution {
         var answer = sumOfRatingsOfAcceptedParts(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The minimum heat loss with minSteps 1 and maxSteps 2 is: %d",
-                answer));
+        LOGGER.info("The minimum heat loss with minSteps 1 and maxSteps 2 is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -159,8 +159,7 @@ public class Day19 implements AdventOfCodeSolution {
         var answer = distinctCombinationsOfAcceptedRatings(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The minimum heat loss with minSteps 4 and maxSteps 10 is: %d",
-                answer));
+        LOGGER.info("The minimum heat loss with minSteps 4 and maxSteps 10 is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

@@ -1,6 +1,8 @@
 package com.capital7software.aoc.lib.math;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+
 
 /**
  * You pull out your handy Oasis And Sand Instability Sensor and analyze your surroundings.
@@ -139,7 +141,7 @@ import java.util.logging.Logger;
  * @param sequenceMap The Map to use with this HistorySequence.
  */
 public record HistorySequence(@NotNull Map<Long, Deque<Long>> sequenceMap) {
-    private static final Logger LOGGER = Logger.getLogger(HistorySequence.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(HistorySequence.class);
     private static final String VALUE_SPLIT = " ";
     private static final Long HISTORY_KEY = 0L;
 
@@ -193,13 +195,13 @@ public record HistorySequence(@NotNull Map<Long, Deque<Long>> sequenceMap) {
         var size = sequenceMap.size();
 
         if (size == 1) {
-            LOGGER.finest("Building sequence map...");
+            LOGGER.trace("Building sequence map...");
             buildSequenceMap();
             size = sequenceMap.size();
         }
-        LOGGER.finest("Calculating the next value in the history sequence...");
+        LOGGER.trace("Calculating the next value in the history sequence...");
         Long nextValue = calculateNextValue((long) (size - 1));
-        LOGGER.finest(String.format("Next predicted value is: " + nextValue));
+        LOGGER.trace("Next predicted value is: {}", nextValue);
         return nextValue;
     }
 
@@ -212,13 +214,13 @@ public record HistorySequence(@NotNull Map<Long, Deque<Long>> sequenceMap) {
         var size = sequenceMap.size();
 
         if (size == 1) {
-            LOGGER.finest("Building previous sequence map...");
+            LOGGER.trace("Building previous sequence map...");
             buildSequenceMap();
             size = sequenceMap.size();
         }
-        LOGGER.finest("Calculating the previous value in the history sequence...");
+        LOGGER.trace("Calculating the previous value in the history sequence...");
         Long previousValue = calculatePreviousValue((long) (size - 1));
-        LOGGER.finest(String.format("Previous predicted value is: %d", previousValue));
+        LOGGER.trace("Previous predicted value is: {}", previousValue);
         return previousValue;
     }
 
@@ -254,7 +256,7 @@ public record HistorySequence(@NotNull Map<Long, Deque<Long>> sequenceMap) {
         // stopping condition
         if (currentKey < 0 || size == 1) {
             // We are done, so simply return the last value from the HISTORY_KEY
-            LOGGER.finest("Next value has been calculated!");
+            LOGGER.trace("Next value has been calculated!");
             return sequenceMap.get(HISTORY_KEY).getLast();
         }
         // size - 1 is the key in the map for the zeros sequence
@@ -277,7 +279,7 @@ public record HistorySequence(@NotNull Map<Long, Deque<Long>> sequenceMap) {
         // stopping condition
         if (currentKey < 0 || size == 1) {
             // We are done, so simply return the first value from the HISTORY_KEY
-            LOGGER.finest("Previous value has been calculated!");
+            LOGGER.trace("Previous value has been calculated!");
             return sequenceMap.get(HISTORY_KEY).getFirst();
         }
         // size - 1 is the key in the map for the zeros sequence

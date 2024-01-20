@@ -26,7 +26,7 @@ import java.util.function.Function;
 public interface Solver<T extends Number & Comparable<T>> {
     /**
      * Adds an Unknown with the specified ID. Typically, this will be the identifier for a value you are trying to
-     * solve for.<br><br>For capital7software with the CookieRecipe, the Unknown IDs are the names of the Ingredients.
+     * solve for.<br><br>For example with the CookieRecipe, the Unknown IDs are the names of the Ingredients.
      *
      * @param id The ID of the Unknown.
      */
@@ -35,7 +35,7 @@ public interface Solver<T extends Number & Comparable<T>> {
     /**
      * Sets the ValueDomain to be used with this Solver instance. The ValueDomain is called to provide
      * the values to get assigned to the Unknowns. Unbound ValueDomains should be avoided whenever possible.<br><br>
-     * For capital7software with the CookieRecipe, it uses a LongRangedValueDomain whose values are limited to the inclusive
+     * For example with the CookieRecipe, it uses a LongRangedValueDomain whose values are limited to the inclusive
      * range of 0 - 100.
      *
      * @param valueDomain The instance of the ValueDomain to use for this Solver instance.
@@ -45,7 +45,7 @@ public interface Solver<T extends Number & Comparable<T>> {
     /**
      * Adds a Variable with the specified ID. Typically, the ID will be the identifier for a variable that is used
      * in the Score function and the variable itself will be some kind of product or summation or both.<br><br>
-     * For capital7software with the CookieRecipe, the Variable IDs are names like totalCapacity and totalDurability and
+     * For example with the CookieRecipe, the Variable IDs are names like totalCapacity and totalDurability and
      * they sum up the results of multiplying the capacity and durability of each Ingredient by the Unknown values
      * assigned to each of the Ingredients.
      *
@@ -58,14 +58,14 @@ public interface Solver<T extends Number & Comparable<T>> {
     /**
      * A constraint is simply a Predicate that returns false if the values assigned to the Unknowns or produced
      * by the Variables is unacceptable for use in calculating a valid Score. The ID of the constraint
-     * typically describes what the constraint does.<br><br>For capital7software with the CookieRecipe one constraint is
+     * typically describes what the constraint does.<br><br>For example with the CookieRecipe one constraint is
      * named aboveZero which ensures that all Variables have produced values that are greater than zero.
      * <br><br>The first parameter passed
      * to the Predicate is a map of the values currently assigned to the Unknowns and the second parameter is
      * a map of the values currently produced by the Variables.<br><br>
      * Any number of constraints can be added to the Solver instance. If any constraint returns false, then
      * how that is handled is implementation dependent.<br><br>
-     * For capital7software with the CookieRecipe, it uses the SimpleSolver which will abandon the current Unknowns and
+     * For example with the CookieRecipe, it uses the SimpleSolver which will abandon the current Unknowns and
      * request new values for all the Unknowns and then try again.
      *
      * @param id         THe unique ID of the constraint being added.
@@ -76,7 +76,7 @@ public interface Solver<T extends Number & Comparable<T>> {
     /**
      * The Score function is called only if all constraints have been satisfied (return true). The Score function
      * produces a value that is then used by min or max to determine the minimum or maximum score.<br><br>
-     * For capital7software with the CookieRecipe, the Score function is simply the product of all the Variables except
+     * For example with the CookieRecipe, the Score function is simply the product of all the Variables except
      * for the calories Variable.
      * <br><br>The first parameter passed to the Score function is a map of the values currently assigned to
      * the Unknowns and the second parameter is a map of the values currently produced by the Variables.<br><br>

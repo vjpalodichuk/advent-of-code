@@ -2,30 +2,45 @@ package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.graph.constaint.CookieRecipe;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 15: Science for Hungry People ---
+ * --- Day 15: Science for Hungry People ---<br><br>
  * Today, you set out on the task of perfecting your milk-dunking cookie recipe.
  * All you have to do is find the right balance of ingredients.
- * <p>
+ * <p><br>
  * Your recipe leaves room for exactly 100 teaspoons of ingredients. You make a
  * list of the remaining ingredients you could use to finish the
  * recipe (your puzzle input) and their properties per teaspoon:
- * <p>
- * capacity (how well it helps the cookie absorb milk)
- * durability (how well it keeps the cookie intact when full of milk)
- * flavor (how tasty it makes the cookie)
- * texture (how it improves the feel of the cookie)
- * calories (how many calories it adds to the cookie)
- * You can only measure ingredients in whole-teaspoon amounts accurately,
- * and you have to be accurate, so you can reproduce your results in the future.
- * The total score of a cookie can be found by adding up each of the properties
- * (negative totals become 0) and then multiplying together everything except calories.
- * <p>
+ * <ul>
+ *     <li>
+ *         capacity (how well it helps the cookie absorb milk)
+ *     </li>
+ *     <li>
+ *         durability (how well it keeps the cookie intact when full of milk)
+ *     </li>
+ *     <li>
+ *         flavor (how tasty it makes the cookie)
+ *     </li>
+ *     <li>
+ *         texture (how it improves the feel of the cookie)
+ *     </li>
+ *     <li>
+ *         calories (how many calories it adds to the cookie)
+ *     </li>
+ *     <li>
+ *         You can only measure ingredients in whole-teaspoon amounts accurately,
+ *         and you have to be accurate, so you can reproduce your results in the future.
+ *     </li>
+ *     <li>
+ *         The total score of a cookie can be found by adding up each of the properties
+ *         (negative totals become 0) and then multiplying together everything except calories.
+ *     </li>
+ * </ul>
  * For instance, suppose you have these two ingredients:
  * <ul>
  *     <li>
@@ -35,7 +50,6 @@ import java.util.logging.Logger;
  *         Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
  *     </li>
  * </ul>
- * <br>
  * Then, choosing to use 44 teaspoons of butterscotch and 56 teaspoons of
  * cinnamon (because the amounts of each ingredient must add up to 100) would
  * result in a cookie with the following properties:
@@ -53,33 +67,32 @@ import java.util.logging.Logger;
  *         A texture of 44*3 + 56*-1 = 76
  *     </li>
  * </ul>
- * <br>
  * Multiplying these together (68 * 80 * 152 * 76, ignoring calories for now)
  * results in a total score of 62842880, which happens to be the best score
  * possible given these ingredients. If any properties had produced a negative
  * total, it would have instead become zero, causing the whole score to multiply to zero.
- * <p>
+ * <p><br>
  * Given the ingredients in your kitchen and their properties, what is the total
  * score of the highest-scoring cookie you can make?
- * <p>
+ * <p><br>
  * Your puzzle answer was 222870.
- * <p>
- * --- Part Two ---
+ * <p><br>
+ * --- Part Two ---<br><br>
  * Your cookie recipe becomes wildly popular! Someone asks if you can make another recipe that has exactly
  * 500 calories per cookie (so they can use it as a meal replacement). Keep the rest of your award-winning
  * process the same (100 teaspoons, same ingredients, same scoring system).
- * <p>
- * For capital7software, given the ingredients above, if you had instead selected 40 teaspoons of butterscotch and
+ * <p><br>
+ * For example, given the ingredients above, if you had instead selected 40 teaspoons of butterscotch and
  * 60 teaspoons of cinnamon (which still adds to 100), the total calorie count would be 40*8 + 60*3 = 500.
  * The total score would go down, though: only 57600000, the best you can do in such trying circumstances.
- * <p>
+ * <p><br>
  * Given the ingredients in your kitchen and their properties, what is the total score of the highest-scoring
  * cookie you can make with a calorie total of 500?
- * <p>
+ * <p><br>
  * Your puzzle answer was 117936.
  */
 public class Day15 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day15.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day15.class);
 
     /**
      * Instantiates the solution instance.
@@ -98,7 +111,7 @@ public class Day15 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = whatIsTheTotalScoreOfTheHighestScoringCookie(input, CookieRecipe.MAX_ITERATIONS);
         var end = Instant.now();
-        LOGGER.info(String.format("Total score of the highest scoring cookie is: %d%n", max));
+        LOGGER.info("Total score of the highest scoring cookie is: {}", max);
         logTimings(LOGGER, start, end);
     }
 
@@ -107,7 +120,7 @@ public class Day15 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = whatIsTheTotalScoreOfTheHighestScoringCaloriesRestrictedCookie(input, CookieRecipe.MAX_ITERATIONS);
         var end = Instant.now();
-        LOGGER.info(String.format("Total score of the highest scoring calorie restricted cookie is: %d%n", max));
+        LOGGER.info("Total score of the highest scoring calorie restricted cookie is: {}", max);
         logTimings(LOGGER, start, end);
     }
 

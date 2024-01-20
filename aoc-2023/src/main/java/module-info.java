@@ -8,6 +8,7 @@ module com.capital7software.aoc.aoc2023aoc {
     requires org.jetbrains.annotations;
     requires com.github.spotbugs.annotations;
     requires com.capital7software.aoc.lib;
+    requires org.slf4j;
 
     exports com.capital7software.aoc.aoc2023;
     exports com.capital7software.aoc.aoc2023.days;

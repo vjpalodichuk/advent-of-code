@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.math.BoatRaces;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 6: Wait For It ---<br><br>
@@ -122,7 +123,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 46561107.
  */
 public class Day06 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day06.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day06.class);
 
     /**
      * Instantiates the solution instance.
@@ -142,7 +143,7 @@ public class Day06 implements AdventOfCodeSolution {
         var answer = productOfTheNumberOfWinningHoldTimesPerRace(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The product of the number of winning hold times per race is: %d%n", answer));
+        LOGGER.info("The product of the number of winning hold times per race is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -152,14 +153,14 @@ public class Day06 implements AdventOfCodeSolution {
         var answer = numberOfWinningHoldTimesIterative(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The number of winning hold times using iteration is: %d%n", answer));
+        LOGGER.info("The number of winning hold times using iteration is: {}", answer);
         logTimings(LOGGER, start, end);
 
         start = Instant.now();
         answer = numberOfWinningHoldTimesQuadratic(input);
         end = Instant.now();
 
-        LOGGER.info(String.format("The number of winning hold times using quadratic equation is: %d%n", answer));
+        LOGGER.info("The number of winning hold times using quadratic equation is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

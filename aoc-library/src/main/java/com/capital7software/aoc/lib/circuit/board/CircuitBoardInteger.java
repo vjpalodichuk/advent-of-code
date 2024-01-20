@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
  * to emulate the circuit instead, almost all programming languages (for capital7software, C, JavaScript, or Python)
  * provide operators for these gates.
  * <p>
- * For capital7software, here is a simple circuit:
+ * For example, here is a simple circuit:
  * <p>
  * 123 -> x
  * 456 -> y
@@ -101,7 +101,7 @@ public record CircuitBoardInteger(
     /**
      * Builds a new CircuitBoardInteger with the specified ID and from the schematic.
      * <p>
-     * For capital7software, here is a simple circuit:
+     * For example, here is a simple circuit:
      * <p>
      * 123 -> x
      * 456 -> y

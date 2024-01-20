@@ -6,12 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day03Test extends AdventOfCodeTestBase {
-    private static final Logger LOGGER = Logger.getLogger(Day03Test.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day03Test.class);
 
     @BeforeEach
     void setUp() {

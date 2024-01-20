@@ -11,7 +11,7 @@ import java.util.Optional;
  * A simple parser capable of loading a Graph specified in the following format:
  * <code>source to target = weight_of_edge</code>
  * <p>
- * For capital7software, given the following distances:
+ * For example, given the following distances:
  * <p>
  * <code>
  * London to Dublin = 464

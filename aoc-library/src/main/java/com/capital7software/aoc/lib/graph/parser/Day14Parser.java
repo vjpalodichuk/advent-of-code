@@ -15,7 +15,7 @@ import java.util.Optional;
  * <code>Name1 can fly 00 km/s for 0 seconds, but then must rest for 00 seconds.</code><br>
  * <code>Name2 can fly 00 km/s for 0 seconds, but then must rest for 00 seconds.</code><br>
  * <p><br>
- * For capital7software, suppose you have only two reindeer:
+ * For example, suppose you have only two reindeer:
  * <ul>
  *     <li>
  *         Comet can fly 13 km/s for 7 seconds, but then must rest for 82 seconds.

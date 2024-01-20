@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 /**
  * A simple class that can be used in testing to ease the loading of input files.
@@ -46,7 +46,7 @@ public abstract class AdventOfCodeTestBase {
             path = Paths.get(url.toURI());
             lines = Files.readAllLines(path);
         } catch (URISyntaxException | IOException e) {
-            getLogger().severe(String.format("Unable to load input data from: %s%n", path));
+            getLogger().error("Unable to load input data from: {}", path);
             throw new RuntimeException(e);
         }
     }

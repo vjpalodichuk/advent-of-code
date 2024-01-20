@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.math.CamelCards;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 7: Camel Cards ---<br><br>
@@ -130,7 +131,7 @@ import java.util.logging.Logger;
  *
  */
 public class Day07 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day07.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day07.class);
 
     /**
      * Instantiates the solution instance.
@@ -150,7 +151,7 @@ public class Day07 implements AdventOfCodeSolution {
         var answer = calculateTotalWinnings(input, false);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The total winnings using Jacks is: %d%n", answer));
+        LOGGER.info("The total winnings using Jacks is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 
@@ -160,7 +161,7 @@ public class Day07 implements AdventOfCodeSolution {
         var answer = calculateTotalWinnings(input, true);
         var end = Instant.now();
 
-        LOGGER.info(String.format("The total winnings using Jokers is: %d%n", answer));
+        LOGGER.info("The total winnings using Jokers is: {}", answer);
         logTimings(LOGGER, start, end);
     }
 

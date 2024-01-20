@@ -35,6 +35,14 @@ val repoKeyValuePublish: String by project
 val artifactoryUser: String by project
 val artifactoryPassword: String by project
 
+object Versions {
+    const val JETBRAINS_ANNOTATIONS = "24.0.1"
+    const val JUNIT = "5.9.2"
+    const val LOG4J2 = "2.22.1"
+    const val JACKSON = "2.16.1"
+    const val LOMBOK = "1.18.30"
+}
+
 // Projects should use Maven Central for external dependencies
 // This could be the organization's private repository
 repositories {
@@ -52,15 +60,33 @@ repositories {
 // Use the Checkstyle rules provided by the convention plugin
 // Do not allow any warnings
 checkstyle {
-    config = resources.text.fromString(com.capital7software.CheckstyleUtil.getCheckstyleConfig("/checkstyle.xml"))
+    config = resources.text
+        .fromString(com.capital7software.CheckstyleUtil.getCheckstyleConfig("/checkstyle.xml"))
     maxWarnings = 0
 }
 
 dependencies {
-    implementation("org.jetbrains:annotations:24.0.1")
+    implementation("org.jetbrains:annotations:${Versions.JETBRAINS_ANNOTATIONS}")
     implementation("com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    implementation("com.fasterxml.jackson.core:jackson-core:${Versions.JACKSON}")
+    implementation("com.fasterxml.jackson.core:jackson-databind:${Versions.JACKSON}")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:${Versions.JACKSON}")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.JACKSON}")
+    implementation("com.fasterxml.jackson.module:jackson-modules-java8:${Versions.JACKSON}")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${Versions.JACKSON}")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-properties:${Versions.JACKSON}")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${Versions.JACKSON}")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${Versions.JACKSON}")
+    implementation("org.apache.logging.log4j:log4j-api:${Versions.LOG4J2}")
+    implementation("org.apache.logging.log4j:log4j-core:${Versions.LOG4J2}")
+    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:${Versions.LOG4J2}")
+    compileOnly("org.projectlombok:lombok:${Versions.LOMBOK}")
+    annotationProcessor("org.projectlombok:lombok:${Versions.LOMBOK}")
+    // Test dependencies
+    testCompileOnly("org.projectlombok:lombok:${Versions.LOMBOK}")
+    testAnnotationProcessor("org.projectlombok:lombok:${Versions.LOMBOK}")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${Versions.JUNIT}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.JUNIT}")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

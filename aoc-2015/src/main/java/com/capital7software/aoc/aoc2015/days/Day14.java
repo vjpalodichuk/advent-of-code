@@ -3,61 +3,80 @@ package com.capital7software.aoc.aoc2015.days;
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.graph.parser.Day14Parser;
 import com.capital7software.aoc.lib.math.ReindeerOlympics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 14: Reindeer Olympics ---
+ * --- Day 14: Reindeer Olympics ---<br><br>
  * This year is the Reindeer Olympics! Reindeer can fly at high speeds, but must rest occasionally
  * to recover their energy. Santa would like to know which of his reindeer is fastest, and so he has them race.
- * <p>
+ * <p><br>
  * Reindeer can only either be flying (always at their top speed) or resting (not moving at all),
  * and always spend whole seconds in either state.
- * <p>
- * For capital7software, suppose you have the following Reindeer:
- * <p>
- * Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.
- * Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.
- * After one second, Comet has gone 14 km, while Dancer has gone 16 km. After ten seconds, Comet has
- * gone 140 km, while Dancer has gone 160 km. On the eleventh second, Comet begins resting (staying at 140 km),
- * and Dancer continues on for a total distance of 176 km. On the 12th second, both reindeer are resting.
- * They continue to rest until the 138th second, when Comet flies for another ten seconds. On the 174th second,
- * Dancer flies for another 11 seconds.
- * <p>
- * In this capital7software, after the 1000th second, both reindeer are resting, and Comet is in the lead at 1120
+ * <p><br>
+ * For example, suppose you have the following Reindeer:
+ * <ul>
+ *     <li>
+ *         Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.
+ *     </li>
+ *     <li>
+ *         Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.
+ *     </li>
+ *     <li>
+ *         After one second, Comet has gone 14 km, while Dancer has gone 16 km.
+ *     </li>
+ *     <li>
+ *         After ten seconds, Comet has gone 140 km, while Dancer has gone 160 km.
+ *     </li>
+ *     <li>
+ *         On the eleventh second, Comet begins resting (staying at 140 km), and Dancer
+ *         continues on for a total distance of 176 km.
+ *     </li>
+ *     <li>
+ *         On the 12th second, both reindeer are resting.
+ *     </li>
+ *     <li>
+ *         They continue to rest until the 138th second, when Comet flies for another ten seconds.
+ *     </li>
+ *     <li>
+ *         On the 174th second, Dancer flies for another 11 seconds.
+ *     </li>
+ * </ul>
+ * In this example, after the 1000th second, both reindeer are resting, and Comet is in the lead at 1120
  * km (poor Dancer has only gotten 1056 km by that point). So, in this situation, Comet would win
  * (if the race ended at 1000 seconds).
- * <p>
+ * <p><br>
  * Given the descriptions of each reindeer (in your puzzle input), after exactly 2503 seconds,
  * what distance has the winning reindeer traveled?
- * <p>
+ * <p><br>
  * Your puzzle answer was 2660.
- * <p>
- * --- Part Two ---
+ * <p><br>
+ * --- Part Two ---<br><br>
  * Seeing how reindeer move in bursts, Santa decides he's not pleased with the old scoring system.
- * <p>
+ * <p><br>
  * Instead, at the end of each second, he awards one point to the reindeer currently in the lead.
  * (If there are multiple reindeer tied for the lead, they each get one point.)
- * He keeps the traditional 2503 second time limit, of course, as doing otherwise would be entirely ridiculous.
- * <p>
- * Given the capital7software reindeer from above, after the first second, Dancer is in the lead and gets one point.
+ * He keeps the traditional 2,503-second time limit, of course, as doing otherwise would be entirely ridiculous.
+ * <p><br>
+ * Given the example reindeer from above, after the first second, Dancer is in the lead and gets one point.
  * He stays in the lead until several seconds into Comet's second burst: after the 140th second,
  * Comet pulls into the lead and gets his first point. Of course, since Dancer had been in the
  * lead for the 139 seconds before that, he has accumulated 139 points by the 140th second.
- * <p>
+ * <p><br>
  * After the 1000th second, Dancer has accumulated 689 points, while poor Comet, our old champion,
  * only has 312. So, with the new scoring system, Dancer would win (if the race ended at 1000 seconds).
- * <p>
+ * <p><br>
  * Again given the descriptions of each reindeer (in your puzzle input), after exactly 2503 seconds,
  * how many points does the winning reindeer have?
- * <p>
+ * <p><br>
  * Your puzzle answer was 1256.
  */
 public class Day14 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day14.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day14.class);
 
     /**
      * Instantiates the solution instance.
@@ -76,7 +95,7 @@ public class Day14 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = whatDistanceHasTheWinnerTraveled(input, 2_503);
         var end = Instant.now();
-        LOGGER.info(String.format("The distance traveled by the winning reindeer at 2,503 seconds is: %s%n", max));
+        LOGGER.info("The distance traveled by the winning reindeer at 2,503 seconds is: {}", max);
         logTimings(LOGGER, start, end);
     }
 
@@ -85,7 +104,7 @@ public class Day14 implements AdventOfCodeSolution {
         var start = Instant.now();
         var max = howManyPointsDoesTheWinnerHave(input, 2_503);
         var end = Instant.now();
-        LOGGER.info(String.format("The total points by the winning reindeer after 2,503 seconds is: %s%n", max));
+        LOGGER.info("The total points by the winning reindeer after 2,503 seconds is: {}", max);
         logTimings(LOGGER, start, end);
     }
 

@@ -2,13 +2,14 @@ package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.string.ApartmentBuilding;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
- * --- Day 1: Not Quite Lisp ---<br>
+ * --- Day 1: Not Quite Lisp ---<br><br>
  * Santa was hoping for a white Christmas, but his weather machine's "snow" function is powered by stars,
  * and he's fresh out! To save Christmas, he needs you to collect fifty stars by December 25th.
  * <p><br>
@@ -40,7 +41,7 @@ import java.util.logging.Logger;
  * <p><br>
  * Your puzzle answer was 280.
  * <p><br>
- * --- Part Two ---<br>
+ * --- Part Two ---<br><br>
  * Now, given the same instructions, find the position of the first character that causes him to enter
  * the basement (floor -1). The first character in the instructions has position 1,
  * the second character has position 2, and so on.
@@ -57,7 +58,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 1797.
  */
 public class Day01 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day01.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day01.class);
 
     /**
      * Instantiates the solution instance.
@@ -77,7 +78,7 @@ public class Day01 implements AdventOfCodeSolution {
         long floor = getFloor(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Santa is on the %d floor!%n", floor));
+        LOGGER.info("Santa is on the {} floor!", floor);
         logTimings(LOGGER, start, end);
     }
 
@@ -87,7 +88,7 @@ public class Day01 implements AdventOfCodeSolution {
         long floor = getFirstBasementFloorPosition(input);
         var end = Instant.now();
 
-        LOGGER.info(String.format("Position %d causes Santa to enter the basement for the first time!%n", floor));
+        LOGGER.info("Position {} causes Santa to enter the basement for the first time!", floor);
         logTimings(LOGGER, start, end);
     }
 

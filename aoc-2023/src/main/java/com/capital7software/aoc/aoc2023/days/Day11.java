@@ -5,7 +5,8 @@ import com.capital7software.aoc.lib.analysis.CosmicExpansion;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 11: Cosmic Expansion ---<br><br>
@@ -151,7 +152,7 @@ import java.util.logging.Logger;
  * Your puzzle answer was 630728425490.
  */
 public class Day11 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day11.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day11.class);
 
     /**
      * Instantiates this Solution instance.
@@ -183,16 +184,16 @@ public class Day11 implements AdventOfCodeSolution {
         var answer = sumOfAllPairsShortestPath(input, gapFactor, false);
         var end = Instant.now();
 
-        LOGGER.info(String.format("With a Gap Factor of %d the sum of all Galaxy pairs shortest path is: %d",
-                gapFactor, answer));
+        LOGGER.info("With a Gap Factor of {} the sum of all Galaxy pairs shortest path is: {}",
+                gapFactor, answer);
         logTimings(LOGGER, start, end);
 
         start = Instant.now();
         answer = sumOfAllPairsShortestPath(input, gapFactor, true);
         end = Instant.now();
 
-        LOGGER.info(String.format("With a Gap Factor of %d the sum of optimized all Galaxy pairs shortest path is: %d",
-                gapFactor, answer));
+        LOGGER.info("With a Gap Factor of {} the sum of optimized all Galaxy pairs shortest path is: {}",
+                gapFactor, answer);
         logTimings(LOGGER, start, end);
     }
 

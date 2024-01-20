@@ -5,6 +5,8 @@ import com.capital7software.aoc.lib.graph.parser.Day13Parser;
 import com.capital7software.aoc.lib.graph.path.HamiltonianPathFinder;
 import com.capital7software.aoc.lib.graph.path.PathFinderResult;
 import com.capital7software.aoc.lib.graph.path.PathFinderStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -14,15 +16,14 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
- * --- Day 13: Knights of the Dinner Table ---
+ * --- Day 13: Knights of the Dinner Table ---<br><br>
  * In years past, the holiday feast with your family hasn't gone so well. Not everyone gets along! This year, you resolve, will be different. You're going to find the optimal seating arrangement and avoid all those awkward conversations.
- * <p>
+ * <p><br>
  * You start by writing up a list of everyone invited and the amount their happiness would increase or decrease if they were to find themselves sitting next to each other person. You have a circular table that will be just big enough to fit everyone comfortably, and so each person will have exactly two neighbors.
- * <p>
- * For capital7software, suppose you have only four attendees planned, and you calculate their potential happiness as follows:
+ * <p><br>
+ * For example, suppose you have only four attendees planned, and you calculate their potential happiness as follows:
  * <ul>
  *     <li>
  *         Alice would gain 54 happiness units by sitting next to Bob.
@@ -64,40 +65,41 @@ import java.util.logging.Logger;
  * Then, if you seat Alice next to David, Alice would lose 2 happiness units
  * (because David talks so much), but David would gain 46 happiness units
  * (because Alice is such a good listener), for a total change of 44.
- * <p>
+ * <p><br>
  * If you continue around the table, you could then seat Bob next to Alice
  * (Bob gains 83, Alice gains 54). Finally, seat Carol, who sits next to
  * Bob (Carol gains 60, Bob loses 7) and David (Carol gains 55, David gains 41).
  * The arrangement looks like this:
- * <p>
- *     <code>
- *      +41 +46
- * +55   David    -2
- * Carol       Alice
- * +60    Bob    +54
- *      -7  +83
- *     </code>
+ * <p><br>
+ * <code>
+ *  &nbsp;&nbsp;&nbsp; +41 &nbsp; +46<br>
+ * +55&nbsp;&nbsp; David &nbsp;-2<br>
+ * Carol &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Alice<br>
+ * +60 &nbsp;&nbsp; Bob &nbsp;&nbsp;+54<br>
+ *  &nbsp;&nbsp;&nbsp; -7 &nbsp; +83<br>
+ * </code>
+ * <p><br>
  * After trying every other seating arrangement in this hypothetical scenario,
  * you find that this one is the most optimal, with a total change in happiness of 330.
- * <p>
+ * <p><br>
  * What is the total change in happiness for the optimal seating arrangement of the actual guest list?
- * <p>
+ * <p><br>
  * Your puzzle answer was 618.
- * <p>
- * --- Part Two ---
+ * <p><br>
+ * --- Part Two ---<br><br>
  * In all the commotion, you realize that you forgot to seat yourself. At this point, you're
  * pretty apathetic toward the whole thing, and your happiness wouldn't really go up or down
  * regardless of who you sit next to. You assume everyone else would be just as ambivalent
  * about sitting next to you, too.
- * <p>
+ * <p><br>
  * So, add yourself to the list, and give all happiness relationships that involve you a score of 0.
- * <p>
+ * <p><br>
  * What is the total change in happiness for the optimal seating arrangement that actually includes yourself?
- * <p>
+ * <p><br>
  * Your puzzle answer was 601.
  */
 public class Day13 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = Logger.getLogger(Day13.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Day13.class);
 
     /**
      * Instantiates the solution instance.
@@ -116,7 +118,7 @@ public class Day13 implements AdventOfCodeSolution {
         var start = Instant.now();
         var sum = greatestChangeInHappiness(input);
         var end = Instant.now();
-        LOGGER.info(String.format("The greatest change in happiness is: %d%n", sum));
+        LOGGER.info("The greatest change in happiness is: {}", sum);
         logTimings(LOGGER, start, end);
     }
 
@@ -132,7 +134,7 @@ public class Day13 implements AdventOfCodeSolution {
             var start = Instant.now();
             var sum = greatestChangeInHappiness(inputLines);
             var end = Instant.now();
-            LOGGER.info(String.format("The greatest change in happiness with me included is: %d%n", sum));
+            LOGGER.info("The greatest change in happiness with me included is: {}", sum);
             logTimings(LOGGER, start, end);
         } catch (URISyntaxException | IOException e) {
             throw new RuntimeException(e);

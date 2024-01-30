@@ -11,8 +11,8 @@ plugins {
 group = "com.capital7software.aoc"
 
 val artifactoryContextUrl: String by project
-val repoKeyValue: String by project
-val repoKeyValuePublish: String by project
+val artifactoryRepoKeyReadRelease: String by project
+val artifactoryRepoKeyPublishSnapshot: String by project
 val artifactoryUser: String by project
 val artifactoryPassword: String by project
 
@@ -25,7 +25,7 @@ publishing {
     repositories {
         maven {
             name = "artifactory-publish"
-            url = uri("${artifactoryContextUrl}/${repoKeyValuePublish}/")
+            url = uri("${artifactoryContextUrl}/${artifactoryRepoKeyPublishSnapshot}/")
             credentials {
                 username = artifactoryUser
                 password = artifactoryPassword
@@ -40,7 +40,7 @@ artifactory {
     publish {
         setContextUrl(artifactoryContextUrl)
         repository {
-            setRepoKey(repoKeyValuePublish)
+            setRepoKey(artifactoryRepoKeyPublishSnapshot)
             setUsername(artifactoryUser)
             setPassword(artifactoryPassword)
             setMavenCompatible(true)
@@ -53,7 +53,7 @@ artifactory {
     }
     resolve {
         repository {
-            setRepoKey(repoKeyValue)
+            setRepoKey(artifactoryRepoKeyReadRelease)
             setUsername(artifactoryUser)
             setPassword(artifactoryPassword)
             setMavenCompatible(true)

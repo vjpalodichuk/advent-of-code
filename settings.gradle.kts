@@ -17,7 +17,20 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
 
     releaseTypes {
         publicationServices.set(listOf("github"))
-        remoteRepositories.set(listOf("origin"))
+
+        items.create("release") {
+            collapseVersions.set(true)
+            collapsedVersionQualifier.set("{{#firstLower}}{{branch}}{{/firstLower}}")
+            filterTags.set("^({{configuration.releasePrefix}})?([0-9]\\d*)\\.([0-9]\\d*)\\.([0-9]\\d*)(-(rel|release)((\\.([0-9]\\d*))?)?)\$")
+            gitPushForce.set("true")
+            gitPush.set("true")
+            gitTag.set("true")
+            gitTagForce.set("true")
+            gitTagMessage.set("Release: {{configuration.releasePrefix}}{{version}}")
+            matchBranches.set("^(rel|release)(-|\\/)({{configuration.releasePrefix}})?([0-9|x]\\d*)(\\.([0-9|x]\\d*)(\\.([0-9|x]\\d*))?)?\$")
+            matchWorkspaceStatus.set("CLEAN")
+            versionRangeFromBranchName.set(true)
+        }
     }
 
     services.create("github") {

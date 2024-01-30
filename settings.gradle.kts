@@ -7,6 +7,7 @@ include("aoc-library", "aoc-2015", "aoc-2023")
 
 configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
     preset = "extended"
+    verbosity = "DEBUG"
 
     initialVersion = "1.0.0"
 

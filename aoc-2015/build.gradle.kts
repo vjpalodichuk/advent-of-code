@@ -2,7 +2,7 @@ plugins {
     id("capital7software.library-conventions")
 }
 
-version = "1.0-SNAPSHOT"
+version = rootProject.version
 
 dependencies {
     implementation(project(":aoc-library"))
@@ -17,3 +17,7 @@ tasks.withType<JavaExec>().configureEach {
 }
 
 tasks.register("run2015", JavaExec::class)
+
+tasks.assemble {
+    dependsOn(rootProject.tasks.named("nyxInfer"))
+}

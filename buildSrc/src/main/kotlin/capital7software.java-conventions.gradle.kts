@@ -30,8 +30,8 @@ kotlin {
 }
 
 val artifactoryContextUrl: String by project
-val repoKeyValue: String by project
-val repoKeyValuePublish: String by project
+val artifactoryRepoKeyReadRelease: String by project
+val artifactoryRepoKeyPublishRelease: String by project
 val artifactoryUser: String by project
 val artifactoryPassword: String by project
 
@@ -48,7 +48,7 @@ object Versions {
 repositories {
     maven {
         name = "artifactory-publish"
-        url = uri("${artifactoryContextUrl}/${repoKeyValue}/")
+        url = uri("${artifactoryContextUrl}/${artifactoryRepoKeyReadRelease}/")
         credentials {
             username = artifactoryUser
             password = artifactoryPassword

@@ -41,6 +41,7 @@ object Versions {
     const val LOG4J2 = "2.22.1"
     const val JACKSON = "2.16.1"
     const val LOMBOK = "1.18.30"
+    const val CHECKSTYLE = "10.13.0"
 }
 
 // Projects should use Maven Central for external dependencies
@@ -63,6 +64,7 @@ checkstyle {
     config = resources.text
         .fromString(com.capital7software.CheckstyleUtil.getCheckstyleConfig("/checkstyle.xml"))
     maxWarnings = 0
+    toolVersion = Versions.CHECKSTYLE
 }
 
 dependencies {

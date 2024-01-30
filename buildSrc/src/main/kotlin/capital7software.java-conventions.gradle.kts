@@ -31,7 +31,7 @@ kotlin {
 
 val artifactoryContextUrl: String by project
 val artifactoryRepoKeyReadRelease: String by project
-val artifactoryRepoKeyPublishSnapshot: String by project
+val artifactoryRepoKeyPublishRelease: String by project
 val artifactoryUser: String by project
 val artifactoryPassword: String by project
 

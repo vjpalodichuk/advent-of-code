@@ -8,12 +8,16 @@ include("aoc-library", "aoc-2015", "aoc-2023")
 configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
     preset = "extended"
 
+    initialVersion = "1.0.0"
+
     changelog {
-        path = "build/CHANGELOG.md"
+        path = "CHANGELOG.md"
     }
+
     releaseTypes {
         publicationServices.set(listOf("github"))
     }
+
     services.create("github") {
         type = "GITHUB"
         options.apply {

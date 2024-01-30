@@ -12,7 +12,7 @@ group = "com.capital7software.aoc"
 
 val artifactoryContextUrl: String by project
 val artifactoryRepoKeyReadRelease: String by project
-val artifactoryRepoKeyPublishSnapshot: String by project
+val artifactoryRepoKeyPublishRelease: String by project
 val artifactoryUser: String by project
 val artifactoryPassword: String by project
 
@@ -25,7 +25,7 @@ publishing {
     repositories {
         maven {
             name = "artifactory-publish"
-            url = uri("${artifactoryContextUrl}/${artifactoryRepoKeyPublishSnapshot}/")
+            url = uri("${artifactoryContextUrl}/${artifactoryRepoKeyPublishRelease}/")
             credentials {
                 username = artifactoryUser
                 password = artifactoryPassword
@@ -40,7 +40,7 @@ artifactory {
     publish {
         setContextUrl(artifactoryContextUrl)
         repository {
-            setRepoKey(artifactoryRepoKeyPublishSnapshot)
+            setRepoKey(artifactoryRepoKeyPublishRelease)
             setUsername(artifactoryUser)
             setPassword(artifactoryPassword)
             setMavenCompatible(true)

@@ -12,10 +12,12 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
 
     changelog {
         path = "CHANGELOG.md"
+        append = "head"
     }
 
     releaseTypes {
         publicationServices.set(listOf("github"))
+        remoteRepositories.set(listOf("origin"))
     }
 
     services.create("github") {

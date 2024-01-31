@@ -2,21 +2,22 @@ package com.capital7software.aoc.aoc2015.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.string.PasswordPolicy;
+import java.time.Instant;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Instant;
-import java.util.List;
-
 /**
  * --- Day 11: Corporate Policy ---<br><br>
  * Santa's previous password expired, and he needs help choosing a new one.
+ *
  * <p><br>
  * To help him remember his new password after the old one expires, Santa has devised
  * a method of coming up with a password based on the previous one. Corporate policy
  * dictates that passwords must be exactly eight lowercase letters (for security reasons),
- * so he finds his new password by incrementing his old password string repeatedly until it is valid.
+ * so he finds his new password by incrementing his old password string repeatedly until it
+ * is valid.
  * <ul>
  *     <li>
  *         Incrementing is just like counting with numbers: xx, xy, xz, ya, yb, and so on.
@@ -49,7 +50,8 @@ import java.util.List;
  *         but fails the second requirement (because it contains i and l).
  *     </li>
  *     <li>
- *         abbceffg meets the third requirement (because it repeats bb and ff) but fails the first requirement.
+ *         abbceffg meets the third requirement (because it repeats bb and ff) but fails the
+ *         first requirement.
  *     </li>
  *     <li>
  *         abbcegjk fails the third requirement, because it only has one double letter (bb).
@@ -63,69 +65,72 @@ import java.util.List;
  *     </li>
  * </ul>
  * Given Santa's current password (your puzzle input), what should his next password be?
+ *
  * <p><br>
  * Your puzzle answer was cqjxxyzz.
+ *
  * <p><br>
  * --- Part Two ---<br><br>
  * Santa's password expired again. What's the next one?
+ *
  * <p><br>
  * Your puzzle answer was cqkaabcc.
  */
 public class Day11 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Day11.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(Day11.class);
 
-    /**
-     * Instantiates the solution instance.
-     */
-    public Day11() {
+  /**
+   * Instantiates the solution instance.
+   */
+  public Day11() {
 
+  }
+
+  @Override
+  public String getDefaultInputFilename() {
+    return "inputs/input_day_11-01.txt";
+  }
+
+  @Override
+  public void runPart1(List<String> input) {
+    for (var line : input) {
+      var start = Instant.now();
+      var next = suggestNextPassword(line);
+      var end = Instant.now();
+      LOGGER.info("The next valid password is: {}", next);
+      logTimings(LOGGER, start, end);
     }
+  }
 
-    @Override
-    public String getDefaultInputFilename() {
-        return "inputs/input_day_11-01.txt";
+  @Override
+  public void runPart2(List<String> input) {
+    for (var line : input) {
+      var start = Instant.now();
+      var next = suggestNextPassword(suggestNextPassword(line));
+      var end = Instant.now();
+      LOGGER.info("The next valid password is: {}", next);
+      logTimings(LOGGER, start, end);
     }
+  }
 
-    @Override
-    public void runPart1(List<String> input) {
-        for (var line : input) {
-            var start = Instant.now();
-            var next = suggestNextPassword(line);
-            var end = Instant.now();
-            LOGGER.info("The next valid password is: {}", next);
-            logTimings(LOGGER, start, end);
-        }
-    }
+  /**
+   * Returns true if the password passes the validation requirements.
+   *
+   * @param input The password to check.
+   * @return True if the password passes the validation requirements.
+   */
+  public boolean isValidPassword(String input) {
+    return PasswordPolicy.isValidPassword(input);
+  }
 
-    @Override
-    public void runPart2(List<String> input) {
-        for (var line : input) {
-            var start = Instant.now();
-            var next = suggestNextPassword(suggestNextPassword(line));
-            var end = Instant.now();
-            LOGGER.info("The next valid password is: {}", next);
-            logTimings(LOGGER, start, end);
-        }
-    }
-
-    /**
-     * Returns true if the password passes the validation requirements.
-     *
-     * @param input The password to check.
-     * @return True if the password passes the validation requirements.
-     */
-    public boolean isValidPassword(String input) {
-        return PasswordPolicy.isValidPassword(input);
-    }
-
-    /**
-     * Returns the next possible password from the specified current password.
-     *
-     * @param input The current password.
-     * @return The next possible password from the specified current password.
-     */
-    @NotNull
-    public String suggestNextPassword(@NotNull String input) {
-        return PasswordPolicy.suggestNextPassword(input);
-    }
+  /**
+   * Returns the next possible password from the specified current password.
+   *
+   * @param input The current password.
+   * @return The next possible password from the specified current password.
+   */
+  @NotNull
+  public String suggestNextPassword(@NotNull String input) {
+    return PasswordPolicy.suggestNextPassword(input);
+  }
 }

@@ -20,7 +20,7 @@ module com.capital7software.aoc.lib {
     exports com.capital7software.aoc.lib.crypt;
     exports com.capital7software.aoc.lib.geometry;
     exports com.capital7software.aoc.lib.graph;
-    exports com.capital7software.aoc.lib.graph.constaint;
+    exports com.capital7software.aoc.lib.graph.constraint;
     exports com.capital7software.aoc.lib.graph.cycle;
     exports com.capital7software.aoc.lib.graph.network;
     exports com.capital7software.aoc.lib.graph.parser;

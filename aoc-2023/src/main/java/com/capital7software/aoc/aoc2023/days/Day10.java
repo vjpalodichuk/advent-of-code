@@ -2,7 +2,6 @@ package com.capital7software.aoc.aoc2023.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.grid.PipeMaze;
-
 import java.time.Instant;
 import java.util.List;
 import org.slf4j.Logger;
@@ -10,24 +9,30 @@ import org.slf4j.LoggerFactory;
 
 /**
  * --- Day 10: Pipe Maze ---<br><br>
- * You use the hang glider to ride the hot air from Desert Island all the way up to the floating metal island.
- * This island is surprisingly cold and there definitely aren't any thermals to glide on, so you leave your
- * hang glider behind.
+ * You use the hang glider to ride the hot air from Desert Island all the way up to the floating
+ * metal island. This island is surprisingly cold and there definitely aren't any thermals to
+ * glide on, so you leave your hang glider behind.
+ *
  * <p><br>
- * You wander around for a while, but you don't find any people or animals. However, you do occasionally
- * find signposts labeled "Hot Springs" pointing in a seemingly consistent direction; maybe you can find
- * someone at the hot springs and ask them where the desert-machine parts are made.
+ * You wander around for a while, but you don't find any people or animals. However, you
+ * do occasionally find signposts labeled "Hot Springs" pointing in a seemingly consistent
+ * direction; maybe you can find someone at the hot springs and ask them where the desert-machine
+ * parts are made.
+ *
  * <p><br>
- * The landscape here is alien; even the flowers and trees are made of metal. As you stop to admire some
- * metal grass, you notice something metallic scurry away in your peripheral vision and jump into a big
- * pipe! It didn't look like any animal you've ever seen; if you want a better look, you'll need to get
- * ahead of it.
+ * The landscape here is alien; even the flowers and trees are made of metal. As you stop to
+ * admire some metal grass, you notice something metallic scurry away in your peripheral vision
+ * and jump into a big pipe! It didn't look like any animal you've ever seen; if you want a
+ * better look, you'll need to get ahead of it.
+ *
  * <p><br>
- * Scanning the area, you discover that the entire field you're standing on is densely packed with pipes;
- * it was hard to tell at first because they're the same metallic silver color as the "ground". You make
- * a quick sketch of all the surface pipes you can see (your puzzle input).
+ * Scanning the area, you discover that the entire field you're standing on is densely packed
+ * with pipes; it was hard to tell at first because they're the same metallic silver color as
+ * the "ground". You make a quick sketch of all the surface pipes you can see (your puzzle input).
+ *
  * <p><br>
  * The pipes are arranged in a two-dimensional grid of tiles:
+ *
  * <p><br>
  * <code>
  * | is a vertical pipe connecting north and south.<br>
@@ -37,13 +42,15 @@ import org.slf4j.LoggerFactory;
  * 7 is a 90-degree bend connecting south and west.<br>
  * F is a 90-degree bend connecting south and east.<br>
  * . is ground; there is no pipe in this tile.<br>
- * S is the starting position of the animal; there is a pipe on this tile, but your sketch doesn't show
- * what shape the pipe has.<br><br>
+ * S is the starting position of the animal; there is a pipe on this tile, but your sketch doesn't
+ * show what shape the pipe has.<br><br>
  * </code>
- * Based on the acoustics of the animal's scurrying, you're confident the pipe that contains the animal
- * is one large, continuous loop.
+ * Based on the acoustics of the animal's scurrying, you're confident the pipe that contains
+ * the animal is one large, continuous loop.
+ *
  * <p><br>
  * For example, here is a square loop of pipe:
+ *
  * <p><br>
  * <code>
  * .....<br>
@@ -52,8 +59,11 @@ import org.slf4j.LoggerFactory;
  * .L-J.<br>
  * .....<br>
  * </code>
+ *
  * <p><br>
- * If the animal had entered this loop in the northwest corner, the sketch would instead look like this:
+ * If the animal had entered this loop in the northwest corner, the sketch would instead look
+ * like this:
+ *
  * <p><br>
  * <code>
  * .....<br>
@@ -62,12 +72,15 @@ import org.slf4j.LoggerFactory;
  * .L-J.<br>
  * .....<br>
  * </code>
+ *
  * <p><br>
- * In the above diagram, the S tile is still a 90-degree F bend: you can tell because of how the adjacent
- * pipes connect to it.
+ * In the above diagram, the S tile is still a 90-degree F bend: you can tell because of how
+ * the adjacent pipes connect to it.
+ *
  * <p><br>
- * Unfortunately, there are also many pipes that aren't connected to the loop! This sketch shows the same
- * loop as above:
+ * Unfortunately, there are also many pipes that aren't connected to the loop! This sketch
+ * shows the same loop as above:
+ *
  * <p><br>
  * <code>
  * -L|F7<br>
@@ -76,13 +89,16 @@ import org.slf4j.LoggerFactory;
  * -L-J|<br>
  * L|-JF<br>
  * </code>
+ *
  * <p><br>
- * In the above diagram, you can still figure out which pipes form the main loop: they're the ones connected
- * to S, pipes those pipes connect to, pipes those pipes connect to, and so on. Every pipe in the main
- * loop connects to its two neighbors (including S, which will have exactly two pipes connecting to it,
- * and which is assumed to connect back to those two pipes).
+ * In the above diagram, you can still figure out which pipes form the main loop: they're the
+ * ones connected to S, pipes those pipes connect to, pipes those pipes connect to, and so on.
+ * Every pipe in the main loop connects to its two neighbors (including S, which will have
+ * exactly two pipes connecting to it, and which is assumed to connect back to those two pipes).
+ *
  * <p><br>
  * Here is a sketch that contains a slightly more complex main loop:
+ *
  * <p><br>
  * <code>
  * ..F7.<br>
@@ -91,8 +107,10 @@ import org.slf4j.LoggerFactory;
  * |F--J<br>
  * LJ...<br>
  * </code>
+ *
  * <p><br>
  * Here's the same example sketch with the extra, non-main-loop pipe tiles also shown:
+ *
  * <p><br>
  * <code>
  * 7-F7-<br>
@@ -101,13 +119,17 @@ import org.slf4j.LoggerFactory;
  * |F--J<br>
  * LJ.LJ<br>
  * </code>
+ *
  * <p><br>
- * If you want to get out ahead of the animal, you should find the tile in the loop that is farthest from
- * the starting position. Because the animal is in the pipe, it doesn't make sense to measure this by
- * direct distance. Instead, you need to find the tile that would take the longest number of steps along
- * the loop to reach from the starting point - regardless of which way around the loop the animal went.
+ * If you want to get out ahead of the animal, you should find the tile in the loop that is
+ * farthest from the starting position. Because the animal is in the pipe, it doesn't make
+ * sense to measure this by direct distance. Instead, you need to find the tile that would take
+ * the longest number of steps along the loop to reach from the starting point - regardless of
+ * which way around the loop the animal went.
+ *
  * <p><br>
  * In the first example with the square loop:
+ *
  * <p><br>
  * <code>
  * .....<br>
@@ -116,8 +138,10 @@ import org.slf4j.LoggerFactory;
  * .L-J.<br>
  * .....<br>
  * </code>
+ *
  * <p><br>
  * You can count the distance each tile in the loop is from the starting point like this:
+ *
  * <p><br>
  * <code>
  * .....<br>
@@ -126,10 +150,13 @@ import org.slf4j.LoggerFactory;
  * .234.<br>
  * .....<br>
  * </code>
+ *
  * <p><br>
  * In this example, the farthest point from the start is 4 steps away.
+ *
  * <p><br>
  * Here's the more complex loop again:
+ *
  * <p><br>
  * <code>
  * ..F7.<br>
@@ -138,8 +165,10 @@ import org.slf4j.LoggerFactory;
  * |F--J<br>
  * LJ...<br>
  * </code>
+ *
  * <p><br>
  * Here are the distances for each tile on that loop:
+ *
  * <p><br>
  * <code>
  * ..45.<br>
@@ -148,18 +177,23 @@ import org.slf4j.LoggerFactory;
  * 14567<br>
  * 23...<br>
  * </code>
+ *
  * <p><br>
- * Find the single giant loop starting at S. How many steps along the loop does it take to get from the
- * starting position to the point farthest from the starting position?
+ * Find the single giant loop starting at S. How many steps along the loop does it take to get
+ * from the starting position to the point farthest from the starting position?
+ *
  * <p><br>
  * Your puzzle answer was 6842.
+ *
  * <p><br>
  * --- Part Two ---<br><br>
- * You quickly reach the farthest point of the loop, but the animal never emerges. Maybe its nest is
- * within the area enclosed by the loop?
+ * You quickly reach the farthest point of the loop, but the animal never emerges. Maybe its
+ * nest is within the area enclosed by the loop?
+ *
  * <p><br>
- * To determine whether it's even worth taking the time to search for such a nest, you should calculate
- * how many tiles are contained within the loop. For example:
+ * To determine whether it's even worth taking the time to search for such a nest, you should
+ * calculate how many tiles are contained within the loop. For example:
+ *
  * <p><br>
  * <code>
  * ...........<br>
@@ -172,10 +206,12 @@ import org.slf4j.LoggerFactory;
  * .L--J.L--J.<br>
  * ...........<br>
  * </code>
+ *
  * <p><br>
  * The above loop encloses merely four tiles - the two pairs of . in the southwest and southeast
  * (marked I below). The middle . tiles (marked O below) are not in the loop. Here is the same loop
  * again with those regions marked:
+ *
  * <p><br>
  * <code>
  * ...........<br>
@@ -188,10 +224,12 @@ import org.slf4j.LoggerFactory;
  * .L--JOL--J.<br>
  * .....O.....<br>
  * </code>
+ *
  * <p><br>
- * In fact, there doesn't even need to be a full tile path to the outside for tiles to count as outside
- * the loop - squeezing between pipes is also allowed! Here, I is still within the loop and O is still
- * outside the loop:
+ * In fact, there doesn't even need to be a full tile path to the outside for tiles to count
+ * as outside the loop - squeezing between pipes is also allowed! Here, I is still within the
+ * loop and O is still outside the loop:
+ *
  * <p><br>
  * <code>
  * ..........<br>
@@ -204,10 +242,13 @@ import org.slf4j.LoggerFactory;
  * .L--JL--J.<br>
  * ..........<br>
  * </code>
+ *
  * <p><br>
  * In both of the above examples, 4 tiles are enclosed by the loop.
+ *
  * <p><br>
  * Here's a larger example:
+ *
  * <p><br>
  * <code>
  * .F----7F7F7F7F-7....<br>
@@ -221,9 +262,11 @@ import org.slf4j.LoggerFactory;
  * ....FJL-7.||.||||...<br>
  * ....L---J.LJ.LJLJ...<br>
  * </code>
+ *
  * <p><br>
  * The above sketch has many random bits of ground, some of which are in the loop (I) and some of
  * which are outside it (O):
+ *
  * <p><br>
  * <code>
  * OF----7F7F7F7F-7OOOO<br>
@@ -237,11 +280,15 @@ import org.slf4j.LoggerFactory;
  * OOOOFJL-7O||O||||OOO<br>
  * OOOOL---JOLJOLJLJOOO<br>
  * </code>
+ *
  * <p><br>
  * In this larger example, 8 tiles are enclosed by the loop.
+ *
  * <p><br>
- * Any tile that isn't part of the main loop can count as being enclosed by the loop. Here's another
- * example with many bits of junk pipe lying around that aren't connected to the main loop at all:
+ * Any tile that isn't part of the main loop can count as being enclosed by the loop.
+ * Here's another example with many bits of junk pipe lying around that aren't connected to
+ * the main loop at all:
+ *
  * <p><br>
  * <code>
  * FF7FSF7F7F7F7F7F---7<br>
@@ -255,8 +302,10 @@ import org.slf4j.LoggerFactory;
  * L.L7LFJ|||||FJL7||LJ<br>
  * L7JLJL-JLJLJL--JLJ.L<br>
  * </code>
+ *
  * <p><br>
  * Here are just the tiles that are enclosed by the loop marked with I:
+ *
  * <p><br>
  * <code>
  * FF7FSF7F7F7F7F7F---7<br>
@@ -270,88 +319,95 @@ import org.slf4j.LoggerFactory;
  * L.L7LFJ|||||FJL7||LJ<br>
  * L7JLJL-JLJLJL--JLJ.L<br>
  * </code>
+ *
  * <p><br>
  * In this last example, 10 tiles are enclosed by the loop.
+ *
  * <p><br>
  * Figure out whether you have time to search for the nest by calculating the area within the loop.
  * How many tiles are enclosed by the loop?
+ *
  * <p><br>
  * Your puzzle answer was 393.
  */
 public class Day10 implements AdventOfCodeSolution {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Day10.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(Day10.class);
 
-    /**
-     * Instantiates this Solution instance.
-     */
-    public Day10() {
+  /**
+   * Instantiates this Solution instance.
+   */
+  public Day10() {
 
-    }
+  }
 
-    @Override
-    public String getDefaultInputFilename() {
-        return "inputs/input_day_10-01.txt";
-    }
+  @Override
+  public String getDefaultInputFilename() {
+    return "inputs/input_day_10-01.txt";
+  }
 
-    @Override
-    public void runPart1(List<String> input) {
-        var start = Instant.now();
-        var answer = calculateMaximumDistance(input, false);
-        var end = Instant.now();
+  @Override
+  public void runPart1(List<String> input) {
+    var start = Instant.now();
+    var answer = calculateMaximumDistance(input, false);
+    var end = Instant.now();
 
-        LOGGER.info("Maximum steps to the furthest point from the starting point using DFS: {}", answer);
-        logTimings(LOGGER, start, end);
+    LOGGER.info(
+        "Maximum steps to the furthest point from the starting point using DFS: {}", answer)
+    ;
+    logTimings(LOGGER, start, end);
 
-        start = Instant.now();
-        answer = calculateMaximumDistance(input, true);
-        end = Instant.now();
+    start = Instant.now();
+    answer = calculateMaximumDistance(input, true);
+    end = Instant.now();
 
-        LOGGER.info("Maximum steps to the furthest point from the starting point using BFS: {}", answer);
-        logTimings(LOGGER, start, end);
-    }
+    LOGGER.info(
+        "Maximum steps to the furthest point from the starting point using BFS: {}", answer
+    );
+    logTimings(LOGGER, start, end);
+  }
 
-    @Override
-    public void runPart2(List<String> input) {
-        var start = Instant.now();
-        var answer = countTilesEnclosedInMainLoop(input, false);
-        var end = Instant.now();
+  @Override
+  public void runPart2(List<String> input) {
+    var start = Instant.now();
+    var answer = countTilesEnclosedInMainLoop(input, false);
+    var end = Instant.now();
 
-        LOGGER.info("Tiles enclosed in the loop: {} using DFS", answer);
-        logTimings(LOGGER, start, end);
+    LOGGER.info("Tiles enclosed in the loop: {} using DFS", answer);
+    logTimings(LOGGER, start, end);
 
-        start = Instant.now();
-        answer = countTilesEnclosedInMainLoop(input, true);
-        end = Instant.now();
+    start = Instant.now();
+    answer = countTilesEnclosedInMainLoop(input, true);
+    end = Instant.now();
 
-        LOGGER.info("Tiles enclosed in the loop: {} using BFS", answer);
-        logTimings(LOGGER, start, end);
-    }
+    LOGGER.info("Tiles enclosed in the loop: {} using BFS", answer);
+    logTimings(LOGGER, start, end);
+  }
 
-    /**
-     * Calculates and returns the maximum steps to reach the further point from the starting tile.
-     *
-     * @param input The List of Strings to parse into a PipeMaze.
-     * @param bfs   If true, then a Breadth First Search is performed. If false, a recursive Depth
-     *              First Search is performed.
-     * @return The maximum steps to reach the further point from the starting tile.
-     */
-    public long calculateMaximumDistance(List<String> input, boolean bfs) {
-        var maze = PipeMaze.buildPipeMaze(input);
-        return maze.calculateDistances(bfs).values().stream().mapToInt(it -> it).max().orElse(0);
-    }
+  /**
+   * Calculates and returns the maximum steps to reach the further point from the starting tile.
+   *
+   * @param input The List of Strings to parse into a PipeMaze.
+   * @param bfs   If true, then a Breadth First Search is performed. If false, a recursive Depth
+   *              First Search is performed.
+   * @return The maximum steps to reach the further point from the starting tile.
+   */
+  public long calculateMaximumDistance(List<String> input, boolean bfs) {
+    var maze = PipeMaze.buildPipeMaze(input);
+    return maze.calculateDistances(bfs).values().stream().mapToInt(it -> it).max().orElse(0);
+  }
 
-    /**
-     * Calculates and returns the number of tiles that are enclosed by the main loop of the PipeMaze.
-     * The main loop is the cycle that starts and stops at the starting tile.
-     *
-     * @param input The List of Strings to parse into a PipeMaze.
-     * @param bfs   If true, then a Breadth First Search is performed. If false, a recursive Depth
-     *              First Search is performed.
-     * @return The number of tiles that are enclosed by the main loop of the PipeMaze.
-     */
-    public long countTilesEnclosedInMainLoop(List<String> input, boolean bfs) {
-        var maze = PipeMaze.buildPipeMaze(input);
-        var distances = maze.calculateDistances(bfs);
-        return maze.calculateTilesEnclosedInLoop(distances);
-    }
+  /**
+   * Calculates and returns the number of tiles that are enclosed by the main loop of the PipeMaze.
+   * The main loop is the cycle that starts and stops at the starting tile.
+   *
+   * @param input The List of Strings to parse into a PipeMaze.
+   * @param bfs   If true, then a Breadth First Search is performed. If false, a recursive Depth
+   *              First Search is performed.
+   * @return The number of tiles that are enclosed by the main loop of the PipeMaze.
+   */
+  public long countTilesEnclosedInMainLoop(List<String> input, boolean bfs) {
+    var maze = PipeMaze.buildPipeMaze(input);
+    var distances = maze.calculateDistances(bfs);
+    return maze.calculateTilesEnclosedInLoop(distances);
+  }
 }

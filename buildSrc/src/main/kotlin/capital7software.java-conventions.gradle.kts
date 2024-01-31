@@ -41,6 +41,7 @@ object Versions {
     const val LOG4J2 = "2.22.1"
     const val JACKSON = "2.16.1"
     const val LOMBOK = "1.18.30"
+    const val CHECKSTYLE = "10.13.0"
 }
 
 // Projects should use Maven Central for external dependencies
@@ -63,6 +64,7 @@ checkstyle {
     config = resources.text
         .fromString(com.capital7software.CheckstyleUtil.getCheckstyleConfig("/checkstyle.xml"))
     maxWarnings = 0
+    toolVersion = Versions.CHECKSTYLE
 }
 
 dependencies {
@@ -94,7 +96,7 @@ tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-// Enable deprecation messages when compiling Java code
+// Enable deprecation and unchecked messages when compiling Java code
 tasks.withType<JavaCompile>().configureEach {
     options.compilerArgs.add("-Xlint:deprecation")
     options.compilerArgs.add("-Xlint:unchecked")
@@ -113,5 +115,11 @@ tasks.withType<Checkstyle>().configureEach {
         xml.required.set(true)
         html.required.set(true)
     }
-    exclude("**/module-info.java")
+}
+
+// Resolve google collections and guava conflict
+configurations.checkstyle {
+    resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {
+        select("com.google.guava:guava:0")
+    }
 }

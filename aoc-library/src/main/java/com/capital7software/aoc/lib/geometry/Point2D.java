@@ -10,9 +10,9 @@ import org.jetbrains.annotations.NotNull;
  * @param <T> The type of the Axis values.
  */
 public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T y) {
-    /**
-     * If the type is Double or Float, then EPSILON can be used when
-     * checking for equality.
-     */
-    public static final double EPSILON = 0.00000001;
+  /**
+   * If the type is Double or Float, then EPSILON can be used when
+   * checking for equality.
+   */
+  public static final double EPSILON = 0.00000001;
 }

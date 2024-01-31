@@ -9,9 +9,10 @@ import com.capital7software.aoc.lib.circuit.signal.SignalSupplier;
  * @param <T> The type of the value that is carried by a Signal.
  */
 public interface Gate<T extends Comparable<T>> extends SignalSupplier<T> {
-    /**
-     * Returns the ID of the Gate.
-     * @return The ID of the Gate.
-     */
-    String id();
+  /**
+   * Returns the ID of the Gate.
+   *
+   * @return The ID of the Gate.
+   */
+  String id();
 }

@@ -4,11 +4,12 @@ import java.util.Optional;
 
 /**
  * A Signal that corries an Integer value.
+ *
  * @param value The Integer value that this Signal carries
  */
 public record SignalInteger(int value) implements Signal<Integer> {
-    @Override
-    public Optional<Integer> signal() {
-        return Optional.of(value);
-    }
+  @Override
+  public Optional<Integer> signal() {
+    return Optional.of(value);
+  }
 }

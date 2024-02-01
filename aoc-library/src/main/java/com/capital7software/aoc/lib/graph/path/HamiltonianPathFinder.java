@@ -321,7 +321,8 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
   }
 
   @NotNull
-  private PathFinderResult<T, E> buildPathResult(
+  protected static <T extends Comparable<T>, E extends Comparable<E>> PathFinderResult<T, E>
+  buildPathResult(
       @NotNull List<Vertex<T, E>> path,
       @NotNull List<Edge<E>> edges,
       int pathId
@@ -330,7 +331,8 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
   }
 
   @NotNull
-  private PathFinderResult<T, E> buildPathResult(
+  protected static <T extends Comparable<T>, E extends Comparable<E>> PathFinderResult<T, E>
+  buildPathResult(
       @NotNull List<Vertex<T, E>> path,
       @NotNull List<Edge<E>> edges,
       int pathId,
@@ -357,7 +359,7 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
   }
 
   @SuppressWarnings("unchecked")
-  private E calculateSumOfEdges(
+  protected static <T extends Comparable<T>, E extends Comparable<E>> E calculateSumOfEdges(
       List<Vertex<T, E>> path,
       List<Edge<E>> edges,
       boolean cycleRequired

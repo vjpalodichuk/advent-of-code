@@ -320,9 +320,18 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
     return lastStatus;
   }
 
+  /**
+   * Creates and returns a PathFinderResult based on the specified values.
+   *
+   * @param path   The path to include.
+   * @param edges  The edges in the path to include.
+   * @param pathId The unique ID of the path.
+   * @param <T>    The type of the value held by a Vertex in this Path.
+   * @param <E>    The type of the weight of the Edges in this Path.
+   * @return A PathFinderResult based on the specified values.
+   */
   @NotNull
-  protected static <T extends Comparable<T>, E extends Comparable<E>> PathFinderResult<T, E>
-  buildPathResult(
+  static <T extends Comparable<T>, E extends Comparable<E>> PathFinderResult<T, E> buildPathResult(
       @NotNull List<Vertex<T, E>> path,
       @NotNull List<Edge<E>> edges,
       int pathId
@@ -330,9 +339,22 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
     return buildPathResult(path, edges, pathId, false, false);
   }
 
+  /**
+   * Creates and returns a PathFinderResult based on the specified values.
+   *
+   * @param path          The path to include.
+   * @param edges         The edges in the path to include.
+   * @param pathId        The unique ID of the path.
+   * @param cycleRequired Set to true to require an edge from the last Vertex in the path
+   *                      to the first Vertex in the path.
+   * @param sumRequired   Set to true to have the edge weights summed up and set as the path
+   *                      cost.
+   * @param <T>           The type of the value held by a Vertex in this Path.
+   * @param <E>           The type of the weight of the Edges in this Path.
+   * @return A PathFinderResult based on the specified values.
+   */
   @NotNull
-  protected static <T extends Comparable<T>, E extends Comparable<E>> PathFinderResult<T, E>
-  buildPathResult(
+  static <T extends Comparable<T>, E extends Comparable<E>> PathFinderResult<T, E> buildPathResult(
       @NotNull List<Vertex<T, E>> path,
       @NotNull List<Edge<E>> edges,
       int pathId,
@@ -358,6 +380,17 @@ public class HamiltonianPathFinder<T extends Comparable<T>, E extends Comparable
     }
   }
 
+  /**
+   * Calculates and returns the sum of the specified edges in the specified path.
+   *
+   * @param path          The path to include.
+   * @param edges         The edges in the path to include.
+   * @param cycleRequired Set to true to require an edge from the last Vertex in the path
+   *                      to the first Vertex in the path.
+   * @param <T>           The type of the value held by a Vertex in this Path.
+   * @param <E>           The type of the weight of the Edges in this Path.
+   * @return The sum of the specified edges in the specified path.
+   */
   @SuppressWarnings("unchecked")
   protected static <T extends Comparable<T>, E extends Comparable<E>> E calculateSumOfEdges(
       List<Vertex<T, E>> path,

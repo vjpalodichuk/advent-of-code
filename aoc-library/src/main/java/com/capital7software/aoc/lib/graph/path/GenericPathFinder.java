@@ -15,6 +15,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A PathFinder implementation that finds paths from a starting Vertex to an ending Vertex.
+ *
+ * <p><br>
+ * This class has three Properties that can be set: Props.STARTING_VERTEX, Props.ENDING_VERTEX,
+ * and Props.SUM_PATH.
+ *
+ * <p><br>
+ * STARTING_VERTEX: Accepts a String ID of the starting Vertex. This is required!.
+ *
+ * <p><br>
+ * ENDING_VERTEX: Accepts a String ID of the ending Vertex. This is required!.
+ *
+ * <p><br>
+ * SUM_PATH: Sums the edge weights and stores the cost for valid paths only. If DETECT_CYCLES
+ * is set to TRUE, then the Edge weight from the last Vertex to the first Vertex is added
+ * to the sum of the cost as well.
+ *
+ * @param <T> The type of the value held by Nodes in the graph.
+ * @param <E> The type of the weight held by Edges in the graph.
+ */
 public class GenericPathFinder<T extends Comparable<T>, E extends Comparable<E>>
     implements PathFinder<PathFinderResult<T, E>, T, E> {
   /**

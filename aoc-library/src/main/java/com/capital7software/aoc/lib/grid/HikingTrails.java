@@ -900,8 +900,8 @@ public class HikingTrails {
   }
 
   private Optional<PathFinderResult<TrailTile, Long>> findLongestTrail() {
-    var pathFinder = new GenericPathFinder<TrailTile, Long>();
-    var properties = new Properties();
+    final var pathFinder = new GenericPathFinder<TrailTile, Long>();
+    final var properties = new Properties();
     properties.put(GenericPathFinder.Props.SUM_PATH, Boolean.TRUE);
     properties.put(GenericPathFinder.Props.STARTING_VERTEX_ID, start.toId());
     properties.put(GenericPathFinder.Props.ENDING_VERTEX_ID, finish.toId());

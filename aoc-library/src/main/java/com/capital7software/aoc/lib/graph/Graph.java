@@ -553,4 +553,16 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
   public boolean contains(@NotNull String vertexId) {
     return vertices.containsKey(vertexId);
   }
+
+  /**
+   * Returns an independent copy of this Graph.
+   *
+   * @return An independent copy of this Graph.
+   */
+  public Graph<T, E> copy() {
+    var graph = new Graph<T, E>(name);
+    vertices.forEach((key, value) -> graph.vertices.put(key, value.copy()));
+
+    return graph;
+  }
 }

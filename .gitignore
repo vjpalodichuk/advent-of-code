@@ -45,3 +45,7 @@
 
 ### App ###
 **/logs/
+
+## NYX ###
+**/.nyx-state.yml
+**/.nyx-summary.txt

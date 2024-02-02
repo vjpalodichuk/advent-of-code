@@ -1167,6 +1167,32 @@ public class HikingTrails {
     return new RowResults(tiles, null);
   }
 
+  private Optional<HikingTrail> pathToTrail(PathFinderResult<TrailTile, Long> path) {
+    if (path == null) {
+      return Optional.empty();
+    }
+
+    var segments = new LinkedHashSet<>(
+        path.edges()
+            .stream()
+            .map(it -> segmentMap.get(it.getSource() + "-" + it.getTarget()))
+            .filter(Objects::nonNull)
+            .toList()
+    );
+
+    var head = path.start().getValue().orElse(null);
+    var tail = path.end().getValue().orElse(null);
+
+    return Optional.of(new HikingTrail(
+        path.id(),
+        finish.equals(tail),
+        path.cost(),
+        head,
+        tail,
+        segments
+    ));
+  }
+
   /**
    * Finds and returns the longest path from the start node to the finish node. If there are
    * multiple longest paths, then the first one encountered is the one that is returned.
@@ -1210,31 +1236,5 @@ public class HikingTrails {
     var longestTrail = findLongestTrail();
 
     return longestTrail.map(HikingTrail::length).orElse(-1L);
-  }
-
-  private Optional<HikingTrail> pathToTrail(PathFinderResult<TrailTile, Long> path) {
-    if (path == null) {
-      return Optional.empty();
-    }
-
-    var segments = new LinkedHashSet<>(
-        path.edges()
-            .stream()
-            .map(it -> segmentMap.get(it.getSource() + "-" + it.getTarget()))
-            .filter(Objects::nonNull)
-            .toList()
-    );
-
-    var head = path.start().getValue().orElse(null);
-    var tail = path.end().getValue().orElse(null);
-
-    return Optional.of(new HikingTrail(
-        path.id(),
-        finish.equals(tail),
-        path.cost(),
-        head,
-        tail,
-        segments
-    ));
   }
 }

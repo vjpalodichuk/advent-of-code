@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -153,7 +155,15 @@ import org.jetbrains.annotations.NotNull;
  * How many steps long is the longest hike?
  */
 public class HikingTrails {
-  private enum TrailType {
+  /**
+   * The TrailType represents the type of tile and its capabilities. The type determines if
+   * a tile is plain walkable (PATH), if it is a slope (SLOPE_NORTH, SLOPE_EAST, SLOPE_SOUTH,
+   * SLOPE_WEST), or not walkable (FOREST)
+   */
+  public enum TrailType {
+    /**
+     * Can navigate is all the cardinal directions.
+     */
     PATH('.', true, false) {
       @Override
       public Set<Direction> walkableDirections(boolean ignoreSlopes) {
@@ -166,7 +176,15 @@ public class HikingTrails {
         return true;
       }
     },
+    /**
+     * Cannot navigate to or from this type of tile. Typically used to create a scenic hiking
+     * trail.
+     */
     FOREST('#', false, false),
+    /**
+     * Can only navigate in the NORTH Direction. If ignoreSlopes is true, then it is possible
+     * to navigate is all the cardinal directions.
+     */
     SLOPE_NORTH('^', true, true) {
       @Override
       public Set<Direction> walkableDirections(boolean ignoreSlopes) {
@@ -182,6 +200,10 @@ public class HikingTrails {
         return direction == Direction.NORTH || ignoreSlopes;
       }
     },
+    /**
+     * Can only navigate in the EAST Direction. If ignoreSlopes is true, then it is possible
+     * to navigate is all the cardinal directions.
+     */
     SLOPE_EAST('>', true, true) {
       @Override
       public Set<Direction> walkableDirections(boolean ignoreSlopes) {
@@ -197,6 +219,10 @@ public class HikingTrails {
         return direction == Direction.EAST || ignoreSlopes;
       }
     },
+    /**
+     * Can only navigate in the SOUTH Direction. If ignoreSlopes is true, then it is possible
+     * to navigate is all the cardinal directions.
+     */
     SLOPE_SOUTH('v', true, true) {
       @Override
       public Set<Direction> walkableDirections(boolean ignoreSlopes) {
@@ -212,6 +238,10 @@ public class HikingTrails {
         return direction == Direction.SOUTH || ignoreSlopes;
       }
     },
+    /**
+     * Can only navigate in the WEST Direction. If ignoreSlopes is true, then it is possible
+     * to navigate is all the cardinal directions.
+     */
     SLOPE_WEST('<', true, true) {
       @Override
       public Set<Direction> walkableDirections(boolean ignoreSlopes) {
@@ -233,28 +263,59 @@ public class HikingTrails {
     private static final Set<Direction> SOUTH = Set.of(Direction.SOUTH);
     private static final Set<Direction> EAST = Set.of(Direction.EAST);
     private static final Set<Direction> WEST = Set.of(Direction.WEST);
-    private static final Set<Direction> NONE = Collections.emptySet();
-
     private final char label;
     @Getter
     private final boolean walkable;
     @Getter
     private final boolean slope;
 
+    /**
+     * Instantiates a new TrailType. The label is the ASCII character representation of this
+     * type. If walkable is true, then this type supports some kind of navigation. If slope is
+     * true, then behavior of this type may change if ignoreSlopes is true.
+     *
+     * @param label The single ASCII character representation of this TrailType.
+     * @param walkable If true, then navigation is supported.
+     * @param slope If true, then the navigation supported by this type depends on the value of
+     *              ignoreSlopes.
+     */
     TrailType(char label, boolean walkable, boolean slope) {
       this.label = label;
       this.walkable = walkable;
       this.slope = slope;
     }
 
+    /**
+     * Returns a Set of Directions that can potentially be navigated in from this type of tile.
+     *
+     * @param ignoreSlopes If true, any Slope tile is treated like a normal walkable tile.
+     * @return A Set of Directions that can potentially be navigated in from this type of tile.
+     */
     public Set<Direction> walkableDirections(boolean ignoreSlopes) {
-      return NONE;
+      return Collections.emptySet();
     }
 
+    /**
+     * Returns true if it is possible to navigate from this type of tile in the specified
+     * Direction.
+     *
+     * @param direction    The Direction to navigate to.
+     * @param ignoreSlopes If true, any Slope tile is treated like a normal walkable tile.
+     * @return True if it is possible to navigate from this type of tile in the specified
+     *     Direction.
+     */
     public boolean canWalkInDirection(Direction direction, boolean ignoreSlopes) {
       return false;
     }
 
+    /**
+     * Returns the TrailType instance represented by the specified label or null if one doesn't
+     * exist.
+     *
+     * @param label The label of the TrailType instance to retrieve.
+     * @return The TrailType instance represented by the specified label or null if one doesn't
+     *     exist.
+     */
     public static TrailType from(char label) {
       for (var value : values()) {
         if (value.label == label) {
@@ -266,24 +327,68 @@ public class HikingTrails {
     }
   }
 
-  private record TrailTile(TrailType trailType, Point2D<Integer> point)
+  /**
+   * Represents a specific point in 2D space that covers the entire area; not just the
+   * walkable spaces.
+   *
+   * @param trailType The type of this space.
+   * @param point     The specific point in 2D space where this tile is located.
+   */
+  public record TrailTile(TrailType trailType, Point2D<Integer> point)
       implements Comparable<TrailTile> {
+
+    /**
+     * Returns true if this is a walkable tile.
+     *
+     * @return True if this is a walkable tile.
+     */
     public boolean isWalkable() {
       return trailType().isWalkable();
     }
 
+    /**
+     * Returns true if this tile is a Slope.
+     *
+     * @return True if this tile is a Slope.
+     */
     public boolean isSlope() {
       return trailType().isSlope();
     }
 
+    /**
+     * Returns a Set of that can be navigated from this tile. Please note that they are possible
+     * valid directions. That means that if the tile adjacent in the specified direction doesn't
+     * exist or isn't walkable, then it isn't valid.
+     *
+     * @param ignoreSlopes If true, any Slope tile is treated like a normal walkable tile.
+     * @return A Set of that can be navigated from this tile.
+     */
     public Set<Direction> walkableDirections(boolean ignoreSlopes) {
       return trailType().walkableDirections(ignoreSlopes);
     }
 
+    /**
+     * Returns true if it is possible to navigate to the adjacent tile in the specified direction.
+     * Please note that true simply means it is possible to navigate in the specified direction.
+     * Further checks are needed to confirm that a valid walkable tile exists at the next point
+     * in the specified direction.
+     *
+     * @param direction    The Direction to navigate to.
+     * @param ignoreSlopes If true, any Slope tile is treated like a normal walkable tile.
+     * @return True if it is possible to navigate to the adjacent tile in the specified direction.
+     */
     public boolean canWalkInDirection(Direction direction, boolean ignoreSlopes) {
       return trailType().canWalkInDirection(direction, ignoreSlopes);
     }
 
+    /**
+     * Calculates and returns a new Point2D that represents the new location after navigating in
+     * the specified direction one space.
+     *
+     * @param direction The Direction to navigate in.
+     * @return A new Point2D that represents the new location after navigating in
+     *     the specified direction one space.
+     */
     public Point2D<Integer> pointInDirection(Direction direction) {
       return Grid2D.pointInDirection(point, direction);
     }
@@ -293,19 +398,29 @@ public class HikingTrails {
       return point.compareTo(o.point);
     }
 
+    /**
+     * Returns the coordinates of this tile in x-y format.
+     *
+     * @return The coordinates of this tile in x-y format.
+     */
     public String toId() {
       return point.x() + "-" + point.y();
     }
   }
 
-  private static class HikingSegment {
+  /**
+   * A HikingSegment represents a section of a trail where the first and second Vertices are
+   * adjacent 3-way and 4-way intersections along with slopes when they are not ignored. The
+   * start and finish tiles may also be the first and second vertices.
+   * Both the Vertices and Edges are stored in the order they are encountered which makes it easy
+   * to navigate from the first Vertex to the second Vertex.
+   */
+  public static class HikingSegment {
     private final long id;
-    @Getter
     private final Vertex<TrailTile, Integer> first;
-    @Setter
-    @Getter
     private Vertex<TrailTile, Integer> second;
-    private final Set<Vertex<TrailTile, Integer>> nodes;
+    private final Set<Vertex<TrailTile, Integer>> vertices;
+    private final List<Edge<Integer>> edges;
     @Setter
     @Getter
     private long length;
@@ -322,12 +437,19 @@ public class HikingTrails {
     @Getter
     private boolean oneway;
 
-    public HikingSegment(long id, Vertex<TrailTile, Integer> first) {
+    /**
+     * Creates a new HikingSegment with the specified ID and head Vertex.
+     *
+     * @param id    The ID of this segment.
+     * @param first The Vertex that is the head of this segment.
+     */
+    public HikingSegment(long id, @NotNull Vertex<TrailTile, Integer> first) {
       this.id = id;
-      this.first = first;
+      this.first = first.copy();
       this.second = null;
-      this.nodes = new HashSet<>();
-      add(first);
+      this.vertices = new LinkedHashSet<>();
+      this.edges = new ArrayList<>();
+      add(this.first);
       this.length = -1;
       this.deadEnd = false;
       this.cycle = false;
@@ -335,12 +457,51 @@ public class HikingTrails {
       this.oneway = first.getValue().isPresent() && first.getValue().get().isSlope();
     }
 
-    public void add(Vertex<TrailTile, Integer> node) {
-      nodes.add(node);
+    /**
+     * Adds a copy of the specified Vertex to this segment.
+     *
+     * @param vertex The Vertex to add to this segment; a copy is made and stored.
+     */
+    public void add(@NotNull Vertex<TrailTile, Integer> vertex) {
+      vertices.add(vertex.copy());
     }
 
-    public boolean contains(Vertex<TrailTile, Integer> trailNode) {
-      return nodes.contains(trailNode);
+
+    /**
+     * Adds a copy of the specified Edge to this segment.
+     *
+     * @param edge The Edge to add to this segment; a copy is made and stored.
+     */
+    public void add(@NotNull Edge<Integer> edge) {
+      edges.add(edge.copy());
+    }
+
+    /**
+     * Returns true if the specified Vertex is already in this segment.
+     *
+     * @param vertex The Vertex to test for inclusion.
+     * @return True if the specified Vertex is already in this segment.
+     */
+    public boolean contains(Vertex<TrailTile, Integer> vertex) {
+      return vertices.contains(vertex);
+    }
+
+    /**
+     * Returns the first Vertex of this segment; which may be null.
+     *
+     * @return The first Vertex of this segment; which may be null.
+     */
+    public Vertex<TrailTile, Integer> getFirst() {
+      return first != null ? first.copy() : null;
+    }
+
+    /**
+     * Returns the second Vertex of this segment; which may be null.
+     *
+     * @return The second Vertex of this segment; which may be null.
+     */
+    public Vertex<TrailTile, Integer> getSecond() {
+      return second != null ? second.copy() : null;
     }
 
     @Override
@@ -348,8 +509,8 @@ public class HikingTrails {
       return "HikingSegment{"
           + "id=" + id
           + ", length=" + length
-          + ", deadEnd=" + deadEnd
-          + ", cycle=" + cycle
+          + ", first=" + first
+          + ", second=" + second
           + ", finish=" + finish
           + ", oneway=" + oneway
           + '}';
@@ -370,6 +531,94 @@ public class HikingTrails {
     public int hashCode() {
       return Objects.hash(id);
     }
+
+    /**
+     * Returns a new independent copy of this segment.
+     *
+     * @return A new independent copy of this segment.
+     */
+    public HikingSegment copy() {
+      var segment = new HikingSegment(id, first.copy());
+      segment.second = second.copy();
+      segment.length = length;
+      segment.deadEnd = deadEnd;
+      segment.cycle = cycle;
+      segment.finish = finish;
+      segment.oneway = oneway;
+
+      segment.vertices.clear();
+      segment.edges.clear();
+
+      vertices.forEach(it -> segment.vertices.add(it.copy()));
+      edges.forEach(it -> segment.edges.add(it.copy()));
+
+      return segment;
+    }
+  }
+
+  /**
+   * A HikingTrail represents the segments and number of steps to navigate the trail. The
+   * order the segments that make up this trail are added is respected through the use of
+   * LinkedHashSets. Each segment contain the intersections that make up the segment. This
+   * means you can easily navigate the trail by starting at the head and following the edges
+   * in the segments in the order they are encountered.
+   *
+   * @param id          The ID of this trail.
+   * @param leadsToExit If true, then this trail leads to the finish.
+   * @param length      The total number of steps of this trail.
+   * @param head        The tile to enter this trail.
+   * @param tail        The tile to exit this trail.
+   * @param segments    The Set of segments that make up this trail. If order is important, and
+   *                    it usually is, then a LinkedHashSet should be used to ensure the order of
+   *                    the segments is respected.
+   */
+  public record HikingTrail(
+      long id,
+      boolean leadsToExit,
+      long length,
+      TrailTile head,
+      TrailTile tail,
+      Set<HikingSegment> segments
+  ) {
+
+    /**
+     * Creates a new immutable HikingTrail with the specified ID and properties. The ID should be
+     * unique.
+     *
+     * @param id          The ID of this trail.
+     * @param leadsToExit If true, then this trail leads to the finish.
+     * @param length      The total number of steps of this trail.
+     * @param head        The tile to enter this trail.
+     * @param tail        The tile to exit this trail.
+     * @param segments    The Set of segments that make up this trail. If order is important, and
+     *                    it usually is, then a LinkedHashSet should be used to ensure the order of
+     *                    the segments is respected.
+     */
+    public HikingTrail(
+        long id,
+        boolean leadsToExit,
+        long length,
+        TrailTile head,
+        TrailTile tail,
+        Set<HikingSegment> segments
+    ) {
+      this.id = id;
+      this.leadsToExit = leadsToExit;
+      this.length = length;
+      this.head = head;
+      this.tail = tail;
+      this.segments = new LinkedHashSet<>(segments.size());
+      segments.forEach(it -> this.segments.add(it.copy()));
+    }
+
+    /**
+     * Returns an unmodifiable copy of the segments that make up this HikingTrail.
+     *
+     * @return An unmodifiable copy of the segments that make up this HikingTrail.
+     */
+    public Set<HikingSegment> segments() {
+      return Collections.unmodifiableSet(segments);
+    }
   }
 
   private record RowResults(List<TrailTile> tiles, Point2D<Integer> initialPosition) {
@@ -378,6 +627,7 @@ public class HikingTrails {
   private final Grid2D<TrailTile> grid;
   private final Graph<TrailTile, Integer> intersectionGraph;
   private final Graph<TrailTile, Long> segmentGraph;
+  private final Map<String, HikingSegment> segmentMap;
   private final TrailTile start;
   private final TrailTile finish;
   private final boolean ignoreSlopes;
@@ -395,6 +645,7 @@ public class HikingTrails {
     this.finish = finish;
     this.ignoreSlopes = ignoreSlopes;
     this.virtualGrid = virtualGrid;
+    this.segmentMap = new LinkedHashMap<>();
     this.intersectionGraph = buildIntersectionGraph();
     this.segmentGraph = buildSegmentGraph();
   }
@@ -545,6 +796,7 @@ public class HikingTrails {
    * </ul>
    */
   private Graph<TrailTile, Long> buildSegmentGraph() {
+    segmentMap.clear();
     final var queue = new PriorityQueue<Vertex<TrailTile, Integer>>();
     final var graph = new Graph<TrailTile, Long>("hiking-segments");
 
@@ -566,7 +818,13 @@ public class HikingTrails {
 
       for (var edge : intersectionGraph.getEdges(node)) {
         var segment = new HikingSegment(segmentCount, node);
+
         buildTrailSegment(intersectionGraph, edge, node, segment);
+
+        if (segment.isDeadEnd() || segment.isCycle()) {
+          continue;
+        }
+
         if (segment.getFirst().getValue().isPresent()) {
           graph.add(
               new Vertex<>(segment.getFirst().getId(), segment.getFirst().getValue().get())
@@ -589,12 +847,20 @@ public class HikingTrails {
             "" + segmentCount,
             segment.getLength()
         );
+        segmentMap.putIfAbsent(
+            segment.getFirst().getId() + "-" + segment.getSecond().getId(),
+            segment
+        );
         if (!segment.isOneway()) {
           graph.add(
               segment.getSecond().getId(),
               segment.getFirst().getId(),
               "" + (-segmentCount),
               segment.getLength()
+          );
+          segmentMap.putIfAbsent(
+              segment.getSecond().getId() + "-" + segment.getFirst().getId(),
+              segment
           );
         }
         segmentCount++;
@@ -617,8 +883,9 @@ public class HikingTrails {
     int length = edge.getWeight().orElse(0);
 
     segment.add(node);
+    segment.add(edge);
     segment.setLength(length);
-    segment.setSecond(node);
+    segment.second = node.copy();
 
     if (node.getValue().isPresent() && node.getValue().get().isSlope() && !ignoreSlopes) {
       segment.setOneway(true);
@@ -704,8 +971,9 @@ public class HikingTrails {
       if (!segment.isCycle()) {
         visited.add(node.getId());
         segment.add(node);
+        segment.add(edge);
         segment.setLength(length);
-        segment.setSecond(node);
+        segment.second = node.copy();
       }
     }
   }
@@ -899,7 +1167,14 @@ public class HikingTrails {
     return new RowResults(tiles, null);
   }
 
-  private Optional<PathFinderResult<TrailTile, Long>> findLongestTrail() {
+  /**
+   * Finds and returns the longest path from the start node to the finish node. If there are
+   * multiple longest paths, then the first one encountered is the one that is returned.
+   * If a longest path does not exist, then the Optional will be empty.
+   *
+   * @return The longest path from start to finish or an empty Optional if one cannot be found.
+   */
+  public Optional<HikingTrail> findLongestTrail() {
     final var pathFinder = new GenericPathFinder<TrailTile, Long>();
     final var properties = new Properties();
     properties.put(GenericPathFinder.Props.SUM_PATH, Boolean.TRUE);
@@ -923,7 +1198,7 @@ public class HikingTrails {
         null
     );
 
-    return Optional.ofNullable(longestPathResult.get());
+    return pathToTrail(longestPathResult.get());
   }
 
   /**
@@ -934,6 +1209,32 @@ public class HikingTrails {
   public long stepsOfLongestTrail() {
     var longestTrail = findLongestTrail();
 
-    return longestTrail.map(PathFinderResult::cost).orElse(-1L);
+    return longestTrail.map(HikingTrail::length).orElse(-1L);
+  }
+
+  private Optional<HikingTrail> pathToTrail(PathFinderResult<TrailTile, Long> path) {
+    if (path == null) {
+      return Optional.empty();
+    }
+
+    var segments = new LinkedHashSet<>(
+        path.edges()
+            .stream()
+            .map(it -> segmentMap.get(it.getSource() + "-" + it.getTarget()))
+            .filter(Objects::nonNull)
+            .toList()
+    );
+
+    var head = path.start().getValue().orElse(null);
+    var tail = path.end().getValue().orElse(null);
+
+    return Optional.of(new HikingTrail(
+        path.id(),
+        finish.equals(tail),
+        path.cost(),
+        head,
+        tail,
+        segments
+    ));
   }
 }

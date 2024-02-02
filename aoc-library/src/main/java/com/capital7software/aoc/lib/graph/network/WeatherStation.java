@@ -1,5 +1,7 @@
-package com.capital7software.aoc.lib.graph;
+package com.capital7software.aoc.lib.graph.network;
 
+import com.capital7software.aoc.lib.graph.Edge;
+import com.capital7software.aoc.lib.graph.Graph;
 import com.capital7software.aoc.lib.util.Pair;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -116,48 +119,40 @@ import org.jetbrains.annotations.NotNull;
  * </code>
  */
 public class WeatherStation {
-  private final Map<String, Set<String>> edges;
-  private final Set<String> nodes;
+  private final Graph<Integer, Integer> graph;
   private final Random random;
 
-  private WeatherStation(@NotNull Map<String, Set<String>> edges, @NotNull Set<String> nodes) {
-    this.edges = edges;
-    this.nodes = nodes;
+  private WeatherStation(@NotNull Map<String, @NotNull Set<String>> edges) {
+    graph = new Graph<>("weather-station");
+
+    edges.forEach((key, value) -> {
+      graph.add(key);
+      value.forEach(it -> {
+        graph.add(it);
+        graph.add(key, it);
+        graph.add(it, key);
+      });
+    });
     this.random = new Random(Instant.now().toEpochMilli());
   }
 
-  private WeatherStation(@NotNull Map<String, @NotNull Set<String>> edges) {
-    this(edges, new HashSet<>(edges.keySet()));
+  private WeatherStation(@NotNull Graph<Integer, Integer> graph) {
+    this.graph = graph.copy();
+    this.random = new Random(Instant.now().toEpochMilli());
   }
 
   private void removeEdge(String nodeA, String nodeB) {
-    edges.computeIfAbsent(nodeA, it -> new HashSet<>()).remove(nodeB);
-    edges.computeIfAbsent(nodeB, it -> new HashSet<>()).remove(nodeA);
+    graph.remove(nodeA, nodeB);
+    graph.remove(nodeB, nodeA);
   }
 
   private @NotNull WeatherStation copy() {
-    var map = new HashMap<String, Set<String>>();
-
-    edges.forEach((id, edgeSet) -> map.computeIfAbsent(id, it -> new HashSet<>(edgeSet)));
-
-    return new WeatherStation(map);
-  }
-
-  private boolean contains(@NotNull String node) {
-    return nodes.contains(node);
-  }
-
-  private void add(@NotNull String nodeA, @NotNull String nodeB) {
-    nodes.add(nodeA);
-    nodes.add(nodeB);
-
-    edges.computeIfAbsent(nodeA, it -> new HashSet<>()).add(nodeB);
-    edges.computeIfAbsent(nodeB, it -> new HashSet<>()).add(nodeA);
+    return new WeatherStation(graph);
   }
 
   private @NotNull Set<String> get(@NotNull String node) {
-    nodes.add(node);
-    return edges.computeIfAbsent(node, it -> new HashSet<>());
+    graph.add(node);
+    return graph.getEdges(node).stream().map(Edge::getTarget).collect(Collectors.toSet());
   }
 
   /**
@@ -170,13 +165,13 @@ public class WeatherStation {
   private static @NotNull List<Pair<String, String>> makeDirected(
       @NotNull WeatherStation station
   ) {
-    var edges = new ArrayList<Pair<String, String>>(station.nodes.size() * 3);
+    var edges = new ArrayList<Pair<String, String>>(station.graph.size() * 3);
 
-    for (var node : station.nodes) {
-      var neighbors = new HashSet<>(station.get(node));
+    for (var node : station.graph.getVertices()) {
+      var neighbors = new HashSet<>(station.get(node.getId()));
       for (var neighbor : neighbors) {
-        edges.add(new Pair<>(node, neighbor));
-        station.removeEdge(node, neighbor);
+        edges.add(new Pair<>(node.getId(), neighbor));
+        station.removeEdge(node.getId(), neighbor);
       }
     }
 
@@ -214,7 +209,9 @@ public class WeatherStation {
         // Use Lists instead of sets here since we rename the edges
         // And that can lead to duplicates and Java's sets go wonky if that happens!
         nodes.computeIfAbsent(nodeA, it -> new LinkedList<>()).add(edge);
-        nodes.computeIfAbsent(nodeB, it -> new LinkedList<>()).add(edge);
+        nodes.computeIfAbsent(nodeB, it -> new LinkedList<>()).add(
+            new Pair<>(edge.second(), edge.first())
+        );
       }
 
       for (var nodeEntry : nodes.entrySet()) {
@@ -238,9 +235,17 @@ public class WeatherStation {
           // rename b's edges to a's!
           if (edgeB.first().equals(nodeB)) {
             edgeB.first(nodeA);
+            nodes.get(edgeB.second())
+                .stream()
+                .filter(it -> it.second().equals(nodeB))
+                .forEach(it -> it.second(nodeA));
           }
           if (edgeB.second().equals(nodeB)) {
             edgeB.second(nodeA);
+            nodes.get(edgeB.first())
+                .stream()
+                .filter(it -> it.first().equals(nodeB))
+                .forEach(it -> it.first(nodeA));
           }
           nodes.get(nodeA).add(edgeB);
         }
@@ -251,6 +256,12 @@ public class WeatherStation {
         var edgesA = new LinkedList<Pair<String, String>>();
 
         for (var edgeA : nodes.get(nodeA)) {
+          if (edgeA.first().equals(nodeB)) {
+            edgeA.first(nodeA);
+          }
+          if (edgeA.second().equals(nodeB)) {
+            edgeA.second(nodeA);
+          }
           var a = edgeA.first();
           var b = edgeA.second();
           if (a.equals(b)) {

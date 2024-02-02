@@ -1,7 +1,7 @@
 package com.capital7software.aoc.aoc2023.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
-import com.capital7software.aoc.lib.graph.WeatherStation;
+import com.capital7software.aoc.lib.graph.network.WeatherStation;
 import java.time.Instant;
 import java.util.List;
 import org.slf4j.Logger;

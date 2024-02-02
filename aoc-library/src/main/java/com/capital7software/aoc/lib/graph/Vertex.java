@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,7 +60,13 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>>
     this.id = Objects.requireNonNull(id);
     this.name = Objects.requireNonNull(name);
     this.value = value;
-    this.edges = new HashMap<>(Objects.requireNonNull(edges));
+    this.edges = new HashMap<>(
+        Objects.requireNonNull(edges)
+            .values()
+            .stream()
+            .map(Edge::copy)
+            .collect(Collectors.toMap(Edge::getTarget, Function.identity()))
+    );
   }
 
   /**

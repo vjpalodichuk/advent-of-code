@@ -9,7 +9,7 @@ plugins {
   id("capital7software.java-conventions")
 }
 
-// Projects have the 'com.capital7software' group by convention
+// Projects have the 'com.capital7software.aoc' group by convention
 group = "com.capital7software.aoc"
 
 val artifactoryContextUrl: String by project

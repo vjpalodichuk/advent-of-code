@@ -9,6 +9,6 @@ module com.capital7software.aoc.aoc2015aoc {
     requires org.slf4j;
     requires com.capital7software.aoc.lib;
 
-    exports com.capital7software.aoc.aoc2015;
-    exports com.capital7software.aoc.aoc2015.days;
+    exports com.capital7software.aoc.aoc2015aoc;
+    exports com.capital7software.aoc.aoc2015aoc.days;
 }

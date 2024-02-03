@@ -7,6 +7,7 @@ module com.capital7software.aoc.lib {
   requires com.github.spotbugs.annotations;
   requires org.slf4j;
   requires static lombok;
+  requires kotlin.stdlib;
 
   exports com.capital7software.aoc.lib;
   exports com.capital7software.aoc.lib.analysis;

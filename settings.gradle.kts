@@ -1,9 +1,13 @@
 rootProject.name = "aoc"
 plugins {
   id("com.mooltiverse.oss.nyx") version "2.5.1"
+  id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
-include("aoc-library", "aoc-2015", "aoc-2023")
+include("aoc-library")
+include("aoc-2015")
+include("aoc-2016")
+include("aoc-2023")
 
 configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
   preset = "extended"

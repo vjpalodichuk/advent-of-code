@@ -2,6 +2,7 @@ package com.capital7software.aoc.lib.geometry;
 
 import com.capital7software.aoc.lib.math.MathOperations;
 import com.capital7software.aoc.lib.util.Range;
+import com.capital7software.aoc.lib.util.Triple;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -65,6 +66,83 @@ public record LineSegment2D<T extends Number & Comparable<T>>(
     ).doubleValue();
   }
 
+  private static <T extends Number & Comparable<T>> Triple<T, T, T> calculateLineParts(
+      @NotNull final LineSegment2D<T> line
+  ) {
+    var a1 = MathOperations.subtract(line.end().y(), line.start().y());
+    var b1 = MathOperations.subtract(line.start().x(), line.end().x());
+    var c1 = MathOperations.add(
+        MathOperations.multiply(a1, line.start().x()),
+        MathOperations.multiply(b1, line.start().y())
+    );
+
+    return new Triple<>(a1, b1, c1);
+  }
+
+  /**
+   * Calculates and returns the point of intersection between the two segments if one exists.
+   * In order for a point to be returned from this method, the two lines represented by the
+   * segments must intersect and the intersection point must exist in both segments.
+   *
+   * @param lineA The first line to test.
+   * @param lineB The second line to test.
+   * @param <T>   The type of the coordinates.
+   * @return The point of intersection or null if the two segments do not intersect.
+   */
+  public static <T extends Number & Comparable<T>> Point2D<T> intersect(
+      @NotNull final LineSegment2D<T> lineA,
+      @NotNull final LineSegment2D<T> lineB
+  ) {
+    // Line A represented as a1x + b1y = c1
+    var triple = calculateLineParts(lineA);
+    var a1 = triple.first();
+    var b1 = triple.second();
+    var c1 = triple.third();
+
+    // Line B represented as a2x + b2y = c2
+    triple = calculateLineParts(lineB);
+    var a2 = triple.first();
+    var b2 = triple.second();
+    var c2 = triple.third();
+
+    var determinant = MathOperations.subtract(
+        MathOperations.multiply(a1, b2),
+        MathOperations.multiply(a2, b1)
+    );
+
+    var realDeterminant = determinant.doubleValue();
+
+    if (realDeterminant >= 0 && realDeterminant < Point2D.EPSILON) {
+      // Lines are parallel and will never intersect!
+      return null;
+    }
+
+    var x = MathOperations.divide(
+        MathOperations.subtract(
+            MathOperations.multiply(b2, c1),
+            MathOperations.multiply(b1, c2)
+        ),
+        determinant
+    );
+    var y = MathOperations.divide(
+        MathOperations.subtract(
+            MathOperations.multiply(a1, c2),
+            MathOperations.multiply(a2, c1)
+        ),
+        determinant
+    );
+
+    var intersectionPoint = new Point2D<>(x, y);
+
+    // Now that we have the new intersection point, we only return it if the point exists
+    // on both line segments.
+    if (lineA.isPointOnSegment(intersectionPoint) && lineB.isPointOnSegment(intersectionPoint)) {
+      return intersectionPoint;
+    }
+
+    return null;
+  }
+
   /**
    * When this LineSegment2D and other LineSegment2D are on the same line and overlap, the point
    * that overlaps is returned based on the following criteria.
@@ -78,7 +156,7 @@ public record LineSegment2D<T extends Number & Comparable<T>>(
    * @param other The non-null LineSegment2D to test
    * @return The point of intersection or null if they don't intersect as defined above.
    */
-  public Point2D<T> intersect(final LineSegment2D<T> other) {
+  public Point2D<T> intersect(@NotNull final LineSegment2D<T> other) {
     if (!isOnSameLine(other)) {
       return null;
     }

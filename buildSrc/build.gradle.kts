@@ -9,17 +9,19 @@ repositories {
 object Versions {
   const val JETBRAINS_ANNOTATIONS = "24.0.1"
   const val JUNIT = "5.9.2"
-  const val LOG4J2 = "2.22.1"
-  const val JACKSON = "2.16.1"
-  const val LOMBOK = "1.18.30"
-  const val CHECKSTYLE = "10.13.0"
+  const val ARTIFACTORY = "5+"
+  const val SPOTBUGS = "6.0.3"
+  const val KOTLIN = "1.9.22"
+  const val DETEKT = "1.23.5"
 }
 
 dependencies {
-  implementation("org.jetbrains:annotations:24.0.1")
-  implementation("com.github.spotbugs.snom:spotbugs-gradle-plugin:6.0.3")
-  implementation("org.jfrog.buildinfo:build-info-extractor-gradle:5+")
-  implementation("org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:1.9.22")
+  implementation("org.jetbrains:annotations:${Versions.JETBRAINS_ANNOTATIONS}")
+  implementation("com.github.spotbugs.snom:spotbugs-gradle-plugin:${Versions.SPOTBUGS}")
+  implementation("org.jfrog.buildinfo:build-info-extractor-gradle:${Versions.ARTIFACTORY}")
+  implementation("org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:${Versions.KOTLIN}")
+  implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${Versions.DETEKT}")
+
   // Test dependencies
   testImplementation("org.junit.jupiter:junit-jupiter-api:${Versions.JUNIT}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.JUNIT}")

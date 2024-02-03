@@ -69,32 +69,27 @@ import org.jetbrains.annotations.NotNull;
  * @param deliveredGifts The map to hold the delivered gifts per route where the first key is the
  *                       route and then each key is a house and each value is how many visits made
  *                       to that house.
- * @param grid           The InfiniteGrid that this Sleigh travels on.
  */
 public record Sleigh(
-    @NotNull Map<Integer, Map<Point2D<Long>, Long>> deliveredGifts,
-    @NotNull InfiniteGrid grid
+    @NotNull Map<Integer, Map<Point2D<Long>, Long>> deliveredGifts
 ) {
   /**
    * Instantiates a new Sleigh with the specified Map of delivered gifts and the
    * InfiniteGrid to travel on.
    *
    * @param deliveredGifts The Map of delivered gifts.
-   * @param grid           The InfiniteGrid to travel on.
    */
   public Sleigh(
-      @NotNull Map<Integer, Map<Point2D<Long>, Long>> deliveredGifts,
-      @NotNull InfiniteGrid grid
+      @NotNull Map<Integer, Map<Point2D<Long>, Long>> deliveredGifts
   ) {
     this.deliveredGifts = new HashMap<>(deliveredGifts);
-    this.grid = grid;
   }
 
   /**
    * Convenience constructor.
    */
   public Sleigh() {
-    this(new HashMap<>(), new InfiniteGrid());
+    this(new HashMap<>());
   }
 
   /**
@@ -176,10 +171,10 @@ public record Sleigh(
   ) {
     Point2D<Long> newHouse;
     switch (direction) {
-      case '^' -> newHouse = grid.pointInDirection(lastHouse, Direction.NORTH);
-      case 'v' -> newHouse = grid.pointInDirection(lastHouse, Direction.SOUTH);
-      case '>' -> newHouse = grid.pointInDirection(lastHouse, Direction.EAST);
-      case '<' -> newHouse = grid.pointInDirection(lastHouse, Direction.WEST);
+      case '^' -> newHouse = InfiniteGrid.pointInDirection(lastHouse, Direction.NORTH);
+      case 'v' -> newHouse = InfiniteGrid.pointInDirection(lastHouse, Direction.SOUTH);
+      case '>' -> newHouse = InfiniteGrid.pointInDirection(lastHouse, Direction.EAST);
+      case '<' -> newHouse = InfiniteGrid.pointInDirection(lastHouse, Direction.WEST);
       default -> newHouse = lastHouse;
     }
 

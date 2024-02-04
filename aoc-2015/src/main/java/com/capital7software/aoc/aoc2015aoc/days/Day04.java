@@ -97,6 +97,6 @@ public class Day04 implements AdventOfCodeSolution {
    *     MD5 Hash with the specified number of leading zeros.
    */
   public long lowestPositiveNumber(String secret, int leadingZeros) {
-    return Md5Fun.lowestPositiveNumberWithLeadingZeros(secret, leadingZeros);
+    return Md5Fun.lowestPositiveHashWithLeadingZeros(secret, leadingZeros, 0).second();
   }
 }

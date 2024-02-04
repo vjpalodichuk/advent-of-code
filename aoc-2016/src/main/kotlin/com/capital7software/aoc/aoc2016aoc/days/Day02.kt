@@ -76,6 +76,7 @@ import org.slf4j.LoggerFactory
  * Using the same instructions in your puzzle input, what is the correct bathroom code?
  *
  * Your puzzle answer was C1A88.
+ *
  */
 class Day02 : AdventOfCodeSolution {
   companion object {

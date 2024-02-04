@@ -44,6 +44,7 @@ object Versions {
   const val LOMBOK = "1.18.30"
   const val CHECKSTYLE = "10.13.0"
   const val DETEKT = "1.23.5"
+  const val KOTLIN = "1.9.22"
 }
 
 // Projects should use Maven Central for external dependencies

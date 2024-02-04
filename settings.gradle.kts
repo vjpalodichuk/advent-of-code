@@ -37,7 +37,7 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
     }
   }
 
-  resume = true
+  resume = false
   summary = true
   summaryFile = ".nyx-summary.txt"
   stateFile = ".nyx-state.yml"

@@ -1,8 +1,7 @@
-package com.capital7software.aoc2015aoc.days;
+package com.capital7software.aoc.aoc2015aoc.days;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.capital7software.aoc.aoc2015aoc.days.Day25;
 import com.capital7software.aoc.lib.AdventOfCodeTestBase;
 import com.capital7software.aoc.lib.grid.CodeGenerator;
 import org.junit.jupiter.api.BeforeEach;

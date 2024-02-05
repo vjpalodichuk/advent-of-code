@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 1.3.7 (2024-02-05)
+
+### Added
+
+* [add50] Added AOC 2016 Day 7 (Vincent Palodichuk)
+
 ## 1.3.6 (2024-02-04)
 
 Add Advent of Code 2016 Days 1 - 6

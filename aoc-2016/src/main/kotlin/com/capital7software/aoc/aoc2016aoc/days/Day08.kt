@@ -6,9 +6,6 @@ import java.time.Instant
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-private const val DISPLAY_COLUMNS = 50
-private const val DISPLAY_ROWS = 6
-
 /**
  * --- Day 8: Two-Factor Authentication ---
  *
@@ -89,6 +86,9 @@ private const val DISPLAY_ROWS = 6
 class Day08 : AdventOfCodeSolution {
   companion object {
     private val log: Logger = LoggerFactory.getLogger(Day08::class.java)
+
+    private const val DISPLAY_COLUMNS = 50
+    private const val DISPLAY_ROWS = 6
   }
 
   override fun getDefaultInputFilename(): String {

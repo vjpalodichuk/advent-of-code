@@ -99,4 +99,22 @@ public final class Pair<T, U> {
         + "first=" + first + ", "
         + "second=" + second + ']';
   }
+
+  /**
+   * Returns the first element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The first element.
+   */
+  public T component1() {
+    return first;
+  }
+
+  /**
+   * Returns the second element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The second element.
+   */
+  public U component2() {
+    return second;
+  }
 }

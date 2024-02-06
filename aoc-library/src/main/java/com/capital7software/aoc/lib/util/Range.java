@@ -135,4 +135,22 @@ public record Range<T extends Number & Comparable<T>>(@NotNull T start, @NotNull
     result.add(new Range<>(Math.max(range.start(), toSplit), range.end()));
     return result;
   }
+
+  /**
+   * Returns the start element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The start element.
+   */
+  public T component1() {
+    return start;
+  }
+
+  /**
+   * Returns the end element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The end element.
+   */
+  public T component2() {
+    return end;
+  }
 }

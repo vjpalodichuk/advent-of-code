@@ -33,7 +33,7 @@ class Day06Test extends AdventOfCodeTestBase {
     var instance = new Day06();
     var expectedCount = 1_001_996;
     var lights = instance.loadLights(lines, 1_000, 1_000);
-    lights.applyNewInterpretationOfInstructions();
+    lights.applyAlternateInstructions();
     var actualCount = instance.getTotalBrightness(lights);
 
     assertEquals(expectedCount, actualCount);

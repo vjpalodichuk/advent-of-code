@@ -1,6 +1,13 @@
 # Changelog
 
 
+## 1.3.9 (2024-02-06)
+
+### Added
+
+* [e2007] Added AOC 2016 Day 9 and updated Pair, Triple, Point2D, 
+Point3D, and Range to support Kotlin decomposing assignments.(Vincent J Palodichuk)
+
 ## 1.3.8 (2024-02-06)
 
 ### Added

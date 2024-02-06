@@ -51,4 +51,22 @@ public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T
 
     return result.x.compareTo(result.y);
   }
+
+  /**
+   * Returns the x element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The x element.
+   */
+  public T component1() {
+    return x;
+  }
+
+  /**
+   * Returns the y element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The y element.
+   */
+  public T component2() {
+    return y;
+  }
 }

@@ -107,4 +107,31 @@ public final class Triple<T, U, V> {
         + ", third=" + third
         + '}';
   }
+
+  /**
+   * Returns the first element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The first element.
+   */
+  public T component1() {
+    return first;
+  }
+
+  /**
+   * Returns the second element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The second element.
+   */
+  public U component2() {
+    return second;
+  }
+
+  /**
+   * Returns the third element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The third element.
+   */
+  public V component3() {
+    return third;
+  }
 }

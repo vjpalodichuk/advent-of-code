@@ -2,7 +2,7 @@ package com.capital7software.aoc.lib.analysis;
 
 import com.capital7software.aoc.lib.geometry.Direction;
 import com.capital7software.aoc.lib.geometry.Point2D;
-import com.capital7software.aoc.lib.grid.Grid2D;
+import com.capital7software.aoc.lib.grid.Grid2d;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -246,7 +245,7 @@ public class ParabolicReflectorDish {
     }
   }
 
-  private record Platform(@NotNull Grid2D<Tile> grid) {
+  private record Platform(@NotNull Grid2d<Tile> grid) {
 
     public static @NotNull Platform parse(@NotNull List<String> input) {
       var tiles = new ArrayList<Tile>();
@@ -268,7 +267,7 @@ public class ParabolicReflectorDish {
       });
 
       return new Platform(
-          new Grid2D<>(
+          new Grid2d<>(
               columns.get(),
               rows.get(),
               tiles.toArray(new Tile[columns.get() * rows.get()])
@@ -321,8 +320,8 @@ public class ParabolicReflectorDish {
       var loopStart = getLoopStart(direction);
 
       // Go through each row / column depending on the direction
-      for (var i = 0; i < getRowOrColumnLength(direction); i++) {
-        var items = getRowOrColumn(direction, i);
+      for (var i = 0; i < grid.getRowOrColumnLength(direction); i++) {
+        var items = grid.getRowOrColumn(direction, i);
         // Go through each item in the row / column and attempt to move them!
         moveRockTiles(loopStart, predicate, offset, loopOffset, extractor, setter, items);
       }
@@ -407,7 +406,7 @@ public class ParabolicReflectorDish {
 
     public @NotNull Predicate<Integer> getLoopPredicate(@NotNull Direction direction) {
       return switch (direction) {
-        case NORTH, WEST -> current -> current < getRowOrColumnLength(direction);
+        case NORTH, WEST -> current -> current < grid.getRowOrColumnLength(direction);
         case EAST, SOUTH -> current -> current >= 0;
         default -> throw new RuntimeException("Unknown direction: " + direction);
       };
@@ -416,7 +415,7 @@ public class ParabolicReflectorDish {
     public @NotNull Integer getLoopStart(@NotNull Direction direction) {
       return switch (direction) {
         case NORTH, WEST -> 0;
-        case EAST, SOUTH -> getRowOrColumnLength(direction) - 1;
+        case EAST, SOUTH -> grid.getRowOrColumnLength(direction) - 1;
         default -> throw new RuntimeException("Unknown direction: " + direction);
       };
     }
@@ -432,7 +431,7 @@ public class ParabolicReflectorDish {
     public @NotNull Function<Tile, Integer> getLoadCalculator(@NotNull Direction direction) {
       switch (direction) {
         case NORTH -> {
-          return (Tile tile) -> getRowOrColumnLength(direction) - tile.getPoint().y();
+          return (Tile tile) -> grid.getRowOrColumnLength(direction) - tile.getPoint().y();
         }
         case SOUTH -> {
           return (Tile tile) -> 1 + tile.getPoint().y();
@@ -441,7 +440,7 @@ public class ParabolicReflectorDish {
           return (Tile tile) -> 1 + tile.getPoint().x();
         }
         case WEST -> {
-          return (Tile tile) -> getRowOrColumnLength(direction) - tile.getPoint().x();
+          return (Tile tile) -> grid.getRowOrColumnLength(direction) - tile.getPoint().x();
         }
         default -> throw new RuntimeException("Unknown direction: " + direction);
       }
@@ -451,49 +450,12 @@ public class ParabolicReflectorDish {
       long supportLoad;
       var loadCalculator = getLoadCalculator(direction);
 
-      supportLoad = Stream.of(grid.items())
+      supportLoad = grid.stream()
           .filter(it -> it.getRock() == Rock.ROUNDED_ROCK)
           .mapToLong(it -> (long) loadCalculator.apply(it))
           .sum();
 
       return supportLoad;
-    }
-
-    /**
-     * Gets a row or column as a List that then can be easily compared.
-     */
-    private @NotNull List<Tile> getRowOrColumn(@NotNull Direction direction, int index) {
-      if (direction == Direction.NORTH || direction == Direction.SOUTH) {
-        if (index < 0 || index >= grid.columns()) {
-          throw new IndexOutOfBoundsException("Column index out of range: " + index);
-        }
-
-        var list = new ArrayList<Tile>(grid.rows());
-        for (int i = 0; i < grid.rows(); i++) {
-          list.add(grid.get(new Point2D<>(index, i)));
-        }
-        return list;
-      } else if (direction == Direction.EAST || direction == Direction.WEST) {
-        if (index < 0 || index >= grid.rows()) {
-          throw new IndexOutOfBoundsException("Row index out of range: " + index);
-        }
-
-        var list = new ArrayList<Tile>(grid.columns());
-        for (int i = 0; i < grid.columns(); i++) {
-          list.add(grid.get(new Point2D<>(i, index)));
-        }
-        return list;
-      } else {
-        throw new RuntimeException("Unknown direction specified: " + direction);
-      }
-    }
-
-    private int getRowOrColumnLength(@NotNull Direction direction) {
-      return switch (direction) {
-        case NORTH, SOUTH -> grid.columns();
-        case EAST, WEST -> grid.rows();
-        default -> throw new RuntimeException("Unknown direction: " + direction);
-      };
     }
 
     /**
@@ -554,7 +516,7 @@ public class ParabolicReflectorDish {
     }
 
     private @NotNull List<Tile> copyTiles() {
-      return Stream.of(grid.items()).map(it -> new Tile(it.getRock(), it.getPoint())).toList();
+      return grid.stream().map(it -> new Tile(it.getRock(), it.getPoint())).toList();
     }
   }
 

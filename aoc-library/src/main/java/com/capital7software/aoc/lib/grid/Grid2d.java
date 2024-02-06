@@ -5,8 +5,11 @@ import com.capital7software.aoc.lib.geometry.Point2D;
 import com.capital7software.aoc.lib.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,7 +20,34 @@ import org.jetbrains.annotations.NotNull;
  * @param items   The array, whose size is columns x rows, to store the data of this grid.
  * @param <T>     The type for the items stored in this grid.
  */
-public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
+public record Grid2d<T>(int columns, int rows, @NotNull T[] items) implements Iterable<T> {
+  /**
+   * An iterator that iterates in-order over the elements of this Grid2D.
+   */
+  public class Grid2dIterator implements Iterator<T> {
+    private int cursor;
+
+    /**
+     * Instantiates a new iterator instance.
+     */
+    public Grid2dIterator() {
+      cursor = 0;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return cursor != items.length;
+    }
+
+    @Override
+    public T next() throws NoSuchElementException {
+      if (cursor >= items.length) {
+        throw new NoSuchElementException("next called when this Iterator has no next element!");
+      }
+      return items[cursor++];
+    }
+  }
+
   /**
    * Instantiates a new Grid2D that owns the specified items array.
    *
@@ -25,7 +55,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
    * @param rows    The number of rows in this grid.
    * @param items   The array, whose size is columns x rows, to store the data of this grid.
    */
-  public Grid2D(int columns, int rows, @NotNull T[] items) {
+  public Grid2d(int columns, int rows, @NotNull T[] items) {
     this.columns = columns;
     this.rows = rows;
     this.items = Arrays.copyOf(items, items.length);
@@ -39,7 +69,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
    * @param items        The array, whose size is columns x rows, to store the data of this grid.
    * @param initialValue The initial value to fill this grid with.
    */
-  public Grid2D(int columns, int rows, @NotNull T[] items, T initialValue) {
+  public Grid2d(int columns, int rows, @NotNull T[] items, T initialValue) {
     this(columns, rows, items);
     fill(initialValue);
   }
@@ -201,7 +231,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
    * @param x2       The column of the lower right corner of the rectangle.
    * @param y2       The row of the lower right corner of the rectangle.
    * @param adjuster The function that is called for each space and whose return value is
-   *                 stored in the space.
+   *                 stored in the space. The current value of the space is passed as a parameter.
    */
   public void adjustBy(int x1, int y1, int x2, int y2, Function<T, T> adjuster) {
     var minX = Math.min(x1, x2);
@@ -223,7 +253,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
    * @param point1   The column and row of the upper left corner of the rectangle.
    * @param point2   The column and row of the lower right corner of the rectangle.
    * @param adjuster The function that is called for each space and whose return value is
-   *                 stored in the space.
+   *                 stored in the space. The current value of the space is passed as a parameter.
    */
   public void adjustBy(Point2D<Integer> point1, Point2D<Integer> point2, Function<T, T> adjuster) {
     adjustBy(point1.x(), point1.y(), point2.x(), point2.y(), adjuster);
@@ -276,8 +306,8 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
    *
    * @return An independent copy of this Grid2D.
    */
-  public @NotNull Grid2D<T> copy() {
-    return new Grid2D<>(columns, rows, Arrays.copyOf(items, items.length));
+  public @NotNull Grid2d<T> copy() {
+    return new Grid2d<>(columns, rows, Arrays.copyOf(items, items.length));
   }
 
   /**
@@ -351,7 +381,8 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
    * @return A list of Pairs where the first property is the point of the neighbor on this
    *     Grid2D and the second property is the value at that point in this Grid2D.
    */
-  public @NotNull List<Pair<Point2D<Integer>, T>> getAllNeighbors(Point2D<Integer> point) {
+  @NotNull
+  public List<Pair<Point2D<Integer>, T>> getAllNeighbors(Point2D<Integer> point) {
     return getAllNeighbors(point.x(), point.y());
   }
 
@@ -360,10 +391,28 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
    *
    * @return A copy of the items held by this Grid2D in a new array.
    */
+  @NotNull
   @Override
   public T[] items() {
     return Arrays.copyOf(items, items.length);
   }
+
+  @NotNull
+  @Override
+  public Iterator<T> iterator() {
+    return new Grid2dIterator();
+  }
+
+  /**
+   * Returns a Stream of the items in this Grid2D.
+   *
+   * @return A Stream of the items in this Grid2D.
+   */
+  @NotNull
+  public Stream<T> stream() {
+    return Stream.of(items);
+  }
+
 
   /**
    * Returns the size of this Grid2D. The size is calculated by multiplying columns * rows.
@@ -372,5 +421,153 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) {
    */
   public int size() {
     return rows * columns;
+  }
+
+  private boolean targetColumn(Direction direction) {
+    return direction == Direction.NORTH || direction == Direction.SOUTH;
+  }
+
+  private boolean targetRow(Direction direction) {
+    return direction == Direction.EAST || direction == Direction.WEST;
+  }
+
+  private void throwIfOutOfBounds(int index, int max) {
+    if (index < 0 || index >= max) {
+      throw new IndexOutOfBoundsException("Column index out of range: " + index);
+    }
+  }
+
+  /**
+   * Returns the specified row.
+   *
+   * @param index The row to get.
+   * @return The specified row.
+   */
+  public @NotNull List<T> getRow(int index) {
+    throwIfOutOfBounds(index, rows);
+
+    var list = new ArrayList<T>(columns);
+    for (int i = 0; i < columns; i++) {
+      list.add(get(i, index));
+    }
+    return list;
+  }
+
+  /**
+   * Returns the specified column.
+   *
+   * @param index The column to get.
+   * @return The specified column.
+   */
+  public @NotNull List<T> getColumn(int index) {
+    throwIfOutOfBounds(index, columns);
+
+    var list = new ArrayList<T>(rows);
+    for (int i = 0; i < rows; i++) {
+      list.add(get(index, i));
+    }
+    return list;
+  }
+
+  /**
+   * Gets a row or column as a List that then can be easily compared.
+   *
+   * @param direction The cardinal Direction indicates the axis to select.
+   * @param index     The row or column index to retrieve.
+   * @return A List that contains the elements from the specified row or column.
+   */
+  public @NotNull List<T> getRowOrColumn(@NotNull Direction direction, int index) {
+    if (targetColumn(direction)) {
+      return getColumn(index);
+    } else if (targetRow(direction)) {
+      return getRow(index);
+    } else {
+      throw new RuntimeException("Unknown direction specified: " + direction);
+    }
+  }
+
+  /**
+   * Sets the specified row to the specified values.
+   *
+   * @param index The row to update.
+   * @param data  The updated data to apply to this grid.
+   */
+  public void setRow(int index, @NotNull List<T> data) {
+    throwIfOutOfBounds(index, rows);
+
+    for (int i = 0; i < columns; i++) {
+      set(i, index, data.get(i));
+    }
+  }
+
+  /**
+   * Sets the specified column to the specified values.
+   *
+   * @param index The column to update.
+   * @param data  The updated data to apply to this grid.
+   */
+  public void setColumn(int index, @NotNull List<T> data) {
+    throwIfOutOfBounds(index, columns);
+
+    for (int i = 0; i < rows; i++) {
+      set(index, i, data.get(i));
+    }
+  }
+
+  /**
+   * Sets a row or column to the specified values. The specified List must contain the
+   * same number of elements as the length of the row or column that is being updated.
+   *
+   * @param direction The cardinal Direction indicates the axis to select.
+   * @param index     The row or column index to set.
+   * @param data      The updated data to apply to this grid.
+   */
+  public void setRowOrColumn(@NotNull Direction direction, int index, @NotNull List<T> data) {
+    if (targetColumn(direction)) {
+      setColumn(index, data);
+    } else if (targetRow(direction)) {
+      setRow(index, data);
+    } else {
+      throw new RuntimeException("Unknown direction specified: " + direction);
+    }
+  }
+
+  /**
+   * Returns the number of rows or columns in this grid. Which one to return is based on
+   * the specified cardinal Direction.
+   *
+   * @param direction The cardinal Direction indicates the axis to select.
+   * @return The number of rows or columns in this grid.
+   */
+  public int getRowOrColumnLength(@NotNull Direction direction) {
+    return switch (direction) {
+      case NORTH, SOUTH -> columns;
+      case EAST, WEST -> rows;
+      default -> throw new RuntimeException("Unknown direction: " + direction);
+    };
+  }
+
+  /**
+   * Returns true if the specified x and y represent a corner of this grid.
+   *
+   * @param x The x to check.
+   * @param y The y to check.
+   * @return True if the specified x and y represent a corner of this grid.
+   */
+  public boolean isCorner(int x, int y) {
+    return (x == 0 && y == 0)
+        || (x == 0 && y == rows - 1)
+        || (x == columns - 1 && y == 0)
+        || (x == columns - 1 && y == rows - 1);
+  }
+
+  /**
+   * Returns true if the specified point represents a corner of this grid.
+   *
+   * @param point The point to check.
+   * @return True if the specified point represents a corner of this grid.
+   */
+  public boolean isCorner(Point2D<Integer> point) {
+    return isCorner(point.x(), point.y());
   }
 }

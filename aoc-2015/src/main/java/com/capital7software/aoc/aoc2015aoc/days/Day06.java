@@ -1,7 +1,7 @@
 package com.capital7software.aoc.aoc2015aoc.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
-import com.capital7software.aoc.lib.grid.ChristmasLights;
+import com.capital7software.aoc.lib.grid.LightGrid;
 import java.time.Instant;
 import java.util.List;
 import org.slf4j.Logger;
@@ -114,7 +114,7 @@ public class Day06 implements AdventOfCodeSolution {
 
     var start = Instant.now();
     var lights = loadLights(input, 1_000, 1_000);
-    lights.applyNewInterpretationOfInstructions();
+    lights.applyAlternateInstructions();
 
     var total = getTotalBrightness(lights);
 
@@ -133,8 +133,8 @@ public class Day06 implements AdventOfCodeSolution {
    * @return A ChristLights instance setup with the specified instructions on a grid
    *     with the specified dimensions.
    */
-  public ChristmasLights loadLights(List<String> rawInstructions, int columns, int rows) {
-    return ChristmasLights.buildFromLightingInstructions(columns, rows, rawInstructions);
+  public LightGrid loadLights(List<String> rawInstructions, int columns, int rows) {
+    return LightGrid.buildFromLightingInstructions(columns, rows, rawInstructions);
   }
 
   /**
@@ -143,7 +143,7 @@ public class Day06 implements AdventOfCodeSolution {
    * @param lights The ChristmasLights.
    * @return The number of lights that are on.
    */
-  public long getOnLightCount(ChristmasLights lights) {
+  public long getOnLightCount(LightGrid lights) {
     return lights.getOnLightCount();
   }
 
@@ -153,7 +153,7 @@ public class Day06 implements AdventOfCodeSolution {
    * @param lights The ChristmasLights.
    * @return The total brightness of the ChristmasLights setup.
    */
-  public long getTotalBrightness(ChristmasLights lights) {
+  public long getTotalBrightness(LightGrid lights) {
     return lights.getTotalBrightness();
   }
 }

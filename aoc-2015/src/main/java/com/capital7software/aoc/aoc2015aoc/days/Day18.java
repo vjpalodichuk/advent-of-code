@@ -1,7 +1,7 @@
 package com.capital7software.aoc.aoc2015aoc.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
-import com.capital7software.aoc.lib.grid.ChristmasLights;
+import com.capital7software.aoc.lib.grid.LightGrid;
 import com.capital7software.aoc.lib.util.Pair;
 import java.time.Instant;
 import java.util.List;
@@ -226,12 +226,12 @@ public class Day18 implements AdventOfCodeSolution {
    * @param cornersOn If true, the corner lights are always on.
    * @return The number of lights still on after animating them for the specified number of steps.
    */
-  public Pair<Long, ChristmasLights> animateLights(
+  public Pair<Long, LightGrid> animateLights(
       int steps,
       List<String> input,
       boolean cornersOn
   ) {
-    var lights = ChristmasLights.buildFromLightingLayout(input, cornersOn);
+    var lights = LightGrid.buildFromLightingLayout(input, cornersOn);
 
     lights.animateLights(steps, cornersOn);
     var onCount = lights.getOnLightCount();

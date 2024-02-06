@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 1.3.8 (2024-02-06)
+
+### Added
+
+* [91ff3] Added AOC 2016 Day 8 (Vincent Palodichuk)
+
 ## 1.3.7 (2024-02-05)
 
 ### Added

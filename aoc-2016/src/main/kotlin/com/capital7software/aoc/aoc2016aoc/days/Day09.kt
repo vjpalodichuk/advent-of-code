@@ -114,7 +114,7 @@ class Day09 : AdventOfCodeSolution {
    */
   @SuppressFBWarnings
   fun decompressedLength(input: List<String>, repeat: Boolean = false): Long {
-    return CompressedData.decompress(input, repeat).map { it.length }.sum().toLong()
+    return CompressedData.decompress(input, repeat).sumOf { it.length }.toLong()
   }
 
   /**

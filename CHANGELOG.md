@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 1.3.10 (2024-02-07)
+
+### Added
+
+* [d24a7] Added AOC 2016 Day 10 - Merge pull request #51 from vjpalodichuk/develop (Vincent J Palodichuk)
+
 ## 1.3.9 (2024-02-06)
 
 ### Added

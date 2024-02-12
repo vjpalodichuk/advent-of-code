@@ -1,7 +1,7 @@
 package com.capital7software.aoc.aoc2015aoc.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
-import com.capital7software.aoc.lib.graph.path.StarAndWizards;
+import com.capital7software.aoc.lib.game.StarAndWizards;
 import java.time.Instant;
 import java.util.List;
 import org.slf4j.Logger;

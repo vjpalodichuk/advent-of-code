@@ -1,5 +1,7 @@
-package com.capital7software.aoc.lib.graph.constraint;
+package com.capital7software.aoc.lib.game;
 
+import com.capital7software.aoc.lib.graph.constraint.SimpleSolver;
+import com.capital7software.aoc.lib.graph.constraint.Solver;
 import com.capital7software.aoc.lib.util.Pair;
 import java.util.ArrayList;
 import java.util.Collections;

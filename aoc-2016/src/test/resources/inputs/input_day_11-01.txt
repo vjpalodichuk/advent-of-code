@@ -1,0 +1,4 @@
+The first floor contains a hydrogen generator and a lithium generator.
+The second floor contains a hydrogen-compatible microchip.
+The third floor contains a lithium-compatible microchip.
+The fourth floor contains nothing relevant.

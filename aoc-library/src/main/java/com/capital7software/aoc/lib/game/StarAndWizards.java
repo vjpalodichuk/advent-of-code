@@ -1,7 +1,6 @@
-package com.capital7software.aoc.lib.graph.path;
+package com.capital7software.aoc.lib.game;
 
 import com.capital7software.aoc.lib.collection.PriorityQueue;
-import com.capital7software.aoc.lib.graph.constraint.SwordsAndStuff;
 import com.capital7software.aoc.lib.util.Pair;
 import com.capital7software.aoc.lib.util.Triple;
 import java.util.ArrayList;

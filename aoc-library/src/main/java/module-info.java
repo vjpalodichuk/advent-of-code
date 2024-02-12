@@ -31,4 +31,5 @@ module com.capital7software.aoc.lib {
   exports com.capital7software.aoc.lib.math;
   exports com.capital7software.aoc.lib.string;
   exports com.capital7software.aoc.lib.util;
+  exports com.capital7software.aoc.lib.game;
 }

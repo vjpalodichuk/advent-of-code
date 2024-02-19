@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <T> The type of the value held by Nodes in the graph.
  * @param <E> The type of the weight held by Edges in the graph.
  */
-public interface PathFinder<P, T extends Comparable<T>, E extends Comparable<E>> {
+public interface Pathfinder<P, T extends Comparable<T>, E extends Comparable<E>> {
   /**
    * Searches the specified Graph for the desired paths. The valid consumer may be called
    * each time a valid path is found or at the completion of the find operation. The invalid
@@ -40,9 +40,9 @@ public interface PathFinder<P, T extends Comparable<T>, E extends Comparable<E>>
    * such as when the consumers are called, is implementation dependent.
    *
    * <p><br>
-   * The Properties control the operation of the PathFinder. The Properties are PathFinder
-   * implementation specific. Not all PathFinder algorithms require a Properties instance.
-   * Please consult the documentation for the PathFinder you wish to use on how to properly pass
+   * The Properties control the operation of the Pathfinder. The Properties are Pathfinder
+   * implementation specific. Not all Pathfinder algorithms require a Properties instance.
+   * Please consult the documentation for the Pathfinder you wish to use on how to properly pass
    * the properties it needs to perform its function.
    *
    * <p><br>
@@ -58,7 +58,7 @@ public interface PathFinder<P, T extends Comparable<T>, E extends Comparable<E>>
   void find(
       @NotNull Graph<T, E> graph,
       @NotNull Properties properties,
-      @NotNull Function<P, PathFinderStatus> valid,
-      Function<P, PathFinderStatus> invalid
+      @NotNull Function<P, PathfinderStatus> valid,
+      Function<P, PathfinderStatus> invalid
   );
 }

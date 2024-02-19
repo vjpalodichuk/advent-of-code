@@ -7,9 +7,10 @@ import com.capital7software.aoc.lib.geometry.Point2D;
 import com.capital7software.aoc.lib.graph.Edge;
 import com.capital7software.aoc.lib.graph.Graph;
 import com.capital7software.aoc.lib.graph.Vertex;
-import com.capital7software.aoc.lib.graph.path.GenericPathFinder;
-import com.capital7software.aoc.lib.graph.path.PathFinderResult;
-import com.capital7software.aoc.lib.graph.path.PathFinderStatus;
+import com.capital7software.aoc.lib.graph.path.GenericPathfinder;
+import com.capital7software.aoc.lib.graph.path.PathfinderProperties;
+import com.capital7software.aoc.lib.graph.path.PathfinderResult;
+import com.capital7software.aoc.lib.graph.path.PathfinderStatus;
 import com.capital7software.aoc.lib.util.Pair;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -274,10 +275,10 @@ public class HikingTrails {
      * type. If walkable is true, then this type supports some kind of navigation. If slope is
      * true, then behavior of this type may change if ignoreSlopes is true.
      *
-     * @param label The single ASCII character representation of this TrailType.
+     * @param label    The single ASCII character representation of this TrailType.
      * @param walkable If true, then navigation is supported.
-     * @param slope If true, then the navigation supported by this type depends on the value of
-     *              ignoreSlopes.
+     * @param slope    If true, then the navigation supported by this type depends on the value of
+     *                 ignoreSlopes.
      */
     TrailType(char label, boolean walkable, boolean slope) {
       this.label = label;
@@ -941,7 +942,7 @@ public class HikingTrails {
       } else {
         int nodeSize = node.size();
         if (nodeSize == 1) {
-          var nodeEdges = node.getEdges().values();
+          var nodeEdges = node.getEdges();
 
           for (var nodeEdge : nodeEdges) {
             if (visited.contains(nodeEdge.getTarget())) {
@@ -1167,7 +1168,7 @@ public class HikingTrails {
     return new RowResults(tiles, null);
   }
 
-  private Optional<HikingTrail> pathToTrail(PathFinderResult<TrailTile, Long> path) {
+  private Optional<HikingTrail> pathToTrail(PathfinderResult<TrailTile, Long> path) {
     if (path == null) {
       return Optional.empty();
     }
@@ -1201,12 +1202,12 @@ public class HikingTrails {
    * @return The longest path from start to finish or an empty Optional if one cannot be found.
    */
   public Optional<HikingTrail> findLongestTrail() {
-    final var pathFinder = new GenericPathFinder<TrailTile, Long>();
+    final var pathFinder = new GenericPathfinder<TrailTile, Long>();
     final var properties = new Properties();
-    properties.put(GenericPathFinder.Props.SUM_PATH, Boolean.TRUE);
-    properties.put(GenericPathFinder.Props.STARTING_VERTEX_ID, start.toId());
-    properties.put(GenericPathFinder.Props.ENDING_VERTEX_ID, finish.toId());
-    var longestPathResult = new AtomicReference<PathFinderResult<TrailTile, Long>>(null);
+    properties.put(PathfinderProperties.SUM_PATH, Boolean.TRUE);
+    properties.put(PathfinderProperties.STARTING_VERTEX_ID, start.toId());
+    properties.put(PathfinderProperties.ENDING_VERTEX_ID, finish.toId());
+    var longestPathResult = new AtomicReference<PathfinderResult<TrailTile, Long>>(null);
 
     pathFinder.find(
         segmentGraph,
@@ -1219,7 +1220,7 @@ public class HikingTrails {
               longestPathResult.set(it);
             }
           }
-          return PathFinderStatus.CONTINUE;
+          return PathfinderStatus.CONTINUE;
         },
         null
     );

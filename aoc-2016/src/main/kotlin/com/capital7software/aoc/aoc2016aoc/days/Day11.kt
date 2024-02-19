@@ -1,7 +1,7 @@
 package com.capital7software.aoc.aoc2016aoc.days
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution
-import com.capital7software.aoc.lib.game.GeneratorsAndChips
+import com.capital7software.aoc.lib.graph.path.GeneratorsAndChips
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.time.Instant
 import org.slf4j.Logger

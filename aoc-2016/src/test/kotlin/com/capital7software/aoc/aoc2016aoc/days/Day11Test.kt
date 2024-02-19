@@ -33,6 +33,17 @@ class Day11Test : AdventOfCodeTestBase() {
   }
 
   @Test
+  fun testMinimumStepsToSolve2() {
+    setupFromFile("inputs/input_day_11-02.txt")
+    val instance = Day11()
+    val expected = 11
+    val actual = instance.minimumStepsToSolve(lines)
+
+    assertEquals(expected, actual, "The minimum number of steps to solve "
+        + "is not what was expected: $expected")
+  }
+
+  @Test
   fun testMinimumStepsToSolveWithAddedPieces() {
     val instance = Day11()
     val expected = 33

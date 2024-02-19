@@ -15,6 +15,23 @@ import java.util.Comparator;
  */
 public class MinHeap<T> extends ArrayHeap<T> {
   /**
+   * Instantiates a new MinHeap with the default initial capacity and uses natural ordering.
+   */
+  public MinHeap() {
+    this(DEFAULT_INITIAL_SIZE);
+  }
+
+  /**
+   * Instantiates a new MinHeap with the default initial capacity and uses the
+   * specified Comparator for ordering.
+   *
+   * @param comparator The Comparator to use.
+   */
+  public MinHeap(Comparator<? super T> comparator) {
+    this(DEFAULT_INITIAL_SIZE, comparator);
+  }
+
+  /**
    * Instantiates a new MinHeap with the specified capacity and uses the specified Comparator.
    *
    * @param initialCapacity The initial capacity of this MaxHeap.

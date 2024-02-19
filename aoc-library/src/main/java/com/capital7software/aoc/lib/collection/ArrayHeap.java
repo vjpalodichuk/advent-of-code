@@ -1,8 +1,10 @@
 package com.capital7software.aoc.lib.collection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -117,7 +119,7 @@ public abstract class ArrayHeap<T> implements Heap<T> {
    * @return The item in th array at that index or null if there is no element at that index.
    */
   @SuppressWarnings("unchecked")
-  protected static <T extends Comparable<T>> T getItem(@NotNull Object[] items, int index) {
+  protected static <T> T getItem(@NotNull Object[] items, int index) {
     return (T) items[index];
   }
 
@@ -165,23 +167,75 @@ public abstract class ArrayHeap<T> implements Heap<T> {
    * Rebuilds this heap into a Heap from the bottom up.
    */
   @Override
-  @SuppressWarnings("unchecked")
   public void heapify() {
-    // Rebuild the heap from the bottom heap up!
-    final var elems = items;
-    var n = numberOfItems;
-    var i = (n >>> 1) - 1; // Only do half!
-    final var comp = comparator;
+    heapify(items, numberOfItems, comparator);
+  }
 
-    if (comp == null) {
+  /**
+   * Rebuilds the specified heap into a Heap from the bottom up.
+   *
+   * @param items         The heap array to modify.
+   * @param numberOfItems The number of items in the heap.
+   * @param comparator    The comparator to use; if null, then natural order is used.
+   * @param <T>           The type of the elements in the items array.
+   */
+  @SuppressWarnings("unchecked")
+  protected static <T> void heapify(Object[] items, int numberOfItems, Comparator<T> comparator) {
+    // Rebuild the heap from the bottom heap up!
+    var i = (numberOfItems >>> 1) - 1; // Only do half!
+
+    if (comparator == null) {
       for (; i >= 0; i--) {
-        siftDownComparable(i, (T) elems[i], elems, n);
+        siftDownComparable(i, (T) items[i], items, numberOfItems);
       }
     } else {
       for (; i >= 0; i--) {
-        siftDownComparator(i, (T) elems[i], elems, n, comp);
+        siftDownComparator(i, (T) items[i], items, numberOfItems, comparator);
       }
     }
+  }
+
+  /**
+   * Returns a List that contains the same elements as the specified heap but in sequential
+   * order.
+   *
+   * @param items         The heap array to modify.
+   * @param numberOfItems The number of items in the heap.
+   * @param comparator    The comparator to use; if null, then natural order is used.
+   * @param <T>           The type of the elements in the items array.
+   * @return A List that contains the same elements as the specified heap but in sequential
+   *     order.
+   */
+  @SuppressWarnings("unchecked")
+  protected static <T> List<T> heapSort(
+      Object[] items,
+      int numberOfItems,
+      Comparator<T> comparator
+  ) {
+    var cloned = items.clone();
+
+    var size = numberOfItems;
+    int endIndex = numberOfItems - 1;
+
+    while (endIndex > ROOT_INDEX) {
+      // Put the highest priority element at the end of the array
+      swap(cloned, endIndex, ROOT_INDEX);
+      numberOfItems--; // One less element to consider
+
+      // Move the new top element in to the correct position.
+      var element = cloned[ROOT_INDEX];
+      if (comparator == null) {
+        siftDownComparable(ROOT_INDEX, (T) element, cloned, numberOfItems);
+      } else {
+        siftDownComparator(ROOT_INDEX, (T) element, cloned, numberOfItems, comparator);
+      }
+      endIndex--;
+    }
+    var list = new ArrayList<T>(size);
+    for (int i = 0; i < size; i++) {
+      list.add((T) cloned[i]);
+    }
+    return list;
   }
 
   /**
@@ -189,38 +243,11 @@ public abstract class ArrayHeap<T> implements Heap<T> {
    * is moved to the end of the array and the first element in the array will have the
    * minimum value.
    *
-   * <p><br>
-   * After this method returns, the items array has been sorted and is no longer a Heap.
-   *
-   * @param heapify If true, the specified items array is first rebuilt into a Heap.
+   * @return Returns a new List with the ordered items.
    */
   @SuppressWarnings("unchecked")
-  protected void heapSort(boolean heapify) {
-    if (heapify) {
-      heapify();
-    }
-
-    int endIndex = numberOfItems - 1;
-
-    while (endIndex > ROOT_INDEX) {
-      // Put the highest priority element at the end of the array
-      swap(endIndex, ROOT_INDEX);
-      numberOfItems--; // One less element to consider
-
-      // Move the new top element in to the correct position.
-      var element = items[ROOT_INDEX];
-      siftDown(ROOT_INDEX, (T) element);
-      endIndex--;
-    }
-  }
-
-  /**
-   * Sorts and destroys this Heap. After this method returns, the Heap
-   * has been destroyed and the items array contains the elements in
-   * reverse priority.
-   */
-  protected void heapSort() {
-    heapSort(false);
+  protected List<T> heapSort() {
+    return (List<T>) heapSort(items, numberOfItems, comparator);
   }
 
   /**
@@ -228,17 +255,17 @@ public abstract class ArrayHeap<T> implements Heap<T> {
    * them when the children are not less than the parent. This process starts at the specified
    * startIndex and continues as long as a swap occurred or the endIndex has been reached.
    *
-   * @param fillIndex The index of the position to fill.
-   * @param element   The element to insert.
+   * @param startIndex The index of the position to fill.
+   * @param element    The element to insert.
    */
   protected void siftDown(
-      int fillIndex,
+      int startIndex,
       @NotNull T element
   ) {
     if (comparator != null) {
-      siftDownComparator(fillIndex, element, items, numberOfItems, comparator);
+      siftDownComparator(startIndex, element, items, numberOfItems, comparator);
     } else {
-      siftDownComparable(fillIndex, element, items, numberOfItems);
+      siftDownComparable(startIndex, element, items, numberOfItems);
     }
   }
 
@@ -247,7 +274,7 @@ public abstract class ArrayHeap<T> implements Heap<T> {
    * them when the children are not less than the parent. This process starts at the specified
    * startIndex and continues as long as a swap occurred or the endIndex has been reached.
    *
-   * @param fillIndex  The index that needs to be filled.
+   * @param startIndex The index that needs to be filled.
    * @param element    The element to insert.
    * @param items      The Heap to maintain.
    * @param size       The number of items in the heap.
@@ -256,7 +283,7 @@ public abstract class ArrayHeap<T> implements Heap<T> {
    */
   @SuppressWarnings("unchecked")
   protected static <T> void siftDownComparator(
-      int fillIndex,
+      int startIndex,
       @NotNull T element,
       @NotNull Object[] items,
       int size,
@@ -265,10 +292,10 @@ public abstract class ArrayHeap<T> implements Heap<T> {
     // We need to ensure that we maintain the heap
     int half = size >>> 1; // divide by 2.
 
-    while (fillIndex < half) {
-      var child = getLeftChildIndex(fillIndex);
+    while (startIndex < half) {
+      var child = getLeftChildIndex(startIndex);
       var c = items[child];
-      var right = getRightChildIndex(fillIndex);
+      var right = getRightChildIndex(startIndex);
       var r = items[right];
       if (right < size && comparator.compare((T) c, (T) r) > 0) {
         c = items[child = right];
@@ -276,10 +303,10 @@ public abstract class ArrayHeap<T> implements Heap<T> {
       if (comparator.compare(element, (T) c) <= 0) {
         break; // We are done!
       }
-      items[fillIndex] = c;
-      fillIndex = child;
+      items[startIndex] = c;
+      startIndex = child;
     }
-    items[fillIndex] = element;
+    items[startIndex] = element;
   }
 
   /**
@@ -325,14 +352,14 @@ public abstract class ArrayHeap<T> implements Heap<T> {
    * Similar to siftDown but starts with the child at endIndex and continues up to startIndex
    * as long as a swap of parent and child needs to be performed.
    *
-   * @param fillIndex The index we need to fill as something has changed.
-   * @param element   The element that needs to be moved.
+   * @param startIndex The index we need to fill as something has changed.
+   * @param element    The element that needs to be moved.
    */
-  protected void siftUp(int fillIndex, T element) {
+  protected void siftUp(int startIndex, T element) {
     if (comparator != null) {
-      siftUpComparator(fillIndex, element, items, comparator);
+      siftUpComparator(startIndex, element, items, comparator);
     } else {
-      siftUpComparable(fillIndex, element, items);
+      siftUpComparable(startIndex, element, items);
     }
   }
 
@@ -340,7 +367,7 @@ public abstract class ArrayHeap<T> implements Heap<T> {
    * Similar to siftDown but starts with the child at endIndex and continues up to startIndex as
    * long as a swap of parent and child needs to be performed.
    *
-   * @param fillIndex  The index we need to fill as something has changed.
+   * @param startIndex The index we need to fill as something has changed.
    * @param element    The element that needs to be moved.
    * @param items      The Heap to maintain.
    * @param comparator The comparator to use for comparison operations.
@@ -348,51 +375,51 @@ public abstract class ArrayHeap<T> implements Heap<T> {
    */
   @SuppressWarnings("unchecked")
   protected static <T> void siftUpComparator(
-      int fillIndex,
+      int startIndex,
       @NotNull T element,
       @NotNull Object[] items,
       @NotNull Comparator<? super T> comparator
   ) {
     // We need to ensure that we maintain the heap
-    while (fillIndex > 0) {
-      var parentIndex = getParentIndex(fillIndex);
+    while (startIndex > 0) {
+      var parentIndex = getParentIndex(startIndex);
       var e = items[parentIndex];
       if (comparator.compare(element, (T) e) >= 0) {
         break; // Nothing to move!
       }
-      items[fillIndex] = e;
-      fillIndex = parentIndex;
+      items[startIndex] = e;
+      startIndex = parentIndex;
     }
-    items[fillIndex] = element;
+    items[startIndex] = element;
   }
 
   /**
-   * Similar to siftDown but starts with the child at endIndex and continues up to startIndex as
+   * Similar to siftDown but starts with the parent at startIndex and continues up as
    * long as a swap of parent and child needs to be performed.
    *
-   * @param fillIndex The index we need to fill as something has changed.
-   * @param element   The element that needs to be moved.
-   * @param items     The Heap to maintain.
-   * @param <T>       The type of the elements in the items array.
+   * @param startIndex The index we need to fill as something has changed.
+   * @param element    The element that needs to be moved.
+   * @param items      The Heap to maintain.
+   * @param <T>        The type of the elements in the items array.
    */
   @SuppressWarnings("unchecked")
   protected static <T> void siftUpComparable(
-      int fillIndex,
+      int startIndex,
       @NotNull T element,
       @NotNull Object[] items
   ) {
     var key = (Comparable<? super T>) element;
     // We need to ensure that we maintain the heap
-    while (fillIndex > 0) {
-      var parentIndex = getParentIndex(fillIndex);
+    while (startIndex > 0) {
+      var parentIndex = getParentIndex(startIndex);
       var e = items[parentIndex];
       if (key.compareTo((T) e) >= 0) {
         break; // Nothing to move!
       }
-      items[fillIndex] = e;
-      fillIndex = parentIndex;
+      items[startIndex] = e;
+      startIndex = parentIndex;
     }
-    items[fillIndex] = key;
+    items[startIndex] = key;
   }
 
   /**
@@ -613,18 +640,22 @@ public abstract class ArrayHeap<T> implements Heap<T> {
     }
   }
 
-  @Override
+  /**
+   * Returns the number of elements in this Heap.
+   *
+   * @return The number of elements in this Heap.
+   */
   public int size() {
     return numberOfItems;
   }
 
   @Override
-  public void sort() {
-    heapSort();
+  public List<T> sort() {
+    return heapSort();
   }
 
   @Override
-  public void adjustTopUp(@NotNull T element) {
+  public void adjust(@NotNull T element) {
     var index = indexOf(element);
 
     if (index > 0) {

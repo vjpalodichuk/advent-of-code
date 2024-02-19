@@ -1,6 +1,14 @@
 # Changelog
 
 
+## 1.3.13 (2024-02-19)
+
+### Added
+
+* [c520b] :ambulance: Added AOC 2016 Day 13 (Vincent J Palodichuk)
+* PriorityQueueSet - A PriorityQueue that does not allow duplicates.
+* AlphaStarPathfinder - A* Pathfinder.
+
 ## 1.3.12 (2024-02-12)
 
 ### Added

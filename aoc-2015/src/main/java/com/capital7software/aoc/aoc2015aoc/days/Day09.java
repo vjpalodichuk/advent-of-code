@@ -4,9 +4,11 @@ import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.graph.network.MinimumSpanningTreeKruskal;
 import com.capital7software.aoc.lib.graph.network.MinimumSpanningTreePrim;
 import com.capital7software.aoc.lib.graph.parser.Day09Parser;
-import com.capital7software.aoc.lib.graph.path.HamiltonianPathFinder;
-import com.capital7software.aoc.lib.graph.path.PathFinderResult;
-import com.capital7software.aoc.lib.graph.path.PathFinderStatus;
+import com.capital7software.aoc.lib.graph.path.HamiltonianPathfinder;
+import com.capital7software.aoc.lib.graph.path.PathfinderProperties;
+import com.capital7software.aoc.lib.graph.path.PathfinderResult;
+import com.capital7software.aoc.lib.graph.path.PathfinderStatus;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +112,7 @@ public class Day09 implements AdventOfCodeSolution {
   }
 
   /**
-   * Uses a Hamiltonian PathFinder to determine the shortest route visiting
+   * Uses a Hamiltonian Pathfinder to determine the shortest route visiting
    * each node at least once along the available routes.
    *
    * @param routes All the available routes.
@@ -118,17 +120,17 @@ public class Day09 implements AdventOfCodeSolution {
    */
   public long distanceOfShortestRouteVisitingEachNodeOnce(List<String> routes) {
     var graph = new Day09Parser().parse(routes, "day09");
-    var pathFinder = new HamiltonianPathFinder<String, Integer>();
+    var pathFinder = new HamiltonianPathfinder<String, Integer>();
 
     if (graph.isEmpty()) {
       throw new RuntimeException("A valid Graph is required! " + graph);
     }
 
-    var results = new ArrayList<PathFinderResult<String, Integer>>(41000);
+    var results = new ArrayList<PathfinderResult<String, Integer>>(41000);
 
     pathFinder.find(graph.get(), new Properties(), result -> {
       results.add(result);
-      return PathFinderStatus.CONTINUE;
+      return PathfinderStatus.CONTINUE;
     }, null);
 
     return results
@@ -144,7 +146,7 @@ public class Day09 implements AdventOfCodeSolution {
   }
 
   /**
-   * Uses a Hamiltonian PathFinder to determine the longest route visiting
+   * Uses a Hamiltonian Pathfinder to determine the longest route visiting
    * each node at least once along the available routes.
    *
    * @param routes All the available routes.
@@ -152,17 +154,17 @@ public class Day09 implements AdventOfCodeSolution {
    */
   public long distanceOfLongestRouteVisitingEachNodeOnce(List<String> routes) {
     var graph = new Day09Parser().parse(routes, "day09");
-    var pathFinder = new HamiltonianPathFinder<String, Integer>();
+    var pathFinder = new HamiltonianPathfinder<String, Integer>();
 
     if (graph.isEmpty()) {
       throw new RuntimeException("A valid Graph is required! " + graph);
     }
 
-    var results = new ArrayList<PathFinderResult<String, Integer>>(41000);
+    var results = new ArrayList<PathfinderResult<String, Integer>>(41000);
 
     pathFinder.find(graph.get(), new Properties(), result -> {
       results.add(result);
-      return PathFinderStatus.CONTINUE;
+      return PathfinderStatus.CONTINUE;
     }, null);
 
     return results
@@ -178,31 +180,32 @@ public class Day09 implements AdventOfCodeSolution {
   }
 
   /**
-   * Uses a Hamiltonian PathFinder to determine the shortest route visiting
+   * Uses a Hamiltonian Pathfinder to determine the shortest route visiting
    * each node at least once along the available routes that completes a Cycle.
    *
    * @param routes All the available routes.
    * @return The distance of the shortest route that visits every node in a Cycle.
    */
+  @SuppressFBWarnings
   public long distanceOfShortestCycleVisitingEachNodeOnce(List<String> routes) {
-    var graph = new Day09Parser().parse(routes, "day09");
-    final var pathFinder = new HamiltonianPathFinder<String, Integer>();
+    var graph = new Day09Parser().parse(routes, "day09").orElse(null);
 
-    if (graph.isEmpty()) {
+    if (graph == null) {
       throw new RuntimeException("A valid Graph is required! " + graph);
     }
 
-    final var results = new ArrayList<PathFinderResult<String, Integer>>(41000);
+    final var pathFinder = new HamiltonianPathfinder<String, Integer>();
+    final var results = new ArrayList<PathfinderResult<String, Integer>>(41_000);
 
     var props = new Properties();
-    props.put(HamiltonianPathFinder.Props.DETECT_CYCLES, Boolean.TRUE);
-    props.put(HamiltonianPathFinder.Props.SUM_PATH, Boolean.TRUE);
-    props.put(HamiltonianPathFinder.Props.STARTING_VERTICES,
-              List.of(graph.get().getVertices().getFirst()));
+    props.put(PathfinderProperties.DETECT_CYCLES, Boolean.TRUE);
+    props.put(PathfinderProperties.SUM_PATH, Boolean.TRUE);
+    props.put(PathfinderProperties.STARTING_VERTICES,
+              List.of(graph.getVertices().getFirst()));
 
-    pathFinder.find(graph.get(), props, result -> {
+    pathFinder.find(graph, props, result -> {
       results.add(result);
-      return PathFinderStatus.CONTINUE;
+      return PathfinderStatus.CONTINUE;
     }, null);
 
     return results

@@ -1,6 +1,6 @@
 package com.capital7software.aoc.lib.collection;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
 /**
  * Represents a Heap, which is capable of efficiently maintaining a sorted list of elements,
@@ -11,39 +11,20 @@ import org.jetbrains.annotations.NotNull;
  *     <A HREF="mailto:vincent@capital7software.com"> (e-mail me) </A>
  * @version 01/02/2024
  */
-public interface Heap<T> extends Cloneable {
+public interface Heap<T> {
   /**
-   * Adds the specified item to this ArrayHeap.
+   * Adds the specified item to this Heap.
    * The Heap property is maintained after the new item has been added.
    *
    * @param element The non-null element to add.
    * @return True if the element was successfully added to this ArrayHeap.
    */
-  boolean add(@NotNull T element);
+  boolean add(T element);
 
   /**
    * Removes all elements from this Heap.
    */
   void clear();
-
-  /**
-   * Generate a copy of this heap.
-   *
-   * <p><br>
-   * <b>Note:</b>
-   * <ul>
-   *  <li>
-   *    Be sure to cast the return value to the proper <code>Heap&lt;T&gt;</code> type before use.
-   *  </li>
-   * </ul>
-   *
-   * @return The return value is a copy of this heap. Subsequent changes to the copy will not
-   *     affect the original, nor vice versa.
-   * @throws OutOfMemoryError Indicates that there is insufficient memory for the new heap.
-   * @see Object#clone()
-   */
-  @NotNull
-  Heap<T> clone();
 
   /**
    * Returns true if this Heap contains no elements.
@@ -73,32 +54,23 @@ public interface Heap<T> extends Cloneable {
   T remove();
 
   /**
-   * Returns the number of elements in this Heap.
-   *
-   * @return The number of elements in this Heap.
-   */
-  int size();
-
-  /**
    * Arranges the contents of this Heap in reverse order of their priority such that the top of
    * the Heap is the last element and the first element would have been the last element removed
    * if remove was called.
    *
    * <p><br>
-   * This method is mainly used to iterate over the elements of this Heap in reverse order without
-   * having to remove any elements from this Heap.
+   * After this method returns, this Heap is in the same state it was in prior to this method
+   * being called.
    *
-   * <p><br>
-   * After calling this method, this Heap no longer complies with the properties of a heap. To
-   * fix this heapify should be called.
+   * @return Returns a new List with the ordered items.
    */
-  void sort();
+  List<T> sort();
 
   /**
-   * If the elements contained within this Heap have changed since being added to this Heap,
-   * this method can be called to fix the top element in this Heap from the bottom up.
+   * If the specified element contained within this Heap has changed since being added,
+   * this method can be called to adjust the element's position within this Heap.
    *
-   * @param element The element that needs to be adjusted.
+   * @param element The non-null element to adjust.
    */
-  void adjustTopUp(@NotNull T element);
+  void adjust(T element);
 }

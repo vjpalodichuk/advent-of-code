@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,10 +44,20 @@ import org.jetbrains.annotations.NotNull;
  * @param <E> The type of the weight for Edges connected to and from Vertices in this Graph.
  */
 public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
-  private static final String DEFAULT_NAME = "graph";
+  /**
+   * Default name for a Graph created using the default no-arg constructor.
+   */
+  protected static final String DEFAULT_NAME = "graph";
 
-  private final String name;
-  private final Map<String, Vertex<T, E>> vertices;
+  /**
+   * The name of this Graph.
+   */
+  protected final String name;
+
+  /**
+   * The Map of Vertices, keyed by name, that are in this Graph.
+   */
+  protected final Map<String, Vertex<T, E>> vertices;
 
   /**
    * Instantiates a new Graph with the specified name and map of Vertices.
@@ -96,13 +107,23 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
   }
 
   /**
-   * Returns an unmodifiable map of Vertices in this Graph.
+   * Returns a modifiable list of Vertices in this Graph filtered by the specified Predicate.
+   * Vertices that match the filter are included in the returned list.
    *
-   * @return An unmodifiable map of Vertices in this Graph.
+   * @param filter Elements that match the filter are included in the returned list.
+   * @return A modifiable list of Vertices in this Graph.
    */
   @NotNull
-  public Map<String, Vertex<T, E>> getVertexMap() {
-    return Collections.unmodifiableMap(vertices);
+  public List<Vertex<T, E>> getVertices(@NotNull Predicate<Vertex<T, E>> filter) {
+    var answer = new ArrayList<Vertex<T, E>>(vertices.size());
+
+    vertices.forEach((key, vertex) -> {
+      if (filter.test(vertex)) {
+        answer.add(vertex);
+      }
+    });
+
+    return answer;
   }
 
   /**
@@ -129,7 +150,7 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
 
   @Override
   public String toString() {
-    return "Graph{" + "name='" + name + '\'' + ", vertexs=" + vertices + '}';
+    return "Graph{" + "name='" + name + '\'' + ", vertices=" + vertices + '}';
   }
 
   /**
@@ -145,6 +166,22 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     }
 
     return add(new Vertex<>(vertexId));
+  }
+
+  /**
+   * Adds a new Vertex to this Graph with the specified vertexId.
+   *
+   * @param vertexId The vertexId of the new Vertex that is being added.
+   * @param value    The non-null value of this Vertex.
+   * @return True if the Vertex was successfully added; false if a
+   *     Vertex with that ID already exists in this Graph.
+   */
+  public boolean add(@NotNull String vertexId, @NotNull T value) {
+    if (vertices.containsKey(Objects.requireNonNull(vertexId))) {
+      return false;
+    }
+
+    return add(new Vertex<>(vertexId, value));
   }
 
   /**
@@ -403,14 +440,24 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
   }
 
   /**
-   * Returns an Optional with a reference to the specified Vertex ID.
+   * Returns an Optional with a reference to the Vertex with the specified ID.
    *
    * @param vertexId The ID of the Vertex to retrieve from this Graph.
-   * @return An Optional with a reference to the specified Vertex ID.
+   * @return An Optional with a reference to the Vertex with the specified ID.
    */
   @NotNull
   public Optional<Vertex<T, E>> getVertex(@NotNull String vertexId) {
-    return Optional.ofNullable(vertices.get(Objects.requireNonNull(vertexId)));
+    return Optional.ofNullable(get(vertexId));
+  }
+
+  /**
+   * Returns a reference to the Vertex with the specified ID.
+   *
+   * @param vertexId The ID of the Vertex to retrieve from this Graph.
+   * @return A reference to the Vertex with the specified ID.
+   */
+  public Vertex<T, E> get(@NotNull String vertexId) {
+    return vertices.get(Objects.requireNonNull(vertexId));
   }
 
   /**
@@ -472,7 +519,7 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
     return vertices
         .values()
         .stream()
-        .flatMap(it -> it.getEdgeSet().stream())
+        .flatMap(it -> it.getEdges().stream())
         .collect(Collectors.toSet());
   }
 
@@ -484,7 +531,7 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
    */
   @NotNull
   public Set<Edge<E>> getEdges(@NotNull Vertex<T, E> vertex) {
-    return Objects.requireNonNull(vertex).getEdgeSet();
+    return Objects.requireNonNull(vertex).getEdges();
   }
 
   /**
@@ -518,8 +565,8 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
 
     vertices.values()
         .forEach((vertex) -> {
-          if (vertex.getEdges().containsKey(target.getId())) {
-            answer.add(vertex.getEdges().get(target.getId()));
+          if (vertex.contains(target.getId())) {
+            answer.add(vertex.get(target.getId()));
           }
         });
 

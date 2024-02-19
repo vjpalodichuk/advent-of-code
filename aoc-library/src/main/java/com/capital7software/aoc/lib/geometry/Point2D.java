@@ -1,6 +1,7 @@
 package com.capital7software.aoc.lib.geometry;
 
 import com.capital7software.aoc.lib.math.MathOperations;
+import java.io.Serializable;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <T> The type of the Axis values.
  */
 public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T y)
-    implements Comparable<Point2D<T>> {
+    implements Comparable<Point2D<T>>, Serializable {
   /**
    * If the type is Double or Float, then EPSILON can be used when
    * checking for equality.

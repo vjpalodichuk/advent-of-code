@@ -1,4 +1,4 @@
-package com.capital7software.aoc.lib.game
+package com.capital7software.aoc.lib.graph.path
 
 import com.capital7software.aoc.lib.collection.PriorityQueue
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
@@ -298,9 +298,9 @@ class GeneratorsAndChips(initialFloors: Collection<Floor>) {
    */
   @SuppressFBWarnings
   data class Floor(
-      val id: Int,
-      val generators: Map<String, GamePiece.Generator>,
-      val microchips: Map<String, GamePiece.Microchip>,
+    val id: Int,
+    val generators: Map<String, GamePiece.Generator>,
+    val microchips: Map<String, GamePiece.Microchip>,
   ) {
     /**
      * The number of [GamePiece.Generator] on this [Floor].
@@ -464,11 +464,11 @@ class GeneratorsAndChips(initialFloors: Collection<Floor>) {
    */
   @SuppressFBWarnings
   class GameState(
-      val currentFloor: Int,
-      private val goalFloor: Int,
-      val floors: Map<Int, Floor>,
-      val steps: Int = 0,
-      private val parent: GameState? = null,
+    val currentFloor: Int,
+    private val goalFloor: Int,
+    val floors: Map<Int, Floor>,
+    val steps: Int = 0,
+    private val parent: GameState? = null,
   ) {
     /**
      * Calculating remaining steps:
@@ -737,12 +737,12 @@ class GeneratorsAndChips(initialFloors: Collection<Floor>) {
     }
 
     private fun handleSingle(
-        piece: GamePiece,
-        floor: Floor,
-        floorAbove: Floor?,
-        floorBelow: Floor?,
-        newSteps: Int,
-        newStates: MutableSet<GameState>
+      piece: GamePiece,
+      floor: Floor,
+      floorAbove: Floor?,
+      floorBelow: Floor?,
+      newSteps: Int,
+      newStates: MutableSet<GameState>
     ) {
       when (piece) {
         is GamePiece.Generator -> {
@@ -772,13 +772,13 @@ class GeneratorsAndChips(initialFloors: Collection<Floor>) {
     }
 
     private fun handleDouble(
-        piece: GamePiece,
-        floor: Floor,
-        floorAbove: Floor?,
-        floorBelow: Floor?,
-        newSteps: Int,
-        newStates: MutableSet<GameState>,
-        processed: MutableSet<GamePiece>
+      piece: GamePiece,
+      floor: Floor,
+      floorAbove: Floor?,
+      floorBelow: Floor?,
+      newSteps: Int,
+      newStates: MutableSet<GameState>,
+      processed: MutableSet<GamePiece>
     ) {
       when (piece) {
         is GamePiece.Generator -> {
@@ -818,12 +818,12 @@ class GeneratorsAndChips(initialFloors: Collection<Floor>) {
     }
 
     private fun handleMatchedPair(
-        piece: GamePiece.Generator,
-        floor: Floor,
-        floorAbove: Floor?,
-        floorBelow: Floor?,
-        newSteps: Int,
-        newStates: MutableSet<GameState>
+      piece: GamePiece.Generator,
+      floor: Floor,
+      floorAbove: Floor?,
+      floorBelow: Floor?,
+      newSteps: Int,
+      newStates: MutableSet<GameState>
     ) {
       val chip = floor.microchips[piece.name] ?: error("Missing microchip from pair!")
       val floorWithout = floor.minus(piece, chip) // Always OK to move a pair
@@ -838,10 +838,10 @@ class GeneratorsAndChips(initialFloors: Collection<Floor>) {
     }
 
     private fun handleBuildState(
-        source: Floor,
-        target: Floor,
-        newSteps: Int,
-        newStates: MutableSet<GameState>,
+      source: Floor,
+      target: Floor,
+      newSteps: Int,
+      newStates: MutableSet<GameState>,
     ) {
       if (!target.hasFriedChips) {
         val state = buildState(source, target, newSteps)

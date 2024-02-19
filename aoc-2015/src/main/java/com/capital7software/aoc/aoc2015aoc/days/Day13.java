@@ -2,9 +2,10 @@ package com.capital7software.aoc.aoc2015aoc.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
 import com.capital7software.aoc.lib.graph.parser.Day13Parser;
-import com.capital7software.aoc.lib.graph.path.HamiltonianPathFinder;
-import com.capital7software.aoc.lib.graph.path.PathFinderResult;
-import com.capital7software.aoc.lib.graph.path.PathFinderStatus;
+import com.capital7software.aoc.lib.graph.path.HamiltonianPathfinder;
+import com.capital7software.aoc.lib.graph.path.PathfinderProperties;
+import com.capital7software.aoc.lib.graph.path.PathfinderResult;
+import com.capital7software.aoc.lib.graph.path.PathfinderStatus;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -169,26 +170,26 @@ public class Day13 implements AdventOfCodeSolution {
    */
   public long greatestChangeInHappiness(List<String> happiness) {
     var graph = new Day13Parser().parse(happiness, "day13");
-    final var pathFinder = new HamiltonianPathFinder<String, Integer>();
+    final var pathFinder = new HamiltonianPathfinder<String, Integer>();
 
     if (graph.isEmpty()) {
       throw new RuntimeException("A valid Graph is required! " + graph);
     }
 
-    var results = new ArrayList<PathFinderResult<String, Integer>>(150);
+    var results = new ArrayList<PathfinderResult<String, Integer>>(150);
 
     var props = new Properties();
-    props.put(HamiltonianPathFinder.Props.DETECT_CYCLES, Boolean.TRUE);
-    props.put(HamiltonianPathFinder.Props.SUM_PATH, Boolean.TRUE);
+    props.put(PathfinderProperties.DETECT_CYCLES, Boolean.TRUE);
+    props.put(PathfinderProperties.SUM_PATH, Boolean.TRUE);
 
     pathFinder.find(graph.get(), props, result -> {
       results.add(result);
-      return PathFinderStatus.CONTINUE;
+      return PathfinderStatus.CONTINUE;
     }, null);
 
     return results
         .stream()
-        .mapToInt(PathFinderResult::cost)
+        .mapToInt(PathfinderResult::cost)
         .max()
         .orElse(0);
   }

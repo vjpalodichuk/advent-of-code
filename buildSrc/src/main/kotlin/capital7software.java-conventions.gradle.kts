@@ -128,6 +128,10 @@ tasks.withType<Checkstyle>().configureEach {
   }
 }
 
+tasks.withType<Javadoc>().configureEach {
+  isFailOnError = false
+}
+
 // Resolve google collections and guava conflict
 configurations.checkstyle {
   resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {

@@ -64,15 +64,15 @@ public class PriorityQueue<T> extends MinHeap<T> implements Queue<T> {
   }
 
   @Override
-  public boolean removeAll(@NotNull Collection<?> arg0) {
+  public boolean removeAll(@NotNull Collection<?> element) {
     throw new UnsupportedOperationException(
-        "PriorityQueue<T>.removeAllAll(Collection<?> arg0): Method not implemented.");
+        "PriorityQueue<T>.removeAllAll(Collection<?> element): Method not implemented.");
   }
 
   @Override
-  public boolean retainAll(@NotNull Collection<?> arg0) {
+  public boolean retainAll(@NotNull Collection<?> element) {
     throw new UnsupportedOperationException(
-        "PriorityQueue<T>.retainAll(Collection<?> arg0): Method not implemented.");
+        "PriorityQueue<T>.retainAll(Collection<?> element): Method not implemented.");
   }
 
   @Override
@@ -84,8 +84,8 @@ public class PriorityQueue<T> extends MinHeap<T> implements Queue<T> {
   }
 
   @Override
-  public boolean offer(T arg0) {
-    return add(arg0);
+  public boolean offer(T element) {
+    return add(element);
   }
 
   @Override

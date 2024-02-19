@@ -146,7 +146,7 @@ public class Day14 implements AdventOfCodeSolution {
 
   /**
    * Uses a Graph and the ReindeerOlympics to calculate how far the
-   * winning reindeer traveled has after the specified time has elapsed in the race.
+   * winning reindeer has traveled after the specified time has elapsed in the race.
    *
    * @param input The horses and their stats, which is the Graph input.
    * @param time  The amount of time to run the race for.
@@ -159,14 +159,8 @@ public class Day14 implements AdventOfCodeSolution {
       throw new RuntimeException("A valid Graph is required! " + optional);
     }
 
-    var graph = optional.get();
+    var olympics = new ReindeerOlympics(optional.get());
 
-    return graph
-        .getVertices()
-        .stream()
-        .filter(it -> it.getValue().isPresent())
-        .mapToDouble(it -> it.getValue().get().distance(time))
-        .max()
-        .orElse(0);
+    return olympics.distanceWinnerTraveled(time);
   }
 }

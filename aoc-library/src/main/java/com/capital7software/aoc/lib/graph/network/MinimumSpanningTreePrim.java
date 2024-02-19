@@ -184,7 +184,7 @@ public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparab
         }
       }
 
-      for (var edge : vertex.getVertex().getEdgeSet()) {
+      for (var edge : vertex.getVertex().getEdges()) {
         var weight = edge.getWeight();
         if (weight.isEmpty()) {
           continue;
@@ -197,7 +197,7 @@ public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparab
           if (realWeight.compareTo(vertex2.getKey()) < 0) {
             vertex2.setPrevious(vertexMap.get(edge.getSource()).getVertex());
             vertex2.setKey(realWeight);
-            vertexQueue.adjustTopUp(vertex2);
+            vertexQueue.adjust(vertex2);
           }
         }
       }

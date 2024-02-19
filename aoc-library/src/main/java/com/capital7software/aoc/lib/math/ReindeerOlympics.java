@@ -136,4 +136,18 @@ public class ReindeerOlympics {
         .map(entry -> new Pair<>(entry.getKey(), entry.getValue().second()))
         .collect(Collectors.toMap(Pair::first, Pair::second));
   }
+
+  /**
+   * Returns the distance the winning reindeer has traveled after the specified time.
+   *
+   * @param time The amount of time to run the race for.
+   * @return The distance the winning reindeer has traveled after the specified time.
+   */
+  public double distanceWinnerTraveled(long time) {
+    return points.values()
+        .stream()
+        .mapToDouble(it -> it.first().distance(time))
+        .max()
+        .orElse(0);
+  }
 }

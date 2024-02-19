@@ -126,17 +126,27 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>>
    */
   @NotNull
   public Optional<T> getValue() {
-    return Optional.ofNullable(value);
+    return Optional.ofNullable(get());
   }
 
   /**
-   * Returns an unmodifiable copy of the Edges in this Vertex.
+   * Returns the value held by this Vertex.
    *
-   * @return An unmodifiable copy of the Edges in this Vertex.
+   * @return The value held by this Vertex.
    */
-  @NotNull
-  public Map<String, Edge<E>> getEdges() {
-    return Collections.unmodifiableMap(edges);
+  public T get() {
+    return value;
+  }
+
+  /**
+   * Returns the Edge for the specified Vertex targetId or null if there is no
+   * such Edge.
+   *
+   * @param targetId The Vertex to get the Edge to.
+   * @return The Edge for the specified Vertex targetId.
+   */
+  public Edge<E> get(@NotNull String targetId) {
+    return edges.get(targetId);
   }
 
   /**
@@ -145,7 +155,7 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>>
    * @return A copy of the set of all Edges in this Vertex.
    */
   @NotNull
-  public Set<Edge<E>> getEdgeSet() {
+  public Set<Edge<E>> getEdges() {
     return new HashSet<>(edges.values());
   }
 
@@ -285,7 +295,17 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>>
    * @return The Edge for the specified Vertex targetId.
    */
   public Optional<Edge<E>> getEdge(@NotNull String targetId) {
-    return Optional.ofNullable(edges.get(targetId));
+    return Optional.ofNullable(get(targetId));
+  }
+
+  /**
+   * Returns true if there is an Edge to the specified Vertex targetId.
+   *
+   * @param targetId The Vertex to test for the existence of an Edge for.
+   * @return True if there is an Edge to the specified Vertex targetId.
+   */
+  public boolean contains(@NotNull String targetId) {
+    return edges.containsKey(targetId);
   }
 
   @Override

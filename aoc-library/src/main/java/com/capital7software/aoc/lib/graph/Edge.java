@@ -105,7 +105,31 @@ public class Edge<E extends Comparable<E>> implements Comparable<Edge<E>> {
    */
   @NotNull
   public Optional<E> getWeight() {
-    return Optional.ofNullable(weight);
+    return Optional.ofNullable(get());
+  }
+
+  /**
+   * Returns the weight of this Edge.
+   *
+   * @return The weight of this Edge.
+   */
+  public E get() {
+    return weight;
+  }
+
+  /**
+   * Returns the weight of this Edge as a Double. If this Edge has no weight, 1.0 is returned.
+   *
+   * @return The weight of this Edge as a Double. If this Edge has no weight, 1.0 is returned.
+   */
+  public Double asDouble() {
+    if (weight instanceof Double w) {
+      return w;
+    } else if (weight instanceof Number n) {
+      return n.doubleValue();
+    } else {
+      return 1.0;
+    }
   }
 
   /**

@@ -49,11 +49,11 @@ class Day12Test : AdventOfCodeTestBase() {
   fun testSetAndGetValueInRegisterMedium() {
     setupFromFile("inputs/input_day_12-02.txt")
     val register = "b"
-    val desRegister = "a"
+    val destRegister = "a"
     val destValue = 1L
     val instance = Day12()
     val expected = 231L
-    val actual = instance.setAndGetValueInRegister(lines, register, desRegister, destValue)
+    val actual = instance.setAndGetValueInRegister(lines, register, destRegister, destValue)
 
     assertEquals(expected, actual, "The value in $register after running the program "
         + "is not what was expected: $expected")

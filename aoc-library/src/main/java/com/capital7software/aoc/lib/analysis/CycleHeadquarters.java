@@ -389,7 +389,7 @@ public class CycleHeadquarters {
     @Override
     public String toString() {
       return "BaseModule{"
-          + ", id='" + id + '\''
+          + "id='" + id + '\''
           + ", pulsesToProcess=" + pulsesToProcess
           + ", sent=" + sent
           + '}';

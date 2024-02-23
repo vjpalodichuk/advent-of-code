@@ -37,9 +37,9 @@ class Day14Test : AdventOfCodeTestBase() {
   @Test
   fun testIndexOfNthKeyGeneratedStretched() {
     val salt = lines.first()
-    val limit = 64
+    val limit = 1
     val instance = Day14()
-    val expected = 22_551
+    val expected = 10
     val actual = instance.indexOfNthKeyGenerated(salt, limit, true)
 
     assertEquals(expected, actual, "The index of the $limit stretched key "

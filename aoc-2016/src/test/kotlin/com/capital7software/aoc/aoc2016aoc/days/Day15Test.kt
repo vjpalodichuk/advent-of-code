@@ -36,8 +36,8 @@ class Day15Test : AdventOfCodeTestBase() {
   @Test
   fun testTimeToPushTheButtonWithAddedDisc() {
     val instance = Day15()
-    val expected = 5
-    val actual = instance.timeToPushTheButton(lines)
+    val expected = 85
+    val actual = instance.timeToPushTheButtonWithAdditionalDisc(lines)
 
     assertEquals(expected, actual, "The time to push the button "
         + "is not what was expected: $expected")

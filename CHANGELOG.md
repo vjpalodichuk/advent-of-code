@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 1.3.16 (2024-02-23)
+
+### Added
+
+* [3e91f] :ambulance: Added AOC 2016 Day 16 (Vincent J Palodichuk)
+
 ## 1.3.15 (2024-02-23)
 
 ### Added

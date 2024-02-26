@@ -74,8 +74,8 @@ class Maze private constructor(
 ) : Heuristic<Tile, Int> {
   private val graph: Graph<Tile, Int> = Graph<Tile, Int>(name).apply {
     // Add the start and finish tiles to this graph.
-    add(start.toVertex())
-    add(finish.toVertex())
+    add(start.vertex)
+    add(finish.vertex)
   }
   private val expanded: MutableSet<Point2D<Long>> = mutableSetOf()
   private val expander: BiFunction<Graph<Tile, Int>, Vertex<Tile, Int>, Boolean> =
@@ -88,9 +88,9 @@ class Maze private constructor(
         } else {
           neighbors(tile, favorite)
               .forEach {
-                val targetId = it.toId()
-                g.add(v.get().toVertex())
-                g.add(it.toVertex())
+                val targetId = it.id
+                g.add(v.get().vertex)
+                g.add(it.vertex)
                 g.add(v.id, targetId, "${v.id}-$targetId", 1)
                 g.add(targetId, v.id, "$targetId-${v.id}", 1)
               }
@@ -216,9 +216,14 @@ class Maze private constructor(
      *
      * @return The coordinates of this tile in x,y format.
      */
-    fun toId(): String {
-      return "${point.x},${point.y}"
-    }
+    val id: String by lazy { "${point.x},${point.y}" }
+
+    /**
+     * Converts this [Tile] into a new [Vertex] that can be added to a [Graph].
+     *
+     * @return A new [Vertex] created from this [Tile].
+     */
+    val vertex: Vertex<Tile, Int> by lazy { Vertex(id, this) }
 
     override fun compareTo(other: Tile): Int {
       return point.compareTo(other.point)
@@ -245,17 +250,11 @@ class Maze private constructor(
      * @return A short description of the type of tile this is.
      */
     abstract fun description(): String
+
     override fun toString(): String {
       return "Tile(point=$point, isWalkable=${isWalkable()}, " +
           "label=${label()}, description=${description()})"
     }
-
-    /**
-     * Converts this [Tile] into a new [Vertex] that can be added to a [Graph].
-     *
-     * @return A new [Vertex] created from this [Tile].
-     */
-    fun toVertex(): Vertex<Tile, Int> = Vertex(toId(), this)
 
     /**
      * A Space [Tile] is a tile that can be walked on / traveled through.
@@ -345,8 +344,8 @@ class Maze private constructor(
     val pathFinder = AlphaStarPathfinder<Tile, Int>()
     val properties = Properties()
     properties[PathfinderProperties.SUM_PATH] = true
-    properties[PathfinderProperties.STARTING_VERTEX_ID] = start.toId()
-    properties[PathfinderProperties.ENDING_VERTEX_ID] = finish.toId()
+    properties[PathfinderProperties.STARTING_VERTEX_ID] = start.id
+    properties[PathfinderProperties.ENDING_VERTEX_ID] = finish.id
     properties[PathfinderProperties.HEURISTIC] = this
     var shortestPath: PathfinderResult<Tile, Int>? = null
 
@@ -382,7 +381,7 @@ class Maze private constructor(
   fun findDistinct(limit: Double = 1.0): Set<Tile> {
     val pathFinder = ExplorerPathfinder<Tile, Int>()
     val properties = Properties()
-    properties[PathfinderProperties.STARTING_VERTEX_ID] = start.toId()
+    properties[PathfinderProperties.STARTING_VERTEX_ID] = start.id
     properties[PathfinderProperties.MAX_COST] = limit
     var distinct: PathfinderResult<Tile, Int>? = null
 

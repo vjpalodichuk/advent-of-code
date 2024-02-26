@@ -23,7 +23,7 @@ class Day16Test : AdventOfCodeTestBase() {
   }
 
   @Test
-  fun testTimeToPushTheButton() {
+  fun testGenerateChecksum() {
     val length = 20
     val instance = Day16()
     val expected = "01100"

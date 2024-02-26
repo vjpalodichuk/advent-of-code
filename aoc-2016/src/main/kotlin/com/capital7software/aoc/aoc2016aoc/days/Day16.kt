@@ -108,7 +108,7 @@ class Day16 : AdventOfCodeSolution {
   }
 
   override fun runPart2(input: List<String>) {
-    val length = 35651584
+    val length = 35_651_584
     val start = Instant.now()
     val answer = generateChecksum(input.first(), length)
     val end = Instant.now()

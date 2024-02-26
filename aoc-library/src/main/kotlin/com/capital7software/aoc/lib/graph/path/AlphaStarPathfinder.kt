@@ -115,6 +115,7 @@ class AlphaStarPathfinder<T : Comparable<T>, E : Comparable<E>>
       invalid.apply(result)
     }
   }
+
   private fun findShortestPath(
       initialState: PathfinderState<T, E>,
       graph: Graph<T, E>,
@@ -122,7 +123,7 @@ class AlphaStarPathfinder<T : Comparable<T>, E : Comparable<E>>
       heuristic: Heuristic<T, E>,
       graphExpander: BiFunction<Graph<T, E>, Vertex<T, E>, Boolean>?
   ): PathfinderState<T, E>? {
-    val queue: PriorityQueueSet<PathfinderState<T, E>> = PriorityQueueSet()
+    val queue = PriorityQueueSet<PathfinderState<T, E>>()
     queue.offer(initialState)
     val scores = HashMap<PathfinderState<T, E>, PathfinderState<T, E>>()
     scores[initialState] = initialState
@@ -138,7 +139,7 @@ class AlphaStarPathfinder<T : Comparable<T>, E : Comparable<E>>
 
       for (state in nextStates(current, graph, heuristic, graphExpander, ids)) {
         if (queue.contains(state)) {
-          val existing = scores[state] ?: error("Missing saved state.")
+          val existing = scores[state] ?: error("Missing existing saved state.")
           if (state.cost < existing.cost) {
             // Found a shorter path!
             val index = queue.indexOf(state)

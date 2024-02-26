@@ -1,7 +1,5 @@
 package com.capital7software.aoc.lib.string
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
-
 /**
  * You're done scanning this part of the network, but you've left traces of your presence.
  * You need to overwrite some disks with random-looking data to cover your tracks and
@@ -69,6 +67,19 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * @param initial The initial data to start from.
  */
 data class DragonChecksum(val initial: String) {
+  init {
+    val bytes = initial.toByteArray(Charsets.UTF_8)
+
+    for (i in bytes.indices) {
+      require(bytes[i] == ZERO || bytes[i] == ONE) { "initial must only contain 1s or 0s" }
+    }
+  }
+
+  companion object {
+    private const val ZERO: Byte = 48
+    private const val ONE: Byte = 49
+  }
+
   /**
    * Generates and returns dragon curve like data with the
    * exact length specified.
@@ -79,28 +90,29 @@ data class DragonChecksum(val initial: String) {
    */
   fun getData(length: Int): Pair<String, String> {
     val data = generateData(length)
-    val checksum = generateChecksum(data)
+    val checksum = generateChecksum(data, length)
 
-    return Pair(data, checksum)
+    return Pair(String(data), String(checksum))
   }
 
-  private fun generateChecksum(data: String): String {
+  private fun generateChecksum(data: ByteArray, length: Int): ByteArray {
     var a = data
 
     var done = false
 
     while (!done) {
-      val answer = CharArray(a.length ushr 1)
+      val size = if (a.size < length) a.size else length
+      val answer = ByteArray(size ushr 1)
       for (i in answer.indices) {
         if (a[i * 2] == a[i * 2 + 1]) {
-          answer[i] = '1'
+          answer[i] = ONE
         } else {
-          answer[i] = '0'
+          answer[i] = ZERO
         }
       }
-      a = String(answer)
+      a = answer
 
-      if (a.length % 2 != 0) {
+      if (a.size % 2 != 0) {
         done = true
       }
     }
@@ -108,28 +120,31 @@ data class DragonChecksum(val initial: String) {
     return a
   }
 
-  @SuppressFBWarnings
-  private fun generateData(length: Int): String {
-    var a = initial
+  private fun generateData(length: Int): ByteArray {
+    var a = initial.toByteArray(Charsets.UTF_8)
 
-    while (a.length < length) {
+    while (a.size < length) {
       val b = reverseAndFlip(a)
-      a = a + "0" + b
+      val t = ByteArray(a.size + b.size + 1)
+      a.copyInto(t, 0, 0, a.size)
+      t[a.size] = ZERO
+      b.copyInto(t, a.size + 1, 0, b.size)
+      a = t
     }
 
-    return a.substring(0, length)
+    return a
   }
 
-  private fun reverseAndFlip(input: String): String {
-    val answer = input.reversed().toCharArray()
+  private fun reverseAndFlip(input: ByteArray): ByteArray {
+    val answer = ByteArray(input.size)
 
-    for (i in answer.indices) {
-      when (answer[i]) {
-        '0' -> answer[i] = '1'
-        else -> answer[i] = '0'
+    for (i in input.indices) {
+      when (input[i]) {
+        ZERO -> answer[(input.size - 1) - i] = ONE
+        else -> answer[(input.size - 1) - i] = ZERO
       }
     }
 
-    return String(answer)
+    return answer
   }
 }

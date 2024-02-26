@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,8 +33,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <E> The type of the weight held by Edges in the graph.
  */
 public class GenericPathfinder<T extends Comparable<T>, E extends Comparable<E>>
-    implements Pathfinder<PathfinderResult<T, E>, T, E>,
-    DynamicPathfinder<PathfinderResult<T, E>, T, E> {
+    implements Pathfinder<PathfinderResult<T, E>, T, E> {
   /**
    * Instantiates a new and empty path builder instance.
    */
@@ -46,27 +44,15 @@ public class GenericPathfinder<T extends Comparable<T>, E extends Comparable<E>>
   public void find(
       @NotNull Graph<T, E> graph,
       @NotNull Properties properties,
-      @NotNull BiFunction<Graph<T, E>, Vertex<T, E>, Boolean> graphExpander,
       @NotNull Function<PathfinderResult<T, E>, PathfinderStatus> valid,
       Function<PathfinderResult<T, E>, PathfinderStatus> invalid
   ) {
-    findInternal(graph, properties, graphExpander, valid, invalid);
-  }
-
-  @Override
-  public void find(
-      @NotNull Graph<T, E> graph,
-      @NotNull Properties properties,
-      @NotNull Function<PathfinderResult<T, E>, PathfinderStatus> valid,
-      Function<PathfinderResult<T, E>, PathfinderStatus> invalid
-  ) {
-    findInternal(graph, properties, null, valid, invalid);
+    findInternal(graph, properties, valid, invalid);
   }
 
   private void findInternal(
       @NotNull Graph<T, E> graph,
       @NotNull Properties properties,
-      BiFunction<Graph<T, E>, Vertex<T, E>, Boolean> graphExpander,
       @NotNull Function<PathfinderResult<T, E>, PathfinderStatus> valid,
       Function<PathfinderResult<T, E>, PathfinderStatus> invalid
   ) {
@@ -100,9 +86,7 @@ public class GenericPathfinder<T extends Comparable<T>, E extends Comparable<E>>
         edgesSoFar,
         idsSoFar,
         valid,
-        invalid,
-        graph,
-        graphExpander
+        invalid
     );
   }
 
@@ -116,9 +100,7 @@ public class GenericPathfinder<T extends Comparable<T>, E extends Comparable<E>>
       List<Edge<E>> edges,
       Set<String> visitedIds,
       @NotNull Function<PathfinderResult<T, E>, PathfinderStatus> validCallback,
-      Function<PathfinderResult<T, E>, PathfinderStatus> invalidCallback,
-      @NotNull Graph<T, E> graph,
-      BiFunction<Graph<T, E>, Vertex<T, E>, Boolean> expander
+      Function<PathfinderResult<T, E>, PathfinderStatus> invalidCallback
   ) {
     // Check the stopping conditions.
     if (path.getLast().equals(endingVertex)) {
@@ -133,10 +115,6 @@ public class GenericPathfinder<T extends Comparable<T>, E extends Comparable<E>>
 
     // Go through all the vertices
     for (var vertex : vertices) {
-      if (expander != null) {
-        expander.apply(graph, vertex);
-      }
-
       if (!visitedIds.contains(vertex.getId())
           && path.getLast().getEdge(vertex.getId()).isPresent()) {
         // Add the vertex and edge to the path and mark the vertex as visited.
@@ -153,9 +131,7 @@ public class GenericPathfinder<T extends Comparable<T>, E extends Comparable<E>>
             edges,
             visitedIds,
             validCallback,
-            invalidCallback,
-            graph,
-            expander
+            invalidCallback
         );
         lastStatus = status;
 

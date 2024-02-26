@@ -322,9 +322,16 @@ object Md5Fun {
     return answer
   }
 
-  private fun generateHash(md: MessageDigest, input: String) : String {
+  /**
+   * Generates and returns a hash of the specified input using the specified [MessageDigest].
+   *
+   * @param md The [MessageDigest] to use to generate the hash.
+   * @param input The [String] to hash.
+   * @return A hash [String] of the input [String].
+   */
+  fun generateHash(md: MessageDigest, input: String) : String {
     try {
-      md.update(input.toByteArray(StandardCharsets.US_ASCII))
+      md.update(input.toByteArray(StandardCharsets.UTF_8))
 
       return hashToString(md)
     } catch (e: NoSuchAlgorithmException) {

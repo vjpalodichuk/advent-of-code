@@ -129,7 +129,7 @@ class Day17 : AdventOfCodeSolution {
   }
 
   /**
-   * Calculates and returns the shortest path through the [SecureVault].
+   * Calculates and returns the longest path through the [SecureVault].
    *
    * @param input The passcode to the vault.
    * @return The shortest path.

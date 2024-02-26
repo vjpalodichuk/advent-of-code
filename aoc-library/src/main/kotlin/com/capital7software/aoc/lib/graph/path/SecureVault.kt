@@ -110,6 +110,7 @@ class SecureVault(
       }
 
   private fun clear() {
+    expanded.clear()
     graph.clear()
     graph.add(Vertex("${start.id()}:", "start", start, mutableMapOf()))
     graph.add(Vertex("${finish.id()}:", "finish", finish, mutableMapOf()))

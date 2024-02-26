@@ -1,6 +1,13 @@
 # Changelog
 
 
+## 1.3.17 (2024-02-26)
+
+### Added
+
+* [528b1] :ambulance: Added AOC 2016 Day 17  (Vincent J Palodichuk)
+* DepthFirstPathfinder - A DFS Pathfinder for finding all paths. 
+
 ## 1.3.16 (2024-02-23)
 
 ### Added

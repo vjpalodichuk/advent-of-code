@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T y)
     implements Comparable<Point2D<T>>, Serializable {
+
   /**
    * If the type is Double or Float, then EPSILON can be used when
    * checking for equality.
@@ -51,6 +52,15 @@ public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T
     var result = subtract(o);
 
     return result.x.compareTo(result.y);
+  }
+
+  /**
+   * Returns the ID of this point in x,y format.
+   *
+   * @return The ID of this point in x,y format.
+   */
+  public String id() {
+    return x + "," + y;
   }
 
   /**

@@ -334,7 +334,7 @@ public enum Direction {
    *     </li>
    * </ul>
    *
-   * @param alphaLabel The label to convert to a numeric label..
+   * @param alphaLabel The label to convert to a numeric label.
    * @return A numeric label from an alpha label.
    */
   public static String toNumericLabel(String alphaLabel) {

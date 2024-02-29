@@ -26,7 +26,7 @@ class Day12Test : AdventOfCodeTestBase() {
   fun testGetValueInRegisterSmall() {
     val register = "a"
     val instance = Day12()
-    val expected = 42L
+    val expected = 42
     val actual = instance.getValueInRegister(lines, register)
 
     assertEquals(expected, actual, "The value in $register after running the program "
@@ -38,7 +38,7 @@ class Day12Test : AdventOfCodeTestBase() {
     setupFromFile("inputs/input_day_12-02.txt")
     val register = "b"
     val instance = Day12()
-    val expected = 184L
+    val expected = 184
     val actual = instance.getValueInRegister(lines, register)
 
     assertEquals(expected, actual, "The value in $register after running the program "
@@ -50,9 +50,9 @@ class Day12Test : AdventOfCodeTestBase() {
     setupFromFile("inputs/input_day_12-02.txt")
     val register = "b"
     val destRegister = "a"
-    val destValue = 1L
+    val destValue = 1
     val instance = Day12()
-    val expected = 231L
+    val expected = 231
     val actual = instance.setAndGetValueInRegister(lines, register, destRegister, destValue)
 
     assertEquals(expected, actual, "The value in $register after running the program "

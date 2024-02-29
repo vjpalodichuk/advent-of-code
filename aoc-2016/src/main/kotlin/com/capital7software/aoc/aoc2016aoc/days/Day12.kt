@@ -55,11 +55,16 @@ import org.slf4j.LoggerFactory
  * After executing the assembunny code in your puzzle input, **what value is left
  * in register a?**
  *
- * --- Part Two ---
+ * Your puzzle answer was 318007.
+ *
+ * **--- Part Two ---**
+ *
  * As you head down the fire escape to the monorail, you notice it didn't start;
  * register c needs to be initialized to the position of the ignition key.
  *
- * If you instead initialize register c to be 1, what value is now left in register a?
+ * If you instead **initialize register c to be 1**, what value is now left in register a?
+ *
+ * Your puzzle answer was 9227661.
  */
 class Day12 : AdventOfCodeSolution {
   companion object {
@@ -83,7 +88,7 @@ class Day12 : AdventOfCodeSolution {
   override fun runPart2(input: List<String>) {
     val register = "a"
     val destRegister = "c"
-    val destValue = 1L
+    val destValue = 1
     val start = Instant.now()
     val answer = setAndGetValueInRegister(input, register, destRegister, destValue)
     val end = Instant.now()
@@ -97,10 +102,11 @@ class Day12 : AdventOfCodeSolution {
    * program has run.
    *
    * @param input The [List] of [String] instructions to parse and execute.
+   * @param register The register to retrieve the value from after the program run.
    * @return The value of the specified register after the program has run.
    */
   @SuppressFBWarnings
-  fun getValueInRegister(input: List<String>, register: String): Long {
+  fun getValueInRegister(input: List<String>, register: String): Int {
     val computer = SmallComputer.buildSmallComputer(input)
     computer.run()
     return computer[register]
@@ -111,6 +117,9 @@ class Day12 : AdventOfCodeSolution {
    * program has run.
    *
    * @param input The [List] of [String] instructions to parse and execute.
+   * @param register The register to retrieve the value from after the program run.
+   * @param destRegister The register to update with the specified value.
+   * @param destValue The value to place in the destination register.
    * @return The value of the specified register after the program has run.
    */
   @SuppressFBWarnings
@@ -118,8 +127,8 @@ class Day12 : AdventOfCodeSolution {
       input: List<String>,
       register: String,
       destRegister: String,
-      destValue: Long
-  ): Long {
+      destValue: Int
+  ): Int {
     val computer = SmallComputer.buildSmallComputer(input)
     computer[destRegister] = destValue
     computer.run()

@@ -100,10 +100,6 @@ public record TaxiCab(List<Pair<Character, Long>> instructions) {
    * first property contains a Point2D that is the starting point and the second property
    * contains a [Point2D] that is the last point after following all the instructions.
    *
-   * <p><br>
-   * The InfiniteGrid contains methods like InfiniteGrid.manhattanDistance that can be used
-   * to calculate the distance between the two returned points.
-   *
    * @return A Pair where the first property contains a Point2D that is the starting
    *     point and the second property contains a Point2D that is the last point after
    *     following all the instructions.
@@ -130,10 +126,6 @@ public record TaxiCab(List<Pair<Character, Long>> instructions) {
    * first property contains a Point2D that is the starting point and the second property
    * contains a [Point2D] that is the last point after following all the instructions.
    *
-   * <p><br>
-   * The InfiniteGrid contains methods like InfiniteGrid.manhattanDistance that can be used
-   * to calculate the distance between the two returned points.
-   *
    * @return A Pair where the first property contains a Point2D that is the starting
    *     point and the second property contains a Point2D that is the last point after
    *     following all the instructions.
@@ -152,7 +144,7 @@ public record TaxiCab(List<Pair<Character, Long>> instructions) {
           currentRef.get().y() + (directionRef.get().dy() * instruction.second())
       );
       var newLine = new LineSegment2D<>(
-          InfiniteGrid.pointInDirection(currentRef.get(), directionRef.get()),
+          currentRef.get().pointInDirection(directionRef.get()),
           newPoint
       );
 

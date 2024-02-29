@@ -1,7 +1,6 @@
 package com.capital7software.aoc.aoc2016aoc.days;
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution;
-import com.capital7software.aoc.lib.grid.InfiniteGrid;
 import com.capital7software.aoc.lib.grid.TaxiCab;
 import java.time.Instant;
 import java.util.List;
@@ -117,7 +116,7 @@ public class Day01 implements AdventOfCodeSolution {
   public Long distanceFromStart(String input) {
     var taxiCab = TaxiCab.buildTaxiCab(input);
     var result = taxiCab.followInstructions();
-    return InfiniteGrid.manhattanDistance(result.first(), result.second());
+    return result.first().manhattanDistance(result.second());
   }
 
   /**
@@ -129,6 +128,6 @@ public class Day01 implements AdventOfCodeSolution {
   public Long distanceFirstLocationVisitedTwice(String input) {
     var taxiCab = TaxiCab.buildTaxiCab(input);
     var result = taxiCab.firstLocationVisitedTwice();
-    return InfiniteGrid.manhattanDistance(result.first(), result.second());
+    return result.first().manhattanDistance(result.second());
   }
 }

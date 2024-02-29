@@ -21,7 +21,5 @@ public interface Heuristic<T extends Comparable<T>, E extends Comparable<E>> {
    * @param vertex The Vertex being operated on.
    * @return The Heuristic value.
    */
-  default double calculate(Graph<T, E> graph, Vertex<T, E> vertex) {
-    return 0.0;
-  }
+  double calculate(Graph<T, E> graph, Vertex<T, E> vertex);
 }

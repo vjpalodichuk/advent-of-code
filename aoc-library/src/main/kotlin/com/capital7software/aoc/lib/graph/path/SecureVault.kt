@@ -5,7 +5,6 @@ import com.capital7software.aoc.lib.geometry.Direction
 import com.capital7software.aoc.lib.geometry.Point2D
 import com.capital7software.aoc.lib.graph.Graph
 import com.capital7software.aoc.lib.graph.Vertex
-import com.capital7software.aoc.lib.grid.InfiniteGrid
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.security.MessageDigest
 import java.util.Properties
@@ -66,7 +65,7 @@ class SecureVault(
     private val columns: Int,
     private val rows: Int,
     name: String = "vault-$passcode",
-) : Heuristic<Point2D<Long>, Int> {
+) {
   companion object {
     private val OPEN = setOf('b', 'c', 'd', 'e', 'f')
     private val PATH_REGEX = """\d+,\d+:(?<path>\w+)""".toRegex()
@@ -152,7 +151,7 @@ class SecureVault(
       neighbors: MutableList<Vertex<Point2D<Long>, Int>>
   ) {
     if (OPEN.contains(code)) {
-      val newPoint = InfiniteGrid.pointInDirection(point, direction)
+      val newPoint = point.pointInDirection(direction)
 
       if (pointIntVault(newPoint)) {
         if (newPoint == finish) {
@@ -286,7 +285,7 @@ class SecureVault(
     properties[PathfinderProperties.SUM_PATH] = true
     properties[PathfinderProperties.STARTING_VERTEX_ID] = "${start.id()}:"
     properties[PathfinderProperties.ENDING_VERTEX_ID] = "${finish.id()}:"
-    properties[PathfinderProperties.HEURISTIC] = this
+    properties[PathfinderProperties.HEURISTIC] = Heuristic<Point2D<Long>, Int> { _, _ -> 0.0 }
     return Pair(pathFinder, properties)
   }
 }

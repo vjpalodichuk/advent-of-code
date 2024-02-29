@@ -74,8 +74,7 @@ public record Sleigh(
     @NotNull Map<Integer, Map<Point2D<Long>, Long>> deliveredGifts
 ) {
   /**
-   * Instantiates a new Sleigh with the specified Map of delivered gifts and the
-   * InfiniteGrid to travel on.
+   * Instantiates a new Sleigh with the specified Map of delivered gifts to travel on.
    *
    * @param deliveredGifts The Map of delivered gifts.
    */
@@ -171,10 +170,10 @@ public record Sleigh(
   ) {
     Point2D<Long> newHouse;
     switch (direction) {
-      case '^' -> newHouse = InfiniteGrid.pointInDirection(lastHouse, Direction.NORTH);
-      case 'v' -> newHouse = InfiniteGrid.pointInDirection(lastHouse, Direction.SOUTH);
-      case '>' -> newHouse = InfiniteGrid.pointInDirection(lastHouse, Direction.EAST);
-      case '<' -> newHouse = InfiniteGrid.pointInDirection(lastHouse, Direction.WEST);
+      case '^' -> newHouse = lastHouse.pointInDirection(Direction.NORTH);
+      case 'v' -> newHouse = lastHouse.pointInDirection(Direction.SOUTH);
+      case '>' -> newHouse = lastHouse.pointInDirection(Direction.EAST);
+      case '<' -> newHouse = lastHouse.pointInDirection(Direction.WEST);
       default -> newHouse = lastHouse;
     }
 

@@ -8,7 +8,6 @@ import com.capital7software.aoc.lib.graph.Vertex
 import com.capital7software.aoc.lib.graph.path.Maze.Tile
 import com.capital7software.aoc.lib.graph.path.Maze.Tile.Space
 import com.capital7software.aoc.lib.graph.path.Maze.Tile.Wall
-import com.capital7software.aoc.lib.grid.InfiniteGrid
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.time.Instant
 import java.util.Properties
@@ -144,7 +143,7 @@ class Maze private constructor(
     @JvmStatic
     fun neighbors(tile: Tile, favorite: Long): List<Tile> {
       return Direction.CARDINAL_DIRECTIONS
-          .map { direction -> InfiniteGrid.pointInDirection(tile.point, direction) }
+          .map { direction -> tile.point.pointInDirection(direction) }
           .filter { point -> point.x >= 0 && point.y >= 0 }
           .map { point -> Tile.from(point.x, point.y, favorite) }
           .filter { mazeTile -> mazeTile.isWalkable() }
@@ -331,7 +330,7 @@ class Maze private constructor(
    * @return The Heuristic value.
    */
   override fun calculate(graph: Graph<Tile, Int>, vertex: Vertex<Tile, Int>): Double {
-    return InfiniteGrid.manhattanDistance(vertex.get().point, finish.point).toDouble()
+    return vertex.get().point.manhattanDistance(finish.point).toDouble()
   }
 
   /**

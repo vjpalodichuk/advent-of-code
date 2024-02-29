@@ -936,7 +936,7 @@ class PriorityQueueSet<T : Any> @JvmOverloads constructor(
     }
   }
 
-  override fun contains(element: T): Boolean {
+  override operator fun contains(element: T): Boolean {
     return indexes.containsKey(element)
   }
 

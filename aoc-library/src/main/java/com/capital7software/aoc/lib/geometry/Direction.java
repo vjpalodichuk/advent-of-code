@@ -212,6 +212,11 @@ public enum Direction {
    */
   public static final Set<Direction> CARDINAL_DIRECTIONS = Set.of(NORTH, SOUTH, EAST, WEST);
 
+  /**
+   * All directions.
+   */
+  public static final Set<Direction> ALL_DIRECTIONS = Set.of(Direction.values());
+
   private final Point2D<Integer> delta;
 
   /**

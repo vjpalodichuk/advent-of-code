@@ -13,33 +13,26 @@ import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A SpanningTree implemented using Kruskal's greedy algorithm.
- *
- * <p><br>
- * <code>
- * Initialize an empty edge set T.
- * Sort all graph edges by the ascending order of their weight values.
- * foreach edge in the sorted edge list
- * Check whether it will create a cycle with the edges inside T.
- * If the edge doesn't introduce any cycles, add it into T.
- * If T has (V-1) edges, exit the loop.
- * return T
- * </code>
+ * A SpanningTree implementation.
  *
  * <p><br>
  * See <a href="https://www.baeldung.com/java-spanning-trees-kruskal">...</a> for a detailed
  * explanation of how Kruskal's algorithm works.
  *
+ * <p><br>
+ * See <a href="https://www.geeksforgeeks.org/greedy-algorithms-set-5-prims-minimum-spanning-tree-mst-2/">...</a> for a detailed
+ * explanation of how Prim's algorithm works.
+ *
  * @param <T> The type of the value held by Nodes in the graph.
  * @param <E> The type of the weight held by Edges in the graph.
  */
-public abstract class AbstractSpanningTreeKruskal<T extends Comparable<T>, E extends Comparable<E>>
+public abstract class AbstractSpanningTree<T extends Comparable<T>, E extends Comparable<E>>
     implements SpanningTree<T, E> {
 
   /**
    * Instantiates an empty MST builder.
    */
-  public AbstractSpanningTreeKruskal() {
+  public AbstractSpanningTree() {
 
   }
 

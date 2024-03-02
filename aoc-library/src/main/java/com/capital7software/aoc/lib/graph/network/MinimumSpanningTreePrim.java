@@ -79,7 +79,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <E> The type of the weight held by Edges in the graph.
  */
 public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparable<E>>
-    extends AbstractSpanningTreeKruskal<T, E> {
+    extends AbstractSpanningTree<T, E> {
   @Getter
   private static class PrimVertex<T extends Comparable<T>, E extends Comparable<E>>
       implements Comparable<PrimVertex<T, E>> {

@@ -50,10 +50,17 @@ import org.slf4j.LoggerFactory
  * Given your actual map, and starting from location 0, what is the **fewest number of steps**
  * required to visit every non-0 number marked on the map at least once?
  *
- * Your puzzle answer was .
+ * Your puzzle answer was 500.
  *
  * **--- Part Two ---**
  *
+ * Of course, if you leave the cleaning robot somewhere weird, someone is
+ * bound to notice.
+ *
+ * What is the fewest number of steps required to start at 0, visit every
+ * non-0 number marked on the map at least once, and then **return to 0**?
+ *
+ * Your puzzle answer was 748.
  */
 class Day24 : AdventOfCodeSolution {
   companion object {
@@ -77,10 +84,11 @@ class Day24 : AdventOfCodeSolution {
   override fun runPart2(input: List<String>) {
     val source = 0
     val start = Instant.now()
-    val answer = getFewestNumberOfSteps(input, source)
+    val answer = getFewestNumberOfStepsInCycle(input, source)
     val end = Instant.now()
 
-    log.info("$answer is the fewest number of steps to visit each location at least once!")
+    log.info("$answer is the fewest number of steps to visit each location "
+                 + "at least once and return to the source!")
     logTimings(log, start, end)
   }
 
@@ -96,6 +104,22 @@ class Day24 : AdventOfCodeSolution {
   fun getFewestNumberOfSteps(input: List<String>, source: Int): Int {
     val instance = AirDuctCleaning(input)
     val shortestRoute = instance.findShortestRoute(source)
+    return shortestRoute.first
+  }
+
+  /**
+   * Calculates and returns the fewest number of steps starting at source and visiting each node
+   * at least once and then returning to source. That means a route may include revisiting
+   * a node more than once.
+   *
+   * @param input The [List] of [String] instructions to parse and execute.
+   * @param source The number of the source vertex that the path must start from.
+   * @return The fewest number of steps starting at source and visiting each node at least once.
+   */
+  @SuppressFBWarnings
+  fun getFewestNumberOfStepsInCycle(input: List<String>, source: Int): Int {
+    val instance = AirDuctCleaning(input)
+    val shortestRoute = instance.findShortestCycle(source)
     return shortestRoute.first
   }
 }

@@ -542,8 +542,6 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
    */
   @NotNull
   public Set<Edge<E>> getEdges(@NotNull String vertexId) {
-    Objects.requireNonNull(vertexId);
-
     if (!vertices.containsKey(Objects.requireNonNull(vertexId))) {
       return Collections.emptySet();
     }

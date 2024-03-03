@@ -32,4 +32,15 @@ class Day24Test : AdventOfCodeTestBase() {
     assertEquals(expected, actual, "The fewest number of steps "
         + "is not what was expected: $expected")
   }
+
+  @Test
+  fun testGetFewestNumberOfStepsInCycle() {
+    val id = 0
+    val instance = Day24()
+    val expected = 20
+    val actual = instance.getFewestNumberOfStepsInCycle(lines, id)
+
+    assertEquals(expected, actual, "The fewest number of steps in cycle "
+        + "is not what was expected: $expected")
+  }
 }

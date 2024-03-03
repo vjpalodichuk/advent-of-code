@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <E> The type of the weight held by Edges in the graph.
  */
 public class MaximumSpanningTreeKruskal<T extends Comparable<T>, E extends Comparable<E>>
-    extends AbstractSpanningTree<T, E> {
+    extends AbstractKruskalSpanningTree<T, E> {
   /**
    * Instantiates a new and empty spanning tree builder instance.
    */

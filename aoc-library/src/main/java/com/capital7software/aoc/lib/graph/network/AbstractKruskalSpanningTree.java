@@ -13,7 +13,7 @@ import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A SpanningTree implementation.
+ * A Kruskal SpanningTree implementation.
  *
  * <p><br>
  * See <a href="https://www.baeldung.com/java-spanning-trees-kruskal">...</a> for a detailed
@@ -26,13 +26,13 @@ import org.jetbrains.annotations.NotNull;
  * @param <T> The type of the value held by Nodes in the graph.
  * @param <E> The type of the weight held by Edges in the graph.
  */
-public abstract class AbstractSpanningTree<T extends Comparable<T>, E extends Comparable<E>>
+public abstract class AbstractKruskalSpanningTree<T extends Comparable<T>, E extends Comparable<E>>
     implements SpanningTree<T, E> {
 
   /**
    * Instantiates an empty MST builder.
    */
-  public AbstractSpanningTree() {
+  public AbstractKruskalSpanningTree() {
 
   }
 

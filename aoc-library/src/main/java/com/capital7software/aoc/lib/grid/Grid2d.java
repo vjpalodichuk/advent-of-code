@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 
@@ -357,20 +358,24 @@ public record Grid2d<T>(int columns, int rows, @NotNull T[] items) implements It
    * @param x          The x point to calculate the neighbors from.
    * @param y          The y point to calculate the neighbors from.
    * @param directions The directions to get the neighbors of.
-   * @return A list of Pairs where the first property is the point of the neighbor on this
-   *     Grid2D and the second property is the value at that point in this Grid2D.
+   * @param predicate  The filter that determines which neighbors to include.
+   * @return A list of Pairs where the first property is the direction traveled to get to
+   *     the neighbor on this Grid2D and the second property is the value at that point
+   *     in this Grid2D.
    */
-  public @NotNull List<Pair<Point2D<Integer>, T>> getNeighbors(
-      int x, int y, Collection<Direction> directions
+  public @NotNull List<Pair<Direction, T>> getNeighbors(
+      int x, int y, Collection<Direction> directions, Predicate<T> predicate
   ) {
-    List<Pair<Point2D<Integer>, T>> answer = new ArrayList<>(directions.size());
+    List<Pair<Direction, T>> answer = new ArrayList<>(directions.size());
 
     for (var direction : directions) {
       var newPoint = pointInDirection(x, y, direction);
 
       if (isOnGrid(newPoint)) {
         var value = get(newPoint);
-        answer.add(new Pair<>(newPoint, value));
+        if (predicate.test(value)) {
+          answer.add(new Pair<>(direction, value));
+        }
       }
     }
 
@@ -381,15 +386,50 @@ public record Grid2d<T>(int columns, int rows, @NotNull T[] items) implements It
    * Returns all valid neighbors for the specified point and directions
    * and their current values in this Grid2D.
    *
+   * @param x          The x point to calculate the neighbors from.
+   * @param y          The y point to calculate the neighbors from.
+   * @param directions The directions to get the neighbors of.
+   * @return A list of Pairs where the first property is the direction traveled to get to
+   *     the neighbor on this Grid2D and the second property is the value at that point
+   *     in this Grid2D.
+   */
+  public @NotNull List<Pair<Direction, T>> getNeighbors(
+      int x, int y, Collection<Direction> directions
+  ) {
+    return getNeighbors(x, y, directions, (it) -> true);
+  }
+
+  /**
+   * Returns all valid neighbors for the specified point and directions
+   * and their current values in this Grid2D.
+   *
    * @param point      The point to get the neighbors of.
    * @param directions The directions to get the neighbors of.
-   * @return A list of Pairs where the first property is the point of the neighbor on this
-   *     Grid2D and the second property is the value at that point in this Grid2D.
+   * @param predicate Items that pass the predicate are included.
+   * @return A list of Pairs where the first property is the direction traveled to get to
+   *     the neighbor on this Grid2D and the second property is the value at that point
+   *     in this Grid2D.
    */
-  public @NotNull List<Pair<Point2D<Integer>, T>> getNeighbors(
+  public @NotNull List<Pair<Direction, T>> getNeighbors(
+      Point2D<Integer> point, Collection<Direction> directions, Predicate<T> predicate
+  ) {
+    return getNeighbors(point.x(), point.y(), directions, predicate);
+  }
+
+  /**
+   * Returns all valid neighbors for the specified point and directions
+   * and their current values in this Grid2D.
+   *
+   * @param point      The point to get the neighbors of.
+   * @param directions The directions to get the neighbors of.
+   * @return A list of Pairs where the first property is the direction traveled to get to
+   *     the neighbor on this Grid2D and the second property is the value at that point
+   *     in this Grid2D.
+   */
+  public @NotNull List<Pair<Direction, T>> getNeighbors(
       Point2D<Integer> point, Collection<Direction> directions
   ) {
-    return getNeighbors(point.x(), point.y(), directions);
+    return getNeighbors(point.x(), point.y(), directions, (it) -> true);
   }
 
   /**
@@ -398,11 +438,12 @@ public record Grid2d<T>(int columns, int rows, @NotNull T[] items) implements It
    *
    * @param x The x point to calculate the neighbors from.
    * @param y The y point to calculate the neighbors from.
-   * @return A list of Pairs where the first property is the point of the neighbor on this
-   *     Grid2D and the second property is the value at that point in this Grid2D.
+   * @return A list of Pairs where the first property is the direction traveled to get to
+   *     the neighbor on this Grid2D and the second property is the value at that point
+   *     in this Grid2D.
    */
-  public @NotNull List<Pair<Point2D<Integer>, T>> getNeighbors(int x, int y) {
-    return getNeighbors(x, y, Direction.ALL_DIRECTIONS);
+  public @NotNull List<Pair<Direction, T>> getNeighbors(int x, int y) {
+    return getNeighbors(x, y, Direction.ALL_DIRECTIONS, (it) -> true);
   }
 
   /**
@@ -410,12 +451,13 @@ public record Grid2d<T>(int columns, int rows, @NotNull T[] items) implements It
    * Each point may have a neighbor for each Direction.
    *
    * @param point The point to get the neighbors of.
-   * @return A list of Pairs where the first property is the point of the neighbor on this
-   *     Grid2D and the second property is the value at that point in this Grid2D.
+   * @return A list of Pairs where the first property is the direction traveled to get to
+   *     the neighbor on this Grid2D and the second property is the value at that point
+   *     in this Grid2D.
    */
   @NotNull
-  public List<Pair<Point2D<Integer>, T>> getNeighbors(Point2D<Integer> point) {
-    return getNeighbors(point.x(), point.y(), Direction.ALL_DIRECTIONS);
+  public List<Pair<Direction, T>> getNeighbors(Point2D<Integer> point) {
+    return getNeighbors(point.x(), point.y(), Direction.ALL_DIRECTIONS, (it) -> true);
   }
 
   /**

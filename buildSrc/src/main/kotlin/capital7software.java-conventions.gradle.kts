@@ -7,17 +7,18 @@ plugins {
   java
   checkstyle
   kotlin("jvm")
-  // NOTE: external plugin version is specified in implementation dependency artifact of the project's build file
+  // NOTE: external plugin version is specified in implementation dependency
+  // artifact of the project's build file
   id("com.github.spotbugs")
   id("com.jfrog.artifactory")
   id("io.gitlab.arturbosch.detekt")
+  id("org.jetbrains.dokka")
 }
 
 // Java Projects need to use the latest version!
 java {
   sourceCompatibility = JavaVersion.VERSION_21
   targetCompatibility = JavaVersion.VERSION_21
-  withJavadocJar()
 }
 
 kotlin {
@@ -130,6 +131,20 @@ tasks.withType<Checkstyle>().configureEach {
 
 tasks.withType<Javadoc>().configureEach {
   isFailOnError = false
+}
+
+val htmlJar by tasks.register<Jar>("dokkaHtmlJar") {
+  group = "build"
+  dependsOn(tasks.dokkaHtml)
+  from(tasks.dokkaHtml.flatMap { it.outputDirectory })
+  archiveClassifier.set("html-docs")
+}
+
+val javadocJar by tasks.register<Jar>("dokkaJavadocJar") {
+  group = "build"
+  dependsOn(tasks.dokkaJavadoc)
+  from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
+  archiveClassifier.set("javadoc")
 }
 
 // Resolve google collections and guava conflict

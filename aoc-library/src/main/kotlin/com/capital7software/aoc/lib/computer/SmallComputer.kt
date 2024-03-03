@@ -32,6 +32,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * - The jnz instruction moves relative to itself: an offset of -1 would continue at
  * the previous instruction, while an offset of 2 would **skip over** the next instruction.
  *
+ * Node: Please see [Instruction] for a complete list of all instructions supported by
+ * this computer.
+ *
  * For example:
  * ```
  * cpy 41 a
@@ -597,10 +600,11 @@ class SmallComputer {
     }
 
     /**
-     * No-op 2 arg instruction.
+     * Outputs the
      *
-     * @param arg1 The first arguments
-     * @param arg2 The second argument.
+     * @param source The literal or register to send to the output. Output is stored in the
+     * [output] property after the instruction is executed. The output is overwritten everytime
+     * this instruction is executed.
      */
     class Out(
         private val source: String

@@ -30,9 +30,12 @@ import java.util.function.Function
  * provided in the [PathfinderResult] that is passed to the valid path handler when a path is
  * found.
  *
+ * - [PathfinderProperties.DETECT_CYCLES] is optional. It controls if the tour must be a cycle
+ * that finishes where it started from.
+ *
  * Performance:
  *
- * Time performance is O(n²*2ⁿ) and space is also O(n²*2ⁿ).
+ * Time performance is O(n²*2ⁿ) and space is also O(n*2ⁿ).
  */
 class HeldKarpPathfinder<T : Comparable<T>, E : Comparable<E>>
   : Pathfinder<PathfinderResult<T, E>, T, E> {

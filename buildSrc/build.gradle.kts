@@ -13,6 +13,7 @@ object Versions {
   const val SPOTBUGS = "6.0.3"
   const val KOTLIN = "1.9.22"
   const val DETEKT = "1.23.5"
+  const val DOKKA = "1.9.10"
 }
 
 dependencies {
@@ -21,7 +22,7 @@ dependencies {
   implementation("org.jfrog.buildinfo:build-info-extractor-gradle:${Versions.ARTIFACTORY}")
   implementation("org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:${Versions.KOTLIN}")
   implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${Versions.DETEKT}")
-
+  implementation("org.jetbrains.dokka:dokka-gradle-plugin:${Versions.DOKKA}")
   // Test dependencies
   testImplementation("org.junit.jupiter:junit-jupiter-api:${Versions.JUNIT}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.JUNIT}")

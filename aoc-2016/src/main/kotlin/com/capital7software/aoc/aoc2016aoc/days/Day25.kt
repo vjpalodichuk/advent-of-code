@@ -105,7 +105,7 @@ class Day25 : AdventOfCodeSolution {
     val target = listOf(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1)
     for (i in 0 ..< Int.MAX_VALUE) {
       instance["a"] = i
-      val result = instance.run()
+      val result = instance.runWithOutput()
       if (target == result) {
         answer = i
         break

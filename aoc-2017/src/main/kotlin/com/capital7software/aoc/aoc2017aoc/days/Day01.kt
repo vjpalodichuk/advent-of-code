@@ -52,6 +52,8 @@ import org.slf4j.LoggerFactory
  * - 12131415 produces 4.
  *
  * **What is the solution** to your new captcha?
+ *
+ * Your puzzle answer was **1076**.
  */
 class Day01: AdventOfCodeSolution {
   companion object {

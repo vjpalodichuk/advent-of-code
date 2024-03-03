@@ -109,6 +109,25 @@ public class Day09 implements AdventOfCodeSolution {
     var end = Instant.now();
     LOGGER.info("The distance of the longest route is: {}", longestDistance);
     logTimings(LOGGER, start, end);
+
+    runPart3(input);
+    runPart4(input);
+  }
+
+  private void runPart3(List<String> input) {
+    var start = Instant.now();
+    var longestDistance = mstKruskal(input);
+    var end = Instant.now();
+    LOGGER.info("The distance of Kruskal's MST is: {}", longestDistance);
+    logTimings(LOGGER, start, end);
+  }
+
+  private void runPart4(List<String> input) {
+    var start = Instant.now();
+    var longestDistance = mstPrim(input);
+    var end = Instant.now();
+    LOGGER.info("The distance of Prim's MST is: {}", longestDistance);
+    logTimings(LOGGER, start, end);
   }
 
   /**
@@ -119,30 +138,27 @@ public class Day09 implements AdventOfCodeSolution {
    * @return The distance of the shortest route that visits every node.
    */
   public long distanceOfShortestRouteVisitingEachNodeOnce(List<String> routes) {
-    var graph = new Day09Parser().parse(routes, "day09");
+    var graph = new Day09Parser().parse(routes, "day09-shortest-route");
     var pathFinder = new HamiltonianPathfinder<String, Integer>();
 
     if (graph.isEmpty()) {
       throw new RuntimeException("A valid Graph is required! " + graph);
     }
 
-    var results = new ArrayList<PathfinderResult<String, Integer>>(41000);
+    var props = new Properties();
+    props.put(PathfinderProperties.SUM_PATH, Boolean.TRUE);
 
-    pathFinder.find(graph.get(), new Properties(), result -> {
-      results.add(result);
+    final List<PathfinderResult<String, Integer>> shortestPath = new ArrayList<>();
+
+    pathFinder.find(graph.get(), props, result -> {
+      if (shortestPath.isEmpty() || result.cost() < shortestPath.getFirst().cost()) {
+        shortestPath.clear();
+        shortestPath.add(result);
+      }
       return PathfinderStatus.CONTINUE;
     }, null);
 
-    return results
-        .stream()
-        .mapToInt(it -> it.edges()
-            .stream()
-            .filter(edge -> edge.getWeight().isPresent())
-            .mapToInt(edge -> edge.getWeight().get())
-            .sum()
-        )
-        .min()
-        .orElse(0);
+    return shortestPath.isEmpty() ? 0 : shortestPath.getFirst().cost();
   }
 
   /**
@@ -160,23 +176,20 @@ public class Day09 implements AdventOfCodeSolution {
       throw new RuntimeException("A valid Graph is required! " + graph);
     }
 
-    var results = new ArrayList<PathfinderResult<String, Integer>>(41000);
+    var props = new Properties();
+    props.put(PathfinderProperties.SUM_PATH, Boolean.TRUE);
 
-    pathFinder.find(graph.get(), new Properties(), result -> {
-      results.add(result);
+    final List<PathfinderResult<String, Integer>> longestPath = new ArrayList<>();
+
+    pathFinder.find(graph.get(), props, result -> {
+      if (longestPath.isEmpty() || result.cost() > longestPath.getFirst().cost()) {
+        longestPath.clear();
+        longestPath.add(result);
+      }
       return PathfinderStatus.CONTINUE;
     }, null);
 
-    return results
-        .stream()
-        .mapToInt(it -> it.edges()
-            .stream()
-            .filter(edge -> edge.getWeight().isPresent())
-            .mapToInt(edge -> edge.getWeight().get())
-            .sum()
-        )
-        .max()
-        .orElse(0);
+    return longestPath.isEmpty() ? 0 : longestPath.getFirst().cost();
   }
 
   /**

@@ -514,7 +514,7 @@ public class PipeMaze {
     }
 
     public List<MazeTile> getNeighbors(Grid2d<MazeTile> grid) {
-      return grid.getAllNeighbors(getPoint())
+      return grid.getNeighbors(getPoint())
           .stream()
           .map(Pair::second)
           .filter(this::connectsTo)

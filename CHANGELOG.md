@@ -1,6 +1,14 @@
 # Changelog
 
 
+## 1.4.1 (2024-03-03)
+
+### Added
+
+* [f0985] :ambulance: Added AOC 2017 Day 02 (Vincent J Palodichuk)
+
+* [f3a1a] :ambulance: Added AOC 2017 Day 01 (Vincent J Palodichuk)
+
 ## 1.4.0 (2024-03-03)
 
 ### Added

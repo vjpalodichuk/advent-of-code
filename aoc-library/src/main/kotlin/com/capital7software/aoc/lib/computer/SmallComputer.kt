@@ -122,6 +122,7 @@ class SmallComputer {
           "mul" -> Multiply(split[1].clean(), split[2].clean())
           "noo" -> NoOpSingleArg(split[1].clean())
           "nop" -> NoOpTwoArg(split[1].clean(), split[2].clean())
+          "out" -> Out(split[1].clean())
           else -> error("Unknown instruction: ${split.first()}")
         }
       }
@@ -596,6 +597,41 @@ class SmallComputer {
     }
 
     /**
+     * No-op 2 arg instruction.
+     *
+     * @param arg1 The first arguments
+     * @param arg2 The second argument.
+     */
+    class Out(
+        private val source: String
+    ) : Instruction("out", 1) {
+      /**
+       * The output after this instruction has been executed. It is overwritten everytime this
+       * instruction is executed.
+       */
+      var output:Int = -1
+        private set
+
+      override fun execute(
+          registers: Map<String, Register>, instructions: MutableList<Instruction>, index: Int
+      ): Int {
+        val src = source.toIntOrNull()
+            ?: (registers[source]?.value ?: error("Missing source register!"))
+
+        output = src
+        return 1
+      }
+
+      override fun args(): kotlin.Triple<String, String, String> {
+        return Triple(source, "", "")
+      }
+
+      override fun toString(): String {
+        return "NoOpTwoArg(source='$source')"
+      }
+    }
+
+    /**
      * Executes this instruction and returns the offset relative to this [Instruction]
      * for the next [Instruction].
      *
@@ -949,6 +985,31 @@ class SmallComputer {
 
       i += instruction.execute(registers, temp, i)
     }
+  }
+
+  /**
+   * Executes the loaded program. Everytime an [Instruction.Out] is executed, it's output value
+   * is added to the list that is returned from this method.
+   *
+   * @param max The maximum number of times to execute an out instruction before ending the
+   * program. Please note that the program may end prior to max being reached.
+   * @return The [List] of [Int] that is the output from the out instructions encountered and
+   * in the order they were encountered.
+   */
+  fun runWithOutput(max: Int = 20): List<Int> {
+    var i = 0
+    val temp = arrayListOf<Instruction>().apply { addAll(instructions) }
+    val answer = mutableListOf<Int>()
+    while (i < temp.size && answer.size < max) {
+      val instruction = temp[i]
+
+      i += instruction.execute(registers, temp, i)
+      if (instruction is Instruction.Out) {
+        answer.add(instruction.output)
+      }
+    }
+
+    return answer
   }
 }
 

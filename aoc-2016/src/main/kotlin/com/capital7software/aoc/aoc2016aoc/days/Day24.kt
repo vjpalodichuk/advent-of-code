@@ -96,7 +96,7 @@ class Day24 : AdventOfCodeSolution {
    * Calculates and returns the fewest number of steps starting at source and visiting each node
    * at least once. That means a route may include revisiting a node more than once.
    *
-   * @param input The [List] of [String] instructions to parse and execute.
+   * @param input The [List] of [String] is the air-duct map.
    * @param source The number of the source vertex that the path must start from.
    * @return The fewest number of steps starting at source and visiting each node at least once.
    */
@@ -112,7 +112,7 @@ class Day24 : AdventOfCodeSolution {
    * at least once and then returning to source. That means a route may include revisiting
    * a node more than once.
    *
-   * @param input The [List] of [String] instructions to parse and execute.
+   * @param input The [List] of [String] is the air-duct map.
    * @param source The number of the source vertex that the path must start from.
    * @return The fewest number of steps starting at source and visiting each node at least once.
    */

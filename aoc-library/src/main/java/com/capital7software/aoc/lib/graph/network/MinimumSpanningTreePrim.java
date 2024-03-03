@@ -79,7 +79,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <E> The type of the weight held by Edges in the graph.
  */
 public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparable<E>>
-    extends AbstractSpanningTreeKruskal<T, E> {
+    implements SpanningTree<T, E> {
   @Getter
   private static class PrimVertex<T extends Comparable<T>, E extends Comparable<E>>
       implements Comparable<PrimVertex<T, E>> {
@@ -123,6 +123,7 @@ public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparab
 
   private final E minValue;
   private final E maxValue;
+  private final Vertex<T, E> startVertex;
 
   /**
    * Instantiates this instance where minValue is the lowest assignable value to a Vertex and
@@ -138,8 +139,27 @@ public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparab
    * @param maxValue The highest initial value to assign to all other Vertices.
    */
   public MinimumSpanningTreePrim(E minValue, E maxValue) {
+    this(minValue, maxValue, null);
+  }
+
+  /**
+   * Instantiates this instance where minValue is the lowest assignable value to a Vertex and
+   * maxValue is the largest value to assign to a Vertex.
+   *
+   * <p><br>
+   * When build is called, all Vertices in the Graph are assigned the maxValue except for one
+   * that is picked as random and is assigned the minValue. The Vertex assigned the minValue
+   * will be selected first and all other Vertices will have their value updated as the
+   * algorithm progresses.
+   *
+   * @param minValue The lowest initial value to assign to the starting Vertex.
+   * @param maxValue The highest initial value to assign to all other Vertices.
+   * @param startVertex The vertex to start the spanning tree building from.
+   */
+  public MinimumSpanningTreePrim(E minValue, E maxValue, Vertex<T, E> startVertex) {
     this.minValue = minValue;
     this.maxValue = maxValue;
+    this.startVertex = startVertex != null ? startVertex.copy() : null;
   }
 
   @Override
@@ -155,8 +175,12 @@ public class MinimumSpanningTreePrim<T extends Comparable<T>, E extends Comparab
       vertex.getLeastWeightedEdgeValue().ifPresent(weight -> {
         var n = new PrimVertex<>(vertex);
         if (first.get()) {
-          n.setKey(minValue);
-          first.set(false);
+          if (startVertex != null && startVertex.equals(vertex)) {
+            n.setKey(minValue);
+            first.set(false);
+          } else {
+            n.setKey(maxValue);
+          }
         } else {
           n.setKey(maxValue);
         }

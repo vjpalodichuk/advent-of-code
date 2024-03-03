@@ -310,7 +310,7 @@ class LightGrid(
           continue
         }
 
-        val neighbors = currentState.getAllNeighbors(i, j)
+        val neighbors = currentState.getNeighbors(i, j)
         val onCount = neighbors.stream()
             .map { it.second() }
             .filter { it != null && it > 0 }

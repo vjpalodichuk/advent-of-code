@@ -33,4 +33,17 @@ class Day23Test : AdventOfCodeTestBase() {
     assertEquals(expected, actual, "The value in register a "
         + "is not what was expected: $expected")
   }
+
+  @Test
+  fun testGetValueInRegisterOptimized() {
+    setupFromFile("inputs/input_day_23-02.txt")
+    val register = "a"
+    val eggs = 12
+    val instance = Day23()
+    val expected = 166
+    val actual = instance.getValueInRegister(lines, register, register, eggs)
+
+    assertEquals(expected, actual, "The value in register a "
+        + "is not what was expected: $expected")
+  }
 }

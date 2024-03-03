@@ -547,6 +547,9 @@ class AirDuctCleaning(
    * Repeatedly use [AlphaStarPathfinder] to construct the shortest paths to each target
    * and then uses [HamiltonianPathfinder] to find the shortest path that starts at startId.
    *
+   * The performance can be improved by using the [HeldKarpPathfinder] after finding all
+   * the shortest paths instead of the [HamiltonianPathfinder].
+   *
    * @param startId The id where the search starts from. Must be a digit 0 - 9.
    * @return A [Pair] where the first element is the length of the shortest route and
    * the second element is the [List] of [Edge] that make up the shortest route.
@@ -567,6 +570,9 @@ class AirDuctCleaning(
    * Repeatedly use [AlphaStarPathfinder] to construct the shortest paths to each target
    * and then uses [HamiltonianPathfinder] to find the shortest cycle that starts and
    * ends at the tile with the startId.
+   *
+   * The performance can be improved by using the [HeldKarpPathfinder] after finding all
+   * the shortest paths instead of the [HamiltonianPathfinder].
    *
    * @param startId The id where the search starts from. Must be a digit 0 - 9.
    * @return A [Pair] where the first element is the length of the shortest route and

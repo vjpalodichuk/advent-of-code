@@ -18,12 +18,18 @@ val artifactoryRepoKeyPublishRelease: String by project
 val artifactoryUser: String by project
 val artifactoryPassword: String by project
 
+val javadocJar by tasks.named<Jar>("dokkaJavadocJar")
+val htmlJar by tasks.named<Jar>("dokkaHtmlJar")
+
 configure<PublishingExtension> {
   publications {
     create<MavenPublication>("mavenJava") {
       from(components["java"])
+      artifact(javadocJar)
+      artifact(htmlJar)
     }
   }
+
   repositories {
     maven {
       name = "artifactory-publish"

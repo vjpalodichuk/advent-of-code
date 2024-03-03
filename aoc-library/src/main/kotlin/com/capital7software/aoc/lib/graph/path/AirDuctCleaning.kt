@@ -447,26 +447,42 @@ class AirDuctCleaning(
    * to every other target. The resulting graph will be a complete graph where
    * the edges are the shortest distances between any two targets.
    *
+   * This assumes that the shortest path from a to b is also the shortest path
+   * from b to a. Meaning that we only calculate the shortest distance between
+   * two vertices a single time making the resulting graph undirected.
+   *
    * @return The target graph where all the vertices are targets and the edges
    * are the shortest paths between the targets.
    */
   private fun buildTargetGraph(): Graph<Tile, Int> {
     val graph: Graph<Tile, Int> = Graph("air-duct-targets")
+    val shortestPaths: MutableMap<Int, MutableMap<Int, Pair<Int, List<Edge<Int>>>>> = mutableMapOf()
 
     targets.keys.forEach { sourceId ->
       val sourceTile = targets[sourceId] ?: error("Missing target with ID: $sourceId")
+      val sourceMap = shortestPaths.computeIfAbsent(sourceTile.id) { mutableMapOf() }
       graph.add(Vertex(sourceTile.vertex.id, sourceTile))
 
       targets.forEach { (key, tile) ->
         if (key != sourceId) {
           val path = findShortestPath(intersectionGraph, sourceTile.vertex, tile.vertex)
 
-          if (path.first > 0) {
+          if (path.first > 0 && !sourceMap.containsKey(tile.id)) {
+            sourceMap.putIfAbsent(tile.id, path)
+            val targetMap = shortestPaths.computeIfAbsent(tile.id) { mutableMapOf() }
+            targetMap.putIfAbsent(sourceTile.id, path)
+
             graph.add(Vertex(tile.vertex.id, tile))
             graph.add(
                 sourceTile.vertex.id,
                 tile.vertex.id,
                 "${sourceTile.vertex.id}-${tile.vertex.id}",
+                path.first
+            )
+            graph.add(
+                tile.vertex.id,
+                sourceTile.vertex.id,
+                "${tile.vertex.id}-${sourceTile.vertex.id}",
                 path.first
             )
           }
@@ -511,7 +527,9 @@ class AirDuctCleaning(
     return pathToPair(shortestPath)
   }
 
-  private fun pathToPair(pathfinderResult: PathfinderResult<Tile, Int>?) : Pair<Int, List<Edge<Int>>> {
+  private fun pathToPair(
+      pathfinderResult: PathfinderResult<Tile, Int>?
+  ) : Pair<Int, List<Edge<Int>>> {
     return if (pathfinderResult == null) {
       Pair(-1, listOf())
     } else {
@@ -525,6 +543,9 @@ class AirDuctCleaning(
    * The returned path may include visiting a [Tile.Target] more than once. When
    * this happens it should be treated like any other [Edge]. If no shortest
    * route could be found, the returned [Pair] will contain -1 in the first element.
+   *
+   * Repeatedly use [AlphaStarPathfinder] to construct the shortest paths to each target
+   * and then uses [HamiltonianPathfinder] to find the shortest path that starts at startId.
    *
    * @param startId The id where the search starts from. Must be a digit 0 - 9.
    * @return A [Pair] where the first element is the length of the shortest route and
@@ -542,6 +563,10 @@ class AirDuctCleaning(
    * The returned path may include visiting a [Tile.Target] more than once. When
    * this happens it should be treated like any other [Edge]. If no shortest
    * route could be found, the returned [Pair] will contain -1 in the first element.
+   *
+   * Repeatedly use [AlphaStarPathfinder] to construct the shortest paths to each target
+   * and then uses [HamiltonianPathfinder] to find the shortest cycle that starts and
+   * ends at the tile with the startId.
    *
    * @param startId The id where the search starts from. Must be a digit 0 - 9.
    * @return A [Pair] where the first element is the length of the shortest route and

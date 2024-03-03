@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 1.4.0 (2024-03-03)
+
+### Added
+
+* [58d27] :sparkles: Added Dokka Gradle Plugin and configured publishing of both javadoc and htm-docs JAR files. (Vincent J Palodichuk)
+
 ## 1.3.25 (2024-03-03)
 
 ### Added

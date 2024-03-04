@@ -212,7 +212,7 @@ public class ClumsyCrucible {
       }
     }
 
-    private final Grid2d<Tile> grid;
+    private final Grid2D<Tile> grid;
     private final Tile start;
     private final Tile end;
 
@@ -220,7 +220,7 @@ public class ClumsyCrucible {
     private final int maxSteps;
 
     private Crucible(
-        @NotNull Grid2d<Tile> grid,
+        @NotNull Grid2D<Tile> grid,
         @NotNull Tile start,
         @NotNull Tile end,
         int minSteps,
@@ -233,7 +233,7 @@ public class ClumsyCrucible {
       this.maxSteps = maxSteps;
     }
 
-    public static Grid2d<Tile> parseGrid(List<String> input) {
+    public static Grid2D<Tile> parseGrid(List<String> input) {
       var tiles = new ArrayList<Tile>();
       var columns = new AtomicInteger(0);
       var rows = new AtomicInteger(0);
@@ -252,7 +252,7 @@ public class ClumsyCrucible {
           rowTiles.clear();
         }
       });
-      return new Grid2d<>(
+      return new Grid2D<>(
           columns.get(),
           rows.get(),
           tiles.toArray(new Tile[columns.get() * rows.get()])
@@ -388,7 +388,7 @@ public class ClumsyCrucible {
     private Path takeStepForward(@NotNull Path path) {
       var point = path.tile().point();
       var direction = path.direction();
-      var newPoint = Grid2d.pointInDirection(point, direction);
+      var newPoint = Grid2D.pointInDirection(point, direction);
       if (grid.isOnGrid(newPoint)) {
         var newTile = grid.get(newPoint);
         return new Path(newTile, direction, path.steps() + 1);
@@ -400,7 +400,7 @@ public class ClumsyCrucible {
     private Path takeStepLeft(@NotNull Path path) {
       var point = path.tile().point();
       var direction = path.direction().getLeft();
-      var newPoint = Grid2d.pointInDirection(point, direction);
+      var newPoint = Grid2D.pointInDirection(point, direction);
       if (grid.isOnGrid(newPoint)) {
         var newTile = grid.get(newPoint);
         return new Path(newTile, direction, 1);
@@ -412,7 +412,7 @@ public class ClumsyCrucible {
     private Path takeStepRight(@NotNull Path path) {
       var point = path.tile().point();
       var direction = path.direction().getRight();
-      var newPoint = Grid2d.pointInDirection(point, direction);
+      var newPoint = Grid2D.pointInDirection(point, direction);
       if (grid.isOnGrid(newPoint)) {
         var newTile = grid.get(newPoint);
         return new Path(newTile, direction, 1);

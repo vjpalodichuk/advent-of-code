@@ -55,12 +55,12 @@ class BathroomCode(
     private val startSimple = Point2D<Int>(1, 1)
     private val startComplex = Point2D<Int>(0, 2)
 
-    private val simpleKeypad = Grid2d<Char>(
-      3,
-      3,
-      Array<Char>(
-        3 * 3
-      ) { '0' })
+    private val simpleKeypad = Grid2D<Char>(
+        3,
+        3,
+        Array<Char>(
+            3 * 3
+        ) { '0' })
         .apply {
       set(0, 0, '1')
       set(1, 0, '2')
@@ -72,12 +72,12 @@ class BathroomCode(
       set(1, 2, '8')
       set(2, 2, '9')
     }
-    private val complexKeypad = Grid2d<Char>(
-      5,
-      5,
-      Array<Char>(
-        5 * 5
-      ) { '0' })
+    private val complexKeypad = Grid2D<Char>(
+        5,
+        5,
+        Array<Char>(
+            5 * 5
+        ) { '0' })
         .apply {
       set(2, 0, '1')
       set(1, 1, '2')
@@ -115,14 +115,14 @@ class BathroomCode(
    */
   fun findSimpleBathroomCode(): String {
     val builder = StringBuilder()
-    val keypad: Grid2d<Char> = simpleKeypad
+    val keypad: Grid2D<Char> = simpleKeypad
     var lastPoint = startSimple
 
     instructions.forEach { instruction ->
       instruction.second().toCharArray()
           .forEach { directionLabel ->
             val direction = Direction.fromLabel(directionLabel.toString())
-            val newPoint = Grid2d.pointInDirection(lastPoint, direction)
+            val newPoint = Grid2D.pointInDirection(lastPoint, direction)
 
             if (keypad.isOnGrid(newPoint)) {
               lastPoint = newPoint
@@ -141,14 +141,14 @@ class BathroomCode(
    */
   fun findComplexBathroomCode(): String {
     val builder = StringBuilder()
-    val keypad: Grid2d<Char> = complexKeypad
+    val keypad: Grid2D<Char> = complexKeypad
     var lastPoint = startComplex
 
     instructions.forEach { instruction ->
       instruction.second().toCharArray()
           .forEach { directionLabel ->
             val direction = Direction.fromLabel(directionLabel.toString())
-            val newPoint = Grid2d.pointInDirection(lastPoint, direction)
+            val newPoint = Grid2D.pointInDirection(lastPoint, direction)
 
             if (keypad.isOnGrid(newPoint) && keypad.get(newPoint) != '0') {
               lastPoint = newPoint

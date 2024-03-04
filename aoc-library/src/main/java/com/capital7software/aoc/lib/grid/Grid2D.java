@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
  * @param items   The array, whose size is columns x rows, to store the data of this grid.
  * @param <T>     The type for the items stored in this grid.
  */
-public record Grid2d<T>(int columns, int rows, @NotNull T[] items) implements Iterable<T> {
+public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements Iterable<T> {
   /**
    * An iterator that iterates in-order over the elements of this Grid2D.
    */
@@ -57,7 +57,7 @@ public record Grid2d<T>(int columns, int rows, @NotNull T[] items) implements It
    * @param rows    The number of rows in this grid.
    * @param items   The array, whose size is columns x rows, to store the data of this grid.
    */
-  public Grid2d(int columns, int rows, @NotNull T[] items) {
+  public Grid2D(int columns, int rows, @NotNull T[] items) {
     this.columns = columns;
     this.rows = rows;
     this.items = Arrays.copyOf(items, items.length);
@@ -71,7 +71,7 @@ public record Grid2d<T>(int columns, int rows, @NotNull T[] items) implements It
    * @param items        The array, whose size is columns x rows, to store the data of this grid.
    * @param initialValue The initial value to fill this grid with.
    */
-  public Grid2d(int columns, int rows, @NotNull T[] items, T initialValue) {
+  public Grid2D(int columns, int rows, @NotNull T[] items, T initialValue) {
     this(columns, rows, items);
     fill(initialValue);
   }
@@ -308,8 +308,8 @@ public record Grid2d<T>(int columns, int rows, @NotNull T[] items) implements It
    *
    * @return An independent copy of this Grid2D.
    */
-  public @NotNull Grid2d<T> copy() {
-    return new Grid2d<>(columns, rows, Arrays.copyOf(items, items.length));
+  public @NotNull Grid2D<T> copy() {
+    return new Grid2D<>(columns, rows, Arrays.copyOf(items, items.length));
   }
 
   /**
@@ -647,7 +647,7 @@ public record Grid2d<T>(int columns, int rows, @NotNull T[] items) implements It
 
   @Override
   public String toString() {
-    return "Grid2d{"
+    return "Grid2D{"
         + "columns=" + columns
         + ", rows=" + rows
         + ", items=" + Arrays.toString(items)

@@ -85,8 +85,8 @@ class CorruptionChecksum(input: Collection<String>) {
 
   private fun evenChecksumRow(row: List<Int>): Int {
     for (i in row.indices) {
-      for (j in row.indices) {
-        if (i == j || row[i] == 0) {
+      for (j in row.size - 1 downTo i) {
+        if (i == j || row[i] == 0 || row[j] < row[i]) {
           continue
         }
 

@@ -309,9 +309,9 @@ public class LightBeam {
     }
   }
 
-  private record Beam(Grid2d<Tile> grid, Point2D<Integer> startPoint, Direction startHeading) {
+  private record Beam(Grid2D<Tile> grid, Point2D<Integer> startPoint, Direction startHeading) {
 
-    private static Beam create(Grid2d<Tile> grid) {
+    private static Beam create(Grid2D<Tile> grid) {
       return new Beam(grid, new Point2D<>(0, 0), Direction.EAST);
     }
 
@@ -336,7 +336,7 @@ public class LightBeam {
       });
 
       return Beam.create(
-          new Grid2d<>(
+          new Grid2D<>(
               columns.get(), rows.get(), tiles.toArray(new Tile[columns.get() * rows.get()]))
       );
     }
@@ -360,7 +360,7 @@ public class LightBeam {
       var result = new ArrayList<Map.Entry<Tile, Direction>>(directions.size());
 
       directions.forEach(direction -> {
-        var nextPoint = Grid2d.pointInDirection(tile.point, direction);
+        var nextPoint = Grid2D.pointInDirection(tile.point, direction);
         if (grid.isOnGrid(nextPoint)) {
           result.add(new AbstractMap.SimpleEntry<>(grid.get(nextPoint), direction));
         }

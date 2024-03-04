@@ -5,7 +5,7 @@ import com.capital7software.aoc.lib.geometry.Point2D
 import com.capital7software.aoc.lib.graph.Edge
 import com.capital7software.aoc.lib.graph.Graph
 import com.capital7software.aoc.lib.graph.Vertex
-import com.capital7software.aoc.lib.grid.Grid2d
+import com.capital7software.aoc.lib.grid.Grid2D
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.util.LinkedList
 import java.util.Properties
@@ -52,14 +52,14 @@ import java.util.Queue
  * **Please note that the maximum number of targets in a map is ten (0 - 9).**
  *
  * @param input The Map of the air ducts to parse and load.
- * @param copy If set to true the specified [Grid2d] will be used as the source.
+ * @param copy If set to true the specified [Grid2D] will be used as the source.
  * @param grid2d If copy set to true and this is not null, then this grid is used
  * as the source of targets for this instance.
  */
 class AirDuctCleaning(
-    input: List<String>,
-    copy: Boolean = false,
-    grid2d: Grid2d<Tile>? = null,
+  input: List<String>,
+  copy: Boolean = false,
+  grid2d: Grid2D<Tile>? = null,
 ) {
   /**
    * A [Tile] in the [AirDuctCleaning] map.
@@ -212,7 +212,7 @@ class AirDuctCleaning(
     }
   }
 
-  private val grid: Grid2d<Tile> = if (copy && grid2d != null) {
+  private val grid: Grid2D<Tile> = if (copy && grid2d != null) {
     grid2d.copy()
   } else {
     buildGrid(input)
@@ -246,7 +246,7 @@ class AirDuctCleaning(
    * @param input The map to parse and load.
    */
   @SuppressFBWarnings
-  private fun buildGrid(input: List<String>): Grid2d<Tile> {
+  private fun buildGrid(input: List<String>): Grid2D<Tile> {
     var columns = 0
     var rows = 0
     val tiles = mutableListOf<Tile>()
@@ -277,7 +277,7 @@ class AirDuctCleaning(
     tiles.forEach { tile ->
       items[tile.point.y * columns + tile.point.x] = tile
     }
-    return Grid2d(columns, rows, items)
+    return Grid2D(columns, rows, items)
   }
 
   /**

@@ -391,7 +391,7 @@ public class HikingTrails {
      *     the specified direction one space.
      */
     public Point2D<Integer> pointInDirection(Direction direction) {
-      return Grid2d.pointInDirection(point, direction);
+      return Grid2D.pointInDirection(point, direction);
     }
 
     @Override
@@ -625,7 +625,7 @@ public class HikingTrails {
   private record RowResults(List<TrailTile> tiles, Point2D<Integer> initialPosition) {
   }
 
-  private final Grid2d<TrailTile> grid;
+  private final Grid2D<TrailTile> grid;
   private final Graph<TrailTile, Integer> intersectionGraph;
   private final Graph<TrailTile, Long> segmentGraph;
   private final Map<String, HikingSegment> segmentMap;
@@ -635,7 +635,7 @@ public class HikingTrails {
   private final boolean virtualGrid;
 
   private HikingTrails(
-      Grid2d<TrailTile> grid,
+      Grid2D<TrailTile> grid,
       TrailTile start,
       TrailTile finish,
       boolean ignoreSlopes,
@@ -1139,7 +1139,7 @@ public class HikingTrails {
     }
 
     return new HikingTrails(
-        new Grid2d<>(
+        new Grid2D<>(
             rows.get(), columns.get(), tiles.toArray(new TrailTile[rows.get() * columns.get()])
         ),
         startTile.get(),

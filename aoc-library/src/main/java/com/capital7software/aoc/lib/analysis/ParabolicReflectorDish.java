@@ -2,7 +2,7 @@ package com.capital7software.aoc.lib.analysis;
 
 import com.capital7software.aoc.lib.geometry.Direction;
 import com.capital7software.aoc.lib.geometry.Point2D;
-import com.capital7software.aoc.lib.grid.Grid2d;
+import com.capital7software.aoc.lib.grid.Grid2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -245,7 +245,7 @@ public class ParabolicReflectorDish {
     }
   }
 
-  private record Platform(@NotNull Grid2d<Tile> grid) {
+  private record Platform(@NotNull Grid2D<Tile> grid) {
 
     public static @NotNull Platform parse(@NotNull List<String> input) {
       var tiles = new ArrayList<Tile>();
@@ -267,7 +267,7 @@ public class ParabolicReflectorDish {
       });
 
       return new Platform(
-          new Grid2d<>(
+          new Grid2D<>(
               columns.get(),
               rows.get(),
               tiles.toArray(new Tile[columns.get() * rows.get()])

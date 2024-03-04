@@ -64,34 +64,14 @@ class PassphraseValidator(phrases: List<String>) {
   fun validNewPhraseRules(): List<String> {
     val answer = mutableListOf<String>()
     passPhrases.forEach { phrase ->
-      val words = phrase.split("\\s+".toRegex())
+      val words = phrase.split("\\s+".toRegex()).map { String(it.toCharArray().apply { sort() }) }
 
-      val wordMap = mutableMapOf<String, MutableMap<Char, Int>>()
-      var valid = true
+      val wordSet = mutableSetOf<String>()
 
-      words.forEach { word ->
-        if (wordMap.containsKey(word)) {
-          valid = false // No duplicate words!!
-        } else {
-          val map = wordMap.computeIfAbsent(word) { mutableMapOf() }
+      words.forEach { wordSet.add(it) }
 
-          word.toCharArray().forEach { letter ->
-            val current = map.computeIfAbsent(letter) { 0 }
-            map[letter] = current + 1
-          }
-        }
-      }
-
-      if (valid) {
-        val wordSets = wordMap.values.map { word -> word.map { Pair(it.key, it.value) }.toSet() }
-
-        val validSets = mutableSetOf<Set<Pair<Char, Int>>>()
-
-        wordSets.forEach { validSets.add(it) }
-
-        if (wordSets.size == validSets.size) {
-          answer.add(phrase)
-        }
+      if (words.size == wordSet.size) {
+        answer.add(phrase)
       }
     }
 

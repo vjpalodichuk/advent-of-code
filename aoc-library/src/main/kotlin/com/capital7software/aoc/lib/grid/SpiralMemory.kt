@@ -14,7 +14,7 @@ import kotlin.math.sqrt
  */
 class SpiralMemory(private val cellWithData: Int) {
   private companion object {
-    private const val MIN_LENGTH: Int = 20
+    private const val MIN_LENGTH: Int = 10
   }
 
   /**

@@ -20,11 +20,11 @@ interface LightInstruction {
   val hasAlternate: Boolean
 
   /**
-   * Applies this [LightInstruction] to the specified [Grid2d].
+   * Applies this [LightInstruction] to the specified [Grid2D].
    *
-   * @param grid The [Grid2d] to apply this instruction to.
+   * @param grid The [Grid2D] to apply this instruction to.
    */
-  fun apply(grid: Grid2d<Int>)
+  fun apply(grid: Grid2D<Int>)
 }
 
 /**
@@ -35,9 +35,9 @@ interface LightInstructionWithAlternate : LightInstruction {
   /**
    * Applies the alternate form of this instruction.
    *
-   * @param grid The [Grid2d] to apply this instruction to.
+   * @param grid The [Grid2D] to apply this instruction to.
    */
-  fun applyAlternate(grid: Grid2d<Int>)
+  fun applyAlternate(grid: Grid2D<Int>)
 }
 
 /**
@@ -79,11 +79,11 @@ class TurnOnRangeLightInstruction(
     val point1: Point2D<Int>,
     val point2: Point2D<Int>,
 ) : RangeLightInstruction(LightInstructionType.TURN_ON) {
-  override fun apply(grid: Grid2d<Int>) {
+  override fun apply(grid: Grid2D<Int>) {
     grid.set(point1, point2, 1)
   }
 
-  override fun applyAlternate(grid: Grid2d<Int>) {
+  override fun applyAlternate(grid: Grid2D<Int>) {
     grid.adjustBy(point1, point2) { current: Int -> current + 1 }
   }
 }
@@ -102,11 +102,11 @@ class TurnOffRangeLightInstruction(
     val point1: Point2D<Int>,
     val point2: Point2D<Int>,
 ) : RangeLightInstruction(LightInstructionType.TURN_OFF) {
-  override fun apply(grid: Grid2d<Int>) {
+  override fun apply(grid: Grid2D<Int>) {
     grid.set(point1, point2, 0)
   }
 
-  override fun applyAlternate(grid: Grid2d<Int>) {
+  override fun applyAlternate(grid: Grid2D<Int>) {
     grid.adjustBy(point1, point2) { current: Int -> max(0, (current - 1)) }
   }
 }
@@ -125,11 +125,11 @@ class ToggleRangeLightInstruction(
     val point1: Point2D<Int>,
     val point2: Point2D<Int>,
 ) : RangeLightInstruction(LightInstructionType.TOGGLE) {
-  override fun apply(grid: Grid2d<Int>) {
+  override fun apply(grid: Grid2D<Int>) {
     grid.toggle(point1, point2, 1, 0)
   }
 
-  override fun applyAlternate(grid: Grid2d<Int>) {
+  override fun applyAlternate(grid: Grid2D<Int>) {
     grid.adjustBy(point1, point2) { current: Int -> current + 2 }
   }
 }
@@ -145,7 +145,7 @@ class RectangleLightInstruction(
     val columns: Int,
     val rows: Int,
 ) : BaseLightInstruction(LightInstructionType.RECT) {
-  override fun apply(grid: Grid2d<Int>) {
+  override fun apply(grid: Grid2D<Int>) {
     grid.set(0, 0, columns - 1, rows -1, 1)
   }
 }
@@ -161,7 +161,7 @@ class RotateRowInstruction(
     val rowIndex: Int,
     val by: Int,
 ) : BaseLightInstruction(LightInstructionType.ROTATE_ROW) {
-  override fun apply(grid: Grid2d<Int>) {
+  override fun apply(grid: Grid2D<Int>) {
     val current = grid.getRow(rowIndex)
     val row = ArrayList(current)
     current.withIndex().forEach {
@@ -182,7 +182,7 @@ class RotateColumnInstruction(
     val columnIndex: Int,
     val by: Int,
 ) : BaseLightInstruction(LightInstructionType.ROTATE_COLUMN) {
-  override fun apply(grid: Grid2d<Int>) {
+  override fun apply(grid: Grid2D<Int>) {
     val current = grid.getColumn(columnIndex)
     val column = ArrayList(current)
     current.withIndex().forEach {

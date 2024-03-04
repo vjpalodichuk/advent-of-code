@@ -239,7 +239,7 @@ public class GardenSteps {
   private record RowResults(List<GardenTile> tiles, Point2D<Integer> initialPosition) {
   }
 
-  private record Garden(Grid2d<GardenTile> grid, Point2D<Integer> initialPosition) {
+  private record Garden(Grid2D<GardenTile> grid, Point2D<Integer> initialPosition) {
     public static final Long LONG_WALK_THRESHOLD = 100L;
 
     public static Garden buildGarden(List<String> input) {
@@ -266,7 +266,7 @@ public class GardenSteps {
       rowResults.stream().map(RowResults::tiles).forEach(tiles::addAll);
 
       return new Garden(
-          new Grid2d<>(
+          new Grid2D<>(
               rows.get(),
               columns.get(),
               tiles.toArray(new GardenTile[rows.get() * columns.get()])
@@ -459,7 +459,7 @@ public class GardenSteps {
       var neighbors = new LinkedList<GardenTile>();
 
       for (var direction : Direction.CARDINAL_DIRECTIONS) {
-        var newPoint = Grid2d.pointInDirection(tile.point(), direction);
+        var newPoint = Grid2D.pointInDirection(tile.point(), direction);
         var realPoint = virtual ? grid.virtualToReal(newPoint) : newPoint;
         if (grid.isOnGrid(realPoint)) {
           var neighbor = grid.get(realPoint);
@@ -476,7 +476,7 @@ public class GardenSteps {
       var neighbors = new LinkedList<Point2D<Integer>>();
 
       for (var direction : Direction.CARDINAL_DIRECTIONS) {
-        var newPoint = Grid2d.pointInDirection(point, direction);
+        var newPoint = Grid2D.pointInDirection(point, direction);
         var realPoint = grid.virtualToReal(newPoint);
         if (grid.isOnGrid(realPoint)) {
           var neighbor = grid.get(realPoint);

@@ -513,7 +513,7 @@ public class PipeMaze {
           || connectsEastTo(other);
     }
 
-    public List<MazeTile> getNeighbors(Grid2d<MazeTile> grid) {
+    public List<MazeTile> getNeighbors(Grid2D<MazeTile> grid) {
       return grid.getNeighbors(getPoint())
           .stream()
           .map(Pair::second)
@@ -576,10 +576,10 @@ public class PipeMaze {
 
   }
 
-  private final Grid2d<MazeTile> grid;
+  private final Grid2D<MazeTile> grid;
   private final MazeTile startTile;
 
-  private PipeMaze(@NotNull Grid2d<MazeTile> grid, MazeTile startTile) {
+  private PipeMaze(@NotNull Grid2D<MazeTile> grid, MazeTile startTile) {
     this.grid = grid.copy();
     this.startTile = startTile;
   }
@@ -594,7 +594,7 @@ public class PipeMaze {
     final var maze = new ArrayList<MazeTile>();
     final var mazeSize = loadMaze(input, maze);
     final var mazeTotalSize = mazeSize.first() * mazeSize.second();
-    var grid = new Grid2d<>(
+    var grid = new Grid2D<>(
         mazeSize.first(), mazeSize.second(), maze.toArray(new MazeTile[mazeTotalSize]));
 
     final var startTile = findStartingTile(maze);
@@ -640,26 +640,26 @@ public class PipeMaze {
     throw new RuntimeException("Unable to find the starting tile!");
   }
 
-  private static MazeTile determineStartingTileType(MazeTile startTile, Grid2d<MazeTile> grid) {
+  private static MazeTile determineStartingTileType(MazeTile startTile, Grid2D<MazeTile> grid) {
     var directions = new HashSet<Direction>();
     var startPoint = startTile.getPoint();
 
     // Check north, west, east, and south of the start tile to find two tiles that connect to
     // the starting tile
-    if (startTile.getY() > 0 && grid.get(Grid2d.pointInDirection(startPoint, Direction.NORTH))
+    if (startTile.getY() > 0 && grid.get(Grid2D.pointInDirection(startPoint, Direction.NORTH))
         .connectsSouth()) {
       directions.add(Direction.NORTH);
     }
-    if (startTile.getX() > 0 && grid.get(Grid2d.pointInDirection(startPoint, Direction.WEST))
+    if (startTile.getX() > 0 && grid.get(Grid2D.pointInDirection(startPoint, Direction.WEST))
         .connectsEast()) {
       directions.add(Direction.WEST);
     }
     if (startTile.getY() < grid.rows() - 1
-        && grid.get(Grid2d.pointInDirection(startPoint, Direction.SOUTH)).connectsNorth()) {
+        && grid.get(Grid2D.pointInDirection(startPoint, Direction.SOUTH)).connectsNorth()) {
       directions.add(Direction.SOUTH);
     }
     if (startTile.getX() < grid.columns() - 1
-        && grid.get(Grid2d.pointInDirection(startPoint, Direction.EAST)).connectsWest()) {
+        && grid.get(Grid2D.pointInDirection(startPoint, Direction.EAST)).connectsWest()) {
       directions.add(Direction.EAST);
     }
 
@@ -707,7 +707,7 @@ public class PipeMaze {
 
   private static long calculateTilesEnclosedInLoop(
       @NotNull Map<MazeTile, Integer> mainLoop,
-      @NotNull Grid2d<MazeTile> grid
+      @NotNull Grid2D<MazeTile> grid
   ) {
     final var directions = Set.of(Tile.VERTICAL, Tile.NORTH_EAST, Tile.NORTH_WEST);
 
@@ -742,7 +742,7 @@ public class PipeMaze {
    */
   private static Map<MazeTile, Integer> calculateDistancesBfs(
       @NotNull final MazeTile startTile,
-      @NotNull final Grid2d<MazeTile> grid
+      @NotNull final Grid2D<MazeTile> grid
   ) {
     final var queue = new PriorityQueue<MazeTile>();
     final var distances = new HashMap<MazeTile, Integer>();
@@ -777,7 +777,7 @@ public class PipeMaze {
       @NotNull final MazeTile tile,
       final int level,
       @NotNull final Map<MazeTile, Integer> distances,
-      @NotNull final Grid2d<MazeTile> grid
+      @NotNull final Grid2D<MazeTile> grid
   ) {
     distances.put(tile, level);
 

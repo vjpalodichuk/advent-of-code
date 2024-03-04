@@ -68,11 +68,11 @@ private const val TURN_OFF_UPPER_LIMIT = 3L
  */
 @SuppressFBWarnings
 class LightGrid(
-    grid: Grid2d<Int>,
-    instructions: List<LightInstruction>
+  grid: Grid2D<Int>,
+  instructions: List<LightInstruction>
 ) {
 
-  private val grid: Grid2d<Int> = grid.copy()
+  private val grid: Grid2D<Int> = grid.copy()
   private val instructions: List<LightInstruction> = ArrayList(instructions)
 
   companion object {
@@ -103,7 +103,7 @@ class LightGrid(
     ): LightGrid {
       val items = Array(columns * rows) { 0 }
 
-      val grid = Grid2d(columns, rows, items)
+      val grid = Grid2D(columns, rows, items)
       val lights = LightGrid(grid, parse(rawInstructions))
       lights.reset()
 
@@ -166,7 +166,11 @@ class LightGrid(
         items[columns.get() * rows.get() - columns.get()] = 1
       }
 
-      val grid = Grid2d(columns.get(), rows.get(), items)
+      val grid = Grid2D(
+        columns.get(),
+        rows.get(),
+        items
+      )
 
       return LightGrid(grid, ArrayList())
     }
@@ -187,7 +191,7 @@ class LightGrid(
    *
    * @return A copy of the Grid2D used by this instance.
    */
-  fun grid(): Grid2d<Int> {
+  fun grid(): Grid2D<Int> {
     return grid.copy()
   }
 

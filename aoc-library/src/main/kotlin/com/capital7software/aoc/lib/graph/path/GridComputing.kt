@@ -4,7 +4,7 @@ import com.capital7software.aoc.lib.geometry.Direction
 import com.capital7software.aoc.lib.geometry.Point2D
 import com.capital7software.aoc.lib.graph.Graph
 import com.capital7software.aoc.lib.graph.Vertex
-import com.capital7software.aoc.lib.grid.Grid2d
+import com.capital7software.aoc.lib.grid.Grid2D
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.time.Instant
 import java.util.Objects
@@ -42,13 +42,13 @@ import java.util.function.BiFunction
  * - The data on node A (its Used) **would fit** on node B (its Avail).
  *
  * @param input The [List] of [String] that contain the output from the df -h command.
- * @param copyFrom The [Grid2d] to copy and populate this grid from.
+ * @param copyFrom The [Grid2D] to copy and populate this grid from.
  */
 class GridComputing @SuppressFBWarnings constructor(
-    input: List<String>,
-    copyFrom: Grid2d<GridNode>? = null,
+  input: List<String>,
+  copyFrom: Grid2D<GridNode>? = null,
 ) {
-  private val grid: Grid2d<GridNode> = copyFrom?.copy() ?: buildGrid(input)
+  private val grid: Grid2D<GridNode> = copyFrom?.copy() ?: buildGrid(input)
   private val expanded: MutableSet<String> = mutableSetOf()
 
   /**
@@ -248,7 +248,7 @@ class GridComputing @SuppressFBWarnings constructor(
   }
 
   @SuppressFBWarnings
-  private fun buildGrid(input: List<String>): Grid2d<GridNode> {
+  private fun buildGrid(input: List<String>): Grid2D<GridNode> {
     var maxX = 0
     var maxY = 0
     val nodes = mutableListOf<GridNode>()
@@ -278,7 +278,7 @@ class GridComputing @SuppressFBWarnings constructor(
       items[node.point.y * maxX + node.point.x] = node
     }
 
-    return Grid2d(maxX, maxY, items)
+    return Grid2D(maxX, maxY, items)
   }
 
   /**
@@ -392,7 +392,7 @@ class GridComputing @SuppressFBWarnings constructor(
   }
 
   private fun moveEmptyTo(
-      gridToUse: Grid2d<GridNode>, empty: GridNode, goalDataAt: GridNode, goal: GridNode
+    gridToUse: Grid2D<GridNode>, empty: GridNode, goalDataAt: GridNode, goal: GridNode
   ): Pair<Int, List<GridNode>> {
     if (empty == goal) {
       return Pair(0, listOf())
@@ -437,7 +437,7 @@ class GridComputing @SuppressFBWarnings constructor(
   }
 
   private fun buildPathToGoalExpander(
-      gridToUse: Grid2d<GridNode>, ignore: GridNode? = null
+    gridToUse: Grid2D<GridNode>, ignore: GridNode? = null
   ): BiFunction<Graph<GridNode, Int>, Vertex<GridNode, Int>, Boolean> {
     return BiFunction<Graph<GridNode, Int>, Vertex<GridNode, Int>, Boolean> @SuppressFBWarnings
     { graph, vertex ->
@@ -471,7 +471,7 @@ class GridComputing @SuppressFBWarnings constructor(
   }
 
   private fun findPathToGoal(
-      gridToUse: Grid2d<GridNode>, start: GridNode, finish: GridNode, ignore: GridNode? = null
+    gridToUse: Grid2D<GridNode>, start: GridNode, finish: GridNode, ignore: GridNode? = null
   ): Pair<Int, List<GridNode>> {
     expanded.clear()
     val initialState = Vertex<GridNode, Int>(start.id, start)
@@ -517,7 +517,7 @@ class GridComputing @SuppressFBWarnings constructor(
    * @return A [List] of [GridNode] that this node can potentially swap data with.
    */
   private fun nextStates(
-      gridToUse: Grid2d<GridNode>, gridNode: GridNode, ignore: GridNode? = null
+    gridToUse: Grid2D<GridNode>, gridNode: GridNode, ignore: GridNode? = null
   ): List<GridNode> {
     val answer = mutableListOf<GridNode>()
 
@@ -541,7 +541,7 @@ class GridComputing @SuppressFBWarnings constructor(
     return answer
   }
 
-  private fun getEmptyNode(gridToUse: Grid2d<GridNode>): GridNode {
+  private fun getEmptyNode(gridToUse: Grid2D<GridNode>): GridNode {
     var answer: GridNode? = null
 
     for (node in gridToUse) {

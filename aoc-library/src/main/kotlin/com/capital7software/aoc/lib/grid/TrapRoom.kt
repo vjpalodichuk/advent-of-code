@@ -77,9 +77,9 @@ import com.capital7software.aoc.lib.geometry.Point2D
  * Starting with the map in your puzzle input, in a total of 40 rows
  * (including the starting row), **how many safe tiles** are there?
  *
- * @param grid2d The backing [Grid2d] for this [TrapRoom].
+ * @param grid2d The backing [Grid2D] for this [TrapRoom].
  */
-class TrapRoom private constructor(grid2d: Grid2d<Char>) {
+class TrapRoom private constructor(grid2d: Grid2D<Char>) {
   companion object {
     private val TRAPS = setOf("^^.", ".^^", "^..", "..^")
   }
@@ -94,7 +94,10 @@ class TrapRoom private constructor(grid2d: Grid2d<Char>) {
    * @param rows The total number of rows this trap room will have (including the initial row).
    */
   constructor(input: String, rows: Int) : this(
-      Grid2d<Char>(input.length, rows, Array<Char>(input.length * rows) { '_' })
+    Grid2D<Char>(
+      input.length,
+      rows,
+      Array<Char>(input.length * rows) { '_' })
   ) {
     // Copy the input string to the new grid.
     for (i in input.indices) {

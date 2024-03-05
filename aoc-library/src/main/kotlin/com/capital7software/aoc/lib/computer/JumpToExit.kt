@@ -11,8 +11,12 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * in the list. The goal is to follow the jumps until one leads **outside** the list.
  *
  * @param jumpOffsets The [String] integer list of offsets to process.
+ * @param newRules If set to true, then new rules to modify the offsets will be in effect.
  */
-class JumpToExit @SuppressFBWarnings constructor(jumpOffsets: List<String>) {
+class JumpToExit @SuppressFBWarnings constructor(
+    jumpOffsets: List<String>,
+    newRules: Boolean = false
+) {
   private val offsets: List<Int> = jumpOffsets.map { it.toInt() }
 
   /**
@@ -54,7 +58,9 @@ class JumpToExit @SuppressFBWarnings constructor(jumpOffsets: List<String>) {
    * @param newRules If set to true, then the new rules of decreasing an offset by 1 if it was
    * equal to or greater than three are in effect.
    */
-  fun stepsToExitLoop(newRules: Boolean = false): Int {
+  val steps: Int by lazy { stepsToExitLoop(newRules) }
+
+  private fun stepsToExitLoop(newRules: Boolean = false): Int {
     var i = 0
     val temp = arrayListOf<Int>().apply { addAll(offsets) }
     var steps = 0

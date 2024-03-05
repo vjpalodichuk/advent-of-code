@@ -78,7 +78,7 @@ class Day06 : AdventOfCodeSolution {
     val answer = cyclesRequiredToDetectLoop(input.first())
     val end = Instant.now()
 
-    log.info("$answer is the number redistribution cycles that must be completed to detect the "
+    log.info("$answer is the number of redistribution cycles that must be completed to detect the "
                  + "infinite loop!")
     logTimings(log, start, end)
   }
@@ -88,7 +88,7 @@ class Day06 : AdventOfCodeSolution {
     val answer = cyclesRequiredToDetectLoop(input.first(), true)
     val end = Instant.now()
 
-    log.info("$answer is the length infinite loop cycle!")
+    log.info("$answer is the length of the infinite loop cycle!")
     logTimings(log, start, end)
   }
 

@@ -95,8 +95,8 @@ class Day05 : AdventOfCodeSolution {
    * @return The number of steps required to exit the specified loop of jump offsets.
    */
   fun stepsToExitLoop(input: List<String>, newRules: Boolean = false): Int {
-    val instance = JumpToExit(input)
+    val instance = JumpToExit(input, newRules)
 
-    return instance.stepsToExitLoop(newRules)
+    return instance.steps
   }
 }

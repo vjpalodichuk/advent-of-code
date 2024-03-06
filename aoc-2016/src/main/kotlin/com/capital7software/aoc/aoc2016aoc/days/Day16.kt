@@ -1,7 +1,6 @@
 package com.capital7software.aoc.aoc2016aoc.days
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution
-import com.capital7software.aoc.lib.math.DiscSculpture
 import com.capital7software.aoc.lib.string.DragonChecksum
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.time.Instant
@@ -118,10 +117,10 @@ class Day16 : AdventOfCodeSolution {
   }
 
   /**
-   * Calculates and returns the time to push the button of the sculpture so that the capsule
-   * it releases goes through all the discs in the sculpture.
+   * Calculates and returns the [DragonChecksum] based on the specified input.
    *
-   * @param input The [List] of [String] to parse into a [DiscSculpture]
+   * @param input The [String] to parse as the initial state for calculating the checksum.
+   * @return The [DragonChecksum] based on the specified input.
    */
   @SuppressFBWarnings
   fun generateChecksum(input: String, length: Int): String {

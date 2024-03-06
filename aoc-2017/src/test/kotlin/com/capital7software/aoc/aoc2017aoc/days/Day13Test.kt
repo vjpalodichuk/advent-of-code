@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class Day12Test : AdventOfCodeTestBase() {
+class Day13Test : AdventOfCodeTestBase() {
   companion object {
-    val log: Logger = LoggerFactory.getLogger(Day12Test::class.java)
+    val log: Logger = LoggerFactory.getLogger(Day13Test::class.java)
   }
 
   override fun getLogger(): Logger {
@@ -18,32 +18,32 @@ class Day12Test : AdventOfCodeTestBase() {
 
   @BeforeEach
   fun setup() {
-    val instance = Day12()
+    val instance = Day13()
     setupFromFile(instance.defaultInputFilename)
   }
 
   @Test
-  fun testProgramsInGroup() {
-    val instance = Day12()
-    val expected = 6
+  fun testTakeTrip() {
+    val instance = Day13()
+    val expected = Pair(0, 24)
 
-    val actual = instance.programsInGroup(lines, 0)
+    val actual = instance.takeTrip(lines)
 
     Assertions.assertEquals(
-        expected, actual, "The number of programs in group 0 " +
+        expected, actual, "The severity " +
         "is not what was expected: $expected"
     )
   }
 
   @Test
-  fun testAllGroups() {
-    val instance = Day12()
-    val expected = 2
+  fun testTakeTripNoCatch() {
+    val instance = Day13()
+    val expected = Pair(10, 0)
 
-    val actual = instance.allGroups(lines)
+    val actual = instance.takeTrip(lines, true)
 
     Assertions.assertEquals(
-        expected, actual, "The number of groups " +
+        expected, actual, "The severity " +
         "is not what was expected: $expected"
     )
   }

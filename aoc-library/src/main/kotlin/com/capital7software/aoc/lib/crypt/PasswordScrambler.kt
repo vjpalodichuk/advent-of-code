@@ -1,8 +1,14 @@
 package com.capital7software.aoc.lib.crypt
 
+import com.capital7software.aoc.lib.string.StringOperation
+import com.capital7software.aoc.lib.string.MovePositions
+import com.capital7software.aoc.lib.string.ReversePositions
+import com.capital7software.aoc.lib.string.RotateBasedOnPosition
+import com.capital7software.aoc.lib.string.RotateLeft
+import com.capital7software.aoc.lib.string.RotateRight
+import com.capital7software.aoc.lib.string.SwapLetters
+import com.capital7software.aoc.lib.string.SwapPositions
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
-import kotlin.math.max
-import kotlin.math.min
 
 /**
  * The computer system you're breaking into uses a weird scrambling function to store its
@@ -51,7 +57,7 @@ import kotlin.math.min
  *
  */
 class PasswordScrambler() {
-  private val instructions = mutableListOf<Instruction>()
+  private val stringOperations = mutableListOf<StringOperation>()
 
   /**
    * Instantiates a new [PasswordScrambler] with the specified salt and list of
@@ -61,10 +67,10 @@ class PasswordScrambler() {
    */
   @SuppressFBWarnings
   constructor(instructions: List<String>) : this() {
-    this.instructions.addAll(instructions.map { parseInstruction(it) })
+    this.stringOperations.addAll(instructions.map { parseInstruction(it) })
   }
 
-  companion object {
+  private companion object {
     private val SWAP_POSITIONS = """swap position (\d+) with position (\d+)""".toRegex()
     private val SWAP_LETTERS = """swap letter (\w) with letter (\w)""".toRegex()
     private val ROTATE_LEFT = """rotate left (\d+) step""".toRegex()
@@ -75,175 +81,8 @@ class PasswordScrambler() {
     private val MOVE_POSITIONS = """move position (\d+) to position (\d+)""".toRegex()
   }
 
-  private interface Instruction {
-    fun execute(letters: CharArray)
-    fun inverse(letters: CharArray) = execute(letters)
-  }
 
-  private data class SwapPositions(val first: Int, val second: Int) : Instruction {
-    override fun execute(letters: CharArray) {
-      val t = letters[first]
-      letters[first] = letters[second]
-      letters[second] = t
-    }
-  }
-
-  private data class SwapLetters(val first: Char, val second: Char) : Instruction {
-    override fun execute(letters: CharArray) {
-      var i = -1
-      var j = -1
-
-      for (k in letters.indices) {
-        if (letters[k] == first) {
-          i = k
-        }
-        if (letters[k] == second) {
-          j = k
-        }
-        if (i >= 0 && j >= 0) {
-          break
-        }
-      }
-      check(i >= 0 && j >= 0) { "Unable to swap letters" }
-
-      val t = letters[i]
-      letters[i] = letters[j]
-      letters[j] = t
-    }
-  }
-
-  private data class RotateLeft(val steps: Int) : Instruction {
-    override fun execute(letters: CharArray) {
-      val left = steps % letters.size
-
-      if (left == 0 || left == letters.size) {
-        return
-      }
-
-      val t = CharArray(left)
-      letters.copyInto(t, 0, 0, left)
-
-      for (i in left..<letters.size) {
-        letters[i - left] = letters[i]
-      }
-
-      t.copyInto(letters, letters.size - left)
-    }
-
-    override fun inverse(letters: CharArray) {
-      RotateRight(steps).execute(letters)
-    }
-  }
-
-  private data class RotateRight(val steps: Int) : Instruction {
-    override fun execute(letters: CharArray) {
-      val right = steps % letters.size
-
-      if (right == 0 || right == letters.size) {
-        return
-      }
-
-      val t = CharArray(right)
-      letters.copyInto(t, 0, letters.size - right)
-
-      for (i in letters.size - 1 - right downTo 0) {
-        letters[i + right] = letters[i]
-      }
-
-      t.copyInto(letters)
-    }
-
-    override fun inverse(letters: CharArray) {
-      RotateLeft(steps).execute(letters)
-    }
-  }
-
-  private data class RotateBasedOnPosition(val letter: Char) : Instruction {
-    companion object {
-      private val INV_MAP = mutableMapOf<Int, Int>().apply {
-        put(0, 7)
-        put(1, 7)
-        put(2, 2)
-        put(3, 6)
-        put(4, 1)
-        put(5, 5)
-        put(6, 0)
-        put(7, 4)
-      }
-    }
-
-    override fun execute(letters: CharArray) {
-      var index = -1
-
-      for (i in letters.indices) {
-        if (letters[i] == letter) {
-          index = i
-          break
-        }
-      }
-      check(index >= 0) { "Unable to find index of $letter" }
-      var steps = 1 + index
-      if (index >= 4) {
-        steps++
-      }
-      RotateRight(steps).execute(letters)
-    }
-
-    override fun inverse(letters: CharArray) {
-      var index = -1
-
-      for (i in letters.indices) {
-        if (letters[i] == letter) {
-          index = i
-          break
-        }
-      }
-      check(index >= 0) { "Unable to find index of $letter" }
-      val steps = INV_MAP[index] ?: error("Unexpected password length!")
-      RotateRight(steps).execute(letters)
-    }
-  }
-
-  private data class ReversePositions(val start: Int, val end: Int) : Instruction {
-    override fun execute(letters: CharArray) {
-      var min = min(start, end)
-      var max = max(start, end)
-
-      while (min < max) {
-        val t = letters[max]
-        letters[max] = letters[min]
-        letters[min] = t
-        min++
-        max--
-      }
-    }
-  }
-
-  private data class MovePositions(val source: Int, val destination: Int) : Instruction {
-    override fun execute(letters: CharArray) {
-      val t = letters[source]
-
-      if (destination > source) {
-        // move everything from source + 1 through destination to the left
-        for (i in source + 1..destination) {
-          letters[i - 1] = letters[i]
-        }
-      } else {
-        // move everything from destination through source - 1 to the right
-        for (i in source - 1 downTo destination) {
-          letters[i + 1] = letters[i]
-        }
-      }
-
-      letters[destination] = t
-    }
-
-    override fun inverse(letters: CharArray) {
-      MovePositions(destination, source).execute(letters)
-    }
-  }
-
-  private fun parseInstruction(instruction: String): Instruction {
+  private fun parseInstruction(instruction: String): StringOperation {
     return when (instruction.substring(0, 10)) {
       "swap posit" -> {
         val match = SWAP_POSITIONS.find(instruction)!!
@@ -310,7 +149,7 @@ class PasswordScrambler() {
   fun scramble(password: String): String {
     val chars = password.toCharArray()
 
-    instructions.forEach {
+    stringOperations.forEach {
       it.execute(chars)
     }
 
@@ -325,7 +164,7 @@ class PasswordScrambler() {
   fun unscramble(password: String): String {
     val chars = password.toCharArray()
 
-    instructions.reversed().forEach {
+    stringOperations.reversed().forEach {
       it.inverse(chars)
     }
 

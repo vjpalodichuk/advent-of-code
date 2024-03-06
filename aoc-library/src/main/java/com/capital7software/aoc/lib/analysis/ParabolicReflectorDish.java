@@ -497,11 +497,6 @@ public class ParabolicReflectorDish {
         calculatedIndex = detectedCycleIndex
             + ((cyclesToPerform - detectedCycleIndex) % (cycleCount - detectedCycleIndex));
         gridCache.get((int) calculatedIndex)
-            .forEach(it -> {
-
-            });
-
-        gridCache.get((int) calculatedIndex)
             .forEach(tile -> grid.set(tile.getPoint(), tile));
       }
     }

@@ -249,3 +249,34 @@ class KnotHash @SuppressFBWarnings constructor(val input: String, listSize: Int 
     return builder.toString()
   }
 }
+
+/**
+ * Converts this [String] from a hexadecimal string to a new binary string.
+ *
+ * For example:
+ *
+ * A hexadecimal string that begins with: a0c2017
+ *
+ * Would be converted to a binary string that begins with: 10100000110000100000000101110000
+ *
+ * @return A new [String] converted from hexadecimal to binary.
+ */
+fun String.hexToBin(): String {
+  var hex = lowercase().replace("0", "0000")
+  hex = hex.replace("1", "0001")
+  hex = hex.replace("2", "0010")
+  hex = hex.replace("3", "0011")
+  hex = hex.replace("4", "0100")
+  hex = hex.replace("5", "0101")
+  hex = hex.replace("6", "0110")
+  hex = hex.replace("7", "0111")
+  hex = hex.replace("8", "1000")
+  hex = hex.replace("9", "1001")
+  hex = hex.replace("a", "1010")
+  hex = hex.replace("b", "1011")
+  hex = hex.replace("c", "1100")
+  hex = hex.replace("d", "1101")
+  hex = hex.replace("e", "1110")
+  hex = hex.replace("f", "1111")
+  return hex
+}

@@ -412,7 +412,7 @@ class AirDuctCleaning(
     val neighbors = grid.getNeighbors(
         tile.point,
         Direction.CARDINAL_DIRECTIONS
-    ) { it.walkable }
+    ) { value, _ -> value.walkable }
 
     if (neighbors.size >= 3 || neighbors.size < 2) {
       return true

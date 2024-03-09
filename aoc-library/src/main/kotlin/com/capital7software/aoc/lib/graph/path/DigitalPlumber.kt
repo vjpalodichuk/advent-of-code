@@ -1,7 +1,7 @@
 package com.capital7software.aoc.lib.graph.path
 
-import com.capital7software.aoc.lib.computer.clean
 import com.capital7software.aoc.lib.graph.Graph
+import com.capital7software.aoc.lib.string.clean
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.util.Properties
 

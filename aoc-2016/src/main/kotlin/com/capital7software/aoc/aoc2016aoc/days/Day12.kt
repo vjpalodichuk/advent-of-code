@@ -109,7 +109,7 @@ class Day12 : AdventOfCodeSolution {
   fun getValueInRegister(input: List<String>, register: String): Int {
     val computer = SmallComputer.buildSmallComputer(input)
     computer.run()
-    return computer[register]
+    return computer[register].toInt()
   }
 
   /**
@@ -130,8 +130,8 @@ class Day12 : AdventOfCodeSolution {
       destValue: Int
   ): Int {
     val computer = SmallComputer.buildSmallComputer(input)
-    computer[destRegister] = destValue
+    computer[destRegister] = destValue.toLong()
     computer.run()
-    return computer[register]
+    return computer[register].toInt()
   }
 }

@@ -1,6 +1,6 @@
 package com.capital7software.aoc.lib.math
 
-import com.capital7software.aoc.lib.computer.clean
+import com.capital7software.aoc.lib.string.clean
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 
 /**
@@ -427,7 +427,7 @@ class PacketScanner(input: List<String>, private val catchFree: Boolean = false)
   private fun calculateDelay(): Int {
     val layers = firewall.values
 
-    for (i in 0 .. MAX_ITERATIONS) {
+    for (i in 0..MAX_ITERATIONS) {
       if (layers.all { (it.depth + i) % it.divisor != 0 }) {
         return i
       }

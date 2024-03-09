@@ -1,5 +1,6 @@
 package com.capital7software.aoc.lib.computer
 
+import com.capital7software.aoc.lib.string.clean
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import kotlin.math.abs
 

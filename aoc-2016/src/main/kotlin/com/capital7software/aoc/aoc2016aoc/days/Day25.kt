@@ -100,13 +100,18 @@ class Day25 : AdventOfCodeSolution {
    */
   @SuppressFBWarnings
   fun getLowestPositiveInteger(input: List<String>): Int {
-    val instance = SmallComputer.buildSmallComputer(input)
+    val outputs = mutableListOf<Long>()
+    val instance = SmallComputer.buildSmallComputer(
+        input,
+        outputHandler = { output: Long -> outputs.add(output) }
+    )
     var answer = 0
-    val target = listOf(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1)
-    for (i in 0 ..< Int.MAX_VALUE) {
-      instance["a"] = i
-      val result = instance.runWithOutput()
-      if (target == result) {
+    val target = listOf<Long>(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1)
+    for (i in 0..<Int.MAX_VALUE) {
+      instance["a"] = i.toLong()
+      outputs.clear()
+      instance.runInfinite()
+      if (target == outputs) {
         answer = i
         break
       }

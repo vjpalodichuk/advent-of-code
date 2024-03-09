@@ -135,8 +135,8 @@ class Day23 : AdventOfCodeSolution {
   @SuppressFBWarnings
   fun getValueInRegister(input: List<String>, read: String, write: String, eggs: Int): Int {
     val computer = SmallComputer.buildSmallComputer(input)
-    computer[write] = eggs
+    computer[write] = eggs.toLong()
     computer.run()
-    return computer[read]
+    return computer[read].toInt()
   }
 }

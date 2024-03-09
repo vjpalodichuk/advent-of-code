@@ -1,9 +1,9 @@
 package com.capital7software.aoc.lib.grid
 
 import com.capital7software.aoc.lib.crypt.KnotHash
-import com.capital7software.aoc.lib.crypt.hexToBin
 import com.capital7software.aoc.lib.geometry.Direction
 import com.capital7software.aoc.lib.geometry.Point2D
+import com.capital7software.aoc.lib.string.hexToBin
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 
 /**
@@ -137,8 +137,8 @@ class DiskDefragmentation(val key: String) {
 
     var currentGroup = 0
 
-    for (x in 0 ..< grid.columns) {
-      for (y in 0 ..< grid.rows) {
+    for (x in 0..<grid.columns) {
+      for (y in 0..<grid.rows) {
         if (grid[x, y] && regionGrid[x, y] == 0) {
           markGroup(x, y, ++currentGroup, regionGrid)
         }

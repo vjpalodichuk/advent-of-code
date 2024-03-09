@@ -1,5 +1,7 @@
 package com.capital7software.aoc.lib.computer
 
+import com.capital7software.aoc.lib.string.clean
+
 /**
  * A debugger program here is having an issue: it is trying to repair a memory reallocation
  * routine, but it keeps getting stuck in an infinite loop.

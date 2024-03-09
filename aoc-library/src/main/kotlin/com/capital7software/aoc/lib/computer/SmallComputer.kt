@@ -126,6 +126,9 @@ class SmallComputer private constructor(
 
   /**
    * Executes the loaded program.
+   *
+   * @return A [Pair] where the first element is the primary context and the second element
+   * is the linked context which may be null if the execution didn't require a linked context.
    */
   @SuppressFBWarnings
   fun run(): Pair<ProgramContext, ProgramContext?> {
@@ -166,8 +169,11 @@ class SmallComputer private constructor(
    * Executes the loaded program that either is or possibly is an infinite program.
    *
    * @param max The maximum number of times to execute an [Out] or
-   * [RecoverFrequency] instruction before ending the program. Please note that
+   * [RecoverFrequency] instruction before ending the program. Also works with [Send] if
+   * the executing program requires a linked context. Please note that
    * the program may end prior to max being reached if it isn't an infinite program.
+   * @return A [Pair] where the first element is the primary context and the second element
+   * is the linked context which may be null if the execution didn't require a linked context.
    */
   @SuppressFBWarnings
   fun runInfinite(max: Int = DEFAULT_MAX_OUTPUT): Pair<ProgramContext, ProgramContext?> {

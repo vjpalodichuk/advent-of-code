@@ -121,6 +121,8 @@ import org.slf4j.LoggerFactory
  *
  * Once both of your programs have terminated (regardless of what caused them to do so),
  * **how many times did program 1 send a value**?
+ *
+ * Your puzzle answer was **6858**.
  */
 class Day18 : AdventOfCodeSolution {
   private companion object {

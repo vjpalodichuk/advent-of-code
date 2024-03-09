@@ -160,7 +160,7 @@ public class ClumsyCrucible {
   private record Tile(int heat, Point2D<Integer> point) {
   }
 
-  private static class Crucible {
+  private record Crucible(Grid2D<Tile> grid, Tile start, Tile end, int minSteps, int maxSteps) {
     private record Path(@NotNull Tile tile, @NotNull Direction direction, int steps) {
       @Override
       public boolean equals(Object o) {
@@ -211,13 +211,6 @@ public class ClumsyCrucible {
         return Long.compare(pathCost(), o.pathCost());
       }
     }
-
-    private final Grid2D<Tile> grid;
-    private final Tile start;
-    private final Tile end;
-
-    private final int minSteps;
-    private final int maxSteps;
 
     private Crucible(
         @NotNull Grid2D<Tile> grid,

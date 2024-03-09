@@ -80,7 +80,7 @@ import com.capital7software.aoc.lib.geometry.Point2D
  * @param grid2d The backing [Grid2D] for this [TrapRoom].
  */
 class TrapRoom private constructor(grid2d: Grid2D<Char>) {
-  companion object {
+  private companion object {
     private val TRAPS = setOf("^^.", ".^^", "^..", "..^")
   }
 

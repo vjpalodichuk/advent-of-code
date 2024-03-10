@@ -165,6 +165,84 @@ public record Point3D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T
   }
 
   /**
+   * Returns the absolute sum of the coordinates of this Point3D.
+   * <br><br>
+   * <code>
+   * abs(x) + abs(y) + abs(z)
+   * </code>>
+   *
+   * @return The sum of the coordinates of the specified Point3D.
+   */
+  public @NotNull T abssum() {
+    return abssum(this);
+  }
+
+  /**
+   * Returns the absolute sum of the coordinates of the specified Point3D.
+   * <br><br>
+   * <code>
+   * abs(x) + abs(y) + abs(z)
+   * </code>>
+   *
+   * @param point The point to sum.
+   * @param <T>   The type of the coordinates of the Point3D.
+   * @return The sum of the coordinates of the specified Point3D.
+   */
+  public static <T extends Number & Comparable<T>> @NotNull T abssum(Point3D<T> point) {
+    return MathOperations.add(
+        MathOperations.add(
+            MathOperations.abs(point.x),
+            MathOperations.abs(point.y)
+        ),
+        MathOperations.abs(point.z)
+    );
+  }
+
+  /**
+   * Returns the ID of this point in x,y,z format.
+   *
+   * @return The ID of this point in x,y,z format.
+   */
+  public String id() {
+    return x + "," + y + "," + z;
+  }
+
+  /**
+   * Returns the Manhattan Distance between two points. The Manhattan Distance is the sum of
+   * the absolute values of the coordinate differences. In other words it is
+   * abs(a.x() - b.x()) + abs(a.y() - b.y()) + abs(a.z() - b.z())
+   *
+   * @param a   The first point.
+   * @param b   The second point.
+   * @param <T> The type of the coordinate values.
+   * @return The Manhattan Distance between two points.
+   */
+  public static @NotNull <T extends Number & Comparable<T>> T manhattanDistance(
+      Point3D<T> a,
+      Point3D<T> b
+  ) {
+    return MathOperations.add(
+        MathOperations.add(
+            MathOperations.abs(MathOperations.subtract(a.x, b.x)),
+            MathOperations.abs(MathOperations.subtract(a.y, b.y))
+        ),
+        MathOperations.abs(MathOperations.subtract(a.z, b.z))
+    );
+  }
+
+  /**
+   * Returns the Manhattan Distance between two points. The Manhattan Distance is the sum of
+   * the absolute values of the coordinate differences. In other words it is
+   * abs(a.x() - b.x()) + abs(a.y() - b.y()) + abs(a.z() - b.z())
+   *
+   * @param other The point to get the distance from this point.
+   * @return The Manhattan Distance between this point and the other point.
+   */
+  public @NotNull T manhattanDistance(Point3D<T> other) {
+    return manhattanDistance(this, other);
+  }
+
+  /**
    * Returns the x element. Used by Kotlin to support decomposing assignments.
    *
    * @return The x element.

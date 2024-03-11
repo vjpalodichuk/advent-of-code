@@ -51,6 +51,7 @@ object InstructionFactory {
       "jio" -> JumpIfOne(split[1].clean(), split[2].clean())
       "tgl" -> Toggle(split[1].clean())
       "add" -> Add(split[1].clean(), split[2].clean())
+      "sub" -> Subtract(split[1].clean(), split[2].clean())
       "mul" -> Multiply(split[1].clean(), split[2].clean())
       "noo" -> NoOpSingleArg(split[1].clean())
       "nop" -> NoOpTwoArg(split[1].clean(), split[2].clean())
@@ -203,8 +204,8 @@ class Jump(private val offset: String) : Instruction {
 }
 
 /**
- * - jnz x y jumps to an instruction y away (positive means forward; negative means backward),
- * but only if x is not zero; x may be a register or value.
+ * - jnz x y **jumps** to an instruction y away (positive means forward; negative means backward),
+ * but only if x is **not zero**; x may be a register or value.
  *
  * @param source The source register or an integer value.
  * @param offset The offset relative to this instruction.
@@ -399,7 +400,7 @@ class Toggle(val source: String) : Instruction {
 }
 
 /**
- * - add x y sets register x to the result of adding the current value of
+ * - add x y sets register x to the result of **adding** the current value of
  * register x to the value of y (either an integer or the value of a register).
  *
  * @param register The register to add source by and store the result in.
@@ -423,7 +424,30 @@ class Add(private val register: String, private val increment: String) : Instruc
 }
 
 /**
- * - mul x y sets register x to the result of multiplying the current value of
+ * - sub X Y **decreases** register X by the value of Y.
+ *
+ * @param register The register to add source by and store the result in.
+ * @param decrement The source register or an integer value.
+ */
+class Subtract(private val register: String, private val decrement: String) : Instruction {
+  override fun invoke(
+      context: ProgramContext
+  ): Int {
+    val src = decrement.toLongOrNull() ?: context[decrement]
+    context[register] -= src
+    return 1
+  }
+
+  override fun args(): List<String> =
+      listOf(decrement, register)
+
+  override fun toString(): String {
+    return "Subtract(register='$register', decrement='$decrement')"
+  }
+}
+
+/**
+ * - mul x y sets register x to the result of **multiplying** the current value of
  * register x by the value of y (either an integer or the value of a register).
  *
  * @param register The register to multiply by and store the result in.
@@ -566,7 +590,7 @@ class SetValue(private val register: String, private val source: String) : Instr
   }
 
   override fun toString(): String {
-    return "Set(source='$source', destination='$register')"
+    return "SeValue(register='$register', source='$source')"
   }
 }
 

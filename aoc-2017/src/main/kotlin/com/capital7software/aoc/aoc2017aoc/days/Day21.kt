@@ -206,4 +206,5 @@ class Day21 : AdventOfCodeSolution {
       i++
     }
     return Pair(instance.onCount, instance.offCount)
-  }}
+  }
+}

@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -35,11 +34,7 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>>
     implements Comparable<Vertex<T, E>> {
   private final String id;
   private String name;
-  /**
-   * -- SETTER --
-   * Sets the value of this Vertex to the specified value, which may be null.
-   */
-  @Setter
+
   private T value;
   private final Map<String, Edge<E>> edges;
 
@@ -328,5 +323,14 @@ public class Vertex<T extends Comparable<T>, E extends Comparable<E>>
    */
   public Vertex<T, E> copy() {
     return new Vertex<>(id, name, value, edges);
+  }
+
+  /**
+   * Sets the value of this Vertex to the specified value.
+   *
+   * @param value The new value for this Vertex.
+   */
+  public void setValue(T value) {
+    this.value = value;
   }
 }

@@ -275,7 +275,7 @@ class AirDuctCleaning(
     val items: Array<Tile> = Array(columns * rows) { Tile.Wall(Point2D<Int>(-1, -1)) }
 
     tiles.forEach { tile ->
-      items[tile.point.y * columns + tile.point.x] = tile
+      items[tile.point.y() * columns + tile.point.x()] = tile
     }
     return Grid2D(columns, rows, items)
   }

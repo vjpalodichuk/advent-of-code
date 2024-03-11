@@ -117,8 +117,8 @@ class Maze private constructor(
         favorite: Long,
         name: String = "maze-${Instant.now().nano}"
     ): Maze {
-      val start = Tile.from(startPoint.x, startPoint.y, favorite)
-      val finish = Tile.from(finishPoint.x, finishPoint.y, favorite)
+      val start = Tile.from(startPoint.x(), startPoint.y(), favorite)
+      val finish = Tile.from(finishPoint.x(), finishPoint.y(), favorite)
 
       check(start.isWalkable()) { "$start is not walkable" }
       check(finish.isWalkable()) { "$finish is not walkable" }
@@ -144,8 +144,8 @@ class Maze private constructor(
     fun neighbors(tile: Tile, favorite: Long): List<Tile> {
       return Direction.CARDINAL_DIRECTIONS
           .map { direction -> tile.point.pointInDirection(direction) }
-          .filter { point -> point.x >= 0 && point.y >= 0 }
-          .map { point -> Tile.from(point.x, point.y, favorite) }
+          .filter { point -> point.x() >= 0 && point.y() >= 0 }
+          .map { point -> Tile.from(point.x(), point.y(), favorite) }
           .filter { mazeTile -> mazeTile.isWalkable() }
     }
   }
@@ -215,7 +215,7 @@ class Maze private constructor(
      *
      * @return The coordinates of this tile in x,y format.
      */
-    val id: String by lazy { "${point.x},${point.y}" }
+    val id: String by lazy { "${point.x()},${point.y()}" }
 
     /**
      * Converts this [Tile] into a new [Vertex] that can be added to a [Graph].

@@ -256,11 +256,11 @@ class GridComputing @SuppressFBWarnings constructor(
 
     input.mapNotNull { parseNode(it) }
         .forEach { node ->
-          if (node.point.x > maxX) {
-            maxX = node.point.x
+          if (node.point.x() > maxX) {
+            maxX = node.point.x()
           }
-          if (node.point.y > maxY) {
-            maxY = node.point.y
+          if (node.point.y() > maxY) {
+            maxY = node.point.y()
           }
           if (node.isEmpty()) {
             free++
@@ -275,7 +275,7 @@ class GridComputing @SuppressFBWarnings constructor(
 
     val items = Array(maxX * maxY) { DEAD_NODE }
     for (node in nodes) {
-      items[node.point.y * maxX + node.point.x] = node
+      items[node.point.y() * maxX + node.point.x()] = node
     }
 
     return Grid2D(maxX, maxY, items)
@@ -323,7 +323,7 @@ class GridComputing @SuppressFBWarnings constructor(
    * @return The [GridNode] at the specified x and y coordinates.
    */
   operator fun get(point: Point2D<Int>): GridNode {
-    return get(point.x, point.y)
+    return get(point.x(), point.y())
   }
 
   /**

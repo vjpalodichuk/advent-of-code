@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -107,6 +108,41 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
   }
 
   /**
+   * Returns a list with the values from startX, startY inclusive to lengthX, lengthY exclusive.
+   *
+   * @param startX  The starting x-coordinate.
+   * @param startY  The starting y-coordinate.
+   * @param lengthX The length in columns.
+   * @param lengthY The length in rows.
+   * @return A list with the values from startX, startY inclusive to lengthX, lengthY exclusive.
+   */
+  public List<T> get(int startX, int startY, int lengthX, int lengthY) {
+    var answer = new ArrayList<T>();
+    var endY = startY + lengthY;
+    var endX = startX + lengthX;
+
+    for (var y = startY; y < endY; y++) {
+      for (var x = startX; x < endX; x++) {
+        answer.add(get(x, y));
+      }
+    }
+
+    return answer;
+  }
+
+  /**
+   * Returns a list with the values from startX, startY inclusive to lengthX, lengthY exclusive.
+   *
+   * @param point   The starting x-coordinate and y-coordinate.
+   * @param lengthX The length in columns.
+   * @param lengthY The length in rows.
+   * @return A list with the values from point inclusive to lengthX, lengthY exclusive.
+   */
+  public List<T> get(Point2D<Integer> point, int lengthX, int lengthY) {
+    return get(point.x(), point.y(), lengthX, lengthY);
+  }
+
+  /**
    * Returns the value in the first cell of this Grid2D.
    *
    * @return The value in the first cell of this Grid2D.
@@ -145,7 +181,6 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
     set(point.x(), point.y(), value);
   }
 
-
   /**
    * Sets the value of each space represented by the specified rectangle to the specified value.
    * The value may be null.
@@ -170,6 +205,31 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
   }
 
   /**
+   * Sets the value of each space represented by the specified rectangle to the specified values.
+   * The number of values must match the number of spaces in the specified rectangle.
+   *
+   * @param startX  The column of the upper left corner of the rectangle.
+   * @param startY  The row of the upper left corner of the rectangle.
+   * @param lengthX The column of the lower right corner of the rectangle.
+   * @param lengthY The row of the lower right corner of the rectangle.
+   * @param values  The new values to store in the spaces represented by the specified rectangle.
+   */
+  public void set(int startX, int startY, int lengthX, int lengthY, T[] values) {
+    var i = 0;
+    var endX = startX + lengthX;
+    var endY = startY + lengthY;
+
+    for (int y = startY; y < endY; y++) {
+      for (int x = startX; x < endX; x++) {
+        if (i < values.length) {
+          set(x, y, values[i]);
+        }
+        i++;
+      }
+    }
+  }
+
+  /**
    * Sets the value of each space represented by the specified rectangle to the specified value.
    * The value may be null.
    *
@@ -179,6 +239,19 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
    */
   public void set(Point2D<Integer> point1, Point2D<Integer> point2, T value) {
     set(point1.x(), point1.y(), point2.x(), point2.y(), value);
+  }
+
+  /**
+   * Sets the value of each space represented by the specified rectangle to the specified values.
+   * The number of values must match the number of spaces in the specified rectangle.
+   *
+   * @param point  The point of the upper left corner of the rectangle.
+   * @param lengthX The column of the lower right corner of the rectangle.
+   * @param lengthY The row of the lower right corner of the rectangle.
+   * @param values  The new values to store in the spaces represented by the specified rectangle.
+   */
+  public void set(Point2D<Integer> point, int lengthX, int lengthY, T[] values) {
+    set(point.x(), point.y(), lengthX, lengthY, values);
   }
 
   /**
@@ -654,5 +727,121 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
         + ", rows=" + rows
         + ", items=" + Arrays.toString(items)
         + '}';
+  }
+
+  /**
+   * Prints the content of this grid into a String. The returned String is formatted to
+   * represent the contents of this grid.
+   *
+   * @return The content of this grid into a String.
+   */
+  public String print() {
+    var builder = new StringBuilder();
+
+    for (int y = 0; y < rows; y++) {
+      builder.append("\n");
+      getRow(y).forEach(builder::append);
+    }
+
+    return builder.toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Grid2D<?> grid2D)) {
+      return false;
+    }
+    return columns == grid2D.columns && rows == grid2D.rows && Arrays.equals(items, grid2D.items);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = Objects.hash(columns, rows);
+    result = 31 * result + Arrays.hashCode(items);
+    return result;
+  }
+
+  /**
+   * Flips the data of this grid horizontally around the origin and returns a new Grid2D
+   * that contains the results.
+   * <br><br>
+   * This grid is not affected by this operation.
+   *
+   * @return A new grid flipped horizontally around the origin.
+   */
+  public Grid2D<T> flipHorizontal() {
+    var answer = copy();
+    var count = columns();
+    for (int i = 0; i < count; i++) {
+      answer.setColumn(count - i - 1, getColumn(i));
+    }
+
+    return answer;
+  }
+
+  /**
+   * Flips the data of this grid vertically around the origin and returns a new Grid2D
+   * that contains the results.
+   * <br><br>
+   * This grid is not affected by this operation.
+   *
+   * @return A new grid flipped vertically around the origin.
+   */
+  public Grid2D<T> flipVertical() {
+    var answer = copy();
+    var count = rows();
+    for (int i = 0; i < count; i++) {
+      answer.setRow(count - i - 1, getRow(i));
+    }
+
+    return answer;
+  }
+
+  /**
+   * Rotates this grid 90 degrees clockwise and returns a new Grid2D instance with the results.
+   * <br><br>
+   * This grid is not affected by this operation.
+   * <br><br>
+   * Please note that if this grid is not square, an IllegalStateException will be thrown.
+   *
+   * @return A new Grid2D instance with a copy of this grid's data rotated 90 degrees
+   *     clockwise.
+   */
+  public Grid2D<T> rotateRight() {
+    assert columns == rows;
+
+    var answer = copy();
+    var count = rows();
+    for (int i = 0; i < count; i++) {
+      answer.setColumn(count - i - 1, getRow(i));
+    }
+
+    return answer;
+  }
+
+  /**
+   * Rotates this grid 90 degrees counter-clockwise and returns a new Grid2D
+   * instance with the results.
+   * <br><br>
+   * This grid is not affected by this operation.
+   * <br><br>
+   * Please note that if this grid is not square, an IllegalStateException will be thrown.
+   *
+   * @return A new Grid2D instance with a copy of this grid's data rotated 90 degrees
+   *     counter-clockwise.
+   */
+  public Grid2D<T> rotateLeft() {
+    assert columns == rows;
+
+    var answer = copy();
+    var count = rows();
+    for (int i = 0; i < count; i++) {
+      answer.setColumn(i, getRow(i).reversed());
+    }
+
+    return answer;
   }
 }

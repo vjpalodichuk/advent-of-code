@@ -168,7 +168,7 @@ class SecureVault(
   }
 
   private fun pointIntVault(point: Point2D<Long>): Boolean {
-    return point.x in 0..<columns && point.y in 0..<rows
+    return point.x() in 0..<columns && point.y() in 0..<rows
   }
 
   /**
@@ -254,7 +254,7 @@ class SecureVault(
       null -> Pair(-1, "")
       else -> {
         val edge = path.edges.last()
-        val add = if (edge.source.startsWith(finish.x.toString())) {
+        val add = if (edge.source.startsWith(finish.x().toString())) {
           "D"
         } else {
           "R"

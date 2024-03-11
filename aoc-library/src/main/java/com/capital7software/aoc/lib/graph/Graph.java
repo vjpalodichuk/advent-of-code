@@ -479,6 +479,19 @@ public class Graph<T extends Comparable<T>, E extends Comparable<E>> {
   }
 
   /**
+   * Adds / replaces the Vertex with the specified ID with the specified instance.
+   * Returns a reference to the previous Vertex instance with the specified ID or null
+   * if there was no previous instance.
+   *
+   * @param vertexId The ID of the Vertex to add / replace.
+   * @return A reference to the previous Vertex instance with the specified ID or null
+   *     if there was no previous instance.
+   */
+  public Vertex<T, E> set(@NotNull String vertexId, @NotNull Vertex<T, E> vertex) {
+    return vertices.put(Objects.requireNonNull(vertexId), Objects.requireNonNull(vertex));
+  }
+
+  /**
    * Adds the Vertices of the specified Edge to this Graph and then adds
    * the Edge to this Graph.
    *

@@ -299,10 +299,11 @@ class FractalArt private constructor() {
     // All decomposing and rule matching is complete. Now just stitch together a new grid!
     val first = larger.first()
 
-    val columns = first.columns * sqrt(larger.size.toDouble()).toInt()
-    val rows = first.rows * sqrt(larger.size.toDouble()).toInt()
-    val items = Array(columns * rows) { '.' }
-    val newGrid = Grid2D<Char>(columns, rows, items)
+    // Since the grid is always square, the size is simply the square root of the number of
+    // items from the larger list.
+    val size = first.columns * sqrt(larger.size.toDouble()).toInt()
+    val items = Array(size * size) { '.' }
+    val newGrid = Grid2D<Char>(size, size, items)
 
     y = 0
     var i = 0
@@ -370,7 +371,7 @@ class FractalArt private constructor() {
           }
 
           if (tryCount == tries.size) {
-            break
+            done = true
           }
         }
 

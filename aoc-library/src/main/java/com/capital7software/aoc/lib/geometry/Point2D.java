@@ -1,9 +1,11 @@
 package com.capital7software.aoc.lib.geometry;
 
 import com.capital7software.aoc.lib.math.MathOperations;
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import org.jetbrains.annotations.NotNull;
@@ -11,11 +13,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A 2D point where the axis values are of the specified type.
  *
- * @param x   The X-Axis value.
- * @param y   The Y-Axis value.
  * @param <T> The type of the Axis values.
  */
-public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T y)
+@SuppressWarnings("SerializableHasSerializationMethods")
+public final class Point2D<T extends Number & Comparable<T>>
     implements Comparable<Point2D<T>>, Serializable {
 
   /**
@@ -23,6 +24,23 @@ public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T
    * checking for equality.
    */
   public static final double EPSILON = 0.00000001;
+  @Serial
+  private static final long serialVersionUID = 1L;
+  private final @NotNull T x;
+  private final @NotNull T y;
+  private final @NotNull String id;
+
+  /**
+   * Instantiates a new instances with the specified values.
+   *
+   * @param x   The X-Axis value.
+   * @param y   The Y-Axis value.
+   */
+  public Point2D(@NotNull T x, @NotNull T y) {
+    this.x = x;
+    this.y = y;
+    this.id = x + "," + y;
+  }
 
   /**
    * Subtracts a point from this point and returns a new point with the result.
@@ -59,15 +77,6 @@ public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T
   }
 
   /**
-   * Returns the ID of this point in x,y format.
-   *
-   * @return The ID of this point in x,y format.
-   */
-  public String id() {
-    return x + "," + y;
-  }
-
-  /**
    * Returns a new Point2D in the direction from the specified point.
    *
    * @param point     The point to calculate the new point from.
@@ -81,29 +90,29 @@ public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T
       @NotNull Direction direction
   ) {
     return switch (point.x) {
-      case Integer a when point.y instanceof Integer b -> new Point2D<T>(
+      case Integer a when point.y instanceof Integer b -> new Point2D<>(
           (T) ((Integer) (a + direction.dx())),
           (T) ((Integer) (b + direction.dy()))
       );
       case Long a when point.y instanceof Long b ->
-          new Point2D<T>((T) ((Long) (a + direction.dx())), (T) ((Long) (b + direction.dy())));
+          new Point2D<>((T) ((Long) (a + direction.dx())), (T) ((Long) (b + direction.dy())));
       case Double a when point.y instanceof Double b ->
-          new Point2D<T>((T) ((Double) (a + direction.dx())), (T) ((Double) (b + direction.dy())));
+          new Point2D<>((T) ((Double) (a + direction.dx())), (T) ((Double) (b + direction.dy())));
       case Float a when point.y instanceof Float b ->
-          new Point2D<T>((T) ((Float) (a + direction.dx())), (T) ((Float) (b + direction.dy())));
-      case BigInteger a when point.y instanceof BigInteger b -> new Point2D<T>(
+          new Point2D<>((T) ((Float) (a + direction.dx())), (T) ((Float) (b + direction.dy())));
+      case BigInteger a when point.y instanceof BigInteger b -> new Point2D<>(
           (T) (a.add(BigInteger.valueOf(direction.dx()))),
           (T) (b.add(BigInteger.valueOf(direction.dy())))
       );
-      case BigDecimal a when point.y instanceof BigDecimal b -> new Point2D<T>(
+      case BigDecimal a when point.y instanceof BigDecimal b -> new Point2D<>(
           (T) (a.add(BigDecimal.valueOf(direction.dx()))),
           (T) (b.add(BigDecimal.valueOf(direction.dy())))
       );
-      case AtomicInteger a when point.y instanceof AtomicInteger b -> new Point2D<T>(
+      case AtomicInteger a when point.y instanceof AtomicInteger b -> new Point2D<>(
           (T) (new AtomicInteger(a.get() + direction.dx())),
           (T) (new AtomicInteger(b.get() + direction.dy()))
       );
-      case AtomicLong a when point.y instanceof AtomicLong b -> new Point2D<T>(
+      case AtomicLong a when point.y instanceof AtomicLong b -> new Point2D<>(
           (T) (new AtomicLong(a.get() + direction.dx())),
           (T) (new AtomicLong(b.get() + direction.dy()))
       );
@@ -169,5 +178,64 @@ public record Point2D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T
    */
   public T component2() {
     return y;
+  }
+
+  /**
+   * Returns the id element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The id element.
+   */
+  public String component3() {
+    return id;
+  }
+
+  /**
+   * Returns the x-ccordinate.
+   *
+   * @return The x-ccordinate.
+   */
+  public @NotNull T x() {
+    return x;
+  }
+
+  /**
+   * Returns the y-ccordinate.
+   *
+   * @return The y-ccordinate.
+   */
+  public @NotNull T y() {
+    return y;
+  }
+
+  /**
+   * Returns the ID of this point in x,y format.
+   *
+   * @return The ID of this point in x,y format.
+   */
+  public String id() {
+    return id;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Point2D<?> point2D)) {
+      return false;
+    }
+    return Objects.equals(x, point2D.x) && Objects.equals(y, point2D.y);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(x, y);
+  }
+
+  @Override
+  public String toString() {
+    return "Point2D["
+        + "x=" + x + ", "
+        + "y=" + y + ']';
   }
 }

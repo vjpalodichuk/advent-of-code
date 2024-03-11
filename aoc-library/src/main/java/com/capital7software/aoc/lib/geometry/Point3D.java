@@ -1,17 +1,41 @@
 package com.capital7software.aoc.lib.geometry;
 
 import com.capital7software.aoc.lib.math.MathOperations;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * A 3D point where the axis values are of the specified type.
  *
- * @param x   The X-Axis value.
- * @param y   The Y-Axis value.
- * @param z   The z-Axis value.
  * @param <T> The type of the Axis values.
  */
-public record Point3D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T y, @NotNull T z) {
+@SuppressWarnings("SerializableHasSerializationMethods")
+public final class Point3D<T extends Number & Comparable<T>>
+    implements Comparable<Point3D<T>>, Serializable {
+
+  @Serial
+  private static final long serialVersionUID = 1L;
+  private final @NotNull T x;
+  private final @NotNull T y;
+  private final @NotNull T z;
+  private final @NotNull String id;
+
+  /**
+   * Instantiates a new instances with the specified values.
+   *
+   * @param x The X-Axis value.
+   * @param y The Y-Axis value.
+   * @param z The z-Axis value.
+   */
+  public Point3D(@NotNull T x, @NotNull T y, @NotNull T z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.id = x + "," + y + "," + z;
+  }
+
   /**
    * Subtracts the other point from this point and returns the result as a new 3D point.
    * This method differs from subtract as it returns the absolute value of the difference
@@ -199,15 +223,6 @@ public record Point3D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T
   }
 
   /**
-   * Returns the ID of this point in x,y,z format.
-   *
-   * @return The ID of this point in x,y,z format.
-   */
-  public String id() {
-    return x + "," + y + "," + z;
-  }
-
-  /**
    * Returns the Manhattan Distance between two points. The Manhattan Distance is the sum of
    * the absolute values of the coordinate differences. In other words it is
    * abs(a.x() - b.x()) + abs(a.y() - b.y()) + abs(a.z() - b.z())
@@ -242,6 +257,13 @@ public record Point3D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T
     return manhattanDistance(this, other);
   }
 
+  @Override
+  public int compareTo(@NotNull Point3D<T> o) {
+    var result = minus(o);
+
+    return result.x.compareTo(result.y);
+  }
+
   /**
    * Returns the x element. Used by Kotlin to support decomposing assignments.
    *
@@ -268,4 +290,75 @@ public record Point3D<T extends Number & Comparable<T>>(@NotNull T x, @NotNull T
   public T component3() {
     return z;
   }
+
+  /**
+   * Returns the id element. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The id element.
+   */
+  public String component4() {
+    return id;
+  }
+
+  /**
+   * Returns the x-coordinate.
+   *
+   * @return The x-coordinate.
+   */
+  public @NotNull T x() {
+    return x;
+  }
+
+  /**
+   * Returns the y-coordinate.
+   *
+   * @return The y-coordinate.
+   */
+  public @NotNull T y() {
+    return y;
+  }
+
+  /**
+   * Returns the z-coordinate.
+   *
+   * @return The z-coordinate.
+   */
+  public @NotNull T z() {
+    return z;
+  }
+
+  /**
+   * Returns the ID of this point in x,y,z format.
+   *
+   * @return The ID of this point in x,y,z format.
+   */
+  public String id() {
+    return x + "," + y + "," + z;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Point3D<?> point3D)) {
+      return false;
+    }
+    return Objects.equals(x, point3D.x)
+        && Objects.equals(y, point3D.y) && Objects.equals(z, point3D.z);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(x, y, z);
+  }
+
+  @Override
+  public String toString() {
+    return "Point3D["
+        + "x=" + x + ", "
+        + "y=" + y + ", "
+        + "z=" + z + ']';
+  }
+
 }

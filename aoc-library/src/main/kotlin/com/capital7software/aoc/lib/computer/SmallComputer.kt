@@ -48,13 +48,19 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * value by 1, and then skip the last dec a (because a is not zero, so the jnz a 2
  * skips it), leaving register a at 42. When you move past the last instruction,
  * the program halts.
+ *
+ * @param outputHandler This handler is called everytime an [Instruction] with output is executed.
+ * @param soundHandler This handler is called everytime a [PlaySound] [Instruction] is called.
+ * @param debugger If present, will be called just prior to the current instruction being
+ * executed.
  */
-class SmallComputer private constructor(
+open class SmallComputer protected constructor(
     private val outputHandler: (output: Long) -> Unit,
-    private val soundHandler: (output: Long) -> Unit
+    private val soundHandler: (output: Long) -> Unit,
+    private val debugger: Debugger? = null,
 ) {
-  private val instructions = arrayListOf<Instruction>()
-  private val registers = mutableMapOf<String, Register>()
+  protected val instructions = arrayListOf<Instruction>()
+  protected val registers = mutableMapOf<String, Register>()
 
   companion object {
     /**
@@ -65,6 +71,9 @@ class SmallComputer private constructor(
      * @param outputHandler The handler is called everytime an [Out] is executed.
      * @param soundHandler The handler is called everytime an [RecoverFrequency]
      * is executed.
+     * @param useSound If true, then sound [instructions] will be used instead of
+     * communication instructions.
+     * @param debugger The debugger to use for the new instance.
      * @return A [SmallComputer] loaded with the specified instructions.
      */
     @SuppressFBWarnings
@@ -72,9 +81,10 @@ class SmallComputer private constructor(
         input: List<String>,
         outputHandler: (output: Long) -> Unit = {},
         soundHandler: (output: Long) -> Unit = {},
-        useSound: Boolean = false
+        useSound: Boolean = false,
+        debugger: Debugger? = null
     ): SmallComputer {
-      val computer = SmallComputer(outputHandler, soundHandler)
+      val computer = SmallComputer(outputHandler, soundHandler, debugger)
       val instructions = Optimizer(input.map { line ->
         val instruction = InstructionFactory.parse(line, useSound)
         instruction.args().forEach { arg ->
@@ -125,7 +135,9 @@ class SmallComputer private constructor(
   }
 
   /**
-   * Executes the loaded program.
+   * Executes the loaded program. If the program contains any [Send] or [Receive] [Instruction]s
+   * it will be run in linked mode with two [ProgramContext] contexts. Debugging is **not
+   * supported** in linked mode.
    *
    * @return A [Pair] where the first element is the primary context and the second element
    * is the linked context which may be null if the execution didn't require a linked context.
@@ -139,7 +151,15 @@ class SmallComputer private constructor(
     } else {
       var i = 0
       while (i >= 0 && i < temp.size) {
-        i = context.invoke()
+        if (debugger != null) {
+          when (debugger.inspect(context)) {
+            DebuggerResult.CONTINUE -> i = context.invoke()
+            DebuggerResult.SKIP -> i++
+            DebuggerResult.STOP -> i = temp.size + 1
+          }
+        } else {
+          i = context.invoke()
+        }
       }
       registers.putAll(context.getRegisters())
       return Pair<ProgramContext, ProgramContext?>(context, null)
@@ -167,6 +187,9 @@ class SmallComputer private constructor(
 
   /**
    * Executes the loaded program that either is or possibly is an infinite program.
+   * If the program contains any [Send] or [Receive] [Instruction]s it will be run in
+   * linked mode with two [ProgramContext] contexts. Debugging is **not supported**
+   * in linked mode.
    *
    * @param max The maximum number of times to execute an [Out] or
    * [RecoverFrequency] instruction before ending the program. Also works with [Send] if
@@ -186,10 +209,18 @@ class SmallComputer private constructor(
       var count = 0
       while (i >= 0 && i < temp.size && count < max) {
         val instruction = temp[i]
-
-        i = context.invoke()
         if (instruction is Out || instruction is RecoverFrequency) {
           count++
+        }
+
+        if (debugger != null) {
+          when (debugger.inspect(context)) {
+            DebuggerResult.CONTINUE -> i = context.invoke()
+            DebuggerResult.SKIP -> i++
+            DebuggerResult.STOP -> i = temp.size + 1
+          }
+        } else {
+          i = context.invoke()
         }
       }
       registers.putAll(context.getRegisters())

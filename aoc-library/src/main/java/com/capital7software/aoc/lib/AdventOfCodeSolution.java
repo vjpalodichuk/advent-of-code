@@ -42,4 +42,14 @@ public interface AdventOfCodeSolution {
   default void logTimings(Logger logger, Instant start, Instant end) {
     logger.info("Calculated in {} ns", Duration.between(start, end).toNanos());
   }
+
+  /**
+   * A helper method for printing out the timing of the solutions.
+   *
+   * @param logger The Logger instance to use to log the messages.
+   * @param nanos The time in nanoseconds to log.
+   */
+  default void logTimings(Logger logger, long nanos) {
+    logger.info("Calculated in {} ns", nanos);
+  }
 }

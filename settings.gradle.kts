@@ -8,6 +8,7 @@ include("aoc-library")
 include("aoc-2015")
 include("aoc-2016")
 include("aoc-2017")
+include("aoc-2018")
 include("aoc-2023")
 
 configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {

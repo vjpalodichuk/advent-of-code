@@ -47,7 +47,7 @@
     },
     "loggers": {
       "logger": {
-        "name": "com.capital7software.aoc.aoc2017",
+        "name": "com.capital7software.aoc.aoc2018",
         "level": "debug",
         "appender-ref": [
           {

@@ -208,6 +208,52 @@ public class MathOperations {
   }
 
   /**
+   * Returns the specified value incremented by one (1).
+   *
+   * @param value The value to increment by one (1).
+   * @param <T>   The type of the parameters. See the class comments on
+   *              supported types.
+   * @return The specified value incremented by one (1).
+   */
+  @SuppressFBWarnings
+  public static <T extends Number> @NotNull T inc(@NotNull T value) {
+    return switch (value) {
+      case Integer a -> (T) ((Integer) (a + 1));
+      case Long a -> (T) ((Long) (a + 1L));
+      case Double a -> (T) ((Double) (a + 1.0));
+      case Float a -> (T) ((Float) (a + 1f));
+      case BigInteger a -> (T) a.add(BigInteger.ONE);
+      case BigDecimal a -> (T) a.add(BigDecimal.ONE);
+      case AtomicInteger a -> (T) (new AtomicInteger(a.get() + 1));
+      case AtomicLong a -> (T) (new AtomicLong(a.get() + 1L));
+      default -> throw new IllegalArgumentException("value is of an unsupported type!");
+    };
+  }
+
+  /**
+   * Returns the specified value decremented by one (1).
+   *
+   * @param value The value to decrement by one (1).
+   * @param <T>   The type of the parameters. See the class comments on
+   *              supported types.
+   * @return The specified value decremented by one (1).
+   */
+  @SuppressFBWarnings
+  public static <T extends Number> @NotNull T dec(@NotNull T value) {
+    return switch (value) {
+      case Integer a -> (T) ((Integer) (a - 1));
+      case Long a -> (T) ((Long) (a - 1L));
+      case Double a -> (T) ((Double) (a - 1.0));
+      case Float a -> (T) ((Float) (a - 1f));
+      case BigInteger a -> (T) a.subtract(BigInteger.ONE);
+      case BigDecimal a -> (T) a.subtract(BigDecimal.ONE);
+      case AtomicInteger a -> (T) (new AtomicInteger(a.get() - 1));
+      case AtomicLong a -> (T) (new AtomicLong(a.get() - 1L));
+      default -> throw new IllegalArgumentException("value is of an unsupported type!");
+    };
+  }
+
+  /**
    * Calculates and returns the Greatest Common Divisor of two generics of the same type and
    * returns the result.<br><br>
    * The general formula is: <br><br>

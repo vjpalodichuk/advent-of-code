@@ -71,9 +71,13 @@ public final class Point2D<T extends Number & Comparable<T>>
 
   @Override
   public int compareTo(@NotNull Point2D<T> o) {
-    var result = minus(o);
+    var result = x.compareTo(o.x);
 
-    return result.x.compareTo(result.y);
+    if (result == 0) {
+      result = y.compareTo(o.y);
+    }
+
+    return result;
   }
 
   /**

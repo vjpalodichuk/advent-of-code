@@ -41,7 +41,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  */
 class InventoryManagement @SuppressFBWarnings constructor(input: List<String>) {
   private val boxIds: List<String> = input.toList()
-  private val counts: Map<String, Map<Char, Int>> by lazy { buildCounts() }
+  private val counts: Map<String, Map<Char, Int>> by lazy {
+    boxIds.associateWith { it.groupingBy { it }.eachCount() }
+  }
 
   /**
    * The checksum of all the box IDs.
@@ -94,20 +96,9 @@ class InventoryManagement @SuppressFBWarnings constructor(input: List<String>) {
     return twos * threes
   }
 
-  private fun buildCounts(): Map<String, Map<Char, Int>> {
-    return boxIds.associateWith { buildCounts(it) }
-  }
-
-  private fun buildCounts(boxId: String): Map<Char, Int> {
-    return boxId.groupingBy { it }.eachCount()
-  }
-
   private fun findPrototypes(): Triple<String, String, String> {
     for (i in boxIds.indices) {
-      for (j in boxIds.indices) {
-        if (j <= i) {
-          continue
-        }
+      for (j in i + 1 ..< boxIds.size) {
         val a = boxIds[i]
         val b = boxIds[j]
         val diff = countDifferences(a, b)

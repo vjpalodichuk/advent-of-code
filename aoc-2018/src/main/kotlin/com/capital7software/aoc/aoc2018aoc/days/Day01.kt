@@ -1,7 +1,7 @@
 package com.capital7software.aoc.aoc2018aoc.days
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution
-import com.capital7software.aoc.lib.string.clean
+import com.capital7software.aoc.lib.analysis.ChronalCalibration
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import kotlin.system.measureNanoTime
 import org.slf4j.Logger
@@ -100,7 +100,7 @@ class Day01 : AdventOfCodeSolution {
    */
   @SuppressFBWarnings
   fun getFrequency(input: List<String>): Int {
-    return input.sumOf { it.clean().toInt() }
+    return ChronalCalibration(input).apply()
   }
 
   /**
@@ -113,24 +113,6 @@ class Day01 : AdventOfCodeSolution {
    */
   @SuppressFBWarnings
   fun getFirstRepeatedFrequency(input: List<String>): Int {
-    val frequencies = input.map { it.clean().toInt() }
-    var done = false
-    val seen = mutableSetOf<Int>()
-
-    var current = 0
-    seen.add(current)
-    while (!done) {
-      var i = 0
-
-      while (i < frequencies.size) {
-        current += frequencies[i]
-        if (!seen.add(current)) {
-          done = true
-          break // out of the inner loop.
-        }
-        i++
-      }
-    }
-    return current
+    return ChronalCalibration(input).firstRepeat()
   }
 }

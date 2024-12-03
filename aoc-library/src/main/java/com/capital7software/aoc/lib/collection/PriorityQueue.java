@@ -56,11 +56,37 @@ public class PriorityQueue<T> extends MinHeap<T> implements Queue<T> {
   public PriorityQueue(T[] items, Comparator<? super T> comparator) {
     super(items, comparator);
   }
+  /**
+   * An iterator that iterates in-order over the elements of this PriorityQueue.
+   */
+  public class PriorityQueueIterator implements Iterator<T> {
+    private int cursor;
+
+    /**
+     * Instantiates a new iterator instance.
+     */
+    public PriorityQueueIterator() {
+      cursor = 0;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return cursor < numberOfItems;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public T next() throws NoSuchElementException {
+      if (cursor >= items.length) {
+        throw new NoSuchElementException("next called when this Iterator has no next element!");
+      }
+      return (T)items[cursor++];
+    }
+  }
 
   @Override
   public @NotNull Iterator<T> iterator() {
-    throw new UnsupportedOperationException(
-        "PriorityQueue<T>.iterator(): Method not implemented.");
+    return new PriorityQueueIterator();
   }
 
   @Override

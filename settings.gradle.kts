@@ -10,6 +10,7 @@ include("aoc-2016")
 include("aoc-2017")
 include("aoc-2018")
 include("aoc-2023")
+include("aoc-2024")
 
 configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
   preset = "extended"

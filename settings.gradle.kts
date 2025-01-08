@@ -20,6 +20,13 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
   changelog {
     path = "CHANGELOG.md"
     append = "head"
+    sections = mapOf(
+        Pair("Added", "^(feat|:boom:|:sparkles:|:pushpin:|:heavy_plus_sign:)$"),
+        Pair("Changed", "^(feat|:boom:|:arrow_up:|:lipstick:|:wrench:|:pencil2:)$"),
+        Pair("Fixed", "^(fix|:bug:|:ambulance:)$"),
+        Pair("Removed", "^(:fire:|:zap:|:arrow_down:|:heavy_minus_sign:)$"),
+        Pair("Security", "^:lock:$"),
+    )
   }
 
   commitMessageConventions {

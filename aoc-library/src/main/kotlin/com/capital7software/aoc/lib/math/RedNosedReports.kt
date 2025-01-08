@@ -105,9 +105,7 @@ class RedNosedReports @SuppressFBWarnings constructor(input: List<String>) {
     return reports.map { isReportSafe(it, useDampener) }.count { it }.toLong()
   }
 
-  private fun isReportSafe(testReport: List<Long>, useDampener: Boolean): Boolean {
-    val report = testReport.toMutableList()
-
+  private fun isReportSafe(report: List<Long>, useDampener: Boolean): Boolean {
     // Require at least two or more items.
     if (report.size <= 1) {
       return true
@@ -170,17 +168,14 @@ class RedNosedReports @SuppressFBWarnings constructor(input: List<String>) {
     } else if (!useDampener || errorCount > 0) {
       false
     } else if (i > 0) {
-      var nextDirection = currentDirection
       val nextI = i - 1
-      if (nextI == 0) {
-        nextDirection = LevelDirection.NONE
-      }
+
       if (i == 1) {
         testLevelsRecursive(report, LevelDirection.NONE, i, j, end, useDampener, 0, errorCount + 1)
-            || testLevelsRecursive(report, nextDirection, nextI, j, end, useDampener, i, errorCount + 1)
+            || testLevelsRecursive(report, LevelDirection.NONE, nextI, j, end, useDampener, i, errorCount + 1)
             || testLevelsRecursive(report, currentDirection, i, j + 1, end, useDampener, j, errorCount + 1)
       } else {
-        testLevelsRecursive(report, nextDirection, nextI, j, end, useDampener, i, errorCount + 1)
+        testLevelsRecursive(report, currentDirection, nextI, j, end, useDampener, i, errorCount + 1)
             || testLevelsRecursive(report, currentDirection, i, j + 1, end, useDampener, j, errorCount + 1)
       }
     } else {

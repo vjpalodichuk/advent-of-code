@@ -1,5 +1,6 @@
 package com.capital7software.aoc.lib.collection;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -56,9 +57,11 @@ public class PriorityQueue<T> extends MinHeap<T> implements Queue<T> {
   public PriorityQueue(T[] items, Comparator<? super T> comparator) {
     super(items, comparator);
   }
+
   /**
    * An iterator that iterates in-order over the elements of this PriorityQueue.
    */
+  @SuppressFBWarnings
   public class PriorityQueueIterator implements Iterator<T> {
     private int cursor;
 
@@ -80,7 +83,7 @@ public class PriorityQueue<T> extends MinHeap<T> implements Queue<T> {
       if (cursor >= items.length) {
         throw new NoSuchElementException("next called when this Iterator has no next element!");
       }
-      return (T)items[cursor++];
+      return (T) items[cursor++];
     }
   }
 

@@ -1,6 +1,14 @@
 # Changelog
 
 
+## 1.5.1 (2025-01-08)
+
+### Added
+
+* [a80bd] :ambulance: Added AOC 2024 Day 02 (Vincent J Palodichuk)
+
+* [bff1] :ambulance: Added AOC 2024 Day 01 (Vincent J Palodichuk)
+
 ## 1.5.0 (2024-03-14)
 
 ### Added

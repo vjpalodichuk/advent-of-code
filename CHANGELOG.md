@@ -24,6 +24,22 @@
 
 * [cad9e] :sparkles: Added AOC 2018 Day 01 (Vincent J Palodichuk)
 
+## 1.5.0 (2024-03-14)
+
+### Added
+
+* [8d9fa] :ambulance: Added AOC 2018 Day 05 (Vincent J Palodichuk)
+
+* [d3270] :ambulance: Added AOC 2018 Day 04 (Vincent J Palodichuk)
+
+* [25a1f] :ambulance: Added AOC 2018 Day 03 (Vincent J Palodichuk)
+
+* [5d630] :ambulance: Added AOC 2018 Day 02 (Vincent J Palodichuk)
+
+### Added
+
+* [cad9e] :sparkles: Added AOC 2018 Day 01 (Vincent J Palodichuk)
+
 ## 1.4.4 (2024-03-12)
 
 ### Added

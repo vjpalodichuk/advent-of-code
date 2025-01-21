@@ -46,11 +46,11 @@ configure<ArtifactoryPluginConvention> {
   setContextUrl(artifactoryContextUrl)
 
   publish {
-    setContextUrl(artifactoryContextUrl)
+    contextUrl = artifactoryContextUrl
     repository {
-      setRepoKey(artifactoryRepoKeyPublishRelease)
-      setUsername(artifactoryUser)
-      setPassword(artifactoryPassword)
+      repoKey = artifactoryRepoKeyPublishRelease
+      username = artifactoryUser
+      password = artifactoryPassword
     }
     defaults {
       setPublishPom(true)
@@ -58,14 +58,6 @@ configure<ArtifactoryPluginConvention> {
       publications("ALL_PUBLICATIONS")
     }
   }
-//  resolve {
-//    repository {
-//      setRepoKey(artifactoryRepoKeyReadRelease)
-//      setUsername(artifactoryUser)
-//      setPassword(artifactoryPassword)
-//      setMavenCompatible(true)
-//    }
-//  }
 }
 
 // The project requires libraries to have a README containing sections configured below

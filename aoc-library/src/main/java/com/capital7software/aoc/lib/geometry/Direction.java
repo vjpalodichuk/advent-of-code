@@ -11,7 +11,7 @@ public enum Direction {
   /**
    * North Direction.
    */
-  NORTH(0, -1) {
+  NORTH(0, -1, true) {
     @Override
     public Direction getLeft() {
       return WEST;
@@ -35,7 +35,7 @@ public enum Direction {
   /**
    * North-East Direction.
    */
-  NORTH_EAST(1, -1) {
+  NORTH_EAST(1, -1, false) {
     @Override
     public Direction getLeft() {
       return NORTH_WEST;
@@ -59,7 +59,7 @@ public enum Direction {
   /**
    * East Direction.
    */
-  EAST(1, 0) {
+  EAST(1, 0, true) {
     @Override
     public Direction getLeft() {
       return NORTH;
@@ -83,7 +83,7 @@ public enum Direction {
   /**
    * South-East Direction.
    */
-  SOUTH_EAST(1, 1) {
+  SOUTH_EAST(1, 1, false) {
     @Override
     public Direction getLeft() {
       return NORTH_EAST;
@@ -107,7 +107,7 @@ public enum Direction {
   /**
    * South Direction.
    */
-  SOUTH(0, 1) {
+  SOUTH(0, 1, true) {
     @Override
     public Direction getLeft() {
       return EAST;
@@ -131,7 +131,7 @@ public enum Direction {
   /**
    * South-West Direction.
    */
-  SOUTH_WEST(-1, 1) {
+  SOUTH_WEST(-1, 1, false) {
     @Override
     public Direction getLeft() {
       return SOUTH_EAST;
@@ -155,7 +155,7 @@ public enum Direction {
   /**
    * West Direction.
    */
-  WEST(-1, 0) {
+  WEST(-1, 0, true) {
     @Override
     public Direction getLeft() {
       return SOUTH;
@@ -180,7 +180,7 @@ public enum Direction {
   /**
    * North-West Direction.
    */
-  NORTH_WEST(-1, -1) {
+  NORTH_WEST(-1, -1, false) {
     @Override
     public Direction getLeft() {
       return SOUTH_WEST;
@@ -219,13 +219,17 @@ public enum Direction {
 
   private final Point2D<Integer> delta;
 
+  public final boolean isCardinal;
+
   /**
    * Instantiates a new Direction instance with the specified offsets.
    *
-   * @param dx The amount of change in the X-Axis for this Direction.
-   * @param dy The amount of change in the Y-Axis for this Direction.
+   * @param dx         The amount of change in the X-Axis for this Direction.
+   * @param dy         The amount of change in the Y-Axis for this Direction.
+   * @param isCardinal If true, then this is a cardinal direction
    */
-  Direction(int dx, int dy) {
+  Direction(int dx, int dy, boolean isCardinal) {
+    this.isCardinal = isCardinal;
     this.delta = new Point2D<>(dx, dy);
   }
 
@@ -290,6 +294,24 @@ public enum Direction {
    */
   public Set<Direction> getPerpendicular() {
     return Collections.emptySet();
+  }
+
+  /**
+   * Returns the delta along the x-axis. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The delta along the x-axis.
+   */
+  public int component1() {
+    return dx();
+  }
+
+  /**
+   * Returns the delta along the y-axis. Used by Kotlin to support decomposing assignments.
+   *
+   * @return The delta along the y-axis.
+   */
+  public int component2() {
+    return dy();
   }
 
   /**

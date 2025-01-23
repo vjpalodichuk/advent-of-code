@@ -45,15 +45,7 @@ class CeresSearch(input: List<String>) {
   companion object {
     @SuppressFBWarnings
     private fun buildGrid(input: List<String>): Grid2D<Char> {
-      assert(input.isNotEmpty()) { "The list of input strings cannot be empty" }
-
-      val data = input.filter { it.isNotEmpty() }
-          .flatMap { target -> target.toCharArray().toList() }
-
-      val rows = input.size
-      val columns = input[0].length
-      val items = Array(rows * columns) { data[it] }
-      return Grid2D<Char>(rows, columns, items)
+      return Grid2D.buildCharacterGrid(input)
     }
   }
 

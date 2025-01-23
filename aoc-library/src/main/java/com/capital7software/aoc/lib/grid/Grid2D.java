@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -24,6 +25,40 @@ import org.jetbrains.annotations.NotNull;
  * @param <T>     The type for the items stored in this grid.
  */
 public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements Iterable<T> {
+  /**
+   * Creates a new Grid2D that contains characters in each cell. The grid is constructed from
+   * the specified list of strings. Each string in the list is one row and all strings must be of
+   * equal length.
+   *
+   * @param input The list of strings to process into a Grid2D
+   * @return A new Grid2D that contains the characters from the input in each cell.
+   */
+  public static Grid2D<Character> buildCharacterGrid(List<String> input) {
+    assert input != null && !input.isEmpty();
+
+    var items = stringsToCharArray(input);
+
+    var rows = input.size();
+    var columns = input.getFirst().length();
+
+    return new Grid2D<>(rows, columns, items);
+  }
+
+  private static Character[] stringsToCharArray(List<String> strings) {
+    StringBuilder sb = new StringBuilder();
+    for (String str : strings) {
+      sb.append(str);
+    }
+    var chars = sb.toString().toCharArray();
+    var characters = new Character[chars.length];
+
+    for (int i = 0; i < chars.length; i++) {
+      characters[i] = chars[i];
+    }
+
+    return characters;
+  }
+
   /**
    * An iterator that iterates in-order over the elements of this Grid2D.
    */
@@ -245,7 +280,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
    * Sets the value of each space represented by the specified rectangle to the specified values.
    * The number of values must match the number of spaces in the specified rectangle.
    *
-   * @param point  The point of the upper left corner of the rectangle.
+   * @param point   The point of the upper left corner of the rectangle.
    * @param lengthX The column of the lower right corner of the rectangle.
    * @param lengthY The row of the lower right corner of the rectangle.
    * @param values  The new values to store in the spaces represented by the specified rectangle.
@@ -842,6 +877,50 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
       answer.setColumn(i, getRow(i).reversed());
     }
 
+    return answer;
+  }
+
+  /**
+   * Returns the Point2D of the first instance of the target that is found. The search starts at
+   * 0, 0 and goes from left to right and top to bottom.
+   *
+   * @param target The particular value to find.
+   *
+   * @return The Point2D of the first instance of the target that is found.
+   */
+  public Optional<Point2D<Integer>> findFirst(T target) {
+    Optional<Point2D<Integer>> answer = Optional.empty();
+
+    for (int i = 0; i < rows(); i++) {
+      for (int j = 0; j < columns(); j++) {
+        if (get(j, i).equals(target)) {
+          answer = Optional.of(new Point2D<>(j, i));
+          break;
+        }
+      }
+      if (answer.isPresent()) {
+        break;
+      }
+    }
+    return answer;
+  }
+
+  /**
+   * Returns a list containing a Point2D for each instance of the target that is found.
+   *
+   * @param target The particular value to find.
+   *
+   * @return A list containing a Point2D for each instance of the target that is found.
+   */
+  public List<Point2D<Integer>> findAll(T target) {
+    List<Point2D<Integer>> answer = new ArrayList<>();
+    for (int i = 0; i < rows(); i++) {
+      for (int j = 0; j < columns(); j++) {
+        if (get(j, i).equals(target)) {
+          answer.add(new Point2D<>(j, i));
+        }
+      }
+    }
     return answer;
   }
 }

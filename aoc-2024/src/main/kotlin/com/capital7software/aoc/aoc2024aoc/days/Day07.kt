@@ -1,7 +1,7 @@
 package com.capital7software.aoc.aoc2024aoc.days
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution
-import com.capital7software.aoc.lib.graph.path.BridgeRepair
+import com.capital7software.aoc.lib.analysis.BridgeRepair
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import kotlin.system.measureNanoTime
 import org.slf4j.Logger

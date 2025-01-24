@@ -110,7 +110,7 @@ class Day25 : AdventOfCodeSolution {
     for (i in 0..<Int.MAX_VALUE) {
       instance["a"] = i.toLong()
       outputs.clear()
-      instance.runInfinite()
+      instance.runInfinite(max = 20)
       if (target == outputs) {
         answer = i
         break

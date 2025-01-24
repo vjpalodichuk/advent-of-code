@@ -1,4 +1,4 @@
-package com.capital7software.aoc.lib.graph.path
+package com.capital7software.aoc.lib.analysis
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 
@@ -96,6 +96,11 @@ class BridgeRepair(input: List<String>) {
    * Adding up all six test values (the three that could be made before using only ```+``` and
    * ```*``` plus the new three that can now be made by also using ```||```) produces the new
    * **total calibration result** of **```11387```**.
+   *
+   * @param addAndMulOnly If true, then only complete and valid results are returned; otherwise,
+   * all complete results are returned.
+   * @return A [Map] where the key is the unique [CalibrationTest] and the value is a [List] of
+   * complete solutions.
    */
   @SuppressFBWarnings
   fun possiblyTrueTestValues(addAndMulOnly: Boolean = true): Map<CalibrationTest, List<CalibrationTestResult>> {
@@ -156,7 +161,7 @@ enum class CalibrationTestOperator(val symbol: String) {
   abstract fun apply(operand1: Long, operand2: Long): Long
 
   override fun toString(): String {
-    return "CalibrationTestOperator(symbol='$symbol')"
+    return symbol
   }
 }
 
@@ -194,7 +199,7 @@ data class CalibrationTest(
     /**
      *  We have a few options to select from:
      *
-     *  - Use a [DepthFirstPathfinder] to dynamically build a graph while finding all valid
+     *  - Use a DepthFirstPathfinder to dynamically build a graph while finding all valid
      *  results. Efficient but seems a bit over the top for this problem.
      *  - Use an AI algorithm like Local Search to randomly find a solution. Not
      *  guaranteed to find all solutions or halt! This is also over-the-top.

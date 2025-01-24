@@ -69,6 +69,33 @@ public final class Point2D<T extends Number & Comparable<T>>
     );
   }
 
+  /**
+   * Adds a point to this point and returns a new point with the result.
+   *
+   * @param o The point to add to this point.
+   * @return A new point with the result.
+   */
+  public Point2D<T> plus(@NotNull Point2D<T> o) {
+    return plus(this, o);
+  }
+
+  /**
+   * Adds two points and returns a new point with the new result.
+   *
+   * @param first  The first point.
+   * @param second The second point.
+   * @param <E>    The type of the point axis values.
+   * @return A new point with the result.
+   */
+  public static <E extends Number & Comparable<E>> Point2D<E> plus(
+      @NotNull Point2D<E> first,
+      @NotNull Point2D<E> second
+  ) {
+    return new Point2D<>(
+        MathOperations.add(first.x, second.x), MathOperations.add(first.y, second.y)
+    );
+  }
+
   @Override
   public int compareTo(@NotNull Point2D<T> o) {
     var result = x.compareTo(o.x);

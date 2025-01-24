@@ -36,7 +36,7 @@ class Day07Test : AdventOfCodeTestBase() {
   }
 
   @Test
-  fun testNumberOfPossibleObstructionPositions() {
+  fun testSumOfPossiblyTrueTestValuesAllOperators() {
     val instance = Day07()
     val expected = 11387L
 

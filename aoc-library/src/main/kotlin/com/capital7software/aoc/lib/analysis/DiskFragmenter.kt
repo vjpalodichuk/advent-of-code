@@ -117,7 +117,7 @@ class DiskFragmenter(input: String) {
       val newFree = mutableListOf(freeBlock.copy(start = dataBlock.start, length = dataBlock.length))
 
       // Do we have to insert a FatBlock for some leftover free-space?
-      if (freeBlock.length >= dataBlock.length) {
+      if (freeBlock.length > dataBlock.length) {
         newFree.add(FatBlock(
             -1,
             false,

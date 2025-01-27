@@ -170,18 +170,18 @@ public class Day13 implements AdventOfCodeSolution {
    */
   public long greatestChangeInHappiness(List<String> happiness) {
     var graph = new Day13Parser().parse(happiness, "day13");
-    final var pathFinder = new HamiltonianPathfinder<String, Integer>();
 
     if (graph.isEmpty()) {
       throw new RuntimeException("A valid Graph is required! " + graph);
     }
 
-    var results = new ArrayList<PathfinderResult<String, Integer>>(150);
-
     var props = new Properties();
     props.put(PathfinderProperties.DETECT_CYCLES, Boolean.TRUE);
     props.put(PathfinderProperties.SUM_PATH, Boolean.TRUE);
+    props.put(PathfinderProperties.STARTING_VERTICES, graph.get().getVertices());
 
+    final var results = new ArrayList<PathfinderResult<String, Integer>>(150);
+    final var pathFinder = new HamiltonianPathfinder<String, Integer>();
     pathFinder.find(graph.get(), props, result -> {
       results.add(result);
       return PathfinderStatus.CONTINUE;

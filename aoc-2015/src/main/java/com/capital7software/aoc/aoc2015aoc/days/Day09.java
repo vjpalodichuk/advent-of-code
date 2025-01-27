@@ -139,7 +139,6 @@ public class Day09 implements AdventOfCodeSolution {
    */
   public long distanceOfShortestRouteVisitingEachNodeOnce(List<String> routes) {
     var graph = new Day09Parser().parse(routes, "day09-shortest-route");
-    var pathFinder = new HamiltonianPathfinder<String, Integer>();
 
     if (graph.isEmpty()) {
       throw new RuntimeException("A valid Graph is required! " + graph);
@@ -147,9 +146,11 @@ public class Day09 implements AdventOfCodeSolution {
 
     var props = new Properties();
     props.put(PathfinderProperties.SUM_PATH, Boolean.TRUE);
+    props.put(PathfinderProperties.STARTING_VERTICES, graph.get().getVertices());
 
     final List<PathfinderResult<String, Integer>> shortestPath = new ArrayList<>();
 
+    final var pathFinder = new HamiltonianPathfinder<String, Integer>();
     pathFinder.find(graph.get(), props, result -> {
       if (shortestPath.isEmpty() || result.cost() < shortestPath.getFirst().cost()) {
         shortestPath.clear();
@@ -170,7 +171,6 @@ public class Day09 implements AdventOfCodeSolution {
    */
   public long distanceOfLongestRouteVisitingEachNodeOnce(List<String> routes) {
     var graph = new Day09Parser().parse(routes, "day09");
-    var pathFinder = new HamiltonianPathfinder<String, Integer>();
 
     if (graph.isEmpty()) {
       throw new RuntimeException("A valid Graph is required! " + graph);
@@ -178,9 +178,11 @@ public class Day09 implements AdventOfCodeSolution {
 
     var props = new Properties();
     props.put(PathfinderProperties.SUM_PATH, Boolean.TRUE);
+    props.put(PathfinderProperties.STARTING_VERTICES, graph.get().getVertices());
 
     final List<PathfinderResult<String, Integer>> longestPath = new ArrayList<>();
 
+    final var pathFinder = new HamiltonianPathfinder<String, Integer>();
     pathFinder.find(graph.get(), props, result -> {
       if (longestPath.isEmpty() || result.cost() > longestPath.getFirst().cost()) {
         longestPath.clear();
@@ -207,7 +209,6 @@ public class Day09 implements AdventOfCodeSolution {
       throw new RuntimeException("A valid Graph is required! " + graph);
     }
 
-    final var pathFinder = new HamiltonianPathfinder<String, Integer>();
     final var results = new ArrayList<PathfinderResult<String, Integer>>(41_000);
 
     var props = new Properties();
@@ -216,6 +217,7 @@ public class Day09 implements AdventOfCodeSolution {
     props.put(PathfinderProperties.STARTING_VERTICES,
               List.of(graph.getVertices().getFirst()));
 
+    final var pathFinder = new HamiltonianPathfinder<String, Integer>();
     pathFinder.find(graph, props, result -> {
       results.add(result);
       return PathfinderStatus.CONTINUE;

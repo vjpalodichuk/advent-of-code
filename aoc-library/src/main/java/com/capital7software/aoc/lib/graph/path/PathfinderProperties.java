@@ -4,6 +4,7 @@ package com.capital7software.aoc.lib.graph.path;
 import com.capital7software.aoc.lib.graph.Graph;
 import com.capital7software.aoc.lib.graph.Vertex;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import org.jetbrains.annotations.NotNull;
@@ -154,7 +155,7 @@ public enum PathfinderProperties {
 
   /**
    * Returns the List of Vertices to build paths for. This default implementation simply returns
-   * a List of all the Vertices in the Graph.
+   * a List of all the Vertices in the list stored in the properties.
    *
    * <p><br>
    * Implementations should override this method if they support having
@@ -180,7 +181,7 @@ public enum PathfinderProperties {
       }
       return results;
     }
-    return graph.getVertices();
+    return Collections.emptyList();
   }
 
   /**

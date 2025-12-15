@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 1.5.11 (2025-12-15)
+
+### Added
+
+* [4b507] :heavy_plus_sign: Added AOC 2024 Day 12 (#168) (#169) (Vincent J Palodichuk)
+
 ## 1.5.10 (2025-01-28)
 
 ### Added

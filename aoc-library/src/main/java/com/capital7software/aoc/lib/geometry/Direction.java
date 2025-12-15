@@ -1,6 +1,7 @@
 package com.capital7software.aoc.lib.geometry;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,8 +29,8 @@ public enum Direction {
     }
 
     @Override
-    public Set<Direction> getPerpendicular() {
-      return EAST_AND_WEST;
+    public List<Direction> getPerpendicular() {
+      return WEST_AND_EAST;
     }
   },
   /**
@@ -52,7 +53,7 @@ public enum Direction {
     }
 
     @Override
-    public Set<Direction> getPerpendicular() {
+    public List<Direction> getPerpendicular() {
       return NORTH_WEST_AND_SOUTH_EAST;
     }
   },
@@ -76,7 +77,7 @@ public enum Direction {
     }
 
     @Override
-    public Set<Direction> getPerpendicular() {
+    public List<Direction> getPerpendicular() {
       return NORTH_AND_SOUTH;
     }
   },
@@ -100,7 +101,7 @@ public enum Direction {
     }
 
     @Override
-    public Set<Direction> getPerpendicular() {
+    public List<Direction> getPerpendicular() {
       return NORTH_EAST_AND_SOUTH_WEST;
     }
   },
@@ -124,7 +125,7 @@ public enum Direction {
     }
 
     @Override
-    public Set<Direction> getPerpendicular() {
+    public List<Direction> getPerpendicular() {
       return EAST_AND_WEST;
     }
   },
@@ -148,8 +149,8 @@ public enum Direction {
     }
 
     @Override
-    public Set<Direction> getPerpendicular() {
-      return NORTH_WEST_AND_SOUTH_EAST;
+    public List<Direction> getPerpendicular() {
+      return SOUTH_EAST_AND_NORTH_WEST;
     }
   },
   /**
@@ -172,8 +173,8 @@ public enum Direction {
     }
 
     @Override
-    public Set<Direction> getPerpendicular() {
-      return NORTH_AND_SOUTH;
+    public List<Direction> getPerpendicular() {
+      return SOUTH_AND_NORTH;
     }
 
   },
@@ -197,15 +198,19 @@ public enum Direction {
     }
 
     @Override
-    public Set<Direction> getPerpendicular() {
-      return NORTH_EAST_AND_SOUTH_WEST;
+    public List<Direction> getPerpendicular() {
+      return SOUTH_WEST_AND_NORTH_EAST;
     }
   };
 
-  private static final Set<Direction> NORTH_AND_SOUTH = Set.of(NORTH, SOUTH);
-  private static final Set<Direction> EAST_AND_WEST = Set.of(EAST, WEST);
-  private static final Set<Direction> NORTH_EAST_AND_SOUTH_WEST = Set.of(NORTH_EAST, SOUTH_WEST);
-  private static final Set<Direction> NORTH_WEST_AND_SOUTH_EAST = Set.of(NORTH_WEST, SOUTH_EAST);
+  private static final List<Direction> NORTH_AND_SOUTH = List.of(NORTH, SOUTH);
+  private static final List<Direction> SOUTH_AND_NORTH = List.of(SOUTH, NORTH);
+  private static final List<Direction> EAST_AND_WEST = List.of(EAST, WEST);
+  private static final List<Direction> WEST_AND_EAST = List.of(WEST, EAST);
+  private static final List<Direction> NORTH_EAST_AND_SOUTH_WEST = List.of(NORTH_EAST, SOUTH_WEST);
+  private static final List<Direction> SOUTH_WEST_AND_NORTH_EAST = List.of(SOUTH_WEST, NORTH_EAST);
+  private static final List<Direction> NORTH_WEST_AND_SOUTH_EAST = List.of(NORTH_WEST, SOUTH_EAST);
+  private static final List<Direction> SOUTH_EAST_AND_NORTH_WEST = List.of(SOUTH_EAST, NORTH_WEST);
 
   /**
    * The four cardinal directions of North, South, East, and West.
@@ -288,12 +293,12 @@ public enum Direction {
   }
 
   /**
-   * Returns the Set of Directions that are perpendicular (90 degrees) from this Direction.
+   * Returns the List of Directions that are perpendicular (90 degrees) from this Direction.
    *
-   * @return The Set of Directions that are perpendicular (90 degrees) from this Direction.
+   * @return The List of Directions that are perpendicular (90 degrees) from this Direction.
    */
-  public Set<Direction> getPerpendicular() {
-    return Collections.emptySet();
+  public List<Direction> getPerpendicular() {
+    return Collections.emptyList();
   }
 
   /**
@@ -373,4 +378,6 @@ public enum Direction {
       default -> throw new RuntimeException("Unknown direction: " + alphaLabel);
     };
   }
+
+
 }

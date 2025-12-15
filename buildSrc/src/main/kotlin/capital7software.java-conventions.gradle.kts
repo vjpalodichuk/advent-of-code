@@ -51,6 +51,7 @@ object Versions {
 // Projects should use Maven Central for external dependencies
 // This could be the organization's private repository
 repositories {
+  mavenCentral()
   maven {
     name = "artifactory-publish"
     url = uri("${artifactoryContextUrl}/${artifactoryRepoKeyReadRelease}/")
@@ -59,7 +60,6 @@ repositories {
       password = artifactoryPassword
     }
   }
-  mavenCentral()
 }
 
 detekt {
@@ -80,6 +80,8 @@ checkstyle {
 }
 
 dependencies {
+  implementation("org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN}")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.KOTLIN}")
   implementation("org.jetbrains:annotations:${Versions.JETBRAINS_ANNOTATIONS}")
   implementation("com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}")
   implementation("com.fasterxml.jackson.core:jackson-core:${Versions.JACKSON}")
@@ -100,6 +102,8 @@ dependencies {
   testCompileOnly("org.projectlombok:lombok:${Versions.LOMBOK}")
   testAnnotationProcessor("org.projectlombok:lombok:${Versions.LOMBOK}")
   testImplementation("org.junit.jupiter:junit-jupiter-api:${Versions.JUNIT}")
+  testImplementation("org.jetbrains.kotlin:kotlin-test:${Versions.KOTLIN}")
+  testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:${Versions.KOTLIN}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.JUNIT}")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

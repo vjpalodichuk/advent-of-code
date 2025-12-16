@@ -1,7 +1,13 @@
 rootProject.name = "aoc"
+
+pluginManagement {
+    includeBuild("build-release-settings")
+}
+
 plugins {
   id("com.mooltiverse.oss.nyx") version "2.5.1"
   id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+  id("com.capital7software.release-settings")
 }
 
 include("aoc-library")
@@ -30,7 +36,13 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
   }
 
   commitMessageConventions {
-    enabled.set(mutableListOf("conventionalCommits", "gitmoji", "conventionalCommitsForMerge"))
+    enabled.set(
+        mutableListOf(
+          "conventionalCommits",
+          "gitmoji",
+          "conventionalCommitsForMerge"
+      )
+    )
   }
 
   releaseTypes {
@@ -41,7 +53,7 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
     type = "GITHUB"
     options.apply {
       // The authentication token is read from the GH_TOKEN environment variable.
-      put("AUTHENTICATION_TOKEN", "{{#environmentVariable}}GH_TOKEN{{/environmentVariable}}")
+      put("AUTHENTICATION_TOKEN", "{{#environmentVariable}}GITHUB_TOKEN{{/environmentVariable}}")
       put("REPOSITORY_NAME", "advent-of-code")
       put("REPOSITORY_OWNER", "vjpalodichuk")
     }

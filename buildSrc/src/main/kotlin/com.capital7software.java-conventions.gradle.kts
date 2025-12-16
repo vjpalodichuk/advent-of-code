@@ -31,11 +31,24 @@ kotlin {
   }
 }
 
+fun requiredProperty(name: String, env: String): String =
+    (findProperty(name) as String?)
+        ?: System.getenv(env)
+        ?: "" //error("Missing required property: $name or env $env")
+
 val artifactoryContextUrl: String by project
 val artifactoryRepoKeyReadRelease: String by project
+val artifactoryRepoKeyReadSnapshot: String by project
 val artifactoryRepoKeyPublishRelease: String by project
-val artifactoryUser: String by project
-val artifactoryPassword: String by project
+val artifactoryRepoKeyPublishSnapshot: String by project
+
+val artifactoryUser: String =
+    requiredProperty("artifactoryUser","ARTIFACTORY_USER")
+
+val artifactoryToken: String =
+    requiredProperty("artifactoryToken","ARTIFACTORY_TOKEN")
+
+val isSnapshot = version.toString().split('.', '-').size != 3
 
 object Versions {
   const val JETBRAINS_ANNOTATIONS = "24.0.1"
@@ -54,10 +67,15 @@ repositories {
   mavenCentral()
   maven {
     name = "artifactory-publish"
-    url = uri("${artifactoryContextUrl}/${artifactoryRepoKeyReadRelease}/")
+    url = uri(
+        if (isSnapshot)
+          "${artifactoryContextUrl}/${artifactoryRepoKeyPublishSnapshot}/"
+        else
+          "${artifactoryContextUrl}/${artifactoryRepoKeyPublishRelease}/"
+    )
     credentials {
       username = artifactoryUser
-      password = artifactoryPassword
+      password = artifactoryToken
     }
   }
 }

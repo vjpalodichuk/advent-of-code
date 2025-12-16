@@ -1,0 +1,58 @@
+name: Release and Publish
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - release/**
+
+jobs:
+  release:
+
+    runs-on: ubuntu-latest
+
+    environment: ${{ inputs.environment || 'development' }}
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Import GPG key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+        run: |
+          set -euo pipefail
+      
+          # Import the private key safely (preserves newlines)
+          printf '%s\n' "$GPG_PRIVATE_KEY" | gpg --batch --import
+      
+          # Trust the key non-interactively
+          echo -e "5\ny\n" | gpg --command-fd 0 --edit-key "$GPG_KEY_ID" trust
+      
+          # Configure Git signing
+          git config --global user.signingkey "$GPG_KEY_ID"
+          git config --global commit.gpgsign true
+          git config --global tag.gpgsign true
+      
+          # Sanity check (no secrets leaked)
+          gpg --list-secret-keys --keyid-format LONG
+
+      - name: Release and Publish
+        env:
+          CI: true
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NYX_RELEASE_APPROVED: ${{ secrets.NYX_RELEASE_APPROVED }}
+          ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
+          ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
+        run: ./gradlew nyxRelease

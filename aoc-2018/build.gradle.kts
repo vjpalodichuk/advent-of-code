@@ -1,5 +1,5 @@
 plugins {
-  id("capital7software.library-conventions")
+  id("com.capital7software.library-conventions")
 }
 
 version = rootProject.version

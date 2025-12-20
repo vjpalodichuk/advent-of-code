@@ -31,21 +31,34 @@ kotlin {
   }
 }
 
+fun requiredProperty(name: String, env: String): String =
+    (findProperty(name) as String?)
+        ?: System.getenv(env)
+        ?: "" //error("Missing required property: $name or env $env")
+
 val artifactoryContextUrl: String by project
 val artifactoryRepoKeyReadRelease: String by project
+val artifactoryRepoKeyReadSnapshot: String by project
 val artifactoryRepoKeyPublishRelease: String by project
-val artifactoryUser: String by project
-val artifactoryPassword: String by project
+val artifactoryRepoKeyPublishSnapshot: String by project
+
+val artifactoryUser: String =
+    requiredProperty("artifactoryUser","ARTIFACTORY_USER")
+
+val artifactoryToken: String =
+    requiredProperty("artifactoryToken","ARTIFACTORY_TOKEN")
+
+val isSnapshot = version.toString().split('.', '-').size != 3
 
 object Versions {
-  const val JETBRAINS_ANNOTATIONS = "24.0.1"
-  const val JUNIT = "5.9.2"
-  const val LOG4J2 = "2.22.1"
-  const val JACKSON = "2.16.1"
-  const val LOMBOK = "1.18.30"
-  const val CHECKSTYLE = "10.13.0"
-  const val DETEKT = "1.23.5"
-  const val KOTLIN = "1.9.22"
+  const val JETBRAINS_ANNOTATIONS = "26.0.2"
+  const val JUNIT = "5.11.4"
+  const val LOG4J2 = "2.25.2"
+  const val JACKSON = "2.19.4"
+  const val LOMBOK = "1.18.42"
+  const val CHECKSTYLE = "12.3.0"
+  const val DETEKT = "1.23.8"
+  const val KOTLIN = "2.3.0"
 }
 
 // Projects should use Maven Central for external dependencies
@@ -54,10 +67,15 @@ repositories {
   mavenCentral()
   maven {
     name = "artifactory-publish"
-    url = uri("${artifactoryContextUrl}/${artifactoryRepoKeyReadRelease}/")
+    url = uri(
+        if (isSnapshot)
+          "${artifactoryContextUrl}/${artifactoryRepoKeyPublishSnapshot}/"
+        else
+          "${artifactoryContextUrl}/${artifactoryRepoKeyPublishRelease}/"
+    )
     credentials {
       username = artifactoryUser
-      password = artifactoryPassword
+      password = artifactoryToken
     }
   }
 }

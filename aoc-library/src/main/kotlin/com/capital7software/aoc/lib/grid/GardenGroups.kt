@@ -38,6 +38,7 @@ import kotlin.jvm.optionals.getOrNull
 class GardenGroups private constructor(
     private val regions: Set<GardenRegion>
 ) {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * Creates a new [GardenGroups] from the specified raw input that contains the garden.
@@ -331,6 +332,7 @@ class GardenRegion private constructor(
     val plant: Char,
     val start: Point2D<Int>,
 ) {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     private const val SIDES_PER_PLOT = 4
 

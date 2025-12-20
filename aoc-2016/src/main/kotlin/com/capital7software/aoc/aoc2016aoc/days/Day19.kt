@@ -88,7 +88,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 1407007.
  */
 class Day19 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day19::class.java)
   }
 
@@ -132,7 +132,6 @@ class Day19 : AdventOfCodeSolution {
    * @param numElves The number of Elves exchanging gifts.
    * @return The Elf that is left with all the presents.
    */
-  @SuppressFBWarnings
   fun elfWithAllPresentsLeftExchangeFast(numElves: Int): ElfParty.Elf {
     val elf = ElfParty.leftExchangeFast(numElves)
     return elf
@@ -144,7 +143,6 @@ class Day19 : AdventOfCodeSolution {
    * @param numElves The number of Elves exchanging gifts.
    * @return The Elf that is left with all the presents.
    */
-  @SuppressFBWarnings
   fun elfWithAllPresentsAcrossExchange(numElves: Int): ElfParty.Elf {
     val elf = ElfParty.acrossExchange(numElves)
     return elf
@@ -156,7 +154,6 @@ class Day19 : AdventOfCodeSolution {
    * @param numElves The number of Elves exchanging gifts.
    * @return The Elf that is left with all the presents.
    */
-  @SuppressFBWarnings
   fun elfWithAllPresentsAcrossExchangeFast(numElves: Int): ElfParty.Elf {
     val elf = ElfParty.acrossExchangeFast(numElves)
     return elf

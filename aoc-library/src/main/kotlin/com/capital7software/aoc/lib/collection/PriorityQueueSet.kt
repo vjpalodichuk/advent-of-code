@@ -1,5 +1,6 @@
 package com.capital7software.aoc.lib.collection
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
@@ -46,11 +47,13 @@ import kotlin.math.max
  * @param comparator      The Comparator to use for this PriorityQueue.
  * @param <T> The type of the items held by this PriorityQueue.
  */
+@Suppress("unused")
 class PriorityQueueSet<T : Any> @JvmOverloads constructor(
     initialCapacity: Int = DEFAULT_INITIAL_CAPACITY,
     @SuppressWarnings("serial") // Conditionally serializable
     val comparator: Comparator<T>? = null
 ) : AbstractQueue<T>(), MutableSet<T>, Cloneable, RandomAccess, Heap<T>, Iterable<T>, Serializable {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     @Serial
     private const val serialVersionUID: Long = 1L
@@ -716,7 +719,7 @@ class PriorityQueueSet<T : Any> @JvmOverloads constructor(
     this.items = items
     numberOfItems = count
 
-    for (i in 0 until numberOfItems) {
+    for (i in 0 ..< numberOfItems) {
       indexes[getUnchecked(i)!!] = i
     }
   }
@@ -1092,6 +1095,7 @@ class PriorityQueueSet<T : Any> @JvmOverloads constructor(
       }
     }
 
+    @SuppressFBWarnings
     override fun forEachRemaining(action: Consumer<in T>) {
       if (fence < 0) {
         fence = size

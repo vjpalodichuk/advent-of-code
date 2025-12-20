@@ -113,7 +113,6 @@ class Day23 : AdventOfCodeSolution {
    * @param a The value to place in register a prior to executing the program.
    * @return The number of times the specified [KClass] has been executed.
    */
-  @SuppressFBWarnings
   fun registerValue(input: List<String>, register: String, a: Long = 0): Long {
     val instance = CoProcessor.buildCoProcessor(input)
     instance.reset()

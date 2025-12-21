@@ -143,6 +143,8 @@ class StreamProcessing(val input: String) {
           '!' -> {
             inCancelMode = true
           }
+
+          else -> return@forEach
         }
       }
     }

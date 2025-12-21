@@ -167,7 +167,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 181.
  */
 class Day22 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day22::class.java)
   }
 

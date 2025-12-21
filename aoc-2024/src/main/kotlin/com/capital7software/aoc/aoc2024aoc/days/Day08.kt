@@ -176,7 +176,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **```912```**.
  */
 class Day08 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day08::class.java)
   }
 
@@ -221,7 +221,6 @@ class Day08 : AdventOfCodeSolution {
    * @param input The list of strings that form the map of antenna locations.
    * @return The number of unique unbounded antinode locations on the map.
    */
-  @SuppressFBWarnings
   fun countNewModelBoundedAntinodeLocations(input: List<String>): Int {
     val result = ResonantCollinearity(input).calculateNewModelBoundedAntinodes()
 

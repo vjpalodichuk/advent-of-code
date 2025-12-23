@@ -91,7 +91,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was ```404```.
  */
 class Day02 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day02::class.java)
   }
 

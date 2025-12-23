@@ -67,7 +67,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 9227661.
  */
 class Day12 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day12::class.java)
   }
 
@@ -122,7 +122,6 @@ class Day12 : AdventOfCodeSolution {
    * @param destValue The value to place in the destination register.
    * @return The value of the specified register after the program has run.
    */
-  @SuppressFBWarnings
   fun setAndGetValueInRegister(
       input: List<String>,
       register: String,

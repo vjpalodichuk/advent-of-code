@@ -59,7 +59,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 258.
  */
 class Day07 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day07::class.java)
   }
 

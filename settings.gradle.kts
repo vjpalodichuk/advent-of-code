@@ -1,7 +1,13 @@
 rootProject.name = "aoc"
+
+pluginManagement {
+    includeBuild("build-release-settings")
+}
+
 plugins {
-  id("com.mooltiverse.oss.nyx") version "2.5.1"
+  id("com.mooltiverse.oss.nyx") version "3.1.4"
   id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+  id("com.capital7software.release-settings")
 }
 
 include("aoc-library")
@@ -30,18 +36,117 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
   }
 
   commitMessageConventions {
-    enabled.set(mutableListOf("conventionalCommits", "gitmoji", "conventionalCommitsForMerge"))
+    enabled.set(
+        mutableListOf(
+          "conventionalCommits",
+          "gitmoji",
+          "conventionalCommitsForMerge"
+      )
+    )
   }
 
   releaseTypes {
     publicationServices.set(listOf("github"))
+    enabled = listOf("mainline", "release", "feature", "fix", "snapshot")
+
+    items.create("mainline") {
+      collapseVersions = false
+      description = """Release {{version}}"""
+      filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)$"""
+      gitCommit = "true"
+      gitCommitMessage = "Release version {{version}}"
+      gitPush = "true"
+      gitTag = "true"
+      gitTagMessage = "Release v{{version}}"
+      matchBranches = """^(master|main)$"""
+      matchWorkspaceStatus = "CLEAN"
+      publish = "true"
+      publishDraft = "true"
+      publishPreRelease = "false"
+      versionRangeFromBranchName = false
+    }
+
+    items.create("release") {
+      collapseVersions = true
+      collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
+      description = """Release {{version}}"""
+      filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-(rel|release)((\.([0-9]\d*))?)?)$"""
+      gitCommit = "true"
+      gitCommitMessage = "Release version {{version}}"
+      gitPush = "true"
+      gitTag = "true"
+      gitTagMessage = "Release v{{version}}"
+      matchBranches = """^(rel|release)(-|\/)({{configuration.releasePrefix}})?([0-9|x]\d*)(\.([0-9|x]\d*)(\.([0-9|x]\d*))?)?$"""
+      matchWorkspaceStatus = "CLEAN"
+      publish = "true"
+      publishDraft = "true"
+      publishPreRelease = "false"
+      versionRangeFromBranchName = true
+    }
+
+    items.create("feature") {
+      collapseVersions = true
+      collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
+      description = """Release {{version}}"""
+      filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-(feat|feature)(([0-9a-zA-Z]*)(\.([0-9]\d*))?)?)$"""
+      gitCommit = "false"
+      gitCommitMessage = "Release version {{version}}"
+      gitPush = "false"
+      gitTag = "false"
+      gitTagMessage = "Release v{{version}}"
+      matchBranches = """^(feat|feature)((-|\\/)[0-9a-zA-Z-_]+)?$"""
+      matchWorkspaceStatus = "CLEAN"
+      publish = "false"
+      publishDraft = "false"
+      publishPreRelease = "false"
+      versionRangeFromBranchName = false
+    }
+
+    items.create("fix") {
+      collapseVersions = true
+      collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
+      description = """Fix Release {{version}}"""
+      filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-fix(([0-9a-zA-Z]*)(\.([0-9]\d*))?)?)$"""
+      gitCommit = "false"
+      gitPush = "true"
+      gitTag = "false"
+      gitTagMessage = "Fix Release v{{version}}"
+      matchBranches = """^fix((-|\/)[0-9a-zA-Z-_]+)?$"""
+      publish = "false"
+      publishDraft = "false"
+      publishPreRelease = "false"
+      versionRangeFromBranchName = false
+    }
+
+    items.create("snapshot") {
+      collapseVersions = true
+      collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
+      description = """Snapshot {{version}}"""
+      gitCommit = "false"
+      gitPush = "false"
+      gitTag = "false"
+      identifiers.create("0") {
+        position = "BUILD"
+        qualifier = "t"
+        value = """{{#timestampYYYYMMDDHHMMSS}}{{timestamp}}{{/timestampYYYYMMDDHHMMSS}}"""
+      }
+      identifiers.create("1") {
+        position = "BUILD"
+        qualifier = "s"
+        value = "SNAPSHOT"
+      }
+      publish = "false"
+      publishDraft = "false"
+      publishPreRelease = "false"
+      versionRangeFromBranchName = false
+    }
   }
 
   services.create("github") {
     type = "GITHUB"
     options.apply {
       // The authentication token is read from the GH_TOKEN environment variable.
-      put("AUTHENTICATION_TOKEN", "{{#environmentVariable}}GH_TOKEN{{/environmentVariable}}")
+      put("AUTHENTICATION_TOKEN", "{{#environmentVariable}}GITHUB_TOKEN{{/environmentVariable}}")
       put("REPOSITORY_NAME", "advent-of-code")
       put("REPOSITORY_OWNER", "vjpalodichuk")
     }

@@ -92,7 +92,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **```227921760109726```**.
  */
 class Day07 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day07::class.java)
   }
 
@@ -135,7 +135,6 @@ class Day07 : AdventOfCodeSolution {
    * @param input The list of strings that form the test values and equations.
    * @return The sum of the possibly true test values. Uses all available operators
    */
-  @SuppressFBWarnings
   fun sumOfPossiblyTrueTestValuesAllOperators(input: List<String>): Long {
     return BridgeRepair(input).possiblyTrueTestValues(addAndMulOnly = false)
         .keys

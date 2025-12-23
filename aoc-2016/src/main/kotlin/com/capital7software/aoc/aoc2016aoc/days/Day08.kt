@@ -84,7 +84,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was UPOJFLBCEZ.
  */
 class Day08 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day08::class.java)
 
     private const val DISPLAY_COLUMNS = 50

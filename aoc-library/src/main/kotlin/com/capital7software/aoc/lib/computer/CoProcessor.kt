@@ -45,6 +45,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 class CoProcessor private constructor(
     debugger: Debugger? = null
 ) : SmallComputer({}, {}, debugger) {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * Parses the specified [List] of raw [String] instructions into a [List] of

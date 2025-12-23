@@ -134,7 +134,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was ```24941624```.
  */
 class Day01 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day01::class.java)
   }
 
@@ -175,7 +175,6 @@ class Day01 : AdventOfCodeSolution {
    * @param input The list of location IDs.
    * @return The result of calculating the similarity score of each location ID pair.
    */
-  @SuppressFBWarnings
   fun calculateSimilarityScore(input: List<String>): Long {
     return HistorianHysteria(input).calculateSimilarityScore()
   }

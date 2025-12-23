@@ -73,7 +73,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **295229**.
  */
 class Day03 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day03::class.java)
   }
 

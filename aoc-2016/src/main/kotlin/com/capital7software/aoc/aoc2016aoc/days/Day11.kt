@@ -199,7 +199,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 55.
  */
 class Day11 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day11::class.java)
   }
 
@@ -247,7 +247,6 @@ class Day11 : AdventOfCodeSolution {
    * @param input The [List] of [String] to parse into [GeneratorsAndChips.Floor].
    * @return The minimum number of steps to solve the game.
    */
-  @SuppressFBWarnings
   fun minimumStepsToSolveWithAddedPieces(input: List<String>): Int {
     val game = GeneratorsAndChips.buildGeneratorAndChips(input)
     game.addGenerator("elerium")

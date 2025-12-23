@@ -214,7 +214,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **```910066```**.
  */
 class Day12 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day12::class.java)
   }
 
@@ -258,7 +258,6 @@ class Day12 : AdventOfCodeSolution {
    * @param input The [List] of [String]s that represent the garden layout.
    * @return The total price of fencing all the garden regions using the Sides method.
    */
-  @SuppressFBWarnings
   fun totalPriceBySidesOfAllFencing(input: List<String>): Long {
     val groups = GardenGroups.create(input)
     val result = groups.totalBySides.toLong()

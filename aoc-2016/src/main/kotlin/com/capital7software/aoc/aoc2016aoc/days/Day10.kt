@@ -59,7 +59,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 4042.
  */
 class Day10 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day10::class.java)
 
     private const val COMPARE_1 = 17
@@ -120,7 +120,6 @@ class Day10 : AdventOfCodeSolution {
    * @param binIds The set of IDs to include in the calculation.
    * @return The product of the sum of the specified [Collection] of [String] IDs.
    */
-  @SuppressFBWarnings
   fun productOfOutputBins(input: List<String>, binIds: Collection<String>): Long {
     val instance = FactorySimulator.buildFactorySimulator(input)
     instance.apply()

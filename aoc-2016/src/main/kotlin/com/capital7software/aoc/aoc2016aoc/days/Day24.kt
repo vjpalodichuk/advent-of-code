@@ -63,7 +63,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 748.
  */
 class Day24 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day24::class.java)
   }
 
@@ -116,7 +116,6 @@ class Day24 : AdventOfCodeSolution {
    * @param source The number of the source vertex that the path must start from.
    * @return The fewest number of steps starting at source and visiting each node at least once.
    */
-  @SuppressFBWarnings
   fun getFewestNumberOfStepsInCycle(input: List<String>, source: Int): Int {
     val instance = AirDuctCleaning(input)
     val shortestRoute = instance.findShortestCycle(source)

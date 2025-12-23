@@ -215,7 +215,6 @@ public class MathOperations {
    *              supported types.
    * @return The specified value incremented by one (1).
    */
-  @SuppressFBWarnings
   public static <T extends Number> @NotNull T inc(@NotNull T value) {
     return switch (value) {
       case Integer a -> (T) ((Integer) (a + 1));
@@ -238,7 +237,6 @@ public class MathOperations {
    *              supported types.
    * @return The specified value decremented by one (1).
    */
-  @SuppressFBWarnings
   public static <T extends Number> @NotNull T dec(@NotNull T value) {
     return switch (value) {
       case Integer a -> (T) ((Integer) (a - 1));
@@ -566,7 +564,7 @@ public class MathOperations {
    *              supported types.
    * @return The absolute value of the specified value.
    */
-  @SuppressFBWarnings
+  @SuppressWarnings("unused")
   public static <T extends Number> @NotNull T inv(
       @NotNull T b,
       @NotNull T n

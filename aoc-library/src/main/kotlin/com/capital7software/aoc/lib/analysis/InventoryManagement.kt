@@ -39,7 +39,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  *
  * @param input The list of candidate box ids to analyze.
  */
-class InventoryManagement @SuppressFBWarnings constructor(input: List<String>) {
+class InventoryManagement constructor(input: List<String>) {
   private val boxIds: List<String> = input.toList()
   private val counts: Map<String, Map<Char, Int>> by lazy {
     boxIds.associateWith { it.groupingBy { it }.eachCount() }
@@ -110,6 +110,7 @@ class InventoryManagement @SuppressFBWarnings constructor(input: List<String>) {
     return Triple("", "", "")
   }
 
+  @SuppressFBWarnings()
   private fun countDifferences(a: String, b: String): Pair<Int, String> {
     val common = StringBuilder()
     var differences = 0

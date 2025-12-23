@@ -2,7 +2,6 @@ package com.capital7software.aoc.aoc2017aoc.days
 
 import com.capital7software.aoc.lib.AdventOfCodeSolution
 import com.capital7software.aoc.lib.graph.path.DigitalPlumber
-import com.capital7software.aoc.lib.grid.HexEd
 import java.time.Instant
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -76,7 +75,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **204**.
  */
 class Day12 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day12::class.java)
   }
 

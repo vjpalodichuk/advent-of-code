@@ -75,6 +75,7 @@ class LightGrid(
   private val grid: Grid2D<Int> = grid.copy()
   private val instructions: List<LightInstruction> = ArrayList(instructions)
 
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * Builds the LightGrid in a grid of the specified size and parses and loads the

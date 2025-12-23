@@ -141,6 +141,7 @@ class ReposeRecord @SuppressFBWarnings constructor(input: List<String>) {
       }
     }
 
+    @SuppressFBWarnings
     private fun getInstant(input: String): Instant {
       val match = DATETIME_REGEX.find(input)
 

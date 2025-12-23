@@ -129,7 +129,6 @@ class Day24 : AdventOfCodeSolution {
    * @param input The bridge components
    * @return The longest then strongest bridge.
    */
-  @SuppressFBWarnings
   fun getLongestThenStrongestBridge(input: List<String>): List<ElectromagneticMoat.Component> {
     val instance = ElectromagneticMoat(input)
     return instance.buildLongestThenStrongestBridge()

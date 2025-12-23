@@ -114,6 +114,7 @@ sealed class FactoryObject(val id: String) : Consumer<Int> {
  * A class that is capable of executing instructions needed for the [FactorySimulator].
  */
 sealed class FactoryInstruction {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * Creates and returns a [FactoryInstruction] that is capable or parsing and executing the
@@ -172,6 +173,7 @@ sealed class FactoryInstruction {
   class Value(
       val instruction: String,
   ) : FactoryInstruction() {
+    @Suppress("comments:UndocumentedPublicClass")
     companion object {
       /**
        * The [Regex] used to match this instruction with raw instructions it is capable of
@@ -179,6 +181,8 @@ sealed class FactoryInstruction {
        */
       val matchRegEx = """value \d+ goes to bot \d+"""
           .toRegex()
+        @SuppressFBWarnings
+        get
 
       /**
        * The [Regex] used to extract the values from the raw instructions this instruction can
@@ -186,6 +190,8 @@ sealed class FactoryInstruction {
        */
       val extractRegex = """value (?<value>\d+) goes to bot (?<id>\d+)"""
           .toRegex()
+        @SuppressFBWarnings
+        get
 
       private const val REQUIRED_MATCH_GROUPS: Int = 2
     }
@@ -226,6 +232,7 @@ sealed class FactoryInstruction {
   class Bot(
       val instruction: String,
   ) : FactoryInstruction() {
+    @Suppress("comments:UndocumentedPublicClass")
     companion object {
       /**
        * The [Regex] used to match this instruction with raw instructions it is capable of
@@ -233,6 +240,8 @@ sealed class FactoryInstruction {
        */
       val matchRegEx = """bot \d+ gives low to (?:output|bot) \d+ and high to (?:output|bot) \d+"""
           .toRegex()
+        @SuppressFBWarnings
+        get
       /**
        * The [Regex] used to extract the values from the raw instructions this instruction can
        * parse.
@@ -240,6 +249,8 @@ sealed class FactoryInstruction {
       val extractRegex = ("bot (?<botId>\\d+) gives low to (?<lowType>output|bot) (?<lowId>\\d+) "
           + "and high to (?<highType>output|bot) (?<highId>\\d+)")
           .toRegex()
+        @SuppressFBWarnings
+        get
 
       private const val REQUIRED_MATCH_GROUPS: Int = 5
     }
@@ -316,6 +327,7 @@ sealed class FactoryInstruction {
  * with value-2 microchips.
  */
 class FactorySimulator(instructions: List<FactoryInstruction>) {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * Builds and returns a new [FactorySimulator] instance loaded with

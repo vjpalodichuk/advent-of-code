@@ -78,7 +78,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 3903937.
  */
 class Day15 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day15::class.java)
   }
 
@@ -123,7 +123,6 @@ class Day15 : AdventOfCodeSolution {
    *
    * @param input The [List] of [String] to parse into a [DiscSculpture]
    */
-  @SuppressFBWarnings
   fun timeToPushTheButtonWithAdditionalDisc(input: List<String>): Int {
     val instance = DiscSculpture(input)
     instance.add(DiscSculpture.Disc(instance.size + 1, 11, 0))

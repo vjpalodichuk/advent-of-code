@@ -180,7 +180,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * @param input [List] of [String]s that represents the height of each plat in all trails.
  */
 class HoofIt(input: List<String>) {
-  companion object {
+  private companion object {
     private const val OFFSET = 0x30 // ASCII 0
     private const val TRAIL_HEAD_HEIGHT = 0 // All trails start at a height of zero (0).
     private const val TARGET_SUM = 45 // The sum of 0 through 9

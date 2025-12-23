@@ -15,7 +15,7 @@ package com.capital7software.aoc.lib.string
  * before being processed.
  */
 class MullItOver(input: List<String>) {
-  companion object {
+  private companion object {
     private val MUL_REGEX = "(?<instruction>mul)\\((?<operand1>\\d+),(?<operand2>\\d+)\\)".toRegex()
     private val DO_REGEX = "(?<instruction>do)\\(\\)".toRegex()
     private val DONT_REGEX = "(?<instruction>don't)\\(\\)".toRegex()

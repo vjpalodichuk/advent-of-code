@@ -195,7 +195,6 @@ class DuelingGenerators(input: List<String>, val newLogic: Boolean = false) {
     return count
   }
 
-  @SuppressFBWarnings
   private fun countMatchesNew(): Int {
     var prevA: Long = startPair.first.toLong()
     var prevB: Long = startPair.second.toLong()

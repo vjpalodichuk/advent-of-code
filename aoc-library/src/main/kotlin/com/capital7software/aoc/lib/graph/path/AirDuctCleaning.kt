@@ -121,6 +121,7 @@ class AirDuctCleaning(
      * @param point The [Point2D] location of this tile in 2D space.
      */
     class Wall(point: Point2D<Int>) : Tile(point) {
+      @Suppress("comments:UndocumentedPublicClass")
       companion object {
         /**
          * All [Wall] tiles share the same label.
@@ -146,6 +147,7 @@ class AirDuctCleaning(
      * @param point The [Point2D] location of this tile in 2D space.
      */
     class Space(point: Point2D<Int>) : Tile(point) {
+      @Suppress("comments:UndocumentedPublicClass")
       companion object {
         /**
          * All [Space] tiles share the same label.
@@ -185,6 +187,7 @@ class AirDuctCleaning(
       }
     }
 
+    @Suppress("comments:UndocumentedPublicClass")
     companion object {
       /**
        * A factory function for creating new [Tile] instances.

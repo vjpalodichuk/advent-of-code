@@ -71,7 +71,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was gcehdbfa.
  */
 class Day21 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day21::class.java)
   }
 
@@ -121,7 +121,6 @@ class Day21 : AdventOfCodeSolution {
    * @param input The list of instructions on how to scramble a password.
    * @return The unscrambled password.
    */
-  @SuppressFBWarnings
   fun unscramble(password: String, input: List<String>): String {
     val instance = PasswordScrambler(input)
     return instance.unscramble(password)

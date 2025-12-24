@@ -194,7 +194,6 @@ class Day21 : AdventOfCodeSolution {
    * after the specified number of iterations are performed. The first element is the on count
    * and the second element is the off count.
    */
-  @SuppressFBWarnings
   fun logFractalAndCounts(input: List<String>, iterations: Int): Pair<Int, Int> {
     val instance = FractalArt(input)
     instance.reset()

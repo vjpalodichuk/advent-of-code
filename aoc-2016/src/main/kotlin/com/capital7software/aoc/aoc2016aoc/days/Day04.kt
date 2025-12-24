@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory
  *
  */
 class Day04 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day04::class.java)
   }
 

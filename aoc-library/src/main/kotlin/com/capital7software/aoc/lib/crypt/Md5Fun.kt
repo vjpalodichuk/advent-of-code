@@ -11,6 +11,7 @@ import java.security.NoSuchAlgorithmException
  * Santa needs help mining some AdventCoins (very similar to bitcoins) to use as gifts for
  * all the economically forward-thinking little girls and boys.
  */
+@SuppressFBWarnings
 object Md5Fun {
   private const val HEX_RADIX = 16
 
@@ -278,7 +279,6 @@ object Md5Fun {
    * @param stretched If true, the hashes are stretched before being used.
    * @return A [List] of [Pair] where the first element is the key and the second is the index.
    */
-  @SuppressFBWarnings
   @JvmStatic
   @JvmOverloads
   fun generateOneTimePadKeys(
@@ -369,6 +369,7 @@ object Md5Fun {
   private fun stretchHash(md: MessageDigest, hash: String): String {
     var temp = hash
 
+    @Suppress("unused_parameter")
     for (i in 0 until STRETCHED_HASHINGS) {
       temp = generateHash(md, temp)
     }

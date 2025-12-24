@@ -79,7 +79,7 @@ import org.slf4j.LoggerFactory
  *
  */
 class Day02 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day02::class.java)
   }
   override fun getDefaultInputFilename(): String {

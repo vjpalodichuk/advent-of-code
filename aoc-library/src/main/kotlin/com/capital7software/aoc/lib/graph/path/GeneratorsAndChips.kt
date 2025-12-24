@@ -169,6 +169,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * @param initialFloors The initial floor state for the new game.
  */
 class GeneratorsAndChips(initialFloors: Collection<Floor>) {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     private val FLOOR_REGEX: Regex = """The (?<floor>\w+) floor contains""".toRegex()
     private val GENERATOR_REGEX: Regex = """a (?<generator>\w+) generator""".toRegex()
@@ -190,6 +191,7 @@ class GeneratorsAndChips(initialFloors: Collection<Floor>) {
       return GeneratorsAndChips(input.map { parseFloor(it) })
     }
 
+    @SuppressFBWarnings
     private fun parseFloor(input: String): Floor {
       val id: Int = textToId(
           FLOOR_REGEX.find(input)?.groups?.get("floor")?.value?.lowercase()?.trim()
@@ -557,7 +559,6 @@ class GeneratorsAndChips(initialFloors: Collection<Floor>) {
     /**
      * True if all [GamePiece] are on the [goalFloor]; otherwise false.
      */
-    @SuppressFBWarnings
     private val allAtGoal: Boolean by lazy {
       floors
           .filter { it.key != goalFloor }

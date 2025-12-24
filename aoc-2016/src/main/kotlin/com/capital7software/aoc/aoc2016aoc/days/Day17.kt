@@ -90,7 +90,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 766.
  */
 class Day17 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day17::class.java)
   }
 
@@ -134,7 +134,6 @@ class Day17 : AdventOfCodeSolution {
    * @param input The passcode to the vault.
    * @return The shortest path.
    */
-  @SuppressFBWarnings
   fun findLongestPathLength(input: String): Int {
     val instance = SecureVault(input, 4, 4)
     return instance.findLongestPath().first

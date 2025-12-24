@@ -85,6 +85,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * In this example, particles 0, 1, and 2 are simultaneously destroyed at the time and
  * place marked X. On the next tick, particle 3 passes through unharmed.
  */
+@SuppressFBWarnings
 class ParticleSwarm private constructor(private val target: Particle3D<Long>) {
   private companion object {
     private val PARTICLE_REGEX: Regex =
@@ -203,7 +204,6 @@ class ParticleSwarm private constructor(private val target: Particle3D<Long>) {
    *
    * @return The [SwarmParticle] that will stay closest to the target [Particle3D] in the long run.
    */
-  @SuppressFBWarnings
   fun closestInTheLongRun(): SwarmParticle {
     val initial = particles.map { it.copy() }
 

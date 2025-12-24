@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.5.12 (2025-12-24)
+
+### Added
+
+* [8c35c] :heavy_plus_sign: Added Gradle Settings Plugin to manage release settings and added publish_release.yml as a GitHub Action (#196) (Vincent J Palodichuk)
+
+# Changelog
+
+## 1.5.11 (2025-12-15)
+
+### Added
+
+* [4b507] :heavy_plus_sign: Added AOC 2024 Day 12 (#168) (#169) (Vincent J Palodichuk)
 
 ## 1.5.11 (2025-12-15)
 

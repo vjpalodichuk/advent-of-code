@@ -261,7 +261,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was ```1523```.
  */
 class Day06 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day06::class.java)
   }
 
@@ -302,7 +302,6 @@ class Day06 : AdventOfCodeSolution {
    * @param input The list of strings to form the page ordering rules and page updates.
    * @return The sum of the middle pages of the invalid page updates.
    */
-  @SuppressFBWarnings
   fun numberOfPossibleObstructionPositions(input: List<String>): Int {
     return GuardGallivant(input).possibleNewObstructionPositions().size
   }

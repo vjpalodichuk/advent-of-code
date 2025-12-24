@@ -8,6 +8,7 @@ private const val TOP_FIVE = 5
 
 private const val LETTERS_IN_ALPHABET = 26
 
+@Suppress("unresolved_symbol")
 /**
  * Finally, you come across an information kiosk with a list of rooms. Of course,
  * the list is encrypted and full of decoy data, but the instructions to decode the
@@ -47,6 +48,7 @@ private const val LETTERS_IN_ALPHABET = 26
  */
 @SuppressFBWarnings
 class SecureRooms(private val rooms: List<Triple<String, Long, String>>) {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * Builds and returns a new [SecureRooms] instance loaded with the rooms parsed from

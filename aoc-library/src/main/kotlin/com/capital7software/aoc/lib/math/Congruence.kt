@@ -7,7 +7,7 @@ package com.capital7software.aoc.lib.math
  * @param modulus The modulus of the modulo operation.
  */
 data class Congruence<T : Number>(val remainder: T, val modulus: T) {
-  companion object {
+  private companion object {
     private const val DEFAULT_MAX_TRIES = 10_000
   }
 
@@ -41,8 +41,7 @@ data class Congruence<T : Number>(val remainder: T, val modulus: T) {
    * null if there is no solution after maxTries.
    */
   fun solve(other: Congruence<T>, maxTries: Int = DEFAULT_MAX_TRIES): Congruence<T>? {
-    val x: T? = findX(other, maxTries)
-    return when (x) {
+    return when (val x: T? = findX(other, maxTries)) {
       null -> null
       else -> {
         val lcm: T = MathOperations.lcm(modulus, other.modulus)

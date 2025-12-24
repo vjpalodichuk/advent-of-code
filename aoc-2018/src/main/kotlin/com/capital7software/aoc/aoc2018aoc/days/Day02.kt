@@ -82,7 +82,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **megsdlpulxvinkatfoyzxcbvq**.
  */
 class Day02 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day02::class.java)
   }
 
@@ -123,7 +123,6 @@ class Day02 : AdventOfCodeSolution {
    * @param input The list of candidate box IDs.
    * @return The checksum of the box IDs.
    */
-  @SuppressFBWarnings
   fun getPrototypeBoxIds(input: List<String>): Triple<String, String, String> {
     return InventoryManagement(input).prototypes
   }

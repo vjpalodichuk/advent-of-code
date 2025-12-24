@@ -145,7 +145,6 @@ class Day20 : AdventOfCodeSolution {
    * @param input The particles to parse.
    * @return The ID of the particle that will stay closest to the target in the long run.
    */
-  @SuppressFBWarnings
   fun getParticleClosestToTargetFast(input: List<String>): Int {
     val targetPoint = Point3D(0L, 0L, 0L)
     val target: Particle3D<Long> = Particle3D(targetPoint, targetPoint, targetPoint)
@@ -159,7 +158,6 @@ class Day20 : AdventOfCodeSolution {
    * @param input The particles to parse.
    * @return The ID of the particle that will stay closest to the target in the long run.
    */
-  @SuppressFBWarnings
   fun getSurvivingParticles(input: List<String>): List<ParticleSwarm.SwarmParticle> {
     val targetPoint = Point3D(0L, 0L, 0L)
     val target: Particle3D<Long> = Particle3D(targetPoint, targetPoint, targetPoint)

@@ -65,7 +65,7 @@ import org.slf4j.LoggerFactory
  * You have enough stars to **Transmit the Signal.**
  */
 class Day25 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day25::class.java)
   }
 

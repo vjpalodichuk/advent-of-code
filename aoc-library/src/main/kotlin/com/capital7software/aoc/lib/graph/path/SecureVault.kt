@@ -66,7 +66,7 @@ class SecureVault(
     private val rows: Int,
     name: String = "vault-$passcode",
 ) {
-  companion object {
+  private companion object {
     private val OPEN = setOf('b', 'c', 'd', 'e', 'f')
     private val PATH_REGEX = """\d+,\d+:(?<path>\w+)""".toRegex()
   }

@@ -46,7 +46,7 @@ class ResonantCollinearity(input: List<String>) {
     }
   }
 
-  companion object {
+  private companion object {
     private fun initializeMap(input: List<String>): Pair<Map<Char, List<Point2D<Int>>>, Grid2D<Char>> {
       val rows = input.size
       val cols = input[0].length

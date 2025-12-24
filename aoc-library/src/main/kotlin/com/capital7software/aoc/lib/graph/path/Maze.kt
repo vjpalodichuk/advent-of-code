@@ -6,8 +6,6 @@ import com.capital7software.aoc.lib.graph.Edge
 import com.capital7software.aoc.lib.graph.Graph
 import com.capital7software.aoc.lib.graph.Vertex
 import com.capital7software.aoc.lib.graph.path.Maze.Tile
-import com.capital7software.aoc.lib.graph.path.Maze.Tile.Space
-import com.capital7software.aoc.lib.graph.path.Maze.Tile.Wall
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import java.time.Instant
 import java.util.Properties
@@ -98,6 +96,8 @@ class Maze private constructor(
         }
       }
 
+  @Suppress("comments:UndocumentedPublicClass")
+  @SuppressFBWarnings
   companion object {
     /**
      * Builds and returns a new [Maze] using the specified favorite number to determine which
@@ -139,7 +139,6 @@ class Maze private constructor(
      * @param favorite The designer's favorite number.
      * @return A [List] of [Tile] that are adjacent and walkable from the specified tile.
      */
-    @SuppressFBWarnings
     @JvmStatic
     fun neighbors(tile: Tile, favorite: Long): List<Tile> {
       return Direction.CARDINAL_DIRECTIONS
@@ -157,6 +156,7 @@ class Maze private constructor(
    * @param point The [Point2D] that represents this [Tile] in 2D space.
    */
   sealed class Tile(val point: Point2D<Long>) : Comparable<Tile> {
+    @Suppress("comments:UndocumentedPublicClass")
     companion object {
       /**
        * You can determine whether a given x,y coordinate will be a wall or an open
@@ -259,7 +259,7 @@ class Maze private constructor(
      * A Space [Tile] is a tile that can be walked on / traveled through.
      */
     class Space(x: Long, y: Long) : Tile(Point2D(x, y)) {
-      companion object {
+      private companion object {
         private const val LABEL: String = "."
         private const val DESCRIPTION: String = "open-space"
       }
@@ -274,7 +274,7 @@ class Maze private constructor(
      * obstacle.
      */
     class Wall(x: Long, y: Long) : Tile(Point2D(x, y)) {
-      companion object {
+      private companion object {
         private const val LABEL: String = "#"
         private const val DESCRIPTION: String = "wall"
       }
@@ -301,6 +301,7 @@ class Maze private constructor(
       val path: List<Tile> = listOf(),
       val edges: List<Edge<Int>> = listOf()
   ) {
+    @Suppress("comments:UndocumentedPublicClass")
     companion object {
       /**
        * Builds and returns a new [MazeSolution] from the specified [PathfinderResult]. If

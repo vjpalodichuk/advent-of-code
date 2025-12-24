@@ -75,7 +75,7 @@ data class DragonChecksum(val initial: String) {
     }
   }
 
-  companion object {
+  private companion object {
     private const val ZERO: Byte = 48
     private const val ONE: Byte = 49
   }

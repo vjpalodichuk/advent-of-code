@@ -37,7 +37,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  */
 @SuppressFBWarnings
 class PlutonianPebbles(input: String) {
-  companion object {
+  private companion object {
     private const val MAX_SLOW_BLINKS = 30
   }
 

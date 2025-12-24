@@ -106,7 +106,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **58559**.
  */
 class Day04 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day04::class.java)
   }
 
@@ -151,7 +151,6 @@ class Day04 : AdventOfCodeSolution {
    * @return The product of the guard ID that sleeps the most during any particular minute
    * multiplied by that particular minute.
    */
-  @SuppressFBWarnings
   fun getGuardAlternateChecksum(input: List<String>): Int {
     return ReposeRecord(input).guardAlternateChecksum()
   }

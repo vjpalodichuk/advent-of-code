@@ -24,6 +24,7 @@ import com.capital7software.aoc.lib.AdventOfCodeRunner
  *
  */
 class AdventOfCode2017Runner : AdventOfCodeRunner() {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * The main entrypoint of the runner. The first argument must be the name of a solution to

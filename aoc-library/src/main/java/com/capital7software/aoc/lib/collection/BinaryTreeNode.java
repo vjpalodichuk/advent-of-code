@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
  *     <a href="mailto:vincent@capital7software.com"> (e-mail me) </a>
  * @version 01/02/2024
  */
+@SuppressWarnings("unused")
 public class BinaryTreeNode<T extends Comparable<T>>
     implements TreeNode<T>, Comparable<BinaryTreeNode<T>> {
   private static final Logger LOGGER = LoggerFactory.getLogger(BinaryTreeNode.class);
@@ -78,7 +79,6 @@ public class BinaryTreeNode<T extends Comparable<T>>
    * @param left  The initial left child.
    * @param right The initial right child.
    */
-  @SuppressFBWarnings
   public BinaryTreeNode(
       final T value,
       final BinaryTreeNode<T> left,
@@ -103,6 +103,7 @@ public class BinaryTreeNode<T extends Comparable<T>>
    * @param right  The initial right child.
    */
   @SuppressFBWarnings
+  @SuppressWarnings("unused")
   public BinaryTreeNode(
       T value,
       BinaryTreeNode<T> parent,

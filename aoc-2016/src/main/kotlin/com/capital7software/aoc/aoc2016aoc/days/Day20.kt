@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 117.
  */
 class Day20 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day20::class.java)
   }
 
@@ -88,7 +88,6 @@ class Day20 : AdventOfCodeSolution {
    * @param maxIp The maximum IP Address to consider.
    * @return The total number of available IP Addresses.
    */
-  @SuppressFBWarnings
   fun availableIps(input: List<String>, maxIp: Long): Long {
     val instance = FirewallRules(input)
     return instance.availableIps(maxIp)

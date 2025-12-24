@@ -70,7 +70,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 424a0197.
  */
 class Day05 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day05::class.java)
   }
 

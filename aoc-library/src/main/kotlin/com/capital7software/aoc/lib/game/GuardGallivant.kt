@@ -3,7 +3,6 @@ package com.capital7software.aoc.lib.game
 import com.capital7software.aoc.lib.geometry.Direction
 import com.capital7software.aoc.lib.geometry.Point2D
 import com.capital7software.aoc.lib.grid.Grid2D
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 
 /**
  * The Historians use their fancy [device](https://adventofcode.com/2024/day/4) again, this time
@@ -31,13 +30,12 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * @param input [List] of [String]s that represents the room that the guard is in.
  */
 class GuardGallivant(input: List<String>) {
-    companion object {
+    private companion object {
         private val START_DIRECTION = Direction.NORTH
         private const val START_SYMBOL = '^'
         private const val OBSTACLE_SYMBOL = '#'
         private const val EMPTY_SYMBOL = '.'
 
-        @SuppressFBWarnings
         private fun buildGrid(input: List<String>): Grid2D<Char> {
             return Grid2D.buildCharacterGrid(input)
         }
@@ -180,7 +178,6 @@ class GuardGallivant(input: List<String>) {
      * @return A [List] of [GuardStep]. If the returned list is empty or if the last
      * step is not an exit, then the specified [layout] is a loop.
      */
-    @SuppressFBWarnings
     private fun getGuardPositions(
         layout: Grid2D<Char>,
         pathSoFar: MutableList<GuardStep> = mutableListOf()

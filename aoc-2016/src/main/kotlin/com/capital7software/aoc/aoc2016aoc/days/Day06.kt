@@ -66,7 +66,7 @@ import org.slf4j.LoggerFactory
  *
  */
 class Day06 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day06::class.java)
   }
 

@@ -154,7 +154,7 @@ interface ProgramContext {
  * @param instructions The list of instructions to use for this context.
  * @param registers The map of registers to use for this context.
  */
-class DefaultProgramContext @SuppressFBWarnings constructor(
+class DefaultProgramContext (
     override val outputHandler: (output: Long) -> Unit,
     override val soundHandler: (output: Long) -> Unit,
     instructions: List<Instruction>,

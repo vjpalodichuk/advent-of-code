@@ -99,7 +99,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **```224577979481346```**.
  */
 class Day11 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day11::class.java)
   }
 
@@ -142,7 +142,6 @@ class Day11 : AdventOfCodeSolution {
    * @param input The [String] the initial stone arrangements.
    * @return The number of stones after 75 blinks.
    */
-  @SuppressFBWarnings
   fun numberOfStonesAfterSeventyFiveBlinks(input: String): Long {
     val result = PlutonianPebbles(input).fastBlink(75).values.sum()
 

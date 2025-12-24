@@ -25,6 +25,7 @@ import com.capital7software.aoc.lib.AdventOfCodeRunner
  * the first. Each puzzle grants one star. Good luck!
  */
 class AdventOfCode2018Runner : AdventOfCodeRunner() {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * The main entrypoint of the runner. The first argument must be the name of a solution to

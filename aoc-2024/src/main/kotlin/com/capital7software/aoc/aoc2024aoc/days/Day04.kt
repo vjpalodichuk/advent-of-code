@@ -106,7 +106,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was ```1921```.
  */
 class Day04 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day04::class.java)
   }
 
@@ -147,7 +147,6 @@ class Day04 : AdventOfCodeSolution {
    * @param input The list of strings to form the word search.
    * @return The number of times a pair of MAS form an X in the input.
    */
-  @SuppressFBWarnings
   fun calculateOccurrencesOfMas(input: List<String>): Int {
     return CeresSearch(input).findAllX("MAS").size
   }

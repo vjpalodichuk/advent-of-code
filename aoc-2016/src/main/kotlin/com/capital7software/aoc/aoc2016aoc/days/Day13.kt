@@ -70,7 +70,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 138.
  */
 class Day13 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day13::class.java)
   }
 
@@ -140,7 +140,6 @@ class Day13 : AdventOfCodeSolution {
    * @param limit A path in the [Maze] will be explored until this many steps have been taken.
    * @return The number of distinct tiles encountered during the search.
    */
-  @SuppressFBWarnings
   fun distinctPointsReachedWithinLimit(
       startX: Long,
       startY: Long,

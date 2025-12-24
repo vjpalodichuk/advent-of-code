@@ -62,6 +62,7 @@ open class SmallComputer protected constructor(
   protected val instructions = arrayListOf<Instruction>()
   protected val registers = mutableMapOf<String, Register>()
 
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * Parses the specified [List] of raw [String] instructions into a [List] of

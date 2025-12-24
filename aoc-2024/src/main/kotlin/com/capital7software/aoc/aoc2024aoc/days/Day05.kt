@@ -149,7 +149,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was ```4260```.
  */
 class Day05 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day05::class.java)
   }
 
@@ -191,7 +191,6 @@ class Day05 : AdventOfCodeSolution {
    * @param input The list of strings to form the page ordering rules and page updates.
    * @return The sum of the middle pages of the invalid page updates.
    */
-  @SuppressFBWarnings
   fun sumOfInvalidMiddlePages(input: List<String>): Long {
     return PrintQueue(input).sumOfMiddlePagesOfInvalidPageUpdates()
   }

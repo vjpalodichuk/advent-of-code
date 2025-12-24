@@ -47,7 +47,7 @@ import com.capital7software.aoc.lib.collection.PriorityQueue
 class DiskFragmenter(input: String) {
   private val diskMap = input.toCharArray()
 
-  companion object {
+  private companion object {
     private const val OFFSET = 0x30 // ASCII 0
 
     private fun buildLayout(input: CharArray): Pair<MutableList<Block>, PriorityQueue<Block>> {
@@ -61,11 +61,13 @@ class DiskFragmenter(input: String) {
         val length = c.code - OFFSET
 
         if (index % 2 == 0) {
+          @Suppress("unused_parameter")
           for (i in 0 until length) {
             layout.add(Block(layout.size, currentId, true))
           }
           currentId++
         } else {
+          @Suppress("unused_parameter")
           for (i in 0 until length) {
             val block = Block(layout.size, -1, false)
             layout.add(block)

@@ -79,7 +79,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was 11451628995.
  */
 class Day09 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day09::class.java)
   }
 
@@ -124,7 +124,6 @@ class Day09 : AdventOfCodeSolution {
    * @param repeat If true, the repeated data is decompressed as well.
    * @return The specified input and returns the length of the decompressed input.
    */
-  @SuppressFBWarnings
   fun decompressedLengthOnly(input: List<String>, repeat: Boolean = false): Long {
     return CompressedData.length(input, repeat).sum()
   }

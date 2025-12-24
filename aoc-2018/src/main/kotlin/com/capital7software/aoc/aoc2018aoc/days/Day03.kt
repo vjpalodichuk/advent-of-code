@@ -87,7 +87,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **297**.
  */
 class Day03 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day03::class.java)
   }
 
@@ -128,7 +128,6 @@ class Day03 : AdventOfCodeSolution {
    * @param input The list of claims.
    * @return The [SuitClaims.Claim] that doesn't overlap any other claims.
    */
-  @SuppressFBWarnings
   fun getNoOverlapClaim(input: List<String>): SuitClaims.Claim {
     return SuitClaims(input).noOverlap!!
   }

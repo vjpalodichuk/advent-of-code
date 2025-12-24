@@ -72,7 +72,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was ```89349241```.
  */
 class Day03 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day03::class.java)
   }
 
@@ -113,7 +113,6 @@ class Day03 : AdventOfCodeSolution {
    * @param input The list of corrupted memory.
    * @return The calculated sum of products.
    */
-  @SuppressFBWarnings
   fun calculateRealSumOfProducts(input: List<String>): Long {
     return MullItOver(input).sumOfProducts(true)
   }

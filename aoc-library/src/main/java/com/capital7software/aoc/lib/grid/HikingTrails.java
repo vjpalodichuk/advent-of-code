@@ -617,6 +617,7 @@ public class HikingTrails {
      *
      * @return An unmodifiable copy of the segments that make up this HikingTrail.
      */
+    @SuppressWarnings("unused")
     public Set<HikingSegment> segments() {
       return Collections.unmodifiableSet(segments);
     }
@@ -1109,7 +1110,6 @@ public class HikingTrails {
     var rows = new AtomicInteger(0);
     var first = new AtomicBoolean(true);
     var startTile = new AtomicReference<TrailTile>();
-    var finishTile = new AtomicReference<TrailTile>();
     var rowResults = new LinkedList<RowResults>();
 
     input.forEach(line -> {
@@ -1130,6 +1130,8 @@ public class HikingTrails {
         break;
       }
     }
+
+    var finishTile = new AtomicReference<TrailTile>();
 
     for (int i = columns.get() * rows.get() - 1; i >= 0; i--) {
       if (tiles.get(i).trailType() == TrailType.PATH) {

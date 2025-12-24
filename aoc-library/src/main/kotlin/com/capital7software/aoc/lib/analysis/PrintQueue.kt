@@ -17,7 +17,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * to parse.
  */
 class PrintQueue(input: List<String>) {
-  companion object {
+  private companion object {
     private val RULE_REGEX = "^(?<page1>\\d+)(?<operation>\\D)(?<page2>\\d+)\$".toRegex()
     private const val PAGE1_GROUP = "page1"
     private const val PAGE2_GROUP = "page2"
@@ -39,6 +39,7 @@ class PrintQueue(input: List<String>) {
       return result
     }
 
+    @SuppressFBWarnings
     private fun parseRule(line: String): PageOrderingRule {
       check(line.isNotEmpty()) { "line can not be empty" }
 
@@ -310,11 +311,17 @@ class PrintQueue(input: List<String>) {
  * @property symbol The [String] representation of this operation.
  */
 enum class PageOrderingOperation(val symbol: String) {
+  /**
+   * @param symbol The [String] that represents the BEFORE operation
+   */
   BEFORE("|") {
     override fun apply(page1Index: Int, page2Index: Int): Boolean {
       return page1Index < page2Index
     }
   },
+  /**
+   * @param symbol The [String] that represents the AFTER operation
+   */
   AFTER(":") {
     override fun apply(page1Index: Int, page2Index: Int): Boolean {
       return page1Index > page2Index
@@ -330,6 +337,7 @@ enum class PageOrderingOperation(val symbol: String) {
    */
   abstract fun apply(page1Index: Int, page2Index: Int): Boolean
 
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * Returns the instance that represents the specified symbol or null if the symbol is

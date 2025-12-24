@@ -135,6 +135,7 @@ enum class LightInstructionType(
     }
   };
 
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     /**
      * If the specified instruction represents a known type, the instruction is parsed

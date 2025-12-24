@@ -51,6 +51,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 class BathroomCode(
     val instructions: List<Pair<Int, String>>
 ) {
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     private val startSimple = Point2D<Int>(1, 1)
     private val startComplex = Point2D<Int>(0, 2)

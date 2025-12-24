@@ -42,8 +42,7 @@ data class CeresSearchResult(
 class CeresSearch(input: List<String>) {
   private val grid: Grid2D<Char> = buildGrid(input)
 
-  companion object {
-    @SuppressFBWarnings
+  private companion object {
     private fun buildGrid(input: List<String>): Grid2D<Char> {
       return Grid2D.buildCharacterGrid(input)
     }

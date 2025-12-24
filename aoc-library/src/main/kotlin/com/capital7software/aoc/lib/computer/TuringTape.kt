@@ -1,5 +1,7 @@
 package com.capital7software.aoc.lib.computer
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
+
 /**
  * The infinite tape in a [TuringMachine]. It supports writing only zeros (0) and ones (1).
  *
@@ -82,6 +84,7 @@ class TuringTape: Iterable<Int> {
     cursor = cursor.right!!
   }
 
+  @SuppressFBWarnings()
   private inner class TapeIterator: Iterator<Int> {
     var goLeft = true
     var goRight = false

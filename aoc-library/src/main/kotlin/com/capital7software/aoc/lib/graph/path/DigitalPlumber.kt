@@ -126,7 +126,6 @@ class DigitalPlumber(input: List<String>) {
    *
    * @return The total number of distinct communications groups in the communication network.
    */
-  @SuppressFBWarnings
   fun allGroups(): List<Set<Int>> {
     val visited = mutableSetOf<Int>()
     val answer = mutableListOf<Set<Int>>()

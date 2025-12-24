@@ -195,7 +195,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **```1686```**.
  */
 class Day10 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day10::class.java)
   }
 
@@ -238,7 +238,6 @@ class Day10 : AdventOfCodeSolution {
    * @param input The [String] that represents the trail map.
    * @return The sum of the rating of every trailhead in the specified map.
    */
-  @SuppressFBWarnings
   fun sumAllTrailheadRatings(input: List<String>): Long {
     val result = HoofIt(input).findAll().sumOf { it.rating.toLong() }
 

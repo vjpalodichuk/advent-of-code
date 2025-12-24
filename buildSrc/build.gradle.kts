@@ -7,13 +7,13 @@ repositories {
 }
 
 object Versions {
-  const val JETBRAINS_ANNOTATIONS = "24.0.1"
-  const val JUNIT = "5.9.2"
+  const val JETBRAINS_ANNOTATIONS = "26.0.2"
+  const val JUNIT = "5.11.4"
   const val ARTIFACTORY = "5+"
-  const val SPOTBUGS = "6.0.3"
-  const val KOTLIN = "1.9.22"
-  const val DETEKT = "1.23.5"
-  const val DOKKA = "1.9.10"
+  const val SPOTBUGS = "6.4.8"
+  const val KOTLIN = "2.3.0"
+  const val DETEKT = "1.23.8"
+  const val DOKKA = "2.1.0"
 }
 
 dependencies {

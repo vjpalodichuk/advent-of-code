@@ -129,7 +129,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **```6398096697992```**.
  */
 class Day09 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day09::class.java)
   }
 
@@ -172,7 +172,6 @@ class Day09 : AdventOfCodeSolution {
    * @param input The [String] that represents the current drive-map.
    * @return The filesystem checksum after fast defragmentation.
    */
-  @SuppressFBWarnings
   fun fastFilesystemDefragmentation(input: List<String>): Long {
     val result = DiskFragmenter(input.first()).fullFileDefragmentation()
 

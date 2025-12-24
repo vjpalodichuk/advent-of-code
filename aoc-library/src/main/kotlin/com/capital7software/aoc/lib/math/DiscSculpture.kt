@@ -54,7 +54,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * to get a capsule?
  */
 class DiscSculpture() {
-  companion object {
+  private companion object {
     private val DISC_REGEX: Regex = ("Disc #(?<order>\\d+) has (?<slots>\\d+) positions; at " +
         "time=0, it is at position (?<initial>\\d+).").toRegex()
     private const val ORDER = "order"
@@ -179,7 +179,7 @@ class DiscSculpture() {
   @SuppressFBWarnings
   fun solve(): Int {
     return if (discs.isEmpty()) {
-      return -1
+      -1
     } else {
       val congruences = discs.map { it.congruence }
       var current: Congruence<Int>? = congruences.first()

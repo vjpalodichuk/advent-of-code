@@ -20,7 +20,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
  * @param input [List] of [String]s that represents the test values and calibration equations.
  */
 class BridgeRepair(input: List<String>) {
-  companion object {
+  private companion object {
     @SuppressFBWarnings
     private fun buildCalibrations(input: List<String>): List<CalibrationTest> {
       return input.map { line ->

@@ -63,6 +63,7 @@ class GridComputing @SuppressFBWarnings constructor(
    */
   val rows: Int by lazy { grid.rows }
 
+  @Suppress("comments:UndocumentedPublicClass")
   companion object {
     private val GRID_NODE = ("node-x(?<x>\\d+)-y(?<y>\\d+)\\s+(?<size>\\d+)T\\s+(?<used>\\d+)T" +
         "\\s+(?<available>\\d+)T\\s+(?<percent>\\d+)").toRegex()
@@ -78,6 +79,7 @@ class GridComputing @SuppressFBWarnings constructor(
      */
     val DEAD_NODE = GridNode("dead", Point2D(-1, -1), Data(-1, -1, -1, -1))
 
+    @SuppressFBWarnings
     private fun parseNode(line: String): GridNode? {
       val match = GRID_NODE.find(line)
 
@@ -106,7 +108,7 @@ class GridComputing @SuppressFBWarnings constructor(
    * @param percent The percent of total storage that is currently in use (0 - 100).
    */
   data class Data(val size: Int, val used: Int, val available: Int, val percent: Int) {
-    companion object {
+    private companion object {
       private const val FACTOR = 100
       private const val HUGE_LIMIT = 100
     }

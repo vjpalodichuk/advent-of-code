@@ -68,7 +68,7 @@ import org.slf4j.LoggerFactory
  * Your puzzle answer was **77666**.
  */
 class Day01 : AdventOfCodeSolution {
-  companion object {
+  private companion object {
     private val log: Logger = LoggerFactory.getLogger(Day01::class.java)
   }
 
@@ -111,7 +111,6 @@ class Day01 : AdventOfCodeSolution {
    * @return The result of repeatedly applying all the frequency changes to find the first
    * repeated number.
    */
-  @SuppressFBWarnings
   fun getFirstRepeatedFrequency(input: List<String>): Int {
     return ChronalCalibration(input).firstRepeat()
   }

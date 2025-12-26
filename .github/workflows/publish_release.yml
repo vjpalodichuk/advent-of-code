@@ -70,13 +70,17 @@ jobs:
           echo "GIT_BRANCH=$GIT_BRANCH"
           echo "GITHUB_EVENT=$GITHUB_EVENT"
 
+      - name: Pre Release Cleanup
+        run: |
+          ./gradlew clean
+
       - name: Export Nyx State
         id: nyx_state
         env:
           CI: true
         shell: bash
         run: |
-          ./gradlew nyxState --info
+          ./gradlew nyxState
 
       - name: Nyx Auto Release
         id: nyx_auto_release
@@ -89,7 +93,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NYX_DRY_RUN: "false"
         run: |
-          ./gradlew nyxReleaseOrchestrated --info
+          ./gradlew nyxReleaseOrchestrated
 
       - name: Nyx Manual Release
         id: nyx_manual_release
@@ -101,7 +105,7 @@ jobs:
           CI: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ./gradlew nyxReleaseOrchestrated --info
+          ./gradlew nyxReleaseOrchestrated
 
       - name: Artifactory Auto Publish
         id: artifactory_auto_release
@@ -138,5 +142,3 @@ jobs:
       - name: Cleanup
         run: |
           ./gradlew clean
-          
-          rm -rf ~/.local/bin/gpg-wrapper

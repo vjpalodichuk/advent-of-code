@@ -38,8 +38,8 @@ configurations.all {
 
   resolutionStrategy.dependencySubstitution {
     // Security Fixes!
-    substitute(module("org.apache.commons:commons-lang3:3.1.4"))
-        .using(module("org.apache.commons:commons-lang3:3.20.0"))
+    substitute(module("org.apache.commons:commons-lang3:3.18.0"))
+        .using(module("org.apache.commons:commons-lang3:3.18.0"))
         .because("""https://github.com/vjpalodichuk/advent-of-code/security/dependabot/12""")
   }
 }

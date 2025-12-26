@@ -33,7 +33,7 @@ val artifactoryToken: String =
 val javadocJar by tasks.named<Jar>("dokkaJavadocJar")
 val htmlJar by tasks.named<Jar>("dokkaHtmlJar")
 
-val isSnapshot = version.toString().split('.', '-').size != 3
+val isSnapshot = version.toString().contains("SNAPSHOT")
 
 configure<PublishingExtension> {
   publications {
@@ -91,14 +91,6 @@ configure<ArtifactoryPluginConvention> {
     )
   }
 }
-
-// The project requires libraries to have a README containing sections configured below
-val readmeCheck by tasks.registering(com.capital7software.ReadmeVerificationTask::class) {
-  readme = layout.projectDirectory.file("README.md")
-  readmePatterns = listOf("^## API$", "^## Changelog$")
-}
-
-tasks.named("check") { dependsOn(readmeCheck) }
 
 tasks.named("artifactoryPublish") {
   group = "publishing"

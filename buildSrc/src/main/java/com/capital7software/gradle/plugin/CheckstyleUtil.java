@@ -1,4 +1,4 @@
-package com.capital7software;
+package com.capital7software.gradle.plugin;
 
 import java.io.BufferedReader;
 import java.io.IOException;

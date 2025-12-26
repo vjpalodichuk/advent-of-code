@@ -49,12 +49,12 @@ val artifactoryUser: String =
 val artifactoryToken: String =
     requiredProperty("artifactoryToken","ARTIFACTORY_TOKEN")
 
-val isSnapshot = version.toString().split('.', '-').size != 3
+val isSnapshot = version.toString().contains("SNAPSHOT")
 
 object Versions {
   const val JETBRAINS_ANNOTATIONS = "26.0.2"
   const val JUNIT = "5.11.4"
-  const val LOG4J2 = "2.25.2"
+  const val LOG4J2 = "2.25.3"
   const val JACKSON = "2.19.4"
   const val LOMBOK = "1.18.42"
   const val CHECKSTYLE = "12.3.0"
@@ -93,7 +93,7 @@ detekt {
 // Do not allow any warnings
 checkstyle {
   config = resources.text
-      .fromString(com.capital7software.CheckstyleUtil.getCheckstyleConfig("/checkstyle.xml"))
+      .fromString(com.capital7software.gradle.plugin.CheckstyleUtil.getCheckstyleConfig("/checkstyle.xml"))
   maxWarnings = 0
   toolVersion = Versions.CHECKSTYLE
 }
@@ -170,9 +170,28 @@ val javadocJar by tasks.register<Jar>("dokkaJavadocJar") {
   archiveClassifier.set("javadoc")
 }
 
+// The project requires libraries to have a README containing sections configured below
+val readmeCheck by tasks.registering(com.capital7software.gradle.plugin.ReadmeVerificationTask::class) {
+  readme = layout.projectDirectory.file("README.md")
+  readmePatterns = listOf("^## API$")
+}
+
+tasks.named("check") { dependsOn(readmeCheck) }
+
 // Resolve google collections and guava conflict
 configurations.checkstyle {
   resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {
     select("com.google.guava:guava:0")
+  }
+}
+
+configurations.all {
+  this.exclude(group = "ch.qos.logback")
+
+  resolutionStrategy.dependencySubstitution {
+    // Security Fixes!
+    substitute(module("org.apache.commons:commons-lang3:3.1.4"))
+        .using(module("org.apache.commons:commons-lang3:3.20.0"))
+        .because("""https://github.com/vjpalodichuk/advent-of-code/security/dependabot/12""")
   }
 }

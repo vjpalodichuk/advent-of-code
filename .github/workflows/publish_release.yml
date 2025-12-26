@@ -14,26 +14,14 @@ on:
         required: true
         default: 'development'
 
-      git_committing:
-        description: "Allow signed changelog commits"
-        type: choice
-        default: "false"
-        options: ["true", "false"]
-
-      git_tagging:
-        description: "Allow signed version tags"
-        type: choice
-        default: "false"
-        options: ["true", "false"]
-
-      git_pushing:
-        description: "Allow pushing commits/tags"
+      nyx_dry_run:
+        description: "Do not actually perform any release and publication tasks"
         type: choice
         default: "false"
         options: ["true", "false"]
 
       nyx_release_approved:
-        description: "Publish GitHub Release"
+        description: "Approved to be tagged and published as a GitHub Release?"
         type: choice
         default: "false"
         options: ["true", "false"]
@@ -52,12 +40,9 @@ jobs:
     environment: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'development' }}
 
     env:
-      # Git operation guards
-      GIT_COMMITTING: ${{ github.event_name == 'workflow_dispatch' && inputs.git_committing || 'false' }}
-      GIT_PUSHING: ${{ github.event_name == 'workflow_dispatch' && inputs.git_pushing || 'false' }}
-      GIT_TAGGING: ${{ github.event_name == 'workflow_dispatch' && inputs.git_tagging || 'false' }}
-      NYX_RELEASE_APPROVED: ${{ github.event_name == 'workflow_dispatch' && inputs.nyx_release_approved || 'false' }}
-      ARTIFACTORY_PUBLISH_APPROVED: ${{ github.event_name == 'workflow_dispatch' && inputs.artifactory_publish_approved || 'false' }}
+      NYX_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.nyx_dry_run || 'false' }}
+      NYX_RELEASE_APPROVED: ${{ github.event_name == 'workflow_dispatch' && inputs.nyx_release_approved || secrets.NYX_RELEASE_APPROVED || 'false' }}
+      ARTIFACTORY_PUBLISH_APPROVED: ${{ github.event_name == 'workflow_dispatch' && inputs.artifactory_publish_approved || secrets.ARTIFACTORY_PUBLISH_APPROVED || 'false' }}
       GITHUB_ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'development' }}
       GIT_BRANCH: ${{ github.ref }}
       GITHUB_EVENT: ${{ github.event_name }}
@@ -76,142 +61,80 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Import GPG key and configure Git
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
-        run: |
-          set -euo pipefail
-      
-          # Import the private key safely (preserves newlines)
-          printf '%s\n' "$GPG_PRIVATE_KEY" | gpg --batch --import
-      
-          # Extract fingerprint for the key ID
-          FINGERPRINT=$(gpg --batch --list-keys --with-colons "$GPG_KEY_ID" \
-            | awk -F: '/^fpr:/ {print $10; exit}')
-      
-          if [[ -z "$FINGERPRINT" ]]; then
-            echo "Failed to resolve GPG key fingerprint"
-            exit 1
-          fi
-      
-          # Trust the key (ultimate = 6)
-          echo "$FINGERPRINT:6:" | gpg --batch --import-ownertrust
-      
-          # Sanity check (no secrets leaked)
-          gpg --list-secret-keys --keyid-format LONG
-
-      - name: Configure GPG for CI
-        env:
-          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-          GPG_USER: ${{ secrets.GPG_USER }}
-          GPG_EMAIL: ${{ secrets.GPG_EMAIL }}
-        run: |
-          set -euo pipefail
-      
-          # GPG home
-          mkdir -p ~/.gnupg
-          chmod 700 ~/.gnupg
-      
-          # gpg config
-          cat > ~/.gnupg/gpg.conf <<'EOF'
-          pinentry-mode loopback
-          no-tty
-          EOF
-      
-          # gpg-agent config
-          cat > ~/.gnupg/gpg-agent.conf <<'EOF'
-          allow-loopback-pinentry
-          EOF
-      
-          gpgconf --kill gpg-agent
-          gpgconf --launch gpg-agent
-
-          # Create wrapper
-          mkdir -p ~/.local/bin
-          cat > ~/.local/bin/gpg-wrapper <<'EOF'
-          #!/usr/bin/env bash
-          exec gpg \
-            --batch \
-            --yes \
-            --pinentry-mode loopback \
-            --passphrase-fd 0 \
-            "$@" <<< "$GPG_PASSPHRASE"
-          EOF
-      
-          chmod +x ~/.local/bin/gpg-wrapper
-      
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-      
-          # CRITICAL: wrap gpg so git always supplies passphrase
-          git config --global gpg.program gpg-wrapper
-      
-          # Configure Git signing
-          git config --global user.signingkey "$GPG_KEY_ID"
-          git config --global commit.gpgsign true
-          git config --global tag.gpgsign true
-          git config --global user.email "$GPG_EMAIL"
-          git config --global user.name "$GPG_USER"
-      
-          unset GPG_TTY
-
-      - name: Validate Repo Permissions
-        run: |
-          git remote -v
-          git status
-          git branch -vv
-          git push --dry-run
-          git tag -s test-tag -m "test"
-          git push origin --tags
-          git tag -d test-tag
-          git push --delete origin test-tag
-
-      - name: Override Environment Variables (master)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        run: |
-          echo "Forcing Release and Publish as a push to master has been detected..."
-          echo "GIT_COMMITTING=true" >> $GITHUB_ENV
-          echo "GIT_TAGGING=true" >> $GITHUB_ENV
-          echo "GIT_PUSHING=true" >> $GITHUB_ENV
-          echo "NYX_RELEASE_APPROVED=true" >> $GITHUB_ENV
-          echo "ARTIFACTORY_PUBLISH_APPROVED=true" >> $GITHUB_ENV
-
-      - name: Override Environment Variables (not master)
-        if: github.event_name == 'push' && github.ref != 'refs/heads/master'
-        run: |
-          echo "Forcing Publish as a push to a non master branch has been detected..."
-          echo "ARTIFACTORY_PUBLISH_APPROVED=true" >> $GITHUB_ENV
-
-      - name: Log Git operation policy
+      - name: Log operation policy
         run: |
           echo "Environment: $GITHUB_ENVIRONMENT"
-          echo "GIT_COMMITTING=$GIT_COMMITTING"
-          echo "GIT_TAGGING=$GIT_TAGGING"
-          echo "GIT_PUSHING=$GIT_PUSHING"
+          echo "NYX_DRY_RUN=$NYX_DRY_RUN"
           echo "NYX_RELEASE_APPROVED=$NYX_RELEASE_APPROVED"
           echo "ARTIFACTORY_PUBLISH_APPROVED=$ARTIFACTORY_PUBLISH_APPROVED"
           echo "GIT_BRANCH=$GIT_BRANCH"
           echo "GITHUB_EVENT=$GITHUB_EVENT"
 
-      - name: Release
+      - name: Export Nyx State
+        id: nyx_state
+        env:
+          CI: true
+        shell: bash
+        run: |
+          ./gradlew nyxState --info
+
+      - name: Nyx Auto Release
+        id: nyx_auto_release
+        if: |
+          github.event_name == 'push' &&
+          steps.nyx_state.outputs.nyx_new_release == 'true' &&
+          env.NYX_RELEASE_APPROVED == 'true'
         env:
           CI: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew nyxRelease
+          NYX_DRY_RUN: "false"
+        run: |
+          ./gradlew nyxReleaseOrchestrated --info
 
-      - name: Publish
+      - name: Nyx Manual Release
+        id: nyx_auto_release
+        if: |
+          github.event_name == 'workflow_dispatch' &&
+          ((steps.nyx_state.outputs.nyx_new_release == 'true' && env.NYX_RELEASE_APPROVED == 'true') ||
+          env.NYX_DRY_RUN == 'true')
+        env:
+          CI: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./gradlew nyxReleaseOrchestrated --info
+
+      - name: Artifactory Auto Publish
+        if: |
+          github.event_name == 'push' &&
+          steps.nyx_state.outputs.nyx_new_version == 'true' && 
+          env.ARTIFACTORY_PUBLISH_APPROVED == 'true'
+        env:
+          CI: true
+          ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
+          ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
+          NYX_DRY_RUN: "false"
+        run: |
+          echo "Publishing artifacts to Artifactory (dry-run: $NYX_DRY_RUN)..."
+        
+          ./gradlew publish
+
+      - name: Artifactory Manual Publish
+        if: |
+          github.event_name == 'workflow_dispatch' &&
+          steps.nyx_state.outputs.nyx_new_version == 'true' && 
+          env.ARTIFACTORY_PUBLISH_APPROVED == 'true' &&
+          env.NYX_DRY_RUN != 'true'
         env:
           CI: true
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
         run: |
-          if [[ "${ARTIFACTORY_PUBLISH_APPROVED:-false}" != "true" ]]; then
-              echo "ARTIFACTORY_PUBLISH_APPROVED != true; skipping publishing to Artifactory"
-              exit 0
-          fi
-          
+          echo "Publishing artifacts to Artifactory (dry-run: $NYX_DRY_RUN)..."
+        
           ./gradlew publish
 
       - name: Cleanup
-        run: rm -rf ~/.local/bin/gpg-wrapper
+        run: |
+          ./gradlew clean
+          
+          rm -rf ~/.local/bin/gpg-wrapper

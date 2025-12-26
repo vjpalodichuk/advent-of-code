@@ -24,8 +24,8 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
   initialVersion = "1.0.0"
 
   changelog {
-    path = "CHANGELOG.md"
-    append = "head"
+    path = "build/CHANGELOG.md"
+    append = "" // Recreate the changelog
     sections = mapOf(
         Pair("Added", "^(feat|:boom:|:sparkles:|:pushpin:|:heavy_plus_sign:)$"),
         Pair("Changed", "^(feat|:boom:|:arrow_up:|:lipstick:|:wrench:|:pencil2:)$"),
@@ -51,17 +51,17 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
 
     items.create("mainline") {
       collapseVersions = false
-      description = """Release {{version}}"""
+      description = """{{#fileContent}}build/CHANGELOG.md{{/fileContent}}"""
       filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)$"""
       gitCommit = "false"
-      gitCommitMessage = "Release version {{version}}"
-      gitPush = "false"
-      gitTag = "false"
-      gitTagMessage = "Release v{{version}}"
+      gitCommitMessage = """Release v{{version}}"""
+      gitPush = "true"
+      gitTag = "true"
+      gitTagMessage = """Release v{{version}}"""
       matchBranches = """^(master|main)$"""
       matchWorkspaceStatus = "CLEAN"
       publish = "true"
-      publishDraft = "true"
+      publishDraft = "false"
       publishPreRelease = "false"
       versionRangeFromBranchName = false
     }
@@ -69,12 +69,12 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
     items.create("release") {
       collapseVersions = true
       collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
-      description = """Release {{version}}"""
+      description = """{{#fileContent}}build/CHANGELOG.md{{/fileContent}}"""
       filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-(rel|release)((\.([0-9]\d*))?)?)$"""
       gitCommit = "false"
       gitCommitMessage = "Release version {{version}}"
-      gitPush = "false"
-      gitTag = "false"
+      gitPush = "true"
+      gitTag = "true"
       gitTagMessage = "Release v{{version}}"
       matchBranches = """^(rel|release)(-|\/)({{configuration.releasePrefix}})?([0-9|x]\d*)(\.([0-9|x]\d*)(\.([0-9|x]\d*))?)?$"""
       matchWorkspaceStatus = "CLEAN"
@@ -145,15 +145,17 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
   services.create("github") {
     type = "GITHUB"
     options.apply {
-      // The authentication token is read from the GH_TOKEN environment variable.
+      // The authentication token is read from the GITHUB_TOKEN environment variable.
       put("AUTHENTICATION_TOKEN", "{{#environmentVariable}}GITHUB_TOKEN{{/environmentVariable}}")
       put("REPOSITORY_NAME", "advent-of-code")
       put("REPOSITORY_OWNER", "vjpalodichuk")
     }
   }
 
-  resume = false
+  resume = true
   summary = true
-  summaryFile = ".nyx-summary.txt"
-  stateFile = ".nyx-state.yml"
+  summaryFile = "build/.nyx-summary.txt"
+  stateFile = "build/.nyx-state.yml"
+
+  dryRun = System.getenv("NYX_DRY_RUN") == "true"
 }

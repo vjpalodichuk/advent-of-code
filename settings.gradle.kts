@@ -47,7 +47,7 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
 
   releaseTypes {
     publicationServices.set(listOf("github"))
-    enabled = listOf("mainline", "release", "feature", "fix", "snapshot")
+    enabled = listOf("mainline", "release", "feature", "fix", "integration", "snapshot")
 
     items.create("mainline") {
       collapseVersions = false
@@ -113,6 +113,28 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
       versionRangeFromBranchName = false
     }
 
+    items.create("integration") {
+      collapseVersions = true
+      collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
+      description = """{{#fileContent}}build/CHANGELOG.md{{/fileContent}}"""
+      filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-(develop|development|integration|latest)(\.([0-9]\d*))?)$"""
+      gitCommit = "false"
+      gitPush = "true"
+      gitTag = "true"
+      matchBranches = """^(develop|development|integration|latest)$"""
+      matchWorkspaceStatus = "CLEAN"
+      identifiers.create("0") {
+        position = "BUILD"
+        qualifier = "s"
+        value = "SNAPSHOT"
+      }
+      publish = "true"
+      publishDraft = "false"
+      publishPreRelease = "false"
+      releaseLenient = true
+      versionRangeFromBranchName = false
+    }
+
     items.create("snapshot") {
       collapseVersions = true
       collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
@@ -130,27 +152,6 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
         value = "SNAPSHOT"
       }
       publish = "false"
-      publishDraft = "false"
-      publishPreRelease = "false"
-      versionRangeFromBranchName = false
-    }
-
-    items.create("integration") {
-      collapseVersions = true
-      collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
-      description = """{{#fileContent}}build/CHANGELOG.md{{/fileContent}}"""
-      filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-(develop|development|integration|latest)(\.([0-9]\d*))?)$"""
-      gitCommit = "false"
-      gitPush = "true"
-      gitTag = "true"
-      matchBranches = """^(develop|development|integration|latest)$"""
-      matchWorkspaceStatus = "CLEAN"
-      identifiers.create("0") {
-        position = "BUILD"
-        qualifier = "s"
-        value = "SNAPSHOT"
-      }
-      publish = "true"
       publishDraft = "false"
       publishPreRelease = "false"
       versionRangeFromBranchName = false

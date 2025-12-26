@@ -49,7 +49,7 @@ val artifactoryUser: String =
 val artifactoryToken: String =
     requiredProperty("artifactoryToken","ARTIFACTORY_TOKEN")
 
-val isSnapshot = version.toString().contains("SNAPSHOT")
+val isSnapshot = version.toString().endsWith("SNAPSHOT")
 
 object Versions {
   const val JETBRAINS_ANNOTATIONS = "26.0.2"

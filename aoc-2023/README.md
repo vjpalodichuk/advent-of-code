@@ -5,6 +5,3 @@ Visit https://adventofcode.com/2023 for more information
 
 ## API
 Consumes the aoc-library
-
-## Changelog
-All code converted over to module / library.

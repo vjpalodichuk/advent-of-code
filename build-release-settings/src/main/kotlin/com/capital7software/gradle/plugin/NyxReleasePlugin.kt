@@ -106,7 +106,7 @@ class NyxReleasePlugin : Plugin<Project> {
 
       onlyIf {
         nyxState.orNull?.let {
-           it.newRelease && !dryRun
+           (it.newRelease || it.newVersion) && !dryRun
         } ?: false
       }
 

@@ -140,6 +140,27 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
       publishPreRelease = "false"
       versionRangeFromBranchName = false
     }
+
+    items.create("integration") {
+      collapseVersions = true
+      collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
+      description = """{{#fileContent}}build/CHANGELOG.md{{/fileContent}}"""
+      filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-(develop|development|integration|latest)(\.([0-9]\d*))?)$"""
+      gitCommit = "false"
+      gitPush = "true"
+      gitTag = "true"
+      matchBranches = """^(develop|development|integration|latest)$"""
+      matchWorkspaceStatus = "CLEAN"
+      identifiers.create("0") {
+        position = "BUILD"
+        qualifier = "s"
+        value = "SNAPSHOT"
+      }
+      publish = "false"
+      publishDraft = "false"
+      publishPreRelease = "false"
+      versionRangeFromBranchName = false
+    }
   }
 
   services.create("github") {

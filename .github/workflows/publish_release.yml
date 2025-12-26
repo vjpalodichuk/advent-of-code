@@ -87,6 +87,7 @@ jobs:
         if: |
           github.event_name == 'push' &&
           steps.nyx_state.outputs.nyx_new_release == 'true' &&
+          steps.nyx_state.outputs.nyx_latest_version != 'true' &&
           env.NYX_RELEASE_APPROVED == 'true'
         env:
           CI: true
@@ -112,6 +113,7 @@ jobs:
         if: |
           github.event_name == 'push' &&
           steps.nyx_state.outputs.nyx_new_version == 'true' && 
+          steps.nyx_state.outputs.nyx_latest_version != 'true' &&
           env.ARTIFACTORY_PUBLISH_APPROVED == 'true'
         env:
           CI: true

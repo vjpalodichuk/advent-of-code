@@ -131,17 +131,6 @@ class NyxReleasePlugin : Plugin<Project> {
         )
 
       }
-
-      doLast {
-        if (System.getenv("ARTIFACTORY_PUBLISH_APPROVED") == "true") {
-          project.logger.lifecycle("Executing artifactoryPublish")
-
-          project.logger.lifecycle("Signaling that new artifacts have been published to Artifactory!")
-          project.logger.lifecycle("ARTIFACTORY_RELEASED=true")
-        } else {
-          project.logger.lifecycle("Skipping executing artifactoryPublish")
-        }
-      }
     }
   }
 

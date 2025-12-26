@@ -110,7 +110,7 @@ gradle.taskGraph.whenReady {
   }
 }
 
-rootProject.tasks.named("nyxClean")?.let { clean ->
+rootProject.tasks.named("nyxClean").let { clean ->
   tasks.named("clean") {
     dependsOn(clean)
   }

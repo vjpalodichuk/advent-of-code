@@ -16,13 +16,19 @@ group = "com.capital7software.aoc"
 fun requiredProperty(name: String, env: String): String =
     System.getenv(env)
         ?: (findProperty(name) as String?)
-        ?: "" //error("Missing required property: $name or env $env")
+        ?: error("Missing required property: $name or env $env")
 
-val artifactoryContextUrl: String by project
-val artifactoryRepoKeyReadRelease: String by project
-val artifactoryRepoKeyReadSnapshot: String by project
-val artifactoryRepoKeyPublishRelease: String by project
-val artifactoryRepoKeyPublishSnapshot: String by project
+val artifactoryContextUrl: String =
+    requiredProperty("artifactoryContextUrl", "ARTIFACTORY_CONTEXT_URL")
+
+val artifactoryRepoKeyPublish: String =
+    requiredProperty("artifactoryRepoKeyPublishSnapshot", "ARTIFACTORY_REPO_KEY_PUBLISH")
+
+val artifactoryRepoKeyPublishRelease: String =
+    requiredProperty("artifactoryRepoKeyPublishRelease", "ARTIFACTORY_REPO_KEY_PUBLISH_RELEASE")
+
+val artifactoryRepoKeyPublishSnapshot: String =
+    requiredProperty("artifactoryRepoKeyPublishSnapshot", "ARTIFACTORY_REPO_KEY_PUBLISH_SNAPSHOT")
 
 val artifactoryUser: String =
     requiredProperty("artifactoryUser","ARTIFACTORY_USER")
@@ -32,8 +38,6 @@ val artifactoryToken: String =
 
 val javadocJar by tasks.named<Jar>("dokkaJavadocJar")
 val htmlJar by tasks.named<Jar>("dokkaHtmlJar")
-
-val isSnapshot = version.toString().endsWith("SNAPSHOT")
 
 configure<PublishingExtension> {
   publications {
@@ -47,12 +51,7 @@ configure<PublishingExtension> {
   repositories {
     maven {
       name = "artifactory"
-      url = uri(
-          if (isSnapshot)
-            "${artifactoryContextUrl}/${artifactoryRepoKeyPublishSnapshot}/"
-          else
-            "${artifactoryContextUrl}/${artifactoryRepoKeyPublishRelease}/"
-      )
+      url = uri("${artifactoryContextUrl}/${artifactoryRepoKeyPublish}/")
       credentials {
         username = artifactoryUser
         password = artifactoryToken
@@ -67,8 +66,7 @@ configure<ArtifactoryPluginConvention> {
   publish {
     contextUrl = artifactoryContextUrl
     repository {
-      repoKey =
-          if (isSnapshot) artifactoryRepoKeyPublishSnapshot else artifactoryRepoKeyPublishRelease
+      repoKey = artifactoryRepoKeyPublish
       releaseRepoKey = artifactoryRepoKeyPublishRelease
       snapshotRepoKey = artifactoryRepoKeyPublishSnapshot
       username = artifactoryUser

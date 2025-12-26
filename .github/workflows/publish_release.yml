@@ -18,19 +18,19 @@ on:
         description: "Do not actually perform any release and publication tasks"
         type: choice
         default: "false"
-        options: ["true", "false"]
+        options: [ "true", "false" ]
 
       nyx_release_approved:
         description: "Approved to be tagged and published as a GitHub Release?"
         type: choice
         default: "false"
-        options: ["true", "false"]
+        options: [ "true", "false" ]
 
       artifactory_publish_approved:
         description: "Publish all artifacts to Artifactory"
         type: choice
         default: "false"
-        options: ["true", "false"]
+        options: [ "true", "false" ]
 
 jobs:
   release:
@@ -46,6 +46,9 @@ jobs:
       GITHUB_ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'development' }}
       GIT_BRANCH: ${{ github.ref }}
       GITHUB_EVENT: ${{ github.event_name }}
+      ARTIFACTORY_CONTEXT_URL: ${{ vars.ARTIFACTORY_CONTEXT_URL }}
+      ARTIFACTORY_REPO_KEY_PUBLISH_RELEASE: ${{ vars.ARTIFACTORY_REPO_KEY_PUBLISH_RELEASE }}
+      ARTIFACTORY_REPO_KEY_PUBLISH_SNAPSHOT: ${{ vars.ARTIFACTORY_REPO_KEY_PUBLISH_SNAPSHOT }}
 
     permissions:
       contents: write
@@ -108,6 +111,19 @@ jobs:
         run: |
           ./gradlew nyxReleaseOrchestrated
 
+      - name: Artificatory Set Publish Key
+        id: artifactory_set_publish_key
+        env:
+          NYX_CORE_VERSION: ${{ steps.nyx_state.outputs.nyx_core_version }}
+        run: |
+          if [[ "${NYX_CORE_VERSION:-false}" != "true" ]]; then
+              echo "SNAPSHOT version detected! Publishing will be directed to $ARTIFACTORY_REPO_KEY_PUBLISH_SNAPSHOT"
+              echo "ARTIFACTORY_REPO_KEY_PUBLISH=$ARTIFACTORY_REPO_KEY_PUBLISH_SNAPSHOT" >> $GITHUB_OUTPUT
+          else
+              echo "CORE version detected! Publishing will be directed to $ARTIFACTORY_REPO_KEY_PUBLISH_RELEASE"
+              echo "ARTIFACTORY_REPO_KEY_PUBLISH=$ARTIFACTORY_REPO_KEY_PUBLISH_RELEASE" >> $GITHUB_OUTPUT
+          fi
+
       - name: Artifactory Auto Publish
         id: artifactory_auto_release
         if: |
@@ -116,12 +132,13 @@ jobs:
           env.ARTIFACTORY_PUBLISH_APPROVED == 'true'
         env:
           CI: true
+          ARTIFACTORY_REPO_KEY_PUBLISH: ${{ steps.artifactory_set_publish_key.outputs.ARTIFACTORY_REPO_KEY_PUBLISH }}
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
           NYX_DRY_RUN: "false"
         run: |
           echo "Publishing artifacts to Artifactory (dry-run: $NYX_DRY_RUN)..."
-        
+          
           ./gradlew publish
 
       - name: Artifactory Manual Publish
@@ -133,11 +150,12 @@ jobs:
           env.NYX_DRY_RUN != 'true'
         env:
           CI: true
+          ARTIFACTORY_REPO_KEY_PUBLISH: ${{ steps.artifactory_set_publish_key.outputs.ARTIFACTORY_REPO_KEY_PUBLISH }}
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
         run: |
           echo "Publishing artifacts to Artifactory (dry-run: $NYX_DRY_RUN)..."
-        
+          
           ./gradlew publish
 
       - name: Cleanup

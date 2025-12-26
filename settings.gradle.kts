@@ -87,13 +87,10 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
     items.create("feature") {
       collapseVersions = true
       collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
-      description = """Release {{version}}"""
       filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-(feat|feature)(([0-9a-zA-Z]*)(\.([0-9]\d*))?)?)$"""
       gitCommit = "false"
-      gitCommitMessage = "Release version {{version}}"
       gitPush = "false"
       gitTag = "false"
-      gitTagMessage = "Release v{{version}}"
       matchBranches = """^(feat|feature)((-|\\/)[0-9a-zA-Z-_]+)?$"""
       matchWorkspaceStatus = "CLEAN"
       publish = "false"
@@ -105,12 +102,10 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
     items.create("fix") {
       collapseVersions = true
       collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
-      description = """Fix Release {{version}}"""
       filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-fix(([0-9a-zA-Z]*)(\.([0-9]\d*))?)?)$"""
       gitCommit = "false"
       gitPush = "false"
       gitTag = "false"
-      gitTagMessage = "Fix Release v{{version}}"
       matchBranches = """^fix((-|\/)[0-9a-zA-Z-_]+)?$"""
       publish = "false"
       publishDraft = "false"
@@ -121,7 +116,6 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
     items.create("snapshot") {
       collapseVersions = true
       collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
-      description = """Snapshot {{version}}"""
       gitCommit = "false"
       gitPush = "false"
       gitTag = "false"
@@ -149,7 +143,6 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
       gitCommit = "false"
       gitPush = "true"
       gitTag = "true"
-      gitTagMessage = """SNAPSHOT v{{version}}"""
       matchBranches = """^(develop|development|integration|latest)$"""
       matchWorkspaceStatus = "CLEAN"
       identifiers.create("0") {

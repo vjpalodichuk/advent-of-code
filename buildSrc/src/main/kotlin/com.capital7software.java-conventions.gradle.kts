@@ -35,21 +35,22 @@ kotlin {
 fun requiredProperty(name: String, env: String): String =
     (findProperty(name) as String?)
         ?: System.getenv(env)
-        ?: "" //error("Missing required property: $name or env $env")
+        ?: error("Missing required property: $name or env $env")
 
-val artifactoryContextUrl: String by project
-val artifactoryRepoKeyReadRelease: String by project
+val artifactoryContextUrl: String =
+    requiredProperty("artifactoryContextUrl", "ARTIFACTORY_CONTEXT_URL")
+
+val artifactoryRepoKeyReadRelease: String =
+    requiredProperty("artifactoryRepoKeyReadRelease", "ARTIFACTORY_REPO_KEY_READ_RELEASE")
+
 val artifactoryRepoKeyReadSnapshot: String by project
-val artifactoryRepoKeyPublishRelease: String by project
-val artifactoryRepoKeyPublishSnapshot: String by project
+    requiredProperty("artifactoryRepoKeyReadSnapshot", "ARTIFACTORY_REPO_KEY_READ_SNAPSHOT")
 
 val artifactoryUser: String =
     requiredProperty("artifactoryUser", "ARTIFACTORY_USER")
 
 val artifactoryToken: String =
     requiredProperty("artifactoryToken", "ARTIFACTORY_TOKEN")
-
-val isSnapshot = version.toString().endsWith("SNAPSHOT")
 
 object Versions {
   const val JETBRAINS_ANNOTATIONS = "26.0.2"
@@ -65,20 +66,25 @@ object Versions {
 // Projects should use Maven Central for external dependencies
 // This could be the organization's private repository
 repositories {
-  mavenCentral()
   maven {
-    name = "artifactory-publish"
-    url = uri(
-        if (isSnapshot)
-          "${artifactoryContextUrl}/${artifactoryRepoKeyPublishSnapshot}/"
-        else
-          "${artifactoryContextUrl}/${artifactoryRepoKeyPublishRelease}/"
-    )
+    name = "artifactory-release"
+    url = uri("${artifactoryContextUrl}/${artifactoryRepoKeyReadRelease}/")
     credentials {
       username = artifactoryUser
       password = artifactoryToken
     }
   }
+
+  maven {
+    name = "artifactory-snapshot"
+    url = uri("${artifactoryContextUrl}/${artifactoryRepoKeyReadSnapshot}/")
+    credentials {
+      username = artifactoryUser
+      password = artifactoryToken
+    }
+  }
+
+  mavenCentral()
 }
 
 detekt {

@@ -86,7 +86,7 @@ jobs:
         id: nyx_auto_release
         if: |
           github.event_name == 'push' &&
-          steps.nyx_state.outputs.nyx_new_release == 'true' &&
+          (steps.nyx_state.outputs.nyx_new_release == 'true' || steps.nyx_state.outputs.nyx_new_version == 'true') &&
           env.NYX_RELEASE_APPROVED == 'true'
         env:
           CI: true
@@ -99,7 +99,8 @@ jobs:
         id: nyx_manual_release
         if: |
           github.event_name == 'workflow_dispatch' &&
-          ((steps.nyx_state.outputs.nyx_new_release == 'true' && env.NYX_RELEASE_APPROVED == 'true') ||
+          (((steps.nyx_state.outputs.nyx_new_release == 'true' || steps.nyx_state.outputs.nyx_new_version == 'true') && 
+          env.NYX_RELEASE_APPROVED == 'true') ||
           env.NYX_DRY_RUN == 'true')
         env:
           CI: true

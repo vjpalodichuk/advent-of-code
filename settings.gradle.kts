@@ -117,7 +117,7 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
       collapseVersions = true
       collapsedVersionQualifier = """{{#sanitizeLower}}{{branch}}{{/sanitizeLower}}"""
       description = """{{#fileContent}}build/CHANGELOG.md{{/fileContent}}"""
-      filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-(develop|development|integration|latest)(\.([0-9]\d*))?)$"""
+      filterTags = """^({{configuration.releasePrefix}})?([0-9]\d*)\.([0-9]\d*)\.([0-9]\d*)(-(develop|development|integration|latest)(\.([0-9]\d*))?(\+s\.SNAPSHOT)?)$"""
       gitCommit = "false"
       gitPush = "true"
       gitTag = "true"

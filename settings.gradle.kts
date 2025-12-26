@@ -149,6 +149,7 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
       gitCommit = "false"
       gitPush = "true"
       gitTag = "true"
+      gitTagMessage = """SNAPSHOT v{{version}}"""
       matchBranches = """^(develop|development|integration|latest)$"""
       matchWorkspaceStatus = "CLEAN"
       identifiers.create("0") {
@@ -156,7 +157,7 @@ configure<com.mooltiverse.oss.nyx.gradle.NyxExtension> {
         qualifier = "s"
         value = "SNAPSHOT"
       }
-      publish = "false"
+      publish = "true"
       publishDraft = "false"
       publishPreRelease = "false"
       versionRangeFromBranchName = false

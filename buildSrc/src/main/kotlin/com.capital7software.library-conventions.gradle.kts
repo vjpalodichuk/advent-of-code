@@ -33,7 +33,7 @@ val artifactoryToken: String =
 val javadocJar by tasks.named<Jar>("dokkaJavadocJar")
 val htmlJar by tasks.named<Jar>("dokkaHtmlJar")
 
-val isSnapshot = version.toString().contains("SNAPSHOT")
+val isSnapshot = version.toString().endsWith("SNAPSHOT")
 
 configure<PublishingExtension> {
   publications {

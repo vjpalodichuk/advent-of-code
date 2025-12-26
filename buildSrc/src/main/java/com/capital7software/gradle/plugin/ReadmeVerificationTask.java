@@ -1,4 +1,4 @@
-package com.capital7software;
+package com.capital7software.gradle.plugin;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.RegularFileProperty;

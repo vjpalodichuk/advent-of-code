@@ -4,8 +4,10 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.extra
 import com.mooltiverse.oss.nyx.state.State
+import java.io.File
 import org.gradle.api.file.RegularFile
 import org.gradle.api.logging.Logger
+import org.gradle.api.provider.Provider
 
 @Suppress("unused")
 class NyxReleasePlugin : Plugin<Project> {
@@ -21,6 +23,7 @@ class NyxReleasePlugin : Plugin<Project> {
     val nyxState = project.objects.property(State::class.java)
     val dryRun = System.getenv("NYX_DRY_RUN") == "true"
     val nyxApproved = System.getenv("NYX_RELEASE_APPROVED") == "true" || dryRun
+
     val inferGuarded = project.tasks.register("nyxInferGuarded") {
       group = "release"
       description = "Runs nyxInfer and loads the shared Nyx state"
@@ -51,12 +54,16 @@ class NyxReleasePlugin : Plugin<Project> {
       dependsOn(inferGuarded)
 
       doLast {
+        project.logger.lifecycle(
+            "nyxState starting (dryRun=$dryRun)"
+        )
+
         logState(project.logger, nyxState.get())
 
         val outPath = System.getenv("GITHUB_OUTPUT")
         outPath?.let {
           project.logger.lifecycle("Writing state to $outPath")
-          val outputFile = project.layout.projectDirectory.file(outPath)
+          val outputFile = project.layout.file(project.provider { File(outPath) })
 
           logState(outputFile, nyxState.get())
         } ?: project.logger.lifecycle("No GITHUB_OUTPUT set")
@@ -127,7 +134,7 @@ class NyxReleasePlugin : Plugin<Project> {
         }
 
         project.logger.lifecycle(
-            "Nyx orchestrated release starting (dryRun=$dryRun)"
+            "Nyx orchestrated release (dryRun=$dryRun)"
         )
 
       }
@@ -166,10 +173,11 @@ class NyxReleasePlugin : Plugin<Project> {
 
   }
 
-  private fun logState(file: RegularFile, state: State) {
+  private fun logState(file: Provider<RegularFile>, state: State) {
+    file.get().asFile.parentFile.mkdirs() // Ensure the path to the file exists
 
-    if (file.asFile.exists()) {
-      file.asFile.writer().use { writer -> with(writer) {
+    if (file.get().asFile.exists()) {
+      file.get().asFile.writer().use { writer -> with(writer) {
         appendLine("nyx_branch=${state.branch}")
         appendLine("nyx_release_type_git_tag=${state.releaseType.gitTag}")
         appendLine("nyx_release_type_git_commit=${state.releaseType.gitCommit}")
@@ -184,7 +192,7 @@ class NyxReleasePlugin : Plugin<Project> {
         appendLine("nyx_new_version=${state.newVersion}")
         appendLine("nyx_new_release=${state.newRelease}")
         appendLine("nyx_version=${state.version}")
-        appendLine("nyx_version_,ajor_number=${state.versionMajorNumber}")
+        appendLine("nyx_version_major_number=${state.versionMajorNumber}")
         appendLine("nyx_version_minor_number=${state.versionMinorNumber}")
         appendLine("nyx_version_patch_number=${state.versionPatchNumber}")
         appendLine("nyx_version_build_metadata=${state.versionBuildMetadata}")

@@ -55,7 +55,7 @@ val artifactoryToken: String =
 object Versions {
   const val JETBRAINS_ANNOTATIONS = "26.0.2"
   const val JUNIT = "5.11.4"
-  const val LOG4J2 = "2.25.3"
+  const val LOG4J2 = "2.25.4"
   const val JACKSON = "2.19.4"
   const val LOMBOK = "1.18.42"
   const val CHECKSTYLE = "12.3.0"

@@ -290,6 +290,18 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
   }
 
   /**
+   * Swaps the values of the two specified points.
+   *
+   * @param from The first point to swap.
+   * @param to The second point to swap.
+   */
+  public void swap(@NotNull Point2D<@NotNull Integer> from, @NotNull Point2D<@NotNull Integer> to) {
+    var t = get(from);
+    set(from, get(to));
+    set(to, t);
+  }
+
+  /**
    * Toggles the values of each space represented by the specified rectangle. If a space
    * contains value1 then value2 is stored at that space. If a space contains value2 then value1
    * is stored at that space.
@@ -386,6 +398,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
    * @param point The column and row to get the offset for.
    * @return The offset into the items array for the specified column and row.
    */
+  @SuppressWarnings("unused")
   public int getOffset(Point2D<Integer> point) {
     return getOffset(point.x(), point.y());
   }
@@ -501,6 +514,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
    *     the neighbor on this Grid2D and the second property is the value at that point
    *     in this Grid2D.
    */
+  @SuppressWarnings("unused")
   public @NotNull List<Pair<Direction, T>> getNeighbors(
       int x, int y, Collection<Direction> directions
   ) {
@@ -536,6 +550,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
    *     the neighbor on this Grid2D and the second property is the value at that point
    *     in this Grid2D.
    */
+  @SuppressWarnings("unused")
   public @NotNull List<Pair<Direction, T>> getNeighbors(
       Point2D<Integer> point, Collection<Direction> directions
   ) {
@@ -706,6 +721,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
    * @param index     The row or column index to set.
    * @param data      The updated data to apply to this grid.
    */
+  @SuppressWarnings("unused")
   public void setRowOrColumn(@NotNull Direction direction, int index, @NotNull List<T> data) {
     if (targetColumn(direction)) {
       setColumn(index, data);
@@ -751,11 +767,13 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
    * @param point The point to check.
    * @return True if the specified point represents a corner of this grid.
    */
+  @SuppressWarnings("unused")
   public boolean isCorner(Point2D<Integer> point) {
     return isCorner(point.x(), point.y());
   }
 
   @Override
+  @NotNull
   public String toString() {
     return "Grid2D{"
         + "columns=" + columns
@@ -868,6 +886,7 @@ public record Grid2D<T>(int columns, int rows, @NotNull T[] items) implements It
    * @return A new Grid2D instance with a copy of this grid's data rotated 90 degrees
    *     counter-clockwise.
    */
+  @SuppressWarnings("unused")
   public Grid2D<T> rotateLeft() {
     assert columns == rows;
 

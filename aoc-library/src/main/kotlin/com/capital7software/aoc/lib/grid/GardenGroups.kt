@@ -346,7 +346,7 @@ class GardenRegion private constructor(
      * new [GardenRegion]. The search for adjacent [GardenPlot]s will begin from [GardenPlot.point].
      * @param grid The [Grid2D] that contains all of the [GardenPlot]s that the new [GardenRegion]
      * will be created from. The [grid] will be searched for adjacent [GardenPlot]s beginning from
-     * [start] and continuing in all [Direction.CARDINAL_DIRECTIONS] until either the edge of the
+     * [start] and continuing in all [Direction.CARDINALS] until either the edge of the
      * garden is reached or a [GardenPlot] with a different plant is encountered.
      * @return The newly instantiated [GardenRegion]
      */
@@ -369,7 +369,7 @@ class GardenRegion private constructor(
 
         graph.add(plot.id, plot)
 
-        Direction.CARDINAL_DIRECTIONS
+        Direction.CARDINALS
             .asSequence()
             .filter { grid.isOnGrid(plot.point.pointInDirection(it)) }
             .filter { grid[plot.point.pointInDirection(it)].plant == plot.plant }
@@ -433,7 +433,7 @@ class GardenRegion private constructor(
 
       region.graph.vertices.forEach { vertex ->
         if (vertex.size() < SIDES_PER_PLOT) {
-          Direction.CARDINAL_DIRECTIONS.forEach { direction ->
+          Direction.CARDINALS.forEach { direction ->
             if (getNext(region.graph, vertex, direction) == null) {
               val neighbors = direction.perpendicular.mapNotNull { perpendicular ->
                 val neighbor = getNext(region.graph, vertex, perpendicular)

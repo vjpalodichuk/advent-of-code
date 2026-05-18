@@ -215,7 +215,7 @@ public enum Direction {
   /**
    * The four cardinal directions of North, South, East, and West.
    */
-  public static final Set<Direction> CARDINAL_DIRECTIONS = Set.of(NORTH, SOUTH, EAST, WEST);
+  public static final Set<Direction> CARDINALS = Set.of(NORTH, SOUTH, EAST, WEST);
 
   /**
    * All directions.
@@ -306,6 +306,7 @@ public enum Direction {
    *
    * @return The delta along the x-axis.
    */
+  @SuppressWarnings("unused")
   public int component1() {
     return dx();
   }
@@ -315,6 +316,7 @@ public enum Direction {
    *
    * @return The delta along the y-axis.
    */
+  @SuppressWarnings("unused")
   public int component2() {
     return dy();
   }

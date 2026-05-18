@@ -525,7 +525,7 @@ class GridComputing @SuppressFBWarnings constructor(
 
     val currentPoint = gridNode.point
 
-    for (direction in Direction.CARDINAL_DIRECTIONS) {
+    for (direction in Direction.CARDINALS) {
       val point = currentPoint.pointInDirection(direction)
 
       if (!gridToUse.isOnGrid(point)

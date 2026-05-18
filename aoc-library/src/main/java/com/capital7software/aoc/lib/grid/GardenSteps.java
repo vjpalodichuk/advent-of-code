@@ -458,7 +458,7 @@ public class GardenSteps {
     private List<GardenTile> getWalkableNeighbors(GardenTile tile, boolean virtual) {
       var neighbors = new LinkedList<GardenTile>();
 
-      for (var direction : Direction.CARDINAL_DIRECTIONS) {
+      for (var direction : Direction.CARDINALS) {
         var newPoint = Grid2D.pointInDirection(tile.point(), direction);
         var realPoint = virtual ? grid.virtualToReal(newPoint) : newPoint;
         if (grid.isOnGrid(realPoint)) {
@@ -475,7 +475,7 @@ public class GardenSteps {
     private List<Point2D<Integer>> getWalkableNeighbors(Point2D<Integer> point) {
       var neighbors = new LinkedList<Point2D<Integer>>();
 
-      for (var direction : Direction.CARDINAL_DIRECTIONS) {
+      for (var direction : Direction.CARDINALS) {
         var newPoint = Grid2D.pointInDirection(point, direction);
         var realPoint = grid.virtualToReal(newPoint);
         if (grid.isOnGrid(realPoint)) {

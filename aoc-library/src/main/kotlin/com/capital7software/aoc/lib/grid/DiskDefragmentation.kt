@@ -156,7 +156,7 @@ class DiskDefragmentation(val key: String) {
 
     while (queue.isNotEmpty()) {
       val point = queue.removeFirst()
-      grid.getNeighbors(point, Direction.CARDINAL_DIRECTIONS) { value, point2D ->
+      grid.getNeighbors(point, Direction.CARDINALS) { value, point2D ->
         // Only include neighbors that are used and not in a group!
         value && regionGrid[point2D] == 0
       }.forEach { (direction, value) ->

@@ -311,7 +311,7 @@ class HoofIt(input: List<String>) {
   private fun findNeighbors(tile: TrailTile): List<TrailTile> {
     val results = mutableListOf<TrailTile>()
 
-    for (direction in Direction.CARDINAL_DIRECTIONS) {
+    for (direction in Direction.CARDINALS) {
       val point = tile.point.pointInDirection(direction)
 
       if (grid.isOnGrid(point)) {

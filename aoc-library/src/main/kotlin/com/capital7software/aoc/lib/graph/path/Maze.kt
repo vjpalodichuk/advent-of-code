@@ -132,7 +132,7 @@ class Maze private constructor(
      * Please note that only tiles with an x and y coordinate that are greater to or equal to
      * zero are considered.
      *
-     * Only the [Direction.CARDINAL_DIRECTIONS] are considered as navigation is restricted to
+     * Only the [Direction.CARDINALS] are considered as navigation is restricted to
      * vertical and horizontal.
      *
      * @param tile The [Tile] to get the walkable neighbors for.
@@ -141,7 +141,7 @@ class Maze private constructor(
      */
     @JvmStatic
     fun neighbors(tile: Tile, favorite: Long): List<Tile> {
-      return Direction.CARDINAL_DIRECTIONS
+      return Direction.CARDINALS
           .map { direction -> tile.point.pointInDirection(direction) }
           .filter { point -> point.x() >= 0 && point.y() >= 0 }
           .map { point -> Tile.from(point.x(), point.y(), favorite) }

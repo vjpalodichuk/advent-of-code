@@ -259,7 +259,7 @@ public class HikingTrails {
       }
     };
 
-    private static final Set<Direction> ALL = new HashSet<>(Direction.CARDINAL_DIRECTIONS);
+    private static final Set<Direction> ALL = new HashSet<>(Direction.CARDINALS);
     private static final Set<Direction> NORTH = Set.of(Direction.NORTH);
     private static final Set<Direction> SOUTH = Set.of(Direction.SOUTH);
     private static final Set<Direction> EAST = Set.of(Direction.EAST);

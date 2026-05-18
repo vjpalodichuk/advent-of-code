@@ -320,7 +320,7 @@ class AirDuctCleaning(
       visited.add(tile)
       graph.add(tile.vertex.copy())
 
-      for (direction in Direction.CARDINAL_DIRECTIONS) {
+      for (direction in Direction.CARDINALS) {
         val point = tile.point.pointInDirection(direction)
 
         if (!grid.isOnGrid(point) || !grid[point].walkable) {
@@ -414,7 +414,7 @@ class AirDuctCleaning(
 
     val neighbors = grid.getNeighbors(
         tile.point,
-        Direction.CARDINAL_DIRECTIONS
+        Direction.CARDINALS
     ) { value, _ -> value.walkable }
 
     if (neighbors.size >= 3 || neighbors.size < 2) {

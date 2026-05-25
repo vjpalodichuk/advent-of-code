@@ -187,7 +187,7 @@ import org.slf4j.LoggerFactory
  * front of the door to type each code. **What is the sum of the complexities of the five codes on
  * your list?**
  *
- * Your puzzle answer was **``**.
+ * Your puzzle answer was **`130470079151124`**.
  */
 class Day21 : AdventOfCodeSolution {
   private companion object {

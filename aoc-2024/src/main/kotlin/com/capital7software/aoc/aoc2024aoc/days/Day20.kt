@@ -165,7 +165,7 @@ import org.slf4j.LoggerFactory
  *
  * Your puzzle answer was **`1286`**.
  *
- * **--- Part Two ---**
+ * ***--- Part Two ---***
  *
  * The programs seem perplexed by your list of cheats. Apparently, the two-picosecond cheating rule
  * was deprecated several milliseconds ago! The latest version of the cheating rule permits a single

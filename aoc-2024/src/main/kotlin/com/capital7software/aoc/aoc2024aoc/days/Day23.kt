@@ -97,7 +97,7 @@ import org.slf4j.LoggerFactory
  *
  * Your puzzle answer was **`1348`**.
  *
- * **--- Part Two ---**
+ * ***--- Part Two ---***
  *
  * There are still way too many results to go through them all. You'll have to find the LAN party
  * another way and go there yourself.
